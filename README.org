@@ -6,16 +6,16 @@ Contacts:
 - Toyoko Orimoto - Toyoko.Orimoto@cern.ch 
 
 Presentations: 
-- [[https://indico.cern.ch/event/847927/contributions/3606888/attachments/1930081/3196452/HH_WWgg_Analysis_Status_21_October_2019.pdf][21 October 2019 Analysis Status]]
-- [[https://indico.cern.ch/event/847923/contributions/3632148/attachments/1942588/3221820/HH_WWgg_Analysis_Update_11_November_2019_2.pdf][11 November 2019 Analysis Update]]
+- [[https://indico.cern.ch/event/904968/contributions/3866826/attachments/2041516/3419252/19_May_2020_HH_WWgg_NonResStatus.pdf][19 May 2020 Non-Res Status]]
+- [[https://indico.cern.ch/event/847923/contributions/3632148/attachments/1942588/3221820/HH_WWgg_Analysis_Update_11_November_2019_2.pdf][11 November 2019 Update]]
+- [[https://indico.cern.ch/event/847927/contributions/3606888/attachments/1930081/3196452/HH_WWgg_Analysis_Status_21_October_2019.pdf][21 October 2019 Status]]
 
 Repositories:
-- [[https://github.com/atishelmanch/flashggFinalFit/tree/HHWWgg_Dev][HHWWgg Flashgg Final Fit]]
+- [[https://github.com/atishelmanch/flashggFinalFit/tree/HHWWgg_Dev_runII_102x][HHWWgg Flashgg Final Fit]]
 - [[https://github.com/atishelmanch/flashgg/tree/HHWWgg_Crab][HHWWgg MicroAOD Production]]
-- [[https://github.com/NEUAnalyses/HH_WWgg/tree/HHWWgg_PrivateMC][HHWWgg Private MC Production]]
+- [[https://github.com/NEUAnalyses/HHWWgg_Tools/tree/master][HHWWgg Analysis Tools]]
 
-These instructions describe how to run flashgg modules specific to the HH->WWgg analysis. The current plugin designed to work with workspaceStd
-(as of 19 December 2019) is the HHWWgg Tagger. One can also run a non-standard flashgg sequence, specific to HHWWgg, with the HHWWgg Candidate Dumper. 
+These instructions describe how to run flashgg modules specific to the HH->WWgg analysis. The current plugin designed to work with workspaceStd is the HHWWgg Tagger. 
 
 ** Cloning the HHWWgg_dev Repository 
 
@@ -40,7 +40,7 @@ The HHWWgg development branch is obtained in a similar fasion to the dev_legacy_
 
 ** Setting up a voms Proxy 
 
-For both the HHWWgg Candidate Dumper and Tagger, to run locally on an HHWWgg signal file, you must first run the following commands:
+To access grid files to run the tagger on, you must run the following commands:
 
     #+BEGIN_EXAMPLE
     cmsenv
@@ -61,431 +61,120 @@ to set this proxy to your X509_USER_PROXY environment variable for the example a
 
 where x590up_u95168 would be replaced by whatever your proxy name is. 
 
-** HHWWgg Candidate Dumper
-
-*** Running Locally 
-
-The HHWWgg Candidate Dumper is run with the config file Taggers/test/HHWWggTest_cfg.py. This is useful if you'd like to run a cmsRun sequence different 
-from that used in workspacestd.py. To run locally, after a scram b -j command to build everything, you can run the command:
-
-    #+BEGIN_EXAMPLE
-    cmsRun Taggers/test/HHWWggTest_cfg.py outputFile=HHWWggtest.root metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json maxEvents=1000
-    #+END_EXAMPLE
-
-Note: The metaConditions option in this examples specifies 2017 conditions. If you'd like to run with 2016 or 2018 or some other non-standard metaconditions, this option
-must be changed.
-
-Note: If the default file is not found, you can try running the same cmsRun command above but adding the options: useAAA=False useEOS=True 
-
-When running locally, the input files are specified in the cmssw config file (HHWWggTest_cfg.py), and by default is set to a single 250 GeV radion semileptonic decay
-signal microaod with 499 events: 
-
-    #+BEGIN_EXAMPLE
-    /eos/cms/store/group/phys_higgs/cmshgg/atishelm/flashgg/HHWWgg_v2-2/94X_mc2017-RunIIFall18/ggF_X250_WWgg_qqlnugg/HHWWgg_v2-2-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/191216_220038/0000/myMicroAODOutputFile_9.root
-    #+END_EXAMPLE
-
-In the config file, you can specify the variables to output with the cfgTools.addCategories 
-variable "variables". By default this is set to variables = Reco_Variables, which outputs the minimum variables in the trees and workspaces for fggfinalfit
-(CMS_hgg_mass, dZ, weight and intLumi), and in addition many supplementary variables such as four momentum of the leading and subleading photons, jets and leptons. The specific variables to be 
-plotted from these names (such as Reco_Variables) are found in the file Taggers/python/HHWWggTagVariables.py 
-
-Towards the end of the config file are the options zero_vtx and sands. Setting zero_vtx equal to 1 will perform the analysis dumper only considering diphotoncandidates
-constructed from the highest sum pt squared vertex, found to be slightly more efficient in the case of the 250 GeV HHWWgg semileptonic signal compared to the Hgg vertex.
-Setting sands equal to 1 will apply scaling corrections to data and smearing corrections to MC. 
-
-*** Running on Condor
-
-Running the Candidate Dumper has the advantage of allowing you to run over entire data sets and calculate weights for signal samples. Running the Candidate Dumper on
-condor can be done with the script HHWWgg_Run_Jobs.sh. This allows you to run with the Candidate Dumper or Tagger on signal or background. To run the HHWWgg Candidate Dumper on signal,
-you can run the command 
-
-Note: You must first follow the proxy steps above in order to have access to DAS datasets)
-
-Note: There are two user specific parameters in the script: fggDirec and ntupleDirec, which are be default set to:
-
-    #+BEGIN_EXAMPLE
-    fggDirec="/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/" # flashgg directory 
-    ntupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg/" # condor output directory 
-    #+END_EXAMPLE
-
-These should be set to the user's flashgg directory and ntuple directory where they would like the output of the condor jobs to go. An example command to run the script is as follows:
-
-    #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWggTestSignal --nEvents 1000 -s
-    #+END_EXAMPLE
-
-This will create and exectue an fggrunjobs command to run the HHWWgg dumper on a maximum of 1000 events from the signal dataset specified in Taggers/test/HHWWgg_2017_Signal/HHWWgg_Signal_2017.json.
-By default this json specifies the 250 GeV Radion -> HH -> WWgg -> qqlnu, semileptonic final state. If you'd like to change the dataset run on, you can edit HHWWgg_Signal_2017.json or specify another 
-json file with the --json option like so:
-
-    #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWggTestSignal --nEvents 1000 --json Taggers/test/HHWWgg_v2-2/HHWWgg_Signal_2017.json 
-    #+END_EXAMPLE
-
-Using the --json option will use the specified json file to obtain the fggrunjobs parameters to use, such as the dataset and campaign. In this example, a dataset from 
-the HHWWgg campaign HHWWgg_v2-2 is used. You can find the available datasets for the current, very very preliminary HHWWgg campaign with the command: 
-
-    #+BEGIN_EXAMPLE
-    fggManageSamples.py -C HHWWgg_v2-2 
-    #+END_EXAMPLE
-
-or
-
-    #+BEGIN_EXAMPLE
-    fggManageSamples.py -C HHWWgg_v2-2 list raw 
-    #+END_EXAMPLE`
-
-If you would like to run on data, you run the same HHWWgg_Run_Jobs command but with the data flag instead of the signal flag:
-
-    #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWggTestData --nEvents 1000 -d
-    #+END_EXAMPLE
-
-By default, the json file used for specifying datasets for data is Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json. At the moment, this contains 
-the 2017 DoubleEG dataset. If you'd like to change this, you need to either edit this json file or specify a different json file with the --json flag: 
-
-    #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWggTestData --nEvents 1000 --json <Local_Path_to_json>
-    #+END_EXAMPLE
-
-To run all all events, change --nEvents 1000 to --nEvents all 
-
 ** HHWWgg Tagger
 
-The HHWWgg tagger performs the same task as the dumper, but was created in order to have a compatible plugin to run with workspaceStd in order to eventually add
-systematics to the analysis, and if desired to include tagging of other flashgg tags on the same events. 
+The HHWWgg tagger is developed to tag events as coming from the HH->WWgg process, and is compatible with workspaceStd in order to include the standard systematics workflow, 
+and if desired to include tagging of other flashgg tags on the same events. 
 
 *** Running Locally 
 
 The HHWWgg Tagger can be run locally on signal with:
 
     #+BEGIN_EXAMPLE
-    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=HHWWgg_v2-3 dataset=ggF_X250_WWgg_qqlnugg doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 doBJetRegression=0 useAAA=1
+    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=HHWWgg_v2-3 dataset=ggF_X250_WWgg_qqlnugg doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1
     #+END_EXAMPLE
 
 and on data:
     #+BEGIN_EXAMPLE
-    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=Era2017_RR-31Mar2018_v2 dataset=/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 doBJetRegression=0 useAAA=1 processId=Data processType=Data saveHHWWggFinalStateVars=1
+    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=Era2017_RR-31Mar2018_v2 dataset=/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data
     #+END_EXAMPLE
 
-If this worked properly, you should get an output file called: output_numEvent500.root.
+All flags are either defined in MetaData/python/JobConfig.py, or workspaceStd. 
 
-The first customization location for this tagger is Systematics/python/HHWWggCustomize.py. 
-In this you can specify variables to save, and the number of categories to save HHWWggTag objects in. The selections are located in 
+An explanation of the flags in this example:
+- metaConditions: A json file of tags and conditions defined for each year. In this example, 2017 conditions is specified, used to run with correct conditions on 2017 Data and MC.
+- campaign: The flashgg campaign where the files you want to run on are defined.
+- dataset: The dataset within the specified campaign where the files you want to run on are defined. 
+- doHHWWggTag: Setting this flag to 1 tells the workspaceStd flow to evaluate each event with the HHWWgg Tagger.
+- HHWWggTagsOnly: This flag removes all taggers other than the HHWWgg Tagger, mainly all of the Higgs->gg taggers. 
+- doSystematics: In this example set to 0. If set to 1, the workspaceStd systematics flow is included where systematic labels are defined in workspaceStd. For each systematic, the tagger is rerun on the microAOD where the systematic quantity is either varied up or down one sigma. If you run with this flag on, there should be a tree (if running with dumpTrees) or a RooDataHist (if running with dumpWorkspace) for each systematic variation.
+- maxEvents: Max events to run over in the specified dataset. Set to -1 to run on all events. 
+- dumpWorkspace: Save RooWorkspace in output file. Useful for input into fggfinalfit. 
+- dumpTrees: Save tree(s) in output file. Useful for running ntuple analysis afterwards.
+- useAAA: Use prefix: "root://cms-xrd-global.cern.ch/" when looking for files.
+- processId / processType: Set to "Data" when running on data. 
+
+With the options specified in the example, if this works properly, you should get an output file named: output_numEvent500.root containing a tree for each HHWWggTag. 
+
+The customization for the HHWWggTag class is defined in a few places, starting with Systematics/python/HHWWggCustomize.py. In this python module you can specify variables to save, and the number of categories to save HHWWggTag objects in. The selections are located in 
 Taggers/plugins/HHWWggTagProducer.cc. For the moment, a tag object "tag_obj" is created if an event has a diphoton, exactly one good lepton, corresponding
 to the leptonically decaying W boson, and at least two 'good' jets, corresponding to the hadronically decaying W boson. For these objects, 'good' is defined by the selections specified in 
-Taggers/python/flashggHHWWggTag_cfi.py. By default this tag object is saved to category 0 (tag_obj.setCategoryNumber( catnum )). To add another category, the number of categories
-specified in Systematics/python/HHWWggCustomize.py should be changed like so: self.tagList = [ ["HHWWggTag",1] ] -> self.tagList = [ ["HHWWggTag",2] ]. Then, when saving a tag object
-of the second category, you would do so in Taggers/plugins/HHWWggTagProducer.cc with tag_obj.setCategoryNumber( 1 ) rather than tag_obj.setCategoryNumber( 0 ). 
+Taggers/python/flashggHHWWggTag_cfi.py. This tag object can be created and placed into one of three categories:
+
+- HHWWggTag_0: Semileptonic electron final state (qqlnugg with l = electron)
+- HHWWggTag_1: Semileptonic muon final state (qqlnugg with l = muon)
+- HHWWggTag_2: Untagged (if doHHWWggTagCutFlow=1) 
+
+Note that the untagged category is only filled if you are running with the flag doHHWWggTagCutFlow=1. To add another category, the number of categories
+specified in Systematics/python/HHWWggCustomize.py should be changed like so: self.tagList = [ ["HHWWggTag",3] ] -> self.tagList = [ ["HHWWggTag",4] ]. Then, when saving a tag object
+of the new category, you would do so in Taggers/plugins/HHWWggTagProducer.cc with tag_obj.setCategoryNumber( 3 ) rather than tag_obj.setCategoryNumber( catNum ) where catNum = 0, 1, or 2. 
 
 *** Running on Condor 
 
-To run the tagger on condor, the same instructions as running the dumper with condor are followed but with the addition of the "-w" flag. To run on signal:
+When running over entire datasets, it's useful to submit confor jobs instead of running locally. This is done with the script HHWWgg_Run_Jobs.sh. 
+
+*Note* : You must first follow the proxy steps above in order to have access to DAS datasets.
+*Note* : There are two user specific parameters in the script: fggDirec and ntupleDirec, which are be default set to:
 
     #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWggTaggerTest --nEvents 1000 -s -w
+    fggDirec="/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/" # flashgg directory 
+    ntupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg/" # condor output directory 
     #+END_EXAMPLE
 
-or to run on data:
+- fggDirec: Your current working directory where you have flashgg cloned. 
+- ntupleDirec: The directory where you want your output files to go. Note that this is the directory where a directory will be created for each batch of jobs, so you don't need to change this for every submission. 
+
+There are two submission types currently in HHWWgg_Run_Jobs.sh: 
+- Trees with many final state variables 
+- Workspaces with minimal variables 
+
+The many final state variables job is useful for studying the kinematics of all final state objects, including leptons and jets before and after selections, as 
+well as the two photons associated with the diphoton candidate. As an example, to run over 1000 events of signal and save trees with final state variables, one should run:
 
     #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWggTaggerTest --nEvents 1000 -d -w
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_Trees_Test --nEvents 1000 --json Taggers/test/HHWWgg_v2-6/HHWWgg_v2-6.json --condorQueue longlunch -g -c -v -t
     #+END_EXAMPLE
 
-By default, this will run the tagger on the 250 GeV Radion, semileptonic final state dataset. To change this, one needs to edit the json file used in the same manner described in the dumper instructions. 
-As described in the Candidate Dumper condor instructions above, this can be specified with the --json flag:
+An explanation of the flags:
+- labelName: The name used for the output folder placed in ntupleDirec
+- nEvents: The max events to run on. To run on all events, specify the flag like so: "--nEvents all"
+- json: The json file to use for fggrunjobs submission. This should contain the datasets to run on, and specify the campaign, and PU target for MC jobs
+- condorQueue: The [[https://twiki.cern.ch/twiki/bin/view/ABPComputing/LxbatchHTCondor#Queue_Flavours][condor flavour]] for the condor jobs. Note that this needs to be carefully selected, otherwise jobs may timeout and no output will be produced.
+- g: Use workspaceStd as the cms configuration file 
+- c: Run HHWWgg cut flow. This means all events that pass preselection will be saved in output nTuples. 
+- v: Save HHWWgg final state variables. Currently set up to be MANY variables (this should be noted. It may take more computing time than normal)
+- t: Save trees in output nTuples. Useful for python modules / c++ macros designed for nTuple analysis with TTrees / TBranches. 
+
+In this example the HHWWgg_v2-6 json is specified. This is a campaign with three signal mass points: 260, 600, 1000 GeV Radion decaying semileptonically with all lepton decays, including taus.
+Any json file can be specified as long as it is formatted properly. You should be able to find some examples under Taggers/test/*HHWWgg*. These input json files 
+can also be created from text files of dataset names with SampleTools.py. 
+
+*Note* : In order for flashgg campaigns to be defined and therefore accessed via the fggrunjobs json specified with the --json flag, they must be created with 
+fggManageSamples.py. You can find instructions for performing this [[https://twiki.cern.ch/twiki/bin/viewauth/CMS/AbrahamTishelmanCharnyHomepage#Adding_MicroAOD_s_to_a_flashgg_C][here]] and [[https://github.com/cms-analysis/flashgg/tree/dev_legacy_runII/MetaData#importing-datasets-from-dbs][here]].  
+
+If your campaign exists in MetaData/data/, specifying the campaign and datasets in the json should be defined properly for fggrunjobs. Note that HHWWgg_v2-6 should be defined for this state of the cloned repository.
+
+To produce workspaces with minial variables to be used by fggfinalfit, you can for example run:
 
     #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWggTaggerTest --nEvents 1000 --json Taggers/test/HHWWgg_v2-2/HHWWgg_Signal_2017.json -w 
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_Workspaces_X600_Test --nEvents all --json Taggers/test/HHWWgg_v2-6/HHWWgg_v2-6_X600.json --condorQueue microcentury -g -s -w 
     #+END_EXAMPLE
 
-HHWWgg_v2-3:
+Explaining the new flags:
+- s: Run flashgg systematics workflow. Required to obtain final results in fggfinalfit with systematic uncertainty.
+- w: Save workspaces in output. Used by fggfinalfit. 
 
-    #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-3_CutFlow_NoSyst_LowEvents --nEvents 1000 --json Taggers/test/HHWWgg_v2-3/HHWWgg_v2-3.json --condorQueue tomorrow -g -c -t 
-    #+END_EXAMPLE
+If this works properly, the output will be files (to be hadded) containing a RooWorkspace with the variables required for fggfinalfit, namely CMS_hgg_mass and dZ (for signal). 
 
 ** nTuple Processing
 
-After your condor jobs are complete, you should have a number of output files, for example 200. If you are running over signal,
-you need to hadd the workspaces in order to obtain a root file with a single combined root workspace to work with fggfinalfit. 
-To hadd workspaces, go to the output directory where your files are. In order to hadd you need a terminal whose present directory is the directory with 
-the output files. From here, you need to cmsenv in flashgg and then run the hadd python script:
-
-    cd <flashgg_location>
-    python <flashgg_location>Systematics/scripts/hadd_all.py
-
-If done properly, this should hadd the files into one, with one workspace. 
-
-Because the name of the RooAbsData object in the RooWorkspace needs to be named properly for fggfinalfit, you can make sure the name is correct for the HHWWgg fggfinalfit
-setup with RenameWorkspace_SignalTagger.cpp for a signal file and RenameWorkspace_DataTagger.cpp for an hadded data file. While in the directory of the hadded signal file, making 
-sure the name of the file is expected in RenameWorkspace_SignalTagger.cpp (copy_output_ggF_X250_WWgg_qqlnugg.root by default), and then simply run:
-
-    root -l <location of RenameWorkspace_SignalTagger.cpp>/RenameWorkspace_SignalTagger.cpp
-
-this will create a root file with the proper workspace RooAbsData object name for the current HHWWgg version of fggfinalfit.
-From here, you can follow the steps for creating the signal model at [[https://github.com/atishelmanch/flashggFinalFit/tree/HHWWgg_Dev#hhwwgg_v2-2][HHWWgg_v2-2 Final Fit]]
-
-* HHWWgg_v2-3 
-
-These are the steps to follow to analyze the HHWWgg_v2-3 campaign, which contains gluon gluon fusion produed Radions decaying into 
-two higgs, decaying to WWgg, decaying semileptonically to qqlnugg, with 2017 detector conditions. This campaign includes mass points from 250 GeV to 1250 GeV. 
-The standard model non resonant HH production sample is also included in this campaign.
-
-** Ntuple Production
-
-To run the HHWWgg_v2-3 microAOD's through the HHWWggTagger with systematics, one should setup with: 
-
-    #+BEGIN_EXAMPLE
-    cd $CMSSW_BASE/src/flashgg
-    cmsenv
-    voms-proxy-init --voms cms --valid 168:00
-    . proxy.sh <ProxyName> # Example <ProxyName>: x509up_u95168
-    #+END_EXAMPLE
-
-The user then has the option to produce output ntuples with trees or workspaces. There was at least one occurrence of the following
-cmsRun error:
-
-    #+BEGIN_EXAMPLE
-    Exception Message:
-    A std::bad_alloc exception was thrown.
-    The job has probably exhausted the virtual memory available to the process.
-    #+END_EXAMPLE
-
-therefore it's recommended to only produce either trees or workspace in order to avoid this (it's possible that creating
-both may work).
+After your condor jobs are complete, you should have a number of output files for each signal point or data taking era. This section will describe how to hadd the files properly.
 
 *** Trees
 
-To produce output ntuples with trees:
+If you ran with trees, these are hadded in the usual way with the hadd command (Documentation Needed).
 
-    #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-3_Trees --nEvents all --json Taggers/test/HHWWgg_v2-3/HHWWgg_v2-3.json --condorQueue tomorrow -g -s -t 
-    #+END_EXAMPLE
+*** Workspaces
 
-For ntuples with trees, there's the additional option "-c" which runs the HHWWgg cutflow analysis. This will 
-save all events in order to save booleans for each to check if different cuts were passed, allowing one to 
-plot the cutflow from the output ntuples. 
-
-*** Workspaces 
-
-To produce output ntuples with RooWorkspace's:
-
-    #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-3_Workspaces --nEvents all --json Taggers/test/HHWWgg_v2-3/HHWWgg_v2-3.json --condorQueue tomorrow -g -s -w 
-    #+END_EXAMPLE
-
-These can be used by fggfinalfit to produce signal models, which can be combined with background models computed from
-data ntuples in order to compute 95% CL limits on quantities like HH production cross section. 
-
-** Ntuple Combination 
-
-*** Trees
-
-In order to hadd signal trees, one can use the script HHWWgg_Hadd_Signal.sh. In this script you will find the variables
-"fgg_direc" and "ntuple_direc". These shold be changed according to the user. fgg_direc should be $CMSSW_BASE/src/flashgg,
-and ntuple_direc should be the directory where ntuples from the previous step (HHWWgg_Run_Jobs) were output. For example,
-ntuples_direc="/eos/user/<userLetter>/<lxplusUserName>/ntuples/HHWWgg". Once these are properly set, you can hadd with:
-
-    #+BEGIN_EXAMPLE
-    cd $CMSSW_BASE/src/flashgg
-    . HHWWgg_Hadd_Signal.sh <inputDirec> <outputDirec>
-    #+END_EXAMPLE
-
-<inputDirec> should be the folder specified in the HHWWgg_Run_Jobs.sh set above for the flag --labelName. One convention 
-for <outputDirec> would be <inputDirec> + "_Hadded". 
-
-If this works properly, you should have one root file for each Era in ntuples_direc + <outputDirec>, as well as a new 
-directory in ntuples_direc with an extra "__Combined_" string added at the end. This should contain one file with all 
-eras hadded. 
-
-*** Workspaces 
-
-Hadding RooWorkspaces needs to be done differently from hadding trees. It's done with HHWWgg_Hadd_Data_Workspaces.sh Similarly 
-to HHWWgg_Hadd_Signal, two directories need to be set to the user's specific paths: fgg_direc and ntuplesDirec. After changing 
-these appropriately, you can run with: 
-
-    #+BEGIN_EXAMPLE
-    cd $CMSSW_BASE/src/flashgg
-    . HHWWgg_Hadd_Data_Workspaces.sh <inputDirec> <outputDirec>
-    #+END_EXAMPLE
-
-inputDirec should be the folder in ntuplesDirec containing the fggrunjobs output (the --labelName value from the
-HHWWgg_Run_Jobs.sh step), and outputDirec simply the desired output direc in ntuplesDirec. For example, inputDirec + 
-"_Hadded". If this works properly, you will 
-
-** Ntuple Analysis 
-
-*** Trees 
-
-To analyze trees in output ntuples...
-
-* 2017 DoubleEG Dataset
-
-This should be used in conjunction with HHWWgg_v2-3 to extract limits. 
-
-** Ntuple Production
-
-To run the DoubleEG Dataset microAOD's through the HHWWggTagger with systematics, one should setup with: 
-
-    #+BEGIN_EXAMPLE
-    cd $CMSSW_BASE/src/flashgg
-    cmsenv
-    voms-proxy-init --voms cms --valid 168:00
-    . proxy.sh <ProxyName> # Example <ProxyName>: x509up_u95168
-    #+END_EXAMPLE
-
-The user then has the option to produce output ntuples with trees or workspaces. There was at least one occurrence of the following
-cmsRun error:
-
-    #+BEGIN_EXAMPLE
-    Exception Message:
-    A std::bad_alloc exception was thrown.
-    The job has probably exhausted the virtual memory available to the process.
-    #+END_EXAMPLE
-
-therefore it's recommended to only produce either trees or workspace in order to avoid this (it's possible that creating
-both may work).
-
-*** Trees
-
-To produce output ntuples with trees:
-
-    #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_2017Data_Trees --nEvents all --json Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json --condorQueue tomorrow -g -s -t 
-    #+END_EXAMPLE
-
-For ntuples with trees, there's the additional option "-c" which runs the HHWWgg cutflow analysis. This will 
-save all events in order to save booleans for each to check if different cuts were passed, allowing one to 
-plot the cutflow from the output ntuples. 
-
-*** Workspaces 
-
-To produce output ntuples with RooWorkspace's:
-
-    #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_2017Data_Workspaces --nEvents all --json Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json --condorQueue tomorrow -g -s -w 
-    #+END_EXAMPLE
-
-These can be used by fggfinalfit to produce a data driven background model, which can be combined with different signal models computed from
-signal ntuples in order to compute 95% CL limits on quantities like HH production cross section. 
-
-** Ntuple Combination 
-
-*** Trees
-
-The setup for hadding data trees is very similar to that of signal trees, so see the previous instructions on setting
-the two user variables. Once these are properly set, you can hadd with:
-
-    #+BEGIN_EXAMPLE
-    cd $CMSSW_BASE/src/flashgg
-    . HHWWgg_Hadd_Signal.sh <inputDirec> <outputDirec>
-    #+END_EXAMPLE
-
-<inputDirec> should be the folder specified in the HHWWgg_Run_Jobs.sh set above for the flag --labelName. One convention 
-for <outputDirec> would be <inputDirec> + "_Hadded". 
-
-If this works properly, you should have one root file for each mass point in ntuples_direc + <outputDirec>. 
-
-*** Workspaces 
-
-Hadding RooWorkspaces needs to be done differently from hadding trees. It's done with HHWWgg_Hadd_Data_Workspaces.sh Similarly 
-to HHWWgg_Hadd_Signal, two directories need to be set to the user's specific paths: fgg_direc and ntuplesDirec. After changing 
-these appropriately, you can run with: 
-
-    #+BEGIN_EXAMPLE
-    cd $CMSSW_BASE/src/flashgg
-    . HHWWgg_Hadd_Data_Workspaces.sh <inputDirec> <outputDirec>
-    #+END_EXAMPLE
-
-inputDirec should be the folder in ntuplesDirec containing the fggrunjobs output (the --labelName value from the
-HHWWgg_Run_Jobs.sh step), and outputDirec simply the desired output direc in ntuplesDirec. For example, inputDirec + 
-"_Hadded". If this works properly, 
-
-
-* HHWWgg_v2-2 
-
-The HHWWgg_v2-2 tag is used to mark the point in the anlaysis where the 95% CL limit on the HH cross section was placed on the 250 GeV semileptonically decaying Radion using
-the HHWWgg tagger plugin with workspaceStd.py WITHOUT systematics. The purpose of the tag is to document everything used to obtain this *very* preliminary result.
-
-** Files  
-
-*** Signal MicroAODs: 
-
-dbs instance: phys03 
-Sample: 
-    #+BEGIN_EXAMPLE
-    /ggF_X250_WWgg_qqlnugg/atishelm-HHWWgg_v2-2-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9-894aca5f1702fc00de4ca2fc3fbcfe4c/USER
-
-    campaign=HHWWgg_v2-2
-    #+END_EXAMPLE
-
-Json file for fggrunjobs:
-
-    #+BEGIN_EXAMPLE
-    {
-    "processes" : {
-                "ggF_X250_WWgg_qqlnugg" : [
-                        "/ggF_X250_WWgg_qqlnugg"
-                ]
-                       },
-     "cmdLine" : "campaign=HHWWgg_v2-2 targetLumi=1e+3 useAAA=False useEOS=True puTarget=6.245e-06,2.63e-05,4.92e-05,9.084e-05,9.854e-05,0.0001426,0.0001557,0.0001656,0.0002269,0.0005395,0.001076,0.002034,0.003219,0.004616,0.006528,0.009201,0.01283,0.01707,0.02125,0.0251,0.02847,0.03118,0.03325,0.03486,0.03626,0.03758,0.0387,0.03937,0.03946,0.03892,0.03782,0.03627,0.03435,0.03211,0.02967,0.02719,0.02482,0.02264,0.0207,0.01907,0.01784,0.01709,0.01685,0.0171,0.01771,0.01849,0.01916,0.01945,0.01911,0.01804,0.01627,0.01399,0.01147,0.008976,0.006728,0.004848,0.003375,0.002281,0.001504,0.0009715,0.0006178,0.0003882,0.0002419,0.0001501,9.294e-05,5.768e-05,3.598e-05,2.263e-05,1.437e-05,9.233e-06,5.996e-06,3.933e-06,2.601e-06,1.731e-06,1.157e-06,7.743e-07,5.184e-07,3.466e-07,2.311e-07,1.535e-07,1.015e-07,6.676e-08,4.365e-08,2.836e-08,1.829e-08,1.171e-08,7.437e-09,4.685e-09,2.926e-09,1.812e-09,1.111e-09,6.754e-10,4.066e-10,2.424e-10,1.431e-10,8.363e-11,4.839e-11,2.771e-11,1.571e-11,8.814e-12"
-    }
-    #+END_EXAMPLE
-
-*** Data MicroAODs
-
-Samples:
-
-    #+BEGIN_EXAMPLE    
-    /DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER
-    /DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017C-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER
-    /DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017D-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER
-    /DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017E-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER
-    /DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017F-31Mar2018-v1-6275f8d5048d2e0a580d591e02fde0b8/USER
-
-    campaign=Era2017_RR-31Mar2018_v2 targetLumi=41.5e+3 useAAA=True processId=Data processType=Data"
-    #+END_EXAMPLE
-
-Json file for fggrunjobs:
-
-    #+BEGIN_EXAMPLE
-    {
-            "processes": {
-                    "Data"   : [
-                                    "/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER",
-                                    "/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017C-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER",
-                                    "/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017D-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER",
-                                    "/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017E-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER",
-                                    "/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017F-31Mar2018-v1-6275f8d5048d2e0a580d591e02fde0b8/USER"
-                            ]
-                    },
-            "cmdLine" : "campaign=Era2017_RR-31Mar2018_v2 targetLumi=41.5e+3 useAAA=True processId=Data processType=Data"
-    }
-    #+END_EXAMPLE
-
-*** HHWWgg Condor Submission Commands
-
-After cmsenv and setting proxy variables:
-
-Signal:
-
-    #+BEGIN_EXAMPLE   
-    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-2_X250_qqlnu --nEvents all --json Taggers/test/HHWWgg_v2-2/HHWWgg_Signal_2017.json -w 
-    #+END_EXAMPLE
-
-Data:
-
-    #+BEGIN_EXAMPLE   
-    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-2_X250_qqlnu --nEvents all --json Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json -w 
-    #+END_EXAMPLE
-
-*** HHWWgg Tagger with workspaceStd.py Output 
-This contains the hadded data and signal files to input into flashgg finalfit:
-
-    #+BEGIN_EXAMPLE   
-    /eos/user/a/atishelm/ntuples/HHWWgg_v2-2
-    #+END_EXAMPLE
-
-** Limit Computation Instructions 
-Instructions for computing the limit can be found at [[https://github.com/atishelmanch/flashggFinalFit/tree/HHWWgg_Dev#hhwwgg_v2-2][HHWWgg_v2-2 Final Fit]]
+If you ran with workspaces, you need to hadd the workspaces in order to obtain a root file with a single combined root workspace for each signal point to work with
+fggfinalfit. This can be done with the script HHWWgg_Process_Files.sh (Documentation Needed). 
