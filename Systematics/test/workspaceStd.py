@@ -126,12 +126,6 @@ customize.options.register('doStageOne',
                            VarParsing.VarParsing.varType.bool,
                            'doStageOne'
                            )
-customize.options.register('doMuFilter',
-                           True,
-                           VarParsing.VarParsing.multiplicity.singleton,
-                           VarParsing.VarParsing.varType.bool,
-                           'doMuFilter'
-                           )
 customize.options.register('acceptance',
                            'NONE',
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -228,7 +222,6 @@ modifyTagSequenceForSystematics(process,jetSystematicsInputTags)
 print "Printing options"
 print 'acceptance '+str(customize.acceptance)
 print 'tthTagsOnly '+str(customize.tthTagsOnly)
-print 'doMuFilter '+str(customize.doMuFilter)
 
 
 # process.load("flashgg/Taggers/flashggTagSequence_cfi")

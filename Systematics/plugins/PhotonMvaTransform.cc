@@ -92,7 +92,7 @@ namespace flashgg {
             for(auto keyval = beforeMap.begin(); keyval != beforeMap.end(); ++keyval) {
                 vtx = keyval->first;
                 mvaVal = keyval->second;
-                shift = shift_val + (mvaVal - corrections_[correctionIndex]->Eval(mvaVal))*abs(syst_shift);
+                shift = shift_val + (corrections_[correctionIndex]->Eval(mvaVal) - mvaVal )*abs(syst_shift);
                 y.shiftMvaValueBy(shift, vtx);
             }
             if ( debug_) {
