@@ -31,8 +31,8 @@ flashggVBFDoubleHTag = cms.EDProducer("FlashggVBFDoubleHTagProducer",
                                    JetsCollSize = cms.uint32(maxJetCollections), #
                                    JetsSuffixes = cms.vstring(''), #nominal and systematic variations 
                                    GenParticleTag = cms.InputTag( "flashggPrunedGenParticles" ), # to compute MC-truth info
-
-                                   VBFJetsInputTag= UnpackedJetCollectionVInputTag, 
+                                   
+                                   VBFJetsInputTag= UnpackedJetCollectionVInputTag,
                                    VBFJetsSystematicsName=cms.string('flashggJetSystematics'),
                                    VBFJetsCollSize = cms.uint32(maxJetCollections), #
 
@@ -59,30 +59,30 @@ flashggVBFDoubleHTag = cms.EDProducer("FlashggVBFDoubleHTagProducer",
                                    VBFJetEta = cms.double(4.7),
                                    VBFleadJetPt  = cms.double(40.0),
                                    VBFsubleadJetPt = cms.double(30.0),
-
-                                   #MVABoundaries  = cms.vdouble(0.29,0.441, 0.724), # category boundaries for MVA w/o Mjj
-                                   #MXBoundaries   = cms.vdouble(250., 354., 478., 560.), # .. and MX w/o Mjj
-                                   #MJJBoundariesLower = cms.vdouble(98.0,95.0,97.0,96.0,95.0,95.0,95.0,95.0,95.0,95.0,95.0,95.0),#for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
-                                   #MJJBoundariesUpper = cms.vdouble(150.0,150.0,143.0,150.0,150.0,150.0,150.0,145.0,155.0,142.0,146.0,152.0),#for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
-                                   #MVABoundaries  = cms.vdouble(0.23,0.455, 0.709), # category boundaries for MVA with Mjj
-                                   #MXBoundaries   = cms.vdouble(250., 336., 411., 556.), # .. and MX for MVA with Mjj
                                    MVABoundaries  = cms.vdouble(0.87), # category boundaries for MVA with Mjj
-                                   MXBoundaries   = cms.vdouble(250., 370.,480.,585.,250.,335.,380.,545.,250.,330.,360.,530.), # .. and MX for MVA with Mjj
-                                   nMX   = cms.uint32(4), # number of MX categories
+                                   MXBoundaries   = cms.vdouble(0,500), 
+                                   nMX   = cms.uint32(2), # number of MX categories
                                    MJJBoundariesLower = cms.vdouble(70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0,70.0),#for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
                                    MJJBoundariesUpper = cms.vdouble(190.0,190.0,190.0,190.0,190.0,190.0,190.0,190.0,190.0,190.0,190.0,190.0),#for each category following the convention cat0=MX0 MVA0, cat1=MX1 MVA0, cat2=MX2 MVA0....
-                                   MVAConfig = cms.PSet(variables=cms.VPSet(), # variables are added below
+                                   MVAConfigCAT0 = cms.PSet(variables=cms.VPSet(), # variables are added below
                                                         classifier=cms.string("BDT::bdt"), # classifier name
                                                         weights=cms.FileInPath("%s"%weightsFile), 
                                                         regression=cms.bool(False), # this is not a regression
                                                         multiclass=cms.bool(True), # this is multiclass 
                                                         multiclassSignalIdx=cms.int32(2), # this is multiclass index for Signal
                                                         ),
-
+                                   MVAConfigCAT1 = cms.PSet(variables=cms.VPSet(), # variables are added below
+                                                        classifier=cms.string("BDT::bdt"), # classifier name
+                                                        weights=cms.FileInPath("%s"%weightsFile), 
+                                                        regression=cms.bool(False), # this is not a regression
+                                                        multiclass=cms.bool(True), # this is multiclass 
+                                                        multiclassSignalIdx=cms.int32(2), # this is multiclass index for Signal
+                                                        ),
                                    doMVAFlattening=cms.bool(True),#do transformation of cumulative to make it flat
                                    MVAscaling=cms.double(MVAscalingValue),
                                       doCategorization=cms.bool(True),#do categorization based on MVA x MX or only fill first tree with all events
-                                   MVAFlatteningFileName=cms.untracked.FileInPath("%s"%MVAFlatteningFileName),#FIXME, this should be optional, is it?
+                                   MVAFlatteningFileNameCAT0=cms.untracked.FileInPath("%s"%MVAFlatteningFileName),#FIXME, this should be optional, is it?
+                                   MVAFlatteningFileNameCAT1=cms.untracked.FileInPath("%s"%MVAFlatteningFileName),#FIXME, this should be optional, is it?
                                    globalVariables=globalVariables,
                                    doReweight = flashggDoubleHReweight.doReweight,
                                    reweight_producer = cms.string(reweight_settings.reweight_producer),
@@ -113,10 +113,9 @@ flashggVBFDoubleHTag = cms.EDProducer("FlashggVBFDoubleHTagProducer",
                                    ttHKiller_liststd = ttHKiller_liststd 
                                   ) 
 
-cfgTools.addVariables(flashggVBFDoubleHTag.MVAConfig.variables,
+MVAvariables =                       [
                       # here the syntax is VarNameInTMVA := expression
                       #### With or without Mjj is customized inside python doubleHCustomize and using options UseMjj
-                      [
                        "Mjj := dijet().M()",
                        "leadingJet_DeepFlavour := leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
                        "subleadingJet_DeepFlavour := subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
@@ -156,4 +155,5 @@ cfgTools.addVariables(flashggVBFDoubleHTag.MVAConfig.variables,
                        "diHiggs_pt := getdiHiggsP4().pt()",
                        "MX := MX()"
                        ]
-                      )
+cfgTools.addVariables(flashggVBFDoubleHTag.MVAConfigCAT0.variables,MVAvariables)
+cfgTools.addVariables(flashggVBFDoubleHTag.MVAConfigCAT1.variables,MVAvariables)

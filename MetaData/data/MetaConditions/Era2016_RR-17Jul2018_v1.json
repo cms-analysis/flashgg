@@ -259,11 +259,27 @@
         "jetID" : "Loose",
         "weightsFile" : {
                 "with_Mjj" : "flashgg/Taggers/data/HHTagger/training_30_04_2020_vbfHHbbgg_C2V0_2016.weights.xml",
-                "wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_2016_new_vbfhh_signal_07_05_2020.weights.xml"
+                "wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_30_04_2020_vbfHHbbgg_C2V0_2016.weights.xml"
         },
         "MVAFlatteningFileName" : {
                 "with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTrans_30_04_2020_vbfHHbbgg_C2V0_training_2016.root",
-                "wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_2016_new_vbfhh_signal_07_05_2020.root"
+                "wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTrans_30_04_2020_vbfHHbbgg_C2V0_training_2016.root"
+        },
+        "weightsFileCAT0" : {
+                "with_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_2016_single_qqHHcat_14_5_2020.weights.xml",
+                "wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_2016_single_qqHHcat_14_5_2020.weights.xml"
+        },
+        "MVAFlatteningFileNameCAT0" : {
+                "with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_qqHH_single_2016_cat_14_5_2020.root",
+                "wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_qqHH_single_2016_cat_14_5_2020.root"
+        },
+        "weightsFileCAT1" : {
+                "with_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_2016_double_qqHHcat_MX_lt_500GeV_28_5_2020_withSM.weights.xml",
+                "wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_2016_double_qqHHcat_MX_lt_500GeV_28_5_2020_withSM.weights.xml"
+        },
+        "MVAFlatteningFileNameCAT1" : {
+                "with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_SMqqHH_28_05_2020_MX_lt_500_2016.root",
+                "wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_SMqqHH_28_05_2020_MX_lt_500_2016.root"
         },
         "MVAscalingValue" : 1.0,
         "ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",
