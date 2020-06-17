@@ -71,12 +71,12 @@ and if desired to include tagging of other flashgg tags on the same events.
 The HHWWgg Tagger can be run locally on signal with:
 
     #+BEGIN_EXAMPLE
-    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=HHWWgg_v2-3 dataset=ggF_X250_WWgg_qqlnugg doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1
+    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=HHWWgg_v2-6 dataset=ggF_X600_HHWWgg_qqlnu doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1
     #+END_EXAMPLE
 
 and on data:
     #+BEGIN_EXAMPLE
-    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=Era2017_RR-31Mar2018_v2 dataset=/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data
+    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=Era2017_RR-31Mar2018_v2 dataset=/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1
     #+END_EXAMPLE
 
 All flags are either defined in MetaData/python/JobConfig.py, or workspaceStd. 
@@ -93,6 +93,8 @@ An explanation of the flags in this example:
 - dumpTrees: Save tree(s) in output file. Useful for running ntuple analysis afterwards.
 - useAAA: Use prefix: "root://cms-xrd-global.cern.ch/" when looking for files.
 - processId / processType: Set to "Data" when running on data. 
+- doHHWWggTagCutFlow: Categorize all events that pass preselection into HHWWgg categories. Without this flag, events that do not pass all analysis selections are cut.
+- saveHHWWggFinalStateVars: Save many final state variables such as kinematics for leptons and jets before and after analysis level selections. Variables are defined in Systematics/python/HHWWggCustomize.py
 
 With the options specified in the example, if this works properly, you should get an output file named: output_numEvent500.root containing a tree for each HHWWggTag. 
 
@@ -114,7 +116,8 @@ of the new category, you would do so in Taggers/plugins/HHWWggTagProducer.cc wit
 When running over entire datasets, it's useful to submit confor jobs instead of running locally. This is done with the script HHWWgg_Run_Jobs.sh. 
 
 *Note* : You must first follow the proxy steps above in order to have access to DAS datasets.
-*Note* : There are two user specific parameters in the script: fggDirec and ntupleDirec, which are be default set to:
+
+*Note* : There are two user specific parameters in the script: fggDirec and ntupleDirec, which are by default set to:
 
     #+BEGIN_EXAMPLE
     fggDirec="/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/" # flashgg directory 
@@ -132,14 +135,14 @@ The many final state variables job is useful for studying the kinematics of all 
 well as the two photons associated with the diphoton candidate. As an example, to run over 1000 events of signal and save trees with final state variables, one should run:
 
     #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_Trees_Test --nEvents 1000 --json Taggers/test/HHWWgg_v2-6/HHWWgg_v2-6.json --condorQueue longlunch -g -c -v -t
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_Trees_X600_Test --nEvents all --json Taggers/test/HHWWgg_v2-6/HHWWgg_v2-6_X600.json --condorQueue longlunch -g -c -v -t
     #+END_EXAMPLE
 
 An explanation of the flags:
 - labelName: The name used for the output folder placed in ntupleDirec
 - nEvents: The max events to run on. To run on all events, specify the flag like so: "--nEvents all"
 - json: The json file to use for fggrunjobs submission. This should contain the datasets to run on, and specify the campaign, and PU target for MC jobs
-- condorQueue: The [[https://twiki.cern.ch/twiki/bin/view/ABPComputing/LxbatchHTCondor#Queue_Flavours][condor flavour]] for the condor jobs. Note that this needs to be carefully selected, otherwise jobs may timeout and no output will be produced.
+- condorQueue: The [[https://twiki.cern.ch/twiki/bin/view/ABPComputing/LxbatchHTCondor#Queue_Flavours][condor flavour]] for the condor jobs. Note that this needs to be carefully selected, otherwise jobs may timeout and no output will be produced. You may need to try multiple flavors to find the ideal one for your job type.
 - g: Use workspaceStd as the cms configuration file 
 - c: Run HHWWgg cut flow. This means all events that pass preselection will be saved in output nTuples. 
 - v: Save HHWWgg final state variables. Currently set up to be MANY variables (this should be noted. It may take more computing time than normal)
@@ -148,6 +151,7 @@ An explanation of the flags:
 In this example the HHWWgg_v2-6 json is specified. This is a campaign with three signal mass points: 260, 600, 1000 GeV Radion decaying semileptonically with all lepton decays, including taus.
 Any json file can be specified as long as it is formatted properly. You should be able to find some examples under Taggers/test/*HHWWgg*. These input json files 
 can also be created from text files of dataset names with SampleTools.py. 
+l
 
 *Note* : In order for flashgg campaigns to be defined and therefore accessed via the fggrunjobs json specified with the --json flag, they must be created with 
 fggManageSamples.py. You can find instructions for performing this [[https://twiki.cern.ch/twiki/bin/viewauth/CMS/AbrahamTishelmanCharnyHomepage#Adding_MicroAOD_s_to_a_flashgg_C][here]] and [[https://github.com/cms-analysis/flashgg/tree/dev_legacy_runII/MetaData#importing-datasets-from-dbs][here]].  
@@ -161,14 +165,17 @@ To produce workspaces with minial variables to be used by fggfinalfit, you can f
     #+END_EXAMPLE
 
 Explaining the new flags:
-- s: Run flashgg systematics workflow. Required to obtain final results in fggfinalfit with systematic uncertainty.
+- s: Run flashgg systematics workflow. Required to obtain final results in fggfinalfit with systematic uncertainty. *Note* that even if you just want a stat only result, it is useful to add systematics as you can just choose not to include them in fggfinalfit.
 - w: Save workspaces in output. Used by fggfinalfit. 
 
 If this works properly, the output will be files (to be hadded) containing a RooWorkspace with the variables required for fggfinalfit, namely CMS_hgg_mass and dZ (for signal). 
 
 ** nTuple Processing
 
-After your condor jobs are complete, you should have a number of output files for each signal point or data taking era. This section will describe how to hadd the files properly.
+After your condor jobs are complete, you should have a number of output files for each signal point or data taking era. The first check is to make sure the output number 
+of files equals the number of condor jobs. If there are output files missing, the condor .err .out and .log files may point to the reason why. 
+
+After checking you have all of the output files, this section will describe how to hadd the files properly.
 
 *** Trees
 
@@ -177,4 +184,36 @@ If you ran with trees, these are hadded in the usual way with the hadd command (
 *** Workspaces
 
 If you ran with workspaces, you need to hadd the workspaces in order to obtain a root file with a single combined root workspace for each signal point to work with
-fggfinalfit. This can be done with the script HHWWgg_Process_Files.sh (Documentation Needed). 
+fggfinalfit. This can be done with the script HHWWgg_Process_Files.sh. As with the HHWWgg_Run_Jobs script, you need to first set your user specific variables, 
+namely the nTupleDirec and fggDirec vars. After doing this, to hadd the workspaces from the previous job, assuming they're in your ntuple directory with 
+the name "HHWWgg_v2-6_Workspaces_X600", you would run the command:
+
+    #+BEGIN_EXAMPLE
+    . HHWWgg_Process_Files.sh --inFolder HHWWgg_v2-6_Workspaces_X600 --outFolder HHWWgg_v2-6_Workspaces_X600_Hadded -s --signalType Res
+    #+END_EXAMPLE
+
+Explaining each flag:
+- inFolder: The directory in nTuplesDirec with files to be hadded
+- outFolder: The directory in nTuplesDirec you want the hadded files to go into 
+- s: Look for file names with the format of signal files 
+- signalType: Look for file names with the name format of resonant signals. Ex: "output_ggF_X600_HHWWgg_qqlnu_6.root". It's important that the file names are of the expected format, 
+as this script and fggfinalfit scripts will use this to obtain quantities like the resonant masses. 
+
+This tells the script to hadd files in nTuplesDirec/HHWWgg_v2-6_Workspaces_X600 using the flashgg
+script Systematics/scripts/hadd_all.py, and put the output files in your desired outFolder. Note that this is setup to work for any number of resonant mass points, NMSSM 
+mass pairs or EFT benchmarks located in the --inFolder. 
+
+If this works properly for this example, you should have a single hadded file in HHWWgg_v2-6_Workspaces_X600_Hadded for the 600 GeV resonant point. This will be the input signal file 
+for fggfinalfit. 
+
+To do the same for data, after running HHWWgg_Run_Jobs on a data json and directing your ouput files to HHWWgg_v2-6_Data_Workspaces, you would run:
+
+    #+BEGIN_EXAMPLE
+    . HHWWgg_Process_Files.sh --inFolder HHWWgg_v2-6_Data_Workspaces --outFolder HHWWgg_v2-6_Data_Workspaces_Hadded -d
+    #+END_EXAMPLE
+
+Explaining the new flag:
+- d: Don't look for special file name formats. 
+
+By default this should hadd by data era. For example for 2017 data, this should result in 5 hadded files in HHWWgg_v2-6_Data_Workspaces_Hadded. You would then want to 
+hadd these into a single hadded file for all of 2017 data to be used by fggfinalfit. 
