@@ -328,7 +328,7 @@
     "ZNuNuGJets_MonoPhoton_PtG-130_TuneCP5_13TeV-madgraph"                 : { "xs" : 0.2052 },
     "ZNuNuGJets_MonoPhoton_PtG-40to130_TuneCP5_13TeV-madgraph-pythia8"     : { "xs" : 2.996  },
     "ZNuNuGJets_MonoPhoton_PtG-130_TuneCP5_13TeV-madgraph-pythia8"         : { "xs" : 0.1921 },
-    "WW_TuneCUETP8M1_13TeV-pythia8"                                        : { "xs" : 64.3,  },
+    "WW_TuneCUETP8M1_13TeV-pythia8"                                        : { "xs" : 64.3   },
     "WZ_TuneCUETP8M1_13TeV-pythia8"                                        : { "xs" : 23.43  },
     "ZZ_TuneCUETP8M1_13TeV-pythia8"                                        : { "xs" : 10.16  },
     "WW_TuneCP5_13TeV-pythia8"                                             : { "xs" : 75.8   },
