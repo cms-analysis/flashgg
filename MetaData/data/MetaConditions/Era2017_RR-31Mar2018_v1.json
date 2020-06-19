@@ -234,7 +234,8 @@
 
     "MjjRegression" :
     {
-	"weightFile" : "/src/flashgg/Taggers/data/HHTagger/MjjRegression/TMVA_mjj_reg_model_met_corr_All.xml"
+	"weightFile" : "flashgg/Taggers/data/HHTagger/MjjRegression/TMVA_mjj_reg_model_met_corr_All.xml",
+	"year" : 2017
     },
 
     "doubleHTag":

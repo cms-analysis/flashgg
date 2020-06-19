@@ -23,7 +23,7 @@ ttHKiller_std = cms.vdouble()
 ttHKiller_listmean = cms.vdouble()
 ttHKiller_liststd = cms.vdouble()
 MaxJetEta = 2.5
-year = 2016
+XYMETCorr_year = 2016
 MReg_weights=""
 
 flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
@@ -51,7 +51,7 @@ flashggDoubleHTag = cms.EDProducer("FlashggDoubleHTagProducer",
                                    BTagType = cms.vstring('mini_pfDeepFlavourJetTags:probb','mini_pfDeepFlavourJetTags:probbb','mini_pfDeepFlavourJetTags:problepb'), #string for btag algorithm
                                    UseJetID = cms.bool(True),
                                    JetIDLevel = cms.string(jetID),
-                                   year = cms.uint32(year),
+                                   XYMETCorr_year = cms.uint32(XYMETCorr_year),
 
                                    #MVABoundaries  = cms.vdouble(0.29,0.441, 0.724), # category boundaries for MVA w/o Mjj
                                    #MXBoundaries   = cms.vdouble(250., 354., 478., 560.), # .. and MX w/o Mjj

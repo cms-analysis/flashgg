@@ -20,7 +20,7 @@
 #include "flashgg/Taggers/interface/LeptonSelection.h"
 #include "flashgg/MicroAOD/interface/MVAComputer.h"
 #include "flashgg/DataFormats/interface/DoubleHttHTagger.h"
-
+#include "flashgg/Taggers/interface/XYMETCorrection.h"
 #include "PhysicsTools/TensorFlow/interface/TensorFlow.h"
 
 #include <vector>
@@ -45,7 +45,7 @@ namespace flashgg {
         bool isclose(double a, double b, double rel_tol, double abs_tol);        
         void StandardizeHLF();
         void StandardizeParticleList();
-        std::pair<double,double> METXYCorr_Met_MetPhi(double uncormet, double uncormet_phi, int run, unsigned int year, bool isMC, int npv);
+        //        std::pair<double,double> METXYCorr_Met_MetPhi(double uncormet, double uncormet_phi, int run, unsigned int year, bool isMC, int npv);
 
         std::string inputJetsName_;
         std::vector<std::string> inputJetsSuffixes_;
@@ -76,7 +76,7 @@ namespace flashgg {
 
         double minJetPt_;
         double maxJetEta_;
-        unsigned int year_;
+        unsigned int XYMETCorr_year_;
         vector<double>mjjBoundaries_;
         vector<double>mjjBoundariesLower_;
         vector<double>mjjBoundariesUpper_;
@@ -88,6 +88,7 @@ namespace flashgg {
         ConsumesCollector cc_;
         GlobalVariablesComputer globalVariablesComputer_;
         MVAComputer<DoubleHTag> mvaComputer_;
+        XYMETCorrection metcorr_;
         MVAComputer<DoubleHTag> xgbComputer_;
         vector<double> mvaBoundaries_, mxBoundaries_;
         unsigned int nMX_;
@@ -152,7 +153,7 @@ namespace flashgg {
         vetoConeSize_( iConfig.getParameter<double> ( "VetoConeSize" ) ),
         minJetPt_( iConfig.getParameter<double> ( "MinJetPt" ) ),
         maxJetEta_( iConfig.getParameter<double> ( "MaxJetEta" ) ),
-        year_( iConfig.getParameter<unsigned int> ( "year" ) ),
+        XYMETCorr_year_( iConfig.getParameter<unsigned int> ( "XYMETCorr_year" ) ),
         bTagType_( iConfig.getParameter<vector<std::string>>( "BTagType") ),
         useJetID_( iConfig.getParameter<bool>   ( "UseJetID"     ) ),
         JetIDLevel_( iConfig.getParameter<string> ( "JetIDLevel"   ) ),
@@ -516,7 +517,7 @@ namespace flashgg {
                         auto & subleadJet = jet_2;
                         int npv = vrtxs->size();
 
-                        corr_met_xy = METXYCorr_Met_MetPhi(RegMET->pt(), RegMET->phi(), evt.id().run(), year_, !(evt.isRealData()), npv);
+                        corr_met_xy = metcorr_.METXYCorr_Met_MetPhi(RegMET->pt(), RegMET->phi(), evt.id().run(), XYMETCorr_year_, !(evt.isRealData()), npv);
 
                         METCorr = corr_met_xy.first;
                         phiMETCorr = corr_met_xy.second;
@@ -939,7 +940,7 @@ namespace flashgg {
         float NNscore = outputs[0].matrix<float>()(0, 0);
         return NNscore;
     }
-
+    /*
     enum TheRunEra{y2016B,y2016C,y2016D,y2016E,y2016F,y2016G,y2016H,y2017B,y2017C,y2017D,y2017E,y2017F,y2018A,y2018B,y2018C,y2018D,y2016MC,y2017MC,y2018MC};
     
     std::pair<double,double> DoubleHTagProducer::METXYCorr_Met_MetPhi(double uncormet, double uncormet_phi, int runnb, unsigned int year, bool isMC, int npv){
@@ -1075,7 +1076,7 @@ namespace flashgg {
         TheXYCorr_Met_MetPhi.first= CorrectedMET;
         TheXYCorr_Met_MetPhi.second= CorrectedMETPhi;
         return TheXYCorr_Met_MetPhi;
-    }
+        }*/
     
 }
 
