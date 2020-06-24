@@ -153,6 +153,13 @@ cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
                        "PhoJetOtherDr := getPhoJetOtherDr()" 
                        ]
                       )
+if flashggDoubleHTag.XYMETCorr_year == 2016:
+    MReg_year = 16
+elif flashggDoubleHTag.XYMETCorr_year == 2017:
+    MReg_year = 17
+elif flashggDoubleHTag.XYMETCorr_year == 2018:
+    MReg_year = 18
+
 cfgTools.addVariables(flashggDoubleHTag.MRegConf.variables,
                       [
                           "leadingJet_pt := leadJet().pt",
@@ -175,7 +182,8 @@ cfgTools.addVariables(flashggDoubleHTag.MRegConf.variables,
                           "MjjReg_phi1M := abs(getdPhi()[1])",
                           "MjjReg_phi2M := abs(getdPhi()[2])",
                           "rho := global.rho",
-                          "ttH_sumET := sum_jetET()-leadJet().pt-subleadJet().pt"
+                          "ttH_sumET := sum_jetET()-leadJet().pt-subleadJet().pt",
+                          "year := %i"%(MReg_year)
                       ]
                     )
 
