@@ -9,6 +9,8 @@
 # Example Usage:
 # 
 # . HHWWgg_Process_Files.sh --inFolder HHWWgg_v2-6_Workspaces_X600 --outFolder HHWWgg_v2-6_Workspaces_X600_Hadded -s --signalType Res
+# . HHWWgg_Process_Files.sh --inFolder HHWWgg_v2-6_2017_Data_Workspaces --outFolder HHWWgg_v2-6_2017_Data_Workspaces_Hadded -d
+# . HHWWgg_Process_Files.sh --inFolder HHWWgg_v2-6_2017_Data_Workspaces_Hadded --outFolder HHWWgg_v2-6_2017_Data_Workspaces_Hadded_Combined -d -c 
 ##############################################################################################################################################
 
 ## User specific variables. Customize to your own working area(s)
@@ -20,9 +22,10 @@ inputFolder=""
 outputFolder=""
 runSignal=""
 runData=""
+allData=""
 
 ## Get user specified argumenets 
-options=$(getopt -o sd --long inFolder: --long outFolder: --long signalType: -- "$@") # end name with colon ':' to specify argument string 
+options=$(getopt -o sdc --long inFolder: --long outFolder: --long signalType: -- "$@") # end name with colon ':' to specify argument string 
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
       exit 1
@@ -32,6 +35,7 @@ while true; do
       case "$1" in
       -s) runSignal="true";;
       -d) runData="true";;
+	  -c) allData="true";;
       --inFolder) shift; inputFolder=$1 ;;
       --outFolder) shift; outputFolder=$1 ;;
       --signalType) shift; signalType=$1 ;;
@@ -78,6 +82,7 @@ echo "inputFolder = $inputFolder"
 echo "outputFolder = $outputFolder"
 echo "runSignal = $runSignal"
 echo "runData = $runData"
+echo "allData = $allData"
 
 ## Set variables to user inputs 
 cd $nTupleDirec
@@ -100,6 +105,7 @@ comm -13 filesBefore.txt filesAfter.txt > filesDiff.txt
 readarray filePaths < filesDiff.txt
 
 # Move newly hadded files to output directory 
+let "i=0"
 for file_i in "${filePaths[@]}"
 do
 	echo $file_i
@@ -139,13 +145,18 @@ do
 
 	if [[ $runData == "true" ]]; then
 		infilePath="${nTupleDirec}/${inputFolder}/${file_i}"
-		outfilePath="${nTupleDirec}/${outputFolder}/${file_i}"
+		if [[ $allData == "true" ]]; then 
+			outfilePath="${nTupleDirec}/${outputFolder}/allData.root" # all data combined 
+		else 
+			outfilePath="${nTupleDirec}/${outputFolder}/Data_$i.root" # data by era 
+		fi 
 	fi
 		
 	echo "infilePath: $infilePath"
 	echo "outfilePath: $outfilePath"
 	mv $infilePath $outfilePath
 	#. ../run.sh ../RenameWorkspace_SignalTagger $infilePath $outfilePath $mass 
+	let "i=i+1"
 
 done
 

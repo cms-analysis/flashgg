@@ -221,5 +221,15 @@ To do the same for data, after running HHWWgg_Run_Jobs on a data json and direct
 Explaining the new flag:
 - d: Don't look for special file name formats. 
 
-By default this should hadd by data era. For example for 2017 data, this should result in 5 hadded files in HHWWgg_v2-6_2017_Data_Workspaces_Hadded, one for each Era from B to F. You would then want to 
-hadd these into a single hadded file for all of 2017 data to be used by fggfinalfit. 
+By default this should hadd by data era. For example for 2017 data, this should result in 5 hadded files in HHWWgg_v2-6_2017_Data_Workspaces_Hadded, one for each Era from B to F which should be named Data_0.root, Data_1.root, ... 
+You would then want to hadd these into a single hadded file for all of 2017 data to be used by fggfinalfit. This can be done with the command:
+
+    #+BEGIN_EXAMPLE
+    . HHWWgg_Process_Files.sh --inFolder HHWWgg_v2-6_2017_Data_Workspaces_Hadded --outFolder HHWWgg_v2-6_2017_Data_Workspaces_Hadded_Combined -d -c 
+    #+END_EXAMPLE
+
+Where the new flag is :
+- c: Combine all data eras.
+
+This command with hadd Data_*.root into a single file: HHWWgg_v2-6_2017_Data_Workspaces_Hadded_Combined/allData.root. This contains a single workspace will all data you ran on, and 
+is used as the input for flashggfinalfit. 
