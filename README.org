@@ -158,7 +158,7 @@ fggManageSamples.py. You can find instructions for performing this [[https://twi
 
 If your campaign exists in MetaData/data/, specifying the campaign and datasets in the json should be defined properly for fggrunjobs. Note that HHWWgg_v2-6 should be defined for this state of the cloned repository.
 
-To produce workspaces with minial variables to be used by fggfinalfit, you can for example run:
+To produce workspaces with minimal variables to be used by fggfinalfit, you can for example run:
 
     #+BEGIN_EXAMPLE
     . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_Workspaces_X600_Test --nEvents all --json Taggers/test/HHWWgg_v2-6/HHWWgg_v2-6_X600.json --condorQueue microcentury -g -s -w 
@@ -175,6 +175,31 @@ To produce workspaces for 2017 data, you would run a similar command but with th
     #+BEGIN_EXAMPLE
     . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_2017_Data_Workspaces --nEvents all --json Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json --condorQueue longlunch -g -s -w
     #+END_EXAMPLE
+
+**** Example: 2017 Data / MC Variables
+
+To produce ntuples for 2017 Data (DoubleEG dataset) and MC, you would run HHWWgg_Run_Jobs with the json files specifying 2017 data and MC, and the flags that will save trees with many final state variables for many objects,
+including leptons and jets before and after any selections are applied. This is useful for MVA studies in order to input training information with limit selections to increase statistics. 
+
+To use the HHWWgg_Run_Jobs.sh script, make sure to first edit the fggDirec and ntupleDirec variables, as described above in the beginning of the "Running on Condor" section.
+
+In order to submit jobs with 2017 Data, you would run the command:
+
+    #+BEGIN_EXAMPLE
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_2017_Data_Trees --nEvents all --json Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json --condorQueue longlunch -g -c -v -t
+    #+END_EXAMPLE
+
+*Note* : In the above example the condor job flavour "longlunch" is specified, giving each job a maximum of two hours of running to complete. Depending on how long the job takes, it may be necessary to specify the next flavour "workday". Specifying "workday" sets the max running time of each job 
+to 8 hours, meaning it may be more likely that the job completes. However this may mean the job will take longer as it may have worse priority (I am not 100% sure of all the details of how condor works, hence the vague language). 
+
+At the moment for HHWWgg, there is a json file specifying the backgrounds that are relevant for this analysis: Taggers/test/DataMC/Flashgg_bkg.json. To run the same tagger on this json, you would 
+simply submit with the command:
+
+    #+BEGIN_EXAMPLE
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_2017_FggBackground_Trees --nEvents all --json Taggers/test/DataMC/Flashgg_bkg.json --condorQueue workday -g -c -v -t
+    #+END_EXAMPLE
+
+For this example, workday may be a better choice of work flavour as there are some backgrounds with many events such as GJet, QCD, Drell Yan and DiPhotonJetsBox that may take a long time to run. 
 
 ** nTuple Processing
 
@@ -231,5 +256,5 @@ You would then want to hadd these into a single hadded file for all of 2017 data
 Where the new flag is :
 - c: Combine all data eras.
 
-This command with hadd Data_*.root into a single file: HHWWgg_v2-6_2017_Data_Workspaces_Hadded_Combined/allData.root. This contains a single workspace will all data you ran on, and 
+This command will hadd Data_*.root into a single file: HHWWgg_v2-6_2017_Data_Workspaces_Hadded_Combined/allData.root. This contains a single workspace will all data you ran on, and 
 is used as the input for flashggfinalfit. 

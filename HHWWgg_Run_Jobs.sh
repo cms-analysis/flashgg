@@ -181,7 +181,7 @@ then
       
       if [ $doCutFlow == 'true' ]
       then
-           command+=' doHHWWggTagCutFlow=True '
+           command+=' doHHWWggTagCutFlow=1 '
       fi       
 
       if [ $saveHHWWggFinalStateVars == 'true' ]

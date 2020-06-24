@@ -14,7 +14,7 @@
 
 using namespace flashgg; // makes flashgg sub members visible 
 // HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), JetVector_ (), Cut_Variables_ ()
-HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), Cut_Variables_ ()
+HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), Cut_Variables_ (), MuonVars_ (), JetVars_ ()
 {
 
 }
@@ -126,7 +126,8 @@ HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> 
 HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, std::vector<edm::Ptr<flashgg::Electron>> allElectrons, std::vector<edm::Ptr<flashgg::Electron>> goodElectrons,
                      std::vector<edm::Ptr<flashgg::Muon>> allMuons,
                      edm::Ptr<flashgg::Met> MET, edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2, 
-                     std::vector<edm::Ptr<flashgg::Jet>> allJets, std::vector<edm::Ptr<flashgg::Jet>> goodJets, std::vector<double> Cut_Variables) : Cut_Variables_(Cut_Variables)
+                     std::vector<edm::Ptr<flashgg::Jet>> allJets, std::vector<edm::Ptr<flashgg::Jet>> goodJets, 
+                     std::vector<double> Cut_Variables, std::vector<double> MuonVars, std::vector<double> JetVars): Cut_Variables_(Cut_Variables), MuonVars_(MuonVars), JetVars_(JetVars)
 {
   dipho_ = dipho;
   GetObjects(dipho, electron, MET, jet1, jet2);
@@ -134,7 +135,7 @@ HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electr
   allElectrons_ = GetElectrons(allElectrons);
   goodElectrons_ = GetElectrons(goodElectrons);
   allMuons_ = GetMuons(allMuons);
-  // goodMuons_ = GetMuons(goodMuons);
+  // goodMuons_ = GetMuons(goodMuons); // no good muons in this category 
   allJets_ = GetJets(allJets);
   goodJets_ = GetJets(goodJets);    
 }
@@ -142,12 +143,13 @@ HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electr
 // HHWWggTag_1 with cutFlowAnalysis
 HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, std::vector<edm::Ptr<flashgg::Electron>> allElectrons, edm::Ptr<flashgg::Muon> muon, std::vector<edm::Ptr<flashgg::Muon>> allMuons, std::vector<edm::Ptr<flashgg::Muon>> goodMuons,
               edm::Ptr<flashgg::Met> MET, edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2, 
-              std::vector<edm::Ptr<flashgg::Jet>> allJets, std::vector<edm::Ptr<flashgg::Jet>> goodJets, std::vector<double> Cut_Variables) : Cut_Variables_(Cut_Variables)
+              std::vector<edm::Ptr<flashgg::Jet>> allJets, std::vector<edm::Ptr<flashgg::Jet>> goodJets,
+              std::vector<double> Cut_Variables,  std::vector<double> MuonVars, std::vector<double> JetVars) : Cut_Variables_(Cut_Variables), MuonVars_(MuonVars), JetVars_(JetVars)
 {
   dipho_ = dipho;
   GetObjects(dipho, muon, MET, jet1, jet2);
   allElectrons_ = GetElectrons(allElectrons);
-  // goodElectrons_ = GetElectrons(goodElectrons);
+  // goodElectrons_ = GetElectrons(goodElectrons); // no good electrons in this category 
   allMuons_ = GetMuons(allMuons);
   goodMuons_ = GetMuons(goodMuons);
   allJets_ = GetJets(allJets);
@@ -160,7 +162,7 @@ HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho,
                      std::vector<edm::Ptr<flashgg::Muon>> allMuons, std::vector<edm::Ptr<flashgg::Muon>> goodMuons,
                      edm::Ptr<flashgg::Met> MET,
                      std::vector<edm::Ptr<flashgg::Jet>> allJets, std::vector<edm::Ptr<flashgg::Jet>> goodJets,
-                     std::vector<double> Cut_Variables) : Cut_Variables_(Cut_Variables)
+                     std::vector<double> Cut_Variables, std::vector<double> MuonVars, std::vector<double> JetVars) : Cut_Variables_(Cut_Variables), MuonVars_(MuonVars), JetVars_(JetVars)
 {
   dipho_ = dipho;
   GetObjects(dipho, MET);

@@ -37,50 +37,38 @@ namespace flashgg {
 
     //-- SemiLeptonic final state constructors
 
-    //- Without cut flow analysis and b tag variables 
+    //- Without cut flow analysis 
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>); // HHWWggTag_0
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>); // HHWWggTag_1
 
     //- With Cutflow analysis
+    // HHWWggTag_0
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, std::vector<edm::Ptr<flashgg::Electron>>, std::vector<edm::Ptr<flashgg::Electron>>,
               std::vector<edm::Ptr<flashgg::Muon>>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, 
               std::vector<edm::Ptr<flashgg::Jet>>, std::vector<edm::Ptr<flashgg::Jet>>,
-              std::vector<double>); 
+              std::vector<double>, std::vector<double>, std::vector<double>); 
 
+    // HHWWggTag_1
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, std::vector<edm::Ptr<flashgg::Electron>>, edm::Ptr<flashgg::Muon>, std::vector<edm::Ptr<flashgg::Muon>>, std::vector<edm::Ptr<flashgg::Muon>>,
               edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, 
               std::vector<edm::Ptr<flashgg::Jet>>, std::vector<edm::Ptr<flashgg::Jet>>,
-              std::vector<double>); 
+              std::vector<double>, std::vector<double>, std::vector<double>); 
 
-    // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, std::vector<double>); 
-    // dipho, tag_electron, electrons, goodElectrons, theMET, jet1, jet2, Jets_, tagJets_
-    // dipho, tag_muon, muons, goodMuons, theMET, jet1, jet2, Jets_, tagJets_
-
-    //- With cut flow analysis and b tag variables 
-    // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, std::vector<flashgg::Jet>, std::vector<double>); 
-    // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, std::vector<flashgg::Jet>, std::vector<double>); 
-    // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, std::vector<flashgg::Jet>, std::vector<double>); 
-    // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, std::vector<flashgg::Jet>, std::vector<double>); 
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, std::vector<double>); 
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, std::vector<double>); 
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, std::vector<double>); 
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, std::vector<double>);     
 
-    // Untagged, with cutflow analysis
+    // HHWWggTag_2: Untagged, with cutflow analysis
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, 
               std::vector<edm::Ptr<flashgg::Electron>>, std::vector<edm::Ptr<flashgg::Electron>>,
               std::vector<edm::Ptr<flashgg::Muon>>, std::vector<edm::Ptr<flashgg::Muon>>,
               edm::Ptr<flashgg::Met>,
               std::vector<edm::Ptr<flashgg::Jet>>, std::vector<edm::Ptr<flashgg::Jet>>,
-              std::vector<double>
+              std::vector<double>, std::vector<double>, std::vector<double>
               );
-    // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, std::vector<double>); 
-    // dipho, electrons, goodElectrons, muons, goodMuons, theMET, Jets_, tagJets_
 
-    // HHWWggTag(edm::Ptr<DiPhotonCandidate>, std::vector<flashgg::Jet>, edm::Ptr<flashgg::Met>, std::vector<double>);
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Met>, std::vector<double>);
-
-    // no jets 
 
     virtual HHWWggTag *clone() const override; // You need this because HHWWggTag is derived from the DiPhotonTagBase
 
@@ -112,6 +100,8 @@ namespace flashgg {
     //---utils---
     // const std::vector<flashgg::Jet> JetVector() const {return JetVector_;}
     const std::vector<double> Cut_Variables() const { return Cut_Variables_; };
+    const std::vector<double> MuonVars() const { return MuonVars_; };
+    const std::vector<double> JetVars() const { return JetVars_; };
     const std::vector<flashgg::Electron> allElectrons() const {return allElectrons_;}
     const std::vector<flashgg::Electron> goodElectrons() const {return goodElectrons_;}
     const std::vector<flashgg::Muon> allMuons() const {return allMuons_;}
@@ -154,6 +144,8 @@ namespace flashgg {
     float slp_Hgg_MVA_;
     // std::vector<flashgg::Jet> JetVector_;
     std::vector<double> Cut_Variables_;
+    std::vector<double> MuonVars_;
+    std::vector<double> JetVars_;
     flashgg::Electron Electron_;
     flashgg::Muon Muon_; 
     flashgg::Jet Leading_Jet_;

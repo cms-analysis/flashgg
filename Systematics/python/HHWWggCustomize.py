@@ -94,17 +94,18 @@ class HHWWggCustomize():
                         vname = "? %s.size() >= %s ? %s[%s].%s() : -999"%(objV,i+1,objV,i,eV)
                         entry = "%s:=%s"%(vtitle,vname)
                         finalStateVars.append(entry)
-            if("Muons" in objV):
-                mVars = ["pfIsolationR04().sumChargedHadronPt","pfIsolationR04().sumNeutralHadronEt","pfIsolationR04().sumPhotonEt",
-                         "pfIsolationR04().sumPUPt"]
-                mVarTitles = ["sumChargedHadronPt","sumNeutralHadronEt","sumPhotonEt","sumPUPt"]
-                for imV,mV in enumerate(mVars):
-                    mVarTitle = mVarTitles[imV]
-                    for i in range(checkN):
-                        vtitle = "%s_%s_%s"%(objV,i,mVarTitle)
-                        vname = "? %s.size() >= %s ? %s[%s].%s() : -999"%(objV,i+1,objV,i,mV)
-                        entry = "%s:=%s"%(vtitle,vname)
-                        finalStateVars.append(entry)  
+
+            # if("Muons" in objV):
+            #     mVars = ["pfIsolationR04().sumChargedHadronPt","pfIsolationR04().sumNeutralHadronEt","pfIsolationR04().sumPhotonEt",
+            #              "pfIsolationR04().sumPUPt"]
+            #     mVarTitles = ["sumChargedHadronPt","sumNeutralHadronEt","sumPhotonEt","sumPUPt"]
+            #     for imV,mV in enumerate(mVars):
+            #         mVarTitle = mVarTitles[imV]
+            #         for i in range(checkN):
+            #             vtitle = "%s_%s_%s"%(objV,i,mVarTitle)
+            #             vname = "? %s.size() >= %s ? %s[%s].%s() : -999"%(objV,i+1,objV,i,mV)
+            #             entry = "%s:=%s"%(vtitle,vname)
+            #             finalStateVars.append(entry)  
 
             # var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "  
             if("Jets" in objV):
@@ -121,6 +122,55 @@ class HHWWggCustomize():
                         vname = "? %s.size() >= %s ? %s[%s].%s : -999"%(objV,i+1,objV,i,bscore)
                         entry = "%s:=%s"%(vtitle,vname)
                         finalStateVars.append(entry)                                                                      
+
+        # Save extra Muon variables 
+        nMuons = 5 # highest 5 pT muons (no selections applied)
+        nVars = 6 # 5 IDs and Isolation
+        extraMuonVars = ["isLooseMuon","isMediumMuon","isTightMuon","isSoftMuon","isHighPtMuon","muonIso"]
+        for m in range(0,nMuons):
+            for n in range(0,nVars):
+                muonVarTitle = extraMuonVars[n]
+                # MuonVars_[muonIndex*numVars + 0] = isLooseMuon;
+                # MuonVars_[muonIndex*numVars + 1] = isMediumMuon;
+                # MuonVars_[muonIndex*numVars + 2] = isTightMuon;
+                # MuonVars_[muonIndex*numVars + 3] = isSoftMuon;
+                # MuonVars_[muonIndex*numVars + 4] = isHighPtMuon;
+                # MuonVars_[muonIndex*numVars + 5] = muonIso;
+                i = m*nVars + n
+                vname = "MuonVars[%s]"%(i)
+                vtitle = "allMuons_%s_%s"%(m,muonVarTitle)
+                entry = "%s:=%s"%(vtitle,vname)                
+                finalStateVars.append(entry) 
+
+        # Save extra Jet variables 
+        nJets = 5 # highest 5 pT muons (no selections applied)
+        nVars = 4 # 4 IDs + 8 PU ID's
+        # nVars = 12 # 4 IDs + 8 PU ID's
+        extraJetVars = ["passLoose","passTight","passTight2017","passTight2018"]
+                        # "passesJetPuIdnone","passesJetPuIdloose","passesJetPuIdmedium","passesJetPuIdtight"
+                        # "passesJetPuIdmixed","passesJetPuIdforward_loose","passesJetPuIdforward_medium","passesJetPuIdforward_tight"
+                        # ]
+        for j in range(0,nJets):
+            for n in range(0,nVars):
+                jetVarTitle = extraJetVars[n]
+                #   JetVars_[jetIndex*numVars + 0] = passLoose;
+                #   JetVars_[jetIndex*numVars + 1] = passTight;
+                #   JetVars_[jetIndex*numVars + 2] = passTight2017;
+                #   JetVars_[jetIndex*numVars + 3] = passTight2018;
+                
+                #   JetVars_[jetIndex*numVars + 4] = passesJetPuIdnone;
+                #   JetVars_[jetIndex*numVars + 5] = passesJetPuIdloose;
+                #   JetVars_[jetIndex*numVars + 6] = passesJetPuIdmedium;
+                #   JetVars_[jetIndex*numVars + 7] = passesJetPuIdtight;
+                #   JetVars_[jetIndex*numVars + 8] = passesJetPuIdmixed;
+                #   JetVars_[jetIndex*numVars + 9] = passesJetPuIdforward_loose;
+                #   JetVars_[jetIndex*numVars + 10] = passesJetPuIdforward_medium;
+                #   JetVars_[jetIndex*numVars + 11] = passesJetPuIdforward_tight;                
+                i = j*nVars + n
+                vname = "JetVars[%s]"%(i)
+                vtitle = "allJets_%s_%s"%(j,jetVarTitle)
+                entry = "%s:=%s"%(vtitle,vname)                
+                finalStateVars.append(entry)                                            
 
         # for removal of prompt-prompt events from QCD and GJet samples 
         finalStateVars.append("Leading_Photon_genMatchType:=Leading_Photon.genMatchType()")

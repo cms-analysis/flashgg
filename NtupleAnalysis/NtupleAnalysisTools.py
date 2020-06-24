@@ -243,65 +243,80 @@ def SimpleDrawHisto(h_,option_,outName_,v_):
 
 def GetVars(cutName_):
     finalStateVars_ = [] 
-    p4_variables = ["E","pt","px","py","pz","eta","phi"]
-    checkN = 5
-    objectVectors = [] 
-    objs = ["Electrons","Muons","Jets"]
-    vecTypes = ["all","good"]
-    for t in vecTypes:
-        for o in objs:
-            objVec = "%s%s"%(t,o)
-            objectVectors.append(objVec)    
-    for objV in objectVectors:
-        vtitle = "N_%s"%(objV) 
-        # vname = "%s.size()"%(objV)  
-        entry = "%s"%(vtitle)
-        finalStateVars_.append(entry)
-        for v in p4_variables:
-            for i in range(checkN):
-                vtitle = "%s_%s_%s"%(objV,i,v)
-                # vname = "? %s.size() >= %s ? %s[%s].p4().%s() : -999"%(objV,i+1,objV,i,v)
-                entry = "%s"%(vtitle)
-                finalStateVars_.append(entry)
-        if("Electrons" in objV):
-            eVars = ["passLooseId","passMediumId","passTightId","passMVALooseId","passMVAMediumId","passMVATightId"]
-            for eV in eVars:
-                for i in range(checkN):
-                    vtitle = "%s_%s_%s"%(objV,i,eV)
-                    # vname = "? %s.size() >= %s ? %s[%s].%s() : -999"%(objV,i+1,objV,i,eV)
-                    entry = "%s"%(vtitle)
-                    finalStateVars_.append(entry)
-        if("Muons" in objV):
-            mVars = ["pfIsolationR04().sumChargedHadronPt","pfIsolationR04().sumNeutralHadronEt","pfIsolationR04().sumPhotonEt",
-                        "pfIsolationR04().sumPUPt"]
-            mVarTitles = ["sumChargedHadronPt","sumNeutralHadronEt","sumPhotonEt","sumPUPt"]
-            for imV,mV in enumerate(mVars):
-                mVarTitle = mVarTitles[imV]
-                for i in range(checkN):
-                    vtitle = "%s_%s_%s"%(objV,i,mVarTitle)
-                    # vname = "? %s.size() >= %s ? %s[%s].%s() : -999"%(objV,i+1,objV,i,mV)
-                    entry = "%s"%(vtitle)
-                    finalStateVars_.append(entry)  
+    # p4_variables = ["E","pt","px","py","pz","eta","phi"]
 
-        # var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "  
-        if("Jets" in objV):
-            bscores = ["bDiscriminator('mini_pfDeepFlavourJetTags:probb')","bDiscriminator('pfDeepCSVJetTags:probb')",
-                        "bDiscriminator('mini_pfDeepFlavourJetTags:probbb')","bDiscriminator('pfDeepCSVJetTags:probbb')"]
+    # p4_variables = ["E","pt","eta","phi"]
+    # checkN = 2
+    # objectVectors = [] 
+    # objs = ["Electrons","Muons","Jets"]
+    # vecTypes = ["all","good"]
+    # for t in vecTypes:
+    #     for o in objs:
+    #         objVec = "%s%s"%(t,o)
+    #         objectVectors.append(objVec)    
+    # for objV in objectVectors:
+    #     vtitle = "N_%s"%(objV) 
+    #     # vname = "%s.size()"%(objV)  
+    #     entry = "%s"%(vtitle)
+    #     finalStateVars_.append(entry)
+    #     for v in p4_variables:
+    #         for i in range(checkN):
+    #             vtitle = "%s_%s_%s"%(objV,i,v)
+    #             # vname = "? %s.size() >= %s ? %s[%s].p4().%s() : -999"%(objV,i+1,objV,i,v)
+    #             entry = "%s"%(vtitle)
+    #             finalStateVars_.append(entry)
+    #     if("Electrons" in objV):
+    #         eVars = ["passLooseId","passMediumId","passTightId","passMVALooseId","passMVAMediumId","passMVATightId"]
+    #         for eV in eVars:
+    #             for i in range(checkN):
+    #                 vtitle = "%s_%s_%s"%(objV,i,eV)
+    #                 # vname = "? %s.size() >= %s ? %s[%s].%s() : -999"%(objV,i+1,objV,i,eV)
+    #                 entry = "%s"%(vtitle)
+    #                 finalStateVars_.append(entry)
+    #     if("Muons" in objV):
+    #         mVars = ["pfIsolationR04().sumChargedHadronPt","pfIsolationR04().sumNeutralHadronEt","pfIsolationR04().sumPhotonEt",
+    #                     "pfIsolationR04().sumPUPt"]
+    #         mVarTitles = ["sumChargedHadronPt","sumNeutralHadronEt","sumPhotonEt","sumPUPt"]
+    #         for imV,mV in enumerate(mVars):
+    #             mVarTitle = mVarTitles[imV]
+    #             for i in range(checkN):
+    #                 vtitle = "%s_%s_%s"%(objV,i,mVarTitle)
+    #                 # vname = "? %s.size() >= %s ? %s[%s].%s() : -999"%(objV,i+1,objV,i,mV)
+    #                 entry = "%s"%(vtitle)
+    #                 finalStateVars_.append(entry)  
+
+    #     # var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "  
+    #     if("Jets" in objV):
+    #         bscores = ["bDiscriminator('mini_pfDeepFlavourJetTags:probb')","bDiscriminator('pfDeepCSVJetTags:probb')",
+    #                     "bDiscriminator('mini_pfDeepFlavourJetTags:probbb')","bDiscriminator('pfDeepCSVJetTags:probbb')"]
             
-            btitles = ["bDiscriminator_mini_pfDeepFlavourJetTags_probb","bDiscriminator_pfDeepCSVJetTags_probb",
-                        "bDiscriminator_mini_pfDeepFlavourJetTags_probbb","bDiscriminator_pfDeepCSVJetTags_probbb"
-                        ]
-            for ib,bscore in enumerate(bscores):
-                btitle = btitles[ib]
-                for i in range(checkN):
-                    vtitle = "%s_%s_%s"%(objV,i,btitle)
-                    # vname = "? %s.size() >= %s ? %s[%s].%s : -999"%(objV,i+1,objV,i,bscore)
-                    entry = "%s"%(vtitle)
-                    finalStateVars_.append(entry)                                                                      
+    #         btitles = ["bDiscriminator_mini_pfDeepFlavourJetTags_probb","bDiscriminator_pfDeepCSVJetTags_probb",
+    #                     "bDiscriminator_mini_pfDeepFlavourJetTags_probbb","bDiscriminator_pfDeepCSVJetTags_probbb"
+    #                     ]
+    #         for ib,bscore in enumerate(bscores):
+    #             btitle = btitles[ib]
+    #             for i in range(checkN):
+    #                 vtitle = "%s_%s_%s"%(objV,i,btitle)
+    #                 # vname = "? %s.size() >= %s ? %s[%s].%s : -999"%(objV,i+1,objV,i,bscore)
+    #                 entry = "%s"%(vtitle)
+    #                 finalStateVars_.append(entry)                                                                      
 
-    # for removal of prompt-prompt events from QCD and GJet samples 
-    finalStateVars_.append("Leading_Photon_genMatchType")
-    finalStateVars_.append("Subleading_Photon_genMatchType")
+    # # for removal of prompt-prompt events from QCD and GJet samples 
+    # finalStateVars_.append("Leading_Photon_genMatchType")
+    # finalStateVars_.append("Subleading_Photon_genMatchType")
+
+    # Add photon variables 
+    vars = ["E","pt","eta","phi"]
+    objects = ["Leading_Photon","Subleading_Photon","MET"]
+    # finalStateVars_ = []
+    finalStateVars_.append("Leading_Photon_MVA")
+    finalStateVars_.append("Subleading_Photon_MVA")
+    for obj in objects:
+        for var in vars:
+            # vname = "%s.p4().%s()"%(obj,var)
+            vtitle = "%s_%s"%(obj,var)
+            # entry = "%s:=%s"%(vtitle,vname)
+            finalStateVars_.append(vtitle)    
   
     return finalStateVars_ 
 
@@ -380,6 +395,7 @@ def PlotDataMC(dataFiles_,mcFiles_,signalFiles_,dataDirec_,mcDirec_,signalDirec_
                 DATA_CUT += "*(%s)"%(cut)      
                 SIGNAL_CUT += "*(%s)"%(cut) 
                 finalStateVars = GetVars(cutName) # get certain vars based on cut 
+                print"vars:",finalStateVars 
                 # if(ShortVarsList_): finalStateVars = ["CMS_hgg_mass","Leading_Photon_E"]                 
                 if(ShortVarsList_): 
                     finalStateVars = ["CMS_hgg_mass"]
