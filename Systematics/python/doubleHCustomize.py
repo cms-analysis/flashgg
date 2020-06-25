@@ -51,9 +51,9 @@ class DoubleHCustomize():
         variables = []
         if(self.customize.doubleHTagsOnly):
             var_workspace += [
-                "Mjj := dijet().M()",
+                "Mjj_noMReg := dijet().M()",
                 "eventNumber := eventNumber()",
-                "MX := MX()",
+                "MX_noMReg := MX()",
                 "leadingJet_pt := leadJet().pt",
                 "subleadingJet_pt := subleadJet().pt",
                 "HHbbggMVA := MVA()"
@@ -102,8 +102,8 @@ class DoubleHCustomize():
                 "PhoJetOtherDr := getPhoJetOtherDr()",
                 "HHbbggMVA := MVA()",
                 # "HHbbggMVAprob0 := MVAprob()[0]",
-                "MX := MX()",
-                "Mjj := dijet().M()",
+                "MX_noMReg := MX()",
+                "Mjj_noMReg := dijet().M()",
                 "dijet_pt := dijet().pt",
                 "dijet_eta := dijet().eta",
                 "dijet_phi := dijet().phi",
@@ -146,11 +146,16 @@ class DoubleHCustomize():
                 "subleadingJet_bRegNNResolution := subleadJet().userFloat('bRegNNResolution')",
                 "sigmaMJets := getSigmaMOverMJets()"
         ]     
-        if self.customize.doMjjRegression: variables += [
+        if self.customize.doMjjRegression: 
+            variables += [
 		"mass_corr := mass_corr()",
-		"Mjj_mreg := mass_corr()*dijet().M()",
-		"MX_mreg := getdiHiggsP4().M()-mass_corr()*dijet().M()-diPhoton().mass+250" 
-        ]
+		"Mjj := mass_corr()*dijet().M()",
+		"MX := getdiHiggsP4().M()-mass_corr()*dijet().M()-diPhoton().mass+250" 
+            ]
+            var_workspace += [
+                "Mjj := mass_corr()*dijet().M()",
+                "MX := getdiHiggsP4().M()-mass_corr()*dijet().M()-diPhoton().mass+250"
+            ]
         if self.customize.doubleHReweight > 0: 
             for num in range(0,12):  #12 benchmarks + 1 SM
                  variables += ["benchmark_reweight_%d := getBenchmarkReweight(%d)"%(num,num)]
