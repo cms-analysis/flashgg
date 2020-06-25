@@ -101,11 +101,11 @@ namespace flashgg {
             }
             float scale_factor;
             if (syst_shift == 0) {
-                scale_factor = res_sf.getScaleFactor({{JME::Binning::JetEta, y.eta()}});
+                scale_factor = res_sf.getScaleFactor({{JME::Binning::JetPt, y.pt()}, {JME::Binning::JetEta, y.eta()}});
             } else if (syst_shift == 1) {
-                scale_factor = res_sf.getScaleFactor({{JME::Binning::JetEta, y.eta()}}, Variation::UP);
+                scale_factor = res_sf.getScaleFactor({{JME::Binning::JetPt, y.pt()}, {JME::Binning::JetEta, y.eta()}}, Variation::UP);
             } else if (syst_shift == -1) {
-                scale_factor = res_sf.getScaleFactor({{JME::Binning::JetEta, y.eta()}}, Variation::DOWN);
+                scale_factor = res_sf.getScaleFactor({{JME::Binning::JetPt, y.pt()}, {JME::Binning::JetEta, y.eta()}}, Variation::DOWN);
             } else {
                 throw cms::Exception("UnsupportedJERShift") << " syst_shift=" << syst_shift << " is not supported";
             }
