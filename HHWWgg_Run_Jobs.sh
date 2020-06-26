@@ -45,11 +45,12 @@ dumpTrees="false" # dump trees in fggrunjobs output
 dumpWorkspaces="false" # dump workspaces in fggrunjobs output 
 dryRun="false" # do not submit jobs 
 jsonpath="" # optional local json file to use for fggrunjobs arguments such as dataset and campaign 
-condorQueue="microcentury"
+condorQueue="microcentury" # condor job flavour. Determines max running time for each job
+year=""
 
 ## Get user specified argumenets 
 
-options=$(getopt -o gcvstwr --long nEvents: --long labelName: --long json: --long condorQueue: -- "$@") # end name with colon ':' to specify argument string 
+options=$(getopt -o gcvstwr --long nEvents: --long labelName: --long json: --long condorQueue: --long year: -- "$@") # end name with colon ':' to specify argument string 
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
       exit 1
@@ -72,6 +73,7 @@ while true; do
       --labelName) shift; label=$1 ;;
       --json) shift; jsonpath=$1 ;;
       --condorQueue) shift; condorQueue=$1 ;;
+      --year) shift; year=$1 ;;
       --)
             shift
             break
@@ -89,6 +91,7 @@ echo "jsonpath = $jsonpath"
 echo "calcSystematics = $calcSystematics"
 echo "dumpTrees = $dumpTrees"
 echo "dumpWorkspaces = $dumpWorkspaces"
+echo "year = $year"
 
 ## Make sure numEvents and label arguments are specified. These are compulsory
 
@@ -147,7 +150,27 @@ then
       command+=$numEvents
       command+=' -q ${condorQueue} --no-use-tarball --no-copy-proxy metaConditions='   
       command+=$fggDirec
-      command+='MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json '
+
+      metaConditions=""
+      if [ $year == '2016' ]
+      then 
+          metaConditions="MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json "
+      elif [ $year == '2017' ]
+      then 
+          metaConditions="MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json "
+      elif [ $year == '2018' ]
+      then 
+          metaConditions="MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json "
+      else
+          echo "ERROR - Need to specify 2016, 2017 or 2018 with --year flag"
+          echo "Exiting script"
+          return 
+      fi
+
+      #command+='MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json '
+
+      command+=${metaConditions}
+
       command+=' doHHWWggTag=True HHWWggTagsOnly=True '
 
       if [ $calcSystematics == 'true' ]

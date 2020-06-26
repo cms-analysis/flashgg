@@ -144,9 +144,11 @@ class HHWWggCustomize():
 
         # Save extra Jet variables 
         nJets = 5 # highest 5 pT muons (no selections applied)
-        nVars = 4 # 4 IDs + 8 PU ID's
+        nVars = 4 # 4 IDs 
+        # nVars = 5 # 4 IDs + 1 PU ID
         # nVars = 12 # 4 IDs + 8 PU ID's
         extraJetVars = ["passLoose","passTight","passTight2017","passTight2018"]
+        # extraJetVars = ["passLoose","passTight","passTight2017","passTight2018","passesJetPUIdLoose"]
                         # "passesJetPuIdnone","passesJetPuIdloose","passesJetPuIdmedium","passesJetPuIdtight"
                         # "passesJetPuIdmixed","passesJetPuIdforward_loose","passesJetPuIdforward_medium","passesJetPuIdforward_tight"
                         # ]

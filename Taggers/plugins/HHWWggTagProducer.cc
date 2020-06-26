@@ -68,7 +68,7 @@ namespace flashgg {
     double genTotalWeight;
     bool checkPassMVAs(const flashgg::Photon*& leading_photon, const flashgg::Photon*& subleading_photon, edm::Ptr<reco::Vertex>& diphoton_vertex);
     std::vector<double> GetMuonVars(const std::vector<edm::Ptr<flashgg::Muon> > &muonPointers, const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers);
-    std::vector<double> GetJetVars(const std::vector<edm::Ptr<flashgg::Jet> > &jetPointers);
+    std::vector<double> GetJetVars(const std::vector<edm::Ptr<flashgg::Jet> > &jetPointers, const edm::Ptr<flashgg::DiPhotonCandidate> dipho);
     void produce( Event &, const EventSetup & ) override;
     std::vector<edm::EDGetTokenT<edm::View<DiPhotonCandidate> > > diPhotonTokens_;
     std::string inputDiPhotonName_;
@@ -421,14 +421,16 @@ namespace flashgg {
       return MuonVars_;
     }
 
-    std::vector<double> HHWWggTagProducer::GetJetVars(const std::vector<edm::Ptr<flashgg::Jet> > &jetPointers)
+    std::vector<double> HHWWggTagProducer::GetJetVars(const std::vector<edm::Ptr<flashgg::Jet> > &jetPointers, const edm::Ptr<flashgg::DiPhotonCandidate> dipho)
     {
       unsigned int maxJets = 5; // Shouldn't need more than this 
-      unsigned int numVars = 4; // 4 IDs 
+      unsigned int numVars = 4; // 4 IDs + Jet PU ID 
+      // unsigned int numVars = 5; // 4 IDs + Jet PU ID 
       // unsigned int numVars = 12; // 4 IDs + 8 PUjetIDs
       unsigned int numVecEntries = maxJets * numVars;
       std::vector<double> JetVars_(numVecEntries,-999); // initialize vector with -999 vals 
       double passLoose = -999, passTight = -999, passTight2017 = -999, passTight2018 = -999;
+      // double passesJetPUIdLoose = -999;
       // double passesJetPuIdnone = -999, passesJetPuIdloose = -999, passesJetPuIdmedium = -999, passesJetPuIdtight = -999;
       // double passesJetPuIdmixed = -999, passesJetPuIdforward_loose = -999, passesJetPuIdforward_medium = -999, passesJetPuIdforward_tight = -999;
 
@@ -446,6 +448,8 @@ namespace flashgg {
           passTight2017 = jet->passesJetID  ( flashgg::Tight2017 );
           passTight2018 = jet->passesJetID  ( flashgg::Tight2018 );
 
+          // passesJetPUIdLoose = jet->passesPuJetId(dipho, PileupJetIdentifier::kLoose);
+
           // passesJetPuIdnone = jet->passesPuJetId  ( flashgg::none );
           // passesJetPuIdloose = jet->passesPuJetId  ( flashgg::loose );
           // passesJetPuIdmedium = jet->passesPuJetId  ( flashgg::medium );
@@ -459,6 +463,7 @@ namespace flashgg {
           JetVars_[jetIndex*numVars + 1] = passTight;
           JetVars_[jetIndex*numVars + 2] = passTight2017;
           JetVars_[jetIndex*numVars + 3] = passTight2018;
+          // JetVars_[jetIndex*numVars + 4] = passesJetPUIdLoose;
 
           // JetVars_[jetIndex*numVars + 4] = passesJetPuIdnone;
           // JetVars_[jetIndex*numVars + 5] = passesJetPuIdloose;
@@ -843,7 +848,7 @@ namespace flashgg {
 
           
           // If doing cut flow analysis, save Jet IDs 
-          if(doHHWWggTagCutFlowAnalysis_) JetVars = GetJetVars(Jets_->ptrs());
+          if(doHHWWggTagCutFlowAnalysis_) JetVars = GetJetVars(Jets_->ptrs(), dipho);
 
           // Jet Selections
           for( unsigned int candIndex_outer = 0; candIndex_outer <  Jets_->size() ; candIndex_outer++ ) 

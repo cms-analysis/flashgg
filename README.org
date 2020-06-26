@@ -68,15 +68,28 @@ and if desired to include tagging of other flashgg tags on the same events.
 
 *** Running Locally 
 
-The HHWWgg Tagger can be run locally on signal with:
+The HHWWgg Tagger can be run locally on signal (with 2017 metaConditions) with:
 
     #+BEGIN_EXAMPLE
     cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=HHWWgg_v2-6 dataset=ggF_X600_HHWWgg_qqlnu doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1
     #+END_EXAMPLE
 
-and on data:
+and on 2016 data:
+
+    #+BEGIN_EXAMPLE
+    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json campaign=Era2016_RR-17Jul2018_v2 dataset=/DoubleEG/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016B-17Jul2018_ver2-v1-86023db6be00ee64cd62a3172358fb9f/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1
+    #+END_EXAMPLE
+
+and on 2017 data:
+
     #+BEGIN_EXAMPLE
     cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=Era2017_RR-31Mar2018_v2 dataset=/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1
+    #+END_EXAMPLE
+
+and on 2018 data:
+
+    #+BEGIN_EXAMPLE
+    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json campaign=Era2018_RR-17Sep2018_v2 dataset=/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018A-17Sep2018-v2-dc8e5fb301bfbf2559680ca888829f0c/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=509 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1
     #+END_EXAMPLE
 
 All flags are either defined in MetaData/python/JobConfig.py, or workspaceStd. 
@@ -132,10 +145,10 @@ There are two submission types currently in HHWWgg_Run_Jobs.sh:
 - Workspaces with minimal variables 
 
 The many final state variables job is useful for studying the kinematics of all final state objects, including leptons and jets before and after selections, as 
-well as the two photons associated with the diphoton candidate. As an example, to run over 1000 events of signal and save trees with final state variables, one should run:
+well as the two photons associated with the diphoton candidate. As an example, to run over all events of signal and save trees with final state variables, one should run:
 
     #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_Trees_X600_Test --nEvents all --json Taggers/test/HHWWgg_v2-6/HHWWgg_v2-6_X600.json --condorQueue longlunch -g -c -v -t
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_Trees_X600_Test --nEvents all --json Taggers/test/HHWWgg_v2-6/HHWWgg_v2-6_X600.json --condorQueue longlunch --year 2017 -g -c -v -t
     #+END_EXAMPLE
 
 An explanation of the flags:
@@ -143,6 +156,7 @@ An explanation of the flags:
 - nEvents: The max events to run on. To run on all events, specify the flag like so: "--nEvents all"
 - json: The json file to use for fggrunjobs submission. This should contain the datasets to run on, and specify the campaign, and PU target for MC jobs
 - condorQueue: The [[https://twiki.cern.ch/twiki/bin/view/ABPComputing/LxbatchHTCondor#Queue_Flavours][condor flavour]] for the condor jobs. Note that this needs to be carefully selected, otherwise jobs may timeout and no output will be produced. You may need to try multiple flavors to find the ideal one for your job type.
+- year: Specifies the MetaConditions to use. 2016, 2017 or 2018
 - g: Use workspaceStd as the cms configuration file 
 - c: Run HHWWgg cut flow. This means all events that pass preselection will be saved in output nTuples. 
 - v: Save HHWWgg final state variables. Currently set up to be MANY variables (this should be noted. It may take more computing time than normal)
@@ -161,7 +175,7 @@ If your campaign exists in MetaData/data/, specifying the campaign and datasets 
 To produce workspaces with minimal variables to be used by fggfinalfit, you can for example run:
 
     #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_Workspaces_X600_Test --nEvents all --json Taggers/test/HHWWgg_v2-6/HHWWgg_v2-6_X600.json --condorQueue microcentury -g -s -w 
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_Workspaces_X600_Test --nEvents all --json Taggers/test/HHWWgg_v2-6/HHWWgg_v2-6_X600.json --condorQueue microcentury --year 2017 -g -s -w 
     #+END_EXAMPLE
 
 Explaining the new flags:
@@ -173,7 +187,7 @@ If this works properly, the output will be files (to be hadded) containing a Roo
 To produce workspaces for 2017 data, you would run a similar command but with the 2017 DoubleEG dataset input for the json file:
 
     #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_2017_Data_Workspaces --nEvents all --json Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json --condorQueue longlunch -g -s -w
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_2017_Data_Workspaces --nEvents all --json Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json --condorQueue longlunch --year 2017 -g -s -w
     #+END_EXAMPLE
 
 **** Example: 2017 Data / MC Variables
@@ -186,7 +200,7 @@ To use the HHWWgg_Run_Jobs.sh script, make sure to first edit the fggDirec and n
 In order to submit jobs with 2017 Data, you would run the command:
 
     #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_2017_Data_Trees --nEvents all --json Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json --condorQueue longlunch -g -c -v -t
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_2017_Data_Trees --nEvents all --json Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json --condorQueue longlunch --year 2017 -g -c -v -t
     #+END_EXAMPLE
 
 *Note* : In the above example the condor job flavour "longlunch" is specified, giving each job a maximum of two hours of running to complete. Depending on how long the job takes, it may be necessary to specify the next flavour "workday". Specifying "workday" sets the max running time of each job 
@@ -196,7 +210,7 @@ At the moment for HHWWgg, there is a json file specifying the backgrounds that a
 simply submit with the command:
 
     #+BEGIN_EXAMPLE
-    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_2017_FggBackground_Trees --nEvents all --json Taggers/test/DataMC/Flashgg_bkg.json --condorQueue workday -g -c -v -t
+    . HHWWgg_Run_Jobs.sh --labelName HHWWgg_2017_FggBackground_Trees --nEvents all --json Taggers/test/DataMC/Flashgg_bkg.json --condorQueue workday --year 2017 -g -c -v -t
     #+END_EXAMPLE
 
 For this example, workday may be a better choice of work flavour as there are some backgrounds with many events such as GJet, QCD, Drell Yan and DiPhotonJetsBox that may take a long time to run. 
