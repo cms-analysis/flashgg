@@ -45,7 +45,7 @@ dumpTrees="false" # dump trees in fggrunjobs output
 dumpWorkspaces="false" # dump workspaces in fggrunjobs output 
 dryRun="false" # do not submit jobs 
 jsonpath="" # optional local json file to use for fggrunjobs arguments such as dataset and campaign 
-condorQueue="tomorrow"
+condorQueue="microcentury"
 
 ## Get user specified argumenets 
 
