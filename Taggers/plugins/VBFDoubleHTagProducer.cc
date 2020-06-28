@@ -21,6 +21,7 @@
 #include "flashgg/Taggers/interface/LeptonSelection.h"
 #include "flashgg/MicroAOD/interface/MVAComputer.h"
 #include "flashgg/DataFormats/interface/DoubleHttHTagger.h"
+#include "flashgg/Taggers/interface/XYMETCorrection.h"
 
 #include "PhysicsTools/TensorFlow/interface/TensorFlow.h"
 
@@ -67,12 +68,12 @@ namespace flashgg {
         std::vector<edm::EDGetTokenT<edm::View<DiPhotonCandidate> > > diPhotonTokens_;
 
         EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
-
+        std::map<std::string, float> MRegVars;
         std::vector< std::string > systematicsLabels;
         std::map<std::string, float> ttHVars;
 
         double minLeadPhoPt_, minSubleadPhoPt_;
-        bool scalingPtCuts_, doPhotonId_, doMVAFlattening_, doCategorization_, dottHTagger_;
+        bool scalingPtCuts_, doPhotonId_, doMVAFlattening_, doCategorization_, dottHTagger_, doMassReg_;
         double photonIDCut_;
         double vetoConeSize_;         
         unsigned int doSigmaMDecorr_;
@@ -85,6 +86,7 @@ namespace flashgg {
 
         double minJetPt_;
         double maxJetEta_;
+        unsigned int XYMETCorr_year_;
         vector<double>mjjBoundaries_;
         vector<double>mjjBoundariesLower_;
         vector<double>mjjBoundariesUpper_;
@@ -94,10 +96,14 @@ namespace flashgg {
         bool       useJetID_, useVBFJetID_;
         string     JetIDLevel_;        
         string     VBFJetIDLevel_;
+        EDGetTokenT<View<flashgg::Met> > MET_;
+        EDGetTokenT<View<reco::Vertex> > vtxToken_;
         ConsumesCollector cc_;
         GlobalVariablesComputer globalVariablesComputer_;
         MVAComputer<VBFDoubleHTag> mvaComputerCAT0_;
         MVAComputer<VBFDoubleHTag> mvaComputerCAT1_;
+        XYMETCorrection MetCorrCalc_;
+        MVAComputer<DoubleHTag> xgbComputer_;
         vector<double> mvaBoundaries_, mxBoundaries_;
         unsigned int nMX_;
         int multiclassSignalIdx_;
@@ -155,6 +161,7 @@ namespace flashgg {
         vetoConeSize_( iConfig.getParameter<double> ( "VetoConeSize" ) ),
         minJetPt_( iConfig.getParameter<double> ( "MinJetPt" ) ),
         maxJetEta_( iConfig.getParameter<double> ( "MaxJetEta" ) ),
+        XYMETCorr_year_( iConfig.getParameter<unsigned int> ( "XYMETCorr_year" ) ),
 
         VBFMjjCut_(iConfig.getParameter<double> ( "VBFMjjCut" ) ),
         VBFJetEta_(iConfig.getParameter<double> ( "VBFJetEta" ) ),
@@ -165,10 +172,13 @@ namespace flashgg {
         useVBFJetID_( iConfig.getParameter<bool>   ( "UseVBFJetID"     ) ),
         JetIDLevel_( iConfig.getParameter<string> ( "JetIDLevel"   ) ),
         VBFJetIDLevel_( iConfig.getParameter<string> ( "VBFJetIDLevel"   ) ),
+        MET_(consumes<View<flashgg::Met> >( iConfig.getParameter<InputTag> ("METTag") ) ),
+        vtxToken_(consumes<edm::View<reco::Vertex> >( iConfig.getParameter<edm::InputTag> ("VertexTag") )),
         cc_( consumesCollector() ),
         globalVariablesComputer_(iConfig.getParameter<edm::ParameterSet>("globalVariables"), cc_),
         mvaComputerCAT0_(iConfig.getParameter<edm::ParameterSet>("MVAConfigCAT0"),  &globalVariablesComputer_),
-        mvaComputerCAT1_(iConfig.getParameter<edm::ParameterSet>("MVAConfigCAT1"),  &globalVariablesComputer_)
+        mvaComputerCAT1_(iConfig.getParameter<edm::ParameterSet>("MVAConfigCAT1"),  &globalVariablesComputer_),
+        xgbComputer_(iConfig.getParameter<edm::ParameterSet>("MRegConf"),  &globalVariablesComputer_)
         //mvaComputer_(iConfig.getParameter<edm::ParameterSet>("MVAConfig"))
     {
         mjjBoundaries_ = iConfig.getParameter<vector<double > >( "MJJBoundaries" ); 
@@ -241,6 +251,7 @@ namespace flashgg {
         doMVAFlattening_ = iConfig.getParameter<bool>("doMVAFlattening"); 
         doCategorization_ = iConfig.getParameter<bool>("doCategorization"); 
         dottHTagger_ = iConfig.getParameter<bool>("dottHTagger"); 
+        doMassReg_ = iConfig.getParameter<bool>("doMassReg");
         photonElectronVeto_=iConfig.getUntrackedParameter<std::vector<int > >("PhotonElectronVeto");
         //needed for HHbbgg MVA
         if(doMVAFlattening_){
@@ -512,14 +523,50 @@ namespace flashgg {
                     }
                     //dijet pair selection. Do pair according to pt and choose the pair with highest b-tag
                     if( cleaned_jets.size() < 2 ) { continue; }
+                    ////////// this MET is only for mass regresion ///////
+                    edm::Handle<View<flashgg::Met> > RegMETs;
+                    evt.getByToken( MET_, RegMETs );
+                    auto MET = RegMETs->ptrAt( 0 );
+                    auto & RegMET = MET;
+
+                    float sum_jetET = 0;
+                    for( size_t ijet=0; ijet < cleaned_jets.size();++ijet){
+                        auto jet = cleaned_jets[ijet];
+                        sum_jetET += jet->p4().pt();
+                    }
+
                     double sumbtag_ref = -999;
                     bool hasDijet = false;
                     edm::Ptr<flashgg::Jet>  jet1, jet2, jet3, jet4;
+                    std::vector<float> mass_corr;
+                    double METCorr, phiMETCorr;
                     for( size_t ijet=0; ijet < cleaned_jets.size()-1;++ijet){
                         auto jet_1 = cleaned_jets[ijet];
                         for( size_t kjet=ijet+1; kjet < cleaned_jets.size();++kjet){
                             auto jet_2 = cleaned_jets[kjet];
                             auto dijet_mass = (jet_1->p4()+jet_2->p4()).mass(); 
+                            /// for mass regression/////
+
+                            if (doMassReg_){
+                                std::pair<double, double> corr_met_xy;
+                                Handle<View<reco::Vertex> > vrtxs;
+                                evt.getByToken( vtxToken_, vrtxs );
+
+                                auto & leadJet = jet_1; 
+                                auto & subleadJet = jet_2;
+                                int npv = vrtxs->size();
+
+                                corr_met_xy = MetCorrCalc_.METXYCorr_Met_MetPhi(RegMET->pt(), RegMET->phi(), evt.id().run(), XYMETCorr_year_, !(evt.isRealData()), npv);
+
+                                METCorr = corr_met_xy.first;
+                                phiMETCorr = corr_met_xy.second;
+
+                                VBFDoubleHTag tag_obj_temp( dipho, leadJet, subleadJet, METCorr, phiMETCorr, sum_jetET);
+                                mass_corr = xgbComputer_(tag_obj_temp);
+                                dijet_mass = (jet_1->p4()+jet_2->p4()).mass() * mass_corr[0];
+                            }
+                            //////upto here ///////
+
                             if (dijet_mass<mjjBoundaries_[0] || dijet_mass>mjjBoundaries_[1]) continue;
                             double sumbtag=0.;
                             for (unsigned int btag_num=0;btag_num<bTagType_.size();btag_num++)
@@ -605,7 +652,7 @@ namespace flashgg {
                     auto & subleadJet = jet2;
                     auto & VBFleadJet = jet3;
                     auto & VBFsubleadJet = jet4; 
-  
+          
                     float b1_pt = 0, b2_pt = 0, b1_eta = 0 , b2_eta = 0, b1_phi = 0, b2_phi =0, Mbb_gen=0, b1_pz = 0, b2_pz = 0;
 
                     // generator level Forward-backward quark study:
@@ -614,6 +661,12 @@ namespace flashgg {
         
                     // prepare tag object
                     VBFDoubleHTag tag_obj(dipho, leadJet, subleadJet, VBFleadJet, VBFsubleadJet);
+                    if(doMassReg_){
+                        VBFDoubleHTag tag_obj_temp2(  dipho, leadJet, subleadJet, METCorr, phiMETCorr, sum_jetET);
+                        std::vector<float> mass_corr2 = xgbComputer_(tag_obj_temp2);
+                        MRegVars["mass_corr"] = mass_corr2[0];
+                        tag_obj.mass_corr_ = MRegVars["mass_corr"];
+                    }
                     tag_obj.setDiPhotonIndex( candIndex );
                     if (loopOverJets == 1) 
                         tag_obj.setSystLabel( inputDiPhotonSuffixes_[diphoton_idx] );

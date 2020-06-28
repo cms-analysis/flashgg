@@ -23,6 +23,8 @@ ttHKiller_std = cms.vdouble()
 ttHKiller_listmean = cms.vdouble()
 ttHKiller_liststd = cms.vdouble()
 MaxJetEta = 2.5
+XYMETCorr_year = 2016
+MReg_weights=""
 
 flashggVBFDoubleHTag = cms.EDProducer("FlashggVBFDoubleHTagProducer",
                                    DiPhotonName = cms.string('flashggPreselectedDiPhotons'), # 
@@ -54,7 +56,8 @@ flashggVBFDoubleHTag = cms.EDProducer("FlashggVBFDoubleHTagProducer",
                                    UseJetID = cms.bool(True),
                                    JetIDLevel = cms.string(jetID),
                                    UseVBFJetID = cms.bool(False),
-                                   VBFJetIDLevel = cms.string(jetID), 
+                                   VBFJetIDLevel = cms.string(jetID),
+                                   XYMETCorr_year = cms.uint32(XYMETCorr_year),
                                    VBFMjjCut = cms.double(0.0),
                                    VBFJetEta = cms.double(4.7),
                                    VBFleadJetPt  = cms.double(40.0),
@@ -80,7 +83,7 @@ flashggVBFDoubleHTag = cms.EDProducer("FlashggVBFDoubleHTagProducer",
                                                         ),
                                    doMVAFlattening=cms.bool(True),#do transformation of cumulative to make it flat
                                    MVAscaling=cms.double(MVAscalingValue),
-                                      doCategorization=cms.bool(True),#do categorization based on MVA x MX or only fill first tree with all events
+                                   doCategorization=cms.bool(True),#do categorization based on MVA x MX or only fill first tree with all events
                                    MVAFlatteningFileNameCAT0=cms.untracked.FileInPath("%s"%MVAFlatteningFileName),#FIXME, this should be optional, is it?
                                    MVAFlatteningFileNameCAT1=cms.untracked.FileInPath("%s"%MVAFlatteningFileName),#FIXME, this should be optional, is it?
                                    globalVariables=globalVariables,
@@ -89,6 +92,13 @@ flashggVBFDoubleHTag = cms.EDProducer("FlashggVBFDoubleHTagProducer",
                                    reweight_names = cms.vstring(reweight_settings.reweight_names),
 
                                    dottHTagger=cms.bool(False), #whether to do ttH killer. 
+                                    # for mass regression ####
+                                   doMassReg=cms.bool(False),
+                                   MRegConf=cms.PSet(variables=cms.VPSet(),
+                                                     classifier=cms.string("BDT::bdt"),
+                                                     weights=cms.FileInPath("%s"%MReg_weights),
+                                                     regression=cms.bool(True),
+                                                 ),
 
                                    ElectronTag=cms.InputTag('flashggSelectedElectrons'),
                                    MuonTag=cms.InputTag('flashggSelectedMuons'),
@@ -157,3 +167,37 @@ MVAvariables =                       [
                        ]
 cfgTools.addVariables(flashggVBFDoubleHTag.MVAConfigCAT0.variables,MVAvariables)
 cfgTools.addVariables(flashggVBFDoubleHTag.MVAConfigCAT1.variables,MVAvariables)
+
+if flashggVBFDoubleHTag.XYMETCorr_year == 2016:
+    MReg_year = 16
+elif flashggVBFDoubleHTag.XYMETCorr_year == 2017:
+    MReg_year = 17
+elif flashggVBFDoubleHTag.XYMETCorr_year == 2018:
+    MReg_year = 18
+
+cfgTools.addVariables(flashggVBFDoubleHTag.MRegConf.variables,
+                      [
+                          "leadingJet_pt := leadJet().pt",
+                          "leadingJet_eta := leadJet().eta",
+                          "leadingJet_mass := leadJet().p4().M()",
+                          "leadingJet_e := leadJet().energy",
+                          "leadingJet_phi := leadJet().phi",
+                          "leadingJet_DeepFlavour := leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+leadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
+                          "leadingJet_bRegNNCorr := leadJet().userFloat('bRegNNCorr')",
+                          "subleadingJet_pt := subleadJet().pt",
+                          "subleadingJet_eta := subleadJet().eta",
+                          "subleadingJet_mass := subleadJet().p4().M()",
+                          "subleadingJet_e := subleadJet().energy",
+                          "subleadingJet_phi := subleadJet().phi",
+                          "subleadingJet_DeepFlavour := subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:probbb')+subleadJet().bDiscriminator('mini_pfDeepFlavourJetTags:problepb')",
+                          "subleadingJet_bRegNNCorr := subleadJet().userFloat('bRegNNCorr')",
+                          "corrMET := RegMET()",
+                          "corrMETPhi := RegPhiMET()",
+                          "MjjReg_phi12 := abs(getdPhi()[0])",
+                          "MjjReg_phi1M := abs(getdPhi()[1])",
+                          "MjjReg_phi2M := abs(getdPhi()[2])",
+                          "rho := global.rho",
+                          "ttH_sumET := sum_jetET()-leadJet().pt-subleadJet().pt",
+                          "year := %i"%(MReg_year)
+                      ]
+                    )
