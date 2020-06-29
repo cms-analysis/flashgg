@@ -17,8 +17,8 @@ DoubleHTag::DoubleHTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<fla
     this->setP4( dijet_ + dipho_->p4() );
 }
 
-DoubleHTag::DoubleHTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<flashgg::Jet> leadJet, edm::Ptr<flashgg::Jet> subleadJet, double &RegMET, double &RegPhiMET, float &sum_jetET )
-    : mva_(-.2), MX_(0.),genMhh_(0.),genCosThetaStar_CS_(0.),leadJet_(leadJet), subleadJet_(subleadJet), RegMET_(&RegMET), RegPhiMET_(&RegPhiMET), sum_jetET_(&sum_jetET)
+DoubleHTag::DoubleHTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<flashgg::Jet> leadJet, edm::Ptr<flashgg::Jet> subleadJet, double RegMET, double RegPhiMET, float sum_jetET )
+    : mva_(-.2), MX_(0.),genMhh_(0.),genCosThetaStar_CS_(0.),leadJet_(leadJet), subleadJet_(subleadJet), RegMET_(RegMET), RegPhiMET_(RegPhiMET), sum_jetET_(sum_jetET)
 
 {
     dipho_ = diPho;

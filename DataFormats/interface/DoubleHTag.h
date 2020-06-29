@@ -19,7 +19,7 @@ namespace flashgg {
         ~DoubleHTag();
 
         DoubleHTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet> );
-        DoubleHTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, double &, double &, float & );
+        DoubleHTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, double, double, float );
         virtual DoubleHTag *clone() const override;
         /// DiPhotonTagBase::tag_t tagEnum() const override { return DiPhotonTagBase::kDoubleH; }
 
@@ -43,9 +43,9 @@ namespace flashgg {
 
         const flashgg::Jet & leadJet() const { return *leadJet_; } 
         const flashgg::Jet & subleadJet() const { return *subleadJet_; } 
-        double RegMET() const {return *RegMET_; }
-        double RegPhiMET() const {return *RegPhiMET_; }
-        float sum_jetET() const {return *sum_jetET_;}
+        double RegMET() const {return RegMET_; }
+        double RegPhiMET() const {return RegPhiMET_; }
+        float sum_jetET() const {return sum_jetET_;}
         const LorentzVector & dijet() const { return dijet_; }
 
         float getCosThetaStar_CS() const;
@@ -109,9 +109,9 @@ namespace flashgg {
  //       std::vector<float> mva_prob_;
          long eventNumber_;
         edm::Ptr<flashgg::Jet> leadJet_, subleadJet_;
-        double* RegMET_;
-        double* RegPhiMET_;
-        float* sum_jetET_;
+        double RegMET_;
+        double RegPhiMET_;
+        float sum_jetET_;
         LorentzVector dijet_;
         DecorrTransform* transfEBEB_;
         DecorrTransform* transfNotEBEB_;

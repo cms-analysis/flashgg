@@ -15,7 +15,7 @@ VBFDoubleHTag::VBFDoubleHTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::P
     diVBFjet_ = VBFleadJet_->p4() + VBFsubleadJet_->p4();
 }
 
-VBFDoubleHTag::VBFDoubleHTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<flashgg::Jet> leadJet, edm::Ptr<flashgg::Jet> subleadJet, double &RegMET, double &RegPhiMET, float &sum_jetET )
+VBFDoubleHTag::VBFDoubleHTag( edm::Ptr<flashgg::DiPhotonCandidate> diPho, edm::Ptr<flashgg::Jet> leadJet, edm::Ptr<flashgg::Jet> subleadJet, double RegMET, double RegPhiMET, float sum_jetET )
     : DoubleHTag::DoubleHTag( diPho, leadJet, subleadJet, RegMET, RegPhiMET, sum_jetET)
 {
 }

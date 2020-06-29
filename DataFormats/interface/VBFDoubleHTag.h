@@ -14,7 +14,7 @@ namespace flashgg {
         ~VBFDoubleHTag();
 
         VBFDoubleHTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet> );
-        VBFDoubleHTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, double &, double &, float & );
+        VBFDoubleHTag( edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, double, double, float );
         virtual VBFDoubleHTag *clone() const override;
 
         //---setters
