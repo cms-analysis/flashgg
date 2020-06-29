@@ -11,7 +11,7 @@ class DoubleHCustomize():
         self.customize = customize
         self.metaConditions = metaConditions
         if customize.addVBFDoubleHTag:
-            self.tagList = [ ["VBFDoubleHTag",1], ["DoubleHTag",12] ]
+            self.tagList = [ ["VBFDoubleHTag",2], ["DoubleHTag",12] ]
         else:
             self.tagList = [ ["DoubleHTag",12] ]
         self.customizeTagSequence()
@@ -202,7 +202,6 @@ class DoubleHCustomize():
                "ttHScore := ttHScore()",
              ]
 
-       # return var_workspace ##Only temp fix 
         if self.customize.doubleHTagDumpMinVariables or self.customize.dumpWorkspace :
             return var_workspace
         else :
@@ -260,14 +259,26 @@ class DoubleHCustomize():
         # customizing training file (with/wo Mjj) 
         training_type = 'with_Mjj' if self.customize.doubleHTagsUseMjj else 'wo_Mjj'
 
-        self.process.flashggVBFDoubleHTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["weightsFile"][training_type]))
-        self.process.flashggVBFDoubleHTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["MVAFlatteningFileName"][training_type]))
+        #self.process.flashggVBFDoubleHTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["weightsFile"][training_type]))
+        #self.process.flashggVBFDoubleHTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["MVAFlatteningFileName"][training_type]))
+        self.process.flashggVBFDoubleHTag.MVAConfigCAT0.weights=cms.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["weightsFileCAT0"][training_type]))
+        self.process.flashggVBFDoubleHTag.MVAFlatteningFileNameCAT0 = cms.untracked.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["MVAFlatteningFileNameCAT0"][training_type]))
+        self.process.flashggVBFDoubleHTag.MVAConfigCAT1.weights=cms.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["weightsFileCAT1"][training_type]))
+        self.process.flashggVBFDoubleHTag.MVAFlatteningFileNameCAT1 = cms.untracked.FileInPath(str(self.metaConditions["VBFdoubleHTag"]["MVAFlatteningFileNameCAT1"][training_type]))
+
+
         if training_type == 'with_Mjj' :
             self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.95)
             self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0)
         elif training_type == 'wo_Mjj' :
-            self.process.flashggVBFDoubleHTag.MVAConfig.variables.pop(0)
-            self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.70)
+            #self.process.flashggVBFDoubleHTag.MVAConfig.variables.pop(0)
+            #self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.70)
+            #self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.26)
+            self.process.flashggVBFDoubleHTag.MVAConfigCAT0.variables.pop(0)
+            self.process.flashggVBFDoubleHTag.MVAConfigCAT1.variables.pop(0)
+            self.process.flashggVBFDoubleHTag.MVABoundaries = cms.vdouble(0.52,0.86) #CAT0 MX > 500, CAT1 :MX <=500
+            self.process.flashggVBFDoubleHTag.MXBoundaries = cms.vdouble(0.,500.)
+            self.process.flashggVBFDoubleHTag.nMX = cms.uint32(2)
             self.process.flashggVBFDoubleHTag.ttHScoreThreshold = cms.double(0.26)
 
         ## customize meta conditions
