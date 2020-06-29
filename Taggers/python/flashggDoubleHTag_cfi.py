@@ -153,6 +153,7 @@ cfgTools.addVariables(flashggDoubleHTag.MVAConfig.variables,
                        "PhoJetOtherDr := getPhoJetOtherDr()" 
                        ]
                       )
+# for Mjj regression only
 if flashggDoubleHTag.XYMETCorr_year == 2016:
     MReg_year = 16
 elif flashggDoubleHTag.XYMETCorr_year == 2017:
