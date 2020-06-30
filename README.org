@@ -153,7 +153,7 @@ well as the two photons associated with the diphoton candidate. As an example, t
 
 An explanation of the flags:
 - labelName: The name used for the output folder placed in ntupleDirec
-- nEvents: The max events to run on. To run on all events, specify the flag like so: "--nEvents all"
+- nEvents: The max events to run on. To run on all events, specify the flag argument: "all"
 - json: The json file to use for fggrunjobs submission. This should contain the datasets to run on, and specify the campaign, and PU target for MC jobs
 - condorQueue: The [[https://twiki.cern.ch/twiki/bin/view/ABPComputing/LxbatchHTCondor#Queue_Flavours][condor flavour]] for the condor jobs. Note that this needs to be carefully selected, otherwise jobs may timeout and no output will be produced. You may need to try multiple flavors to find the ideal one for your job type.
 - year: Specifies the MetaConditions to use. 2016, 2017 or 2018
