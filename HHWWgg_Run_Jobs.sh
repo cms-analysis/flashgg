@@ -116,6 +116,14 @@ then
       return
 fi
 
+if [ -z "$year" ]
+then 
+	echo "Please choose a year with the --year flag"
+	echo "This will determine which metaconditions to use"
+	echo "Exiting"
+	return 
+fi 
+
 ## Make sure a json file is specified 
 
 # if [ $runData == 'false' ] && [ $runSignal == 'false' ] && [ $jsonpath == '' ]
