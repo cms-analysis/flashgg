@@ -1004,7 +1004,7 @@ namespace flashgg {
 
                     if (catnum>-1){
                         if (doCategorization_) {
-                            if (tag_obj.dijet().mass()<mjjBoundariesLower_[catnum] || tag_obj.dijet().mass()>mjjBoundariesUpper_[catnum]) continue;
+                            // if (tag_obj.dijet().mass()<mjjBoundariesLower_[catnum] || tag_obj.dijet().mass()>mjjBoundariesUpper_[catnum]) continue;
                         }
                         tags->push_back( tag_obj );
                         // link mc-truth
