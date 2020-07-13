@@ -6,8 +6,13 @@
   "br": 1.0
  }, 
  "ggF_X320_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_X320_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+   }, 
  "ttHJetToGG_M121_13TeV_amcatnloFXFX_madspin_pythia8": {
   "xs": 0.5568, 
   "itype": -121300, 
@@ -140,10 +145,16 @@
   "kf": 1.06
  }, 
  "ggF_X260_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
  "ggF_X500_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
+ }, 
+ "ggF_X500_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
  }, 
  "GluGluToHHTo2B2G_node_9_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
   "xs": 0.001, 
@@ -193,8 +204,13 @@
   "br": 0.002261
  }, 
  "ggF_X450_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_X450_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+ },  
  "GluGluToHHTo2B2G_node_3_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
   "xs": 0.001, 
   "kf": 1.06
@@ -316,8 +332,13 @@
   "br": 1.0
  }, 
  "ggF_SM_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_SM_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+ },  
  "VHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8": {
   "xs": 2.1486, 
   "itype": -127400, 
@@ -329,14 +350,24 @@
   "itype": 0
  }, 
  "ggF_X650_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_X650_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+ },  
  "W1JetsToLNu_LHEWpT_0-50_TuneCP5_13TeV-amcnloFXFX-pythia8": {
   "xs": 0.0
  }, 
  "ggF_X250_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_X250_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+   }, 
  "GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8": {
   "xs": 52.22, 
   "itype": -120000, 
@@ -363,8 +394,13 @@
   "br": 0.00227
  }, 
  "ggF_X1250_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_X1250_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+ },  
  "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_DownPS": {
   "xs": 2.257, 
   "itype": -125400, 
@@ -426,15 +462,25 @@
   "xs": 1080.0
  }, 
  "ggF_X280_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_X280_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+   },  
  "GluGluToHHTo2B2G_node_13_13TeV-madgraph": {
   "xs": 0.001, 
   "kf": 1.06
  }, 
  "ggF_X700_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_X700_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+ },  
  "GluGluHToGG_M122_13TeV_amcatnloFXFX_pythia8": {
   "xs": 50.71, 
   "itype": -122000, 
@@ -454,7 +500,8 @@
   "br": 0.002238
  }, 
  "NMSSM_XYHWWggqqlnu_MX300_MY170": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
  "GluGluToRadionToHHTo2B2G_M-250_narrow_13TeV-madgraph": {
   "xs": 0.001, 
@@ -470,8 +517,13 @@
   "kf": 1.06
  }, 
  "ggF_X270_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_X270_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+ },  
  "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Up": {
   "xs": 2.257, 
   "itype": -125400, 
@@ -506,8 +558,9 @@
   "br": 1.0
  }, 
  "ggF_X260_HHWWgg_qqlnu": {
-  "xs": 0.001
- }, 
+  "xs": 0.001,
+  "kf": 1.06
+ },  
  "W3JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8": {
   "xs": 991.6
  }, 
@@ -535,7 +588,8 @@
   "kf": 1.06
  }, 
  "ggF_X600_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
  "GluGluToHHTo2B2G_node_8_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
   "xs": 0.001, 
@@ -556,7 +610,8 @@
   "br": 0.002248
  }, 
  "ggF_X600_HHWWgg_qqlnu": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
  "GluGluToBulkGravitonToHHTo2B2G_M-350_narrow_13TeV-madgraph": {
   "xs": 0.001, 
@@ -600,7 +655,8 @@
   "kf": 1.06
  }, 
  "NMSSM_XYHWWggqqlnu_MX1000_MY800": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
  "TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8": {
   "xs": 830
@@ -684,8 +740,13 @@
   "br": 0.002238
  }, 
  "ggF_X300_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_X300_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+ },  
  "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_DownPS": {
   "xs": 0.5071, 
   "itype": -125300, 
@@ -845,7 +906,8 @@
   "kf": 1.06
  }, 
  "ggF_X1000_HHWWgg_qqlnu": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
  "DYToEE_NNPDF30_13TeV-powheg-pythia8": {
   "xs": 2008.33
@@ -934,11 +996,21 @@
   "br": 0.002235
  }, 
  "ggF_X800_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_X800_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+ },  
  "ggF_X900_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_X900_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+ },  
  "ttHJetToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
   "xs": 0.5315, 
   "itype": -123300, 
@@ -960,8 +1032,13 @@
   "kf": 1.06
  }, 
  "ggF_X350_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_X350_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+ },  
  "GluGluToBulkGravitonToHHTo2B2G_M-280_narrow_13TeV-madgraph": {
   "xs": 0.001, 
   "kf": 1.06
@@ -1017,8 +1094,13 @@
   "kf": 1.06
  }, 
  "ggF_X550_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_X550_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+ },  
  "GJets_HT-600ToInf_TuneCP5_13TeV-madgraphMLM-pythia8": {
   "xs": 85.4, 
   "itype": 8
@@ -1111,7 +1193,8 @@
   "itype": 20
  }, 
  "ggF_X1000_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
  "GluGluToHHTo2B2G_node_12_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
   "xs": 0.001, 
@@ -1187,7 +1270,8 @@
   "br": 1.0
  }, 
  "NMSSM_XYHWWggqqlnu_MX2000_MY1800": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
  "GluGluHToGG_M128_13TeV_amcatnlo_pythia8": {
   "xs": 46.58, 
@@ -1196,7 +1280,8 @@
   "br": 0.002261
  }, 
  "NMSSM_XYHWWggqqlnu_MX1600_MY400": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
  "GluGluToHHTo2B2G_node_5_13TeV-madgraph_correctedcfg": {
   "xs": 0.001, 
@@ -1228,8 +1313,13 @@
   "kf": 1.06
  }, 
  "ggF_X400_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_X400_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+ },  
  "DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-Sherpa": {
   "xs": 0.8674276
  }, 
@@ -1279,7 +1369,8 @@
   "kf": 1.06
  }, 
  "GluGluToHHTo_WWgg_qqlnu_node2": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
  "GluGluHToGG_M129_13TeV_amcatnloFXFX_pythia8": {
   "xs": 45.94, 
@@ -1304,7 +1395,8 @@
   "kf": 1.06
  }, 
  "GluGluToHHTo_WWgg_qqlnu_node9": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
  "VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8": {
   "xs": 1.9989, 
@@ -1341,8 +1433,13 @@
   "kf": 1.06
  }, 
  "ggF_X850_WWgg_qqlnugg": {
-  "xs": 0.001
+  "xs": 0.001,
+  "kf": 1.06
  }, 
+ "ggF_X850_HHWWgg_qqlnu": {
+    "xs": 0.001,
+    "kf": 1.06
+ },  
  "GluGluToHHTo2B2G_node_5_13TeV-madgraph": {
   "xs": 0.001, 
   "kf": 1.06

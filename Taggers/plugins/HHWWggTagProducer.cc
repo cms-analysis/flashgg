@@ -509,6 +509,7 @@ namespace flashgg {
 
       // Cut Variables 
       // double has_PS_Dipho = 0, pass_METfilters = 0, dipho_vertex_is_zero = 0, pass_leadPhoOverMassThreshold = 0, pass_subleadPhoOverMassThreshold = 0,
+      double pass_leadPhoOverMassThreshold = 0, pass_subleadPhoOverMassThreshold = 0; 
       //   pass_LeadPhoton_MVA = 0, pass_SubLeadPhoton_MVA = 0, pass_dipho_MVA = 0, number_passed_jetid = 0;
       // double dipho_vertex_is_zero = -999;
       // double SLW_Tag = 0.; // Semi-Leptonic W Tag  
@@ -731,15 +732,24 @@ namespace flashgg {
           passMVAs = 0;
           passMVAs = checkPassMVAs(leadPho, subleadPho, diphoton_vertex);
 
+          // leading/subleading photon pt 
+          if( dipho->leadingPhoton()->pt() > ( dipho->mass() )*leadPhoOverMassThreshold_ ){ 
+              pass_leadPhoOverMassThreshold = 1;
+            }
+          if( dipho->subLeadingPhoton()->pt() > ( dipho->mass() )*subleadPhoOverMassThreshold_ ) { 
+              pass_subleadPhoOverMassThreshold = 1;
+            }
+
+          // Doing cut flow analysis: Don't skip event, but check if photon selections are passed 
           if(doHHWWggTagCutFlowAnalysis_){
-            if(!passMVAs) Cut_Variables[1] = 0.0;
-            else Cut_Variables[1] = 1.0; // passed photon MVAs (and all photon selections)
+            if(!passMVAs || !pass_leadPhoOverMassThreshold || !pass_subleadPhoOverMassThreshold) Cut_Variables[1] = 0.0; // failed photon selections 
+            else Cut_Variables[1] = 1.0; // passed photon selections 
           }
 
+          // Not doing cut flow analysis: Skip event if photon selections are not passed 
           else{
-            if(!passMVAs) continue; // Do not save event if leading and subleading photons don't pass MVA cuts 
+            if(!passMVAs || !pass_leadPhoOverMassThreshold || !pass_subleadPhoOverMassThreshold) continue; // Do not save event if leading and subleading photons don't pass MVA cuts or pt/mgg cuts
           }
-          if(!passMVAs && !doHHWWggTagCutFlowAnalysis_) cout << "[HHWWggTagProducer.cc] - *********************************************problem" << endl;
 
           hasGoodElec = false;
           hasGoodMuons = false;
@@ -857,11 +867,8 @@ namespace flashgg {
                   edm::Ptr<flashgg::Jet> thejet = Jets_->ptrAt( candIndex_outer );
                   allJets.push_back(thejet);
 
-                  // if(!thejet->passesJetID  ( flashgg::Tight2017 ) ) { continue; } // remove for cut flow 
-
-                  // if(thejet->passesJetID  ( flashgg::Tight2017 ) ) {
-                  //     // number_passed_jetid += 1;
-                  //   }
+                  // JetID sleection 
+                  if(!thejet->passesJetID  ( flashgg::Tight2017 ) ){ continue; } 
 
                   if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { keepJet=false; }
 

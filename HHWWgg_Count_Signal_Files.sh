@@ -12,10 +12,7 @@ do
 
    # echo "Number there should be:"
    
-   # query="dasgoclient --query='/ggF_${mass}_WWgg_qqlnugg*/atishelm*/USER instance=prod/phys03'"
-   # query="dasgoclient --query='/ggF_${mass}_WWgg_qqlnugg*/atishelm-HHWWgg_v2-3-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9-894aca5f1702fc00de4ca2fc3fbcfe4c/USER instance=prod/phys03'"
-   # query="dasgoclient --query='file dataset=/ggF_${mass}_WWgg_qqlnugg*/atishelm-HHWWgg_v2-3-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9-894aca5f1702fc00de4ca2fc3fbcfe4c/USER instance=prod/phys03'"
-   query="dasgoclient --query='file dataset=/ggF_${mass}_WWgg_qqlnugg/atishelm-HHWWgg_v2-3-94X_mc2017-RunIIFall18-v0-atishelm-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9-894aca5f1702fc00de4ca2fc3fbcfe4c/USER instance=prod/phys03'"
+   query="dasgoclient --query='file dataset=/ggF_${mass}_HHWWgg_qqlnu/atishelm-HHWWgg_v2-7-94X_mc2017-RunIIFall18-v0-atishelm-HHWWgg_v2-7_100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9-894aca5f1702fc00de4ca2fc3fbcfe4c/USER instance=prod/phys03'"
    # numFiles="ls -1 ${query} | wc -l"
    # echo "query: $query"
    # echo "${query}" | wc -l
