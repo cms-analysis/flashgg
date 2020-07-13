@@ -189,7 +189,7 @@
   "br": 0.002248
  }, 
  "W4JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8": {
-  "xs": 545.2
+  "xs": 544.0
  }, 
  "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8": {
   "xs": 0.5071, 
@@ -244,10 +244,10 @@
   "kf": 1.06
  }, 
  "W2JetsToLNu_LHEWpT_150-250_TuneCP5_13TeV-amcnloFXFX-pythia8": {
-  "xs": 0.0
+  "xs": 105.9
  }, 
  "TTJets_HT-800to1200_TuneCP5_13TeV-madgraphMLM-pythia8": {
-  "xs": 0.7521
+  "xs": 0.752
  }, 
  "EGamma": {
   "xs": 0.0, 
@@ -306,7 +306,7 @@
   "br": 0.002235
  }, 
  "W2JetsToLNu_LHEWpT_0-50_TuneCP5_13TeV-amcnloFXFX-pythia8": {
-  "xs": 0.0
+  "xs": 2066.236
  }, 
  "GluGluToHHTo2B2G_node_4_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
   "xs": 0.001, 
@@ -358,7 +358,7 @@
     "kf": 1.06
  },  
  "W1JetsToLNu_LHEWpT_0-50_TuneCP5_13TeV-amcnloFXFX-pythia8": {
-  "xs": 0.0
+  "xs": 4916
  }, 
  "ggF_X250_WWgg_qqlnugg": {
   "xs": 0.001,
@@ -459,7 +459,7 @@
   "xs": 0.001
  }, 
  "W1JetsToLNu_LHEWpT_100-150_TuneCP5_13TeV-amcnloFXFX-pythia8": {
-  "xs": 1080.0
+  "xs": 239.22
  }, 
  "ggF_X280_WWgg_qqlnugg": {
   "xs": 0.001,
@@ -636,7 +636,7 @@
   "br": 0.002258
  }, 
  "W1JetsToLNu_LHEWpT_150-250_TuneCP5_13TeV-amcnloFXFX-pythia8": {
-  "xs": 193.8
+  "xs": 69.48
  }, 
  "GluGluToHHTo2B2G_node_11_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
   "xs": 0.001, 
@@ -674,7 +674,7 @@
   "br": 0.002266
  }, 
  "W1JetsToLNu_LHEWpT_50-150_TuneCP5_13TeV-amcnloFXFX-pythia8": {
-  "xs": 8989.9
+  "xs": 2661
  }, 
  "ttHJetToGG_M128_13TeV_amcatnloFXFX_madspin_pythia8": {
   "xs": 0.4742, 
@@ -929,10 +929,10 @@
   "kf": 1.06
  }, 
  "W2JetsToLNu_LHEWpT_400-inf_TuneCP5_13TeV-amcnloFXFX-pythia8": {
-  "xs": 4.1548
+  "xs": 3.037
  }, 
  "W1JetsToLNu_LHEWpT_400-inf_TuneCP5_13TeV-amcnloFXFX-pythia8": {
-  "xs": 1.3134
+  "xs": 0.885
  }, 
  "GluGluToBulkGravitonToHHTo2B2G_M-300_narrow_13TeV-madgraph": {
   "xs": 0.001, 
@@ -1048,7 +1048,7 @@
   "kf": 1.06
  }, 
  "W2JetsToLNu_LHEWpT_250-400_TuneCP5_13TeV-amcnloFXFX-pythia8": {
-  "xs": 31.814
+  "xs": 18.67
  }, 
  "GluGluHToGG_M127_13TeV_amcatnloFXFX_pythia8": {
   "xs": 47.23, 
@@ -1081,7 +1081,7 @@
   "kf": 1.06
  }, 
  "W2JetsToLNu_LHEWpT_50-150_TuneCP5_13TeV-amcnloFXFX-pythia8": {
-  "xs": 1687.0
+  "xs": 833.38
  }, 
  "VBFHToGG_M-126_13TeV_powheg_pythia8": {
   "xs": 3.752, 
@@ -1344,7 +1344,7 @@
   "br": 0.00227
  }, 
  "W1JetsToLNu_LHEWpT_250-400_TuneCP5_13TeV-amcnloFXFX-pythia8": {
-  "xs": 15.056
+  "xs": 8.05
  }, 
  "GluGluToHHTo2B2G_node_SM_13TeV-madgraph": {
   "xs": 0.001, 
@@ -1457,7 +1457,7 @@
   "br": 1.0
  }, 
  "WGJJToLNuGJJ_EWK_aQGC-FS-FM_TuneCP5_13TeV-madgraph-pythia8": {
-  "xs": 1.447
+  "xs": 1.446
  }, 
  "VBFHToGG_M-120_13TeV_powheg_pythia8": {
   "xs": 3.935, 
