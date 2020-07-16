@@ -43,6 +43,7 @@ namespace flashgg {
     private:
         void produce( Event &, const EventSetup & ) override;
         int chooseCategory( float mva );
+        int chooseCategoryMVAMX( float mva, float mx );
         float EvaluateNN();
         float getGenCosThetaStar_CS(TLorentzVector h1, TLorentzVector h2);
         bool isclose(double a, double b, double rel_tol, double abs_tol);        
@@ -95,7 +96,8 @@ namespace flashgg {
         string     VBFJetIDLevel_;
         ConsumesCollector cc_;
         GlobalVariablesComputer globalVariablesComputer_;
-        MVAComputer<VBFDoubleHTag> mvaComputer_;
+        MVAComputer<VBFDoubleHTag> mvaComputerCAT0_;
+        MVAComputer<VBFDoubleHTag> mvaComputerCAT1_;
         vector<double> mvaBoundaries_, mxBoundaries_;
         unsigned int nMX_;
         int multiclassSignalIdx_;
@@ -114,9 +116,12 @@ namespace flashgg {
         std::vector<double> elecEtaThresholds;
 
 
-        FileInPath MVAFlatteningFileName_;
-        TFile * MVAFlatteningFile_;
-        TGraph * MVAFlatteningCumulative_;
+        FileInPath MVAFlatteningFileNameCAT0_;
+        FileInPath MVAFlatteningFileNameCAT1_;
+        TFile * MVAFlatteningFileCAT0_;
+        TGraph * MVAFlatteningCumulativeCAT0_;
+        TFile * MVAFlatteningFileCAT1_;
+        TGraph * MVAFlatteningCumulativeCAT1_;
         double MVAscaling_;
 
         vector< edm::EDGetTokenT<float> > reweights_;
@@ -162,7 +167,8 @@ namespace flashgg {
         VBFJetIDLevel_( iConfig.getParameter<string> ( "VBFJetIDLevel"   ) ),
         cc_( consumesCollector() ),
         globalVariablesComputer_(iConfig.getParameter<edm::ParameterSet>("globalVariables"), cc_),
-        mvaComputer_(iConfig.getParameter<edm::ParameterSet>("MVAConfig"),  &globalVariablesComputer_)
+        mvaComputerCAT0_(iConfig.getParameter<edm::ParameterSet>("MVAConfigCAT0"),  &globalVariablesComputer_),
+        mvaComputerCAT1_(iConfig.getParameter<edm::ParameterSet>("MVAConfigCAT1"),  &globalVariablesComputer_)
         //mvaComputer_(iConfig.getParameter<edm::ParameterSet>("MVAConfig"))
     {
         mjjBoundaries_ = iConfig.getParameter<vector<double > >( "MJJBoundaries" ); 
@@ -171,7 +177,8 @@ namespace flashgg {
         nMX_ = iConfig.getParameter<unsigned int >( "nMX" );
         mjjBoundariesLower_ = iConfig.getParameter<vector<double > >( "MJJBoundariesLower" ); 
         mjjBoundariesUpper_ = iConfig.getParameter<vector<double > >( "MJJBoundariesUpper" ); 
-        multiclassSignalIdx_ = (iConfig.getParameter<edm::ParameterSet>("MVAConfig")).getParameter<int>("multiclassSignalIdx"); 
+        //multiclassSignalIdx_ = (iConfig.getParameter<edm::ParameterSet>("MVAConfig")).getParameter<int>("multiclassSignalIdx"); 
+        multiclassSignalIdx_ = (iConfig.getParameter<edm::ParameterSet>("MVAConfigCAT0")).getParameter<int>("multiclassSignalIdx"); 
         doReweight_ = (iConfig.getParameter<int>("doReweight")); 
    
         auto names = iConfig.getParameter<vector<string>>("reweight_names");
@@ -237,9 +244,12 @@ namespace flashgg {
         photonElectronVeto_=iConfig.getUntrackedParameter<std::vector<int > >("PhotonElectronVeto");
         //needed for HHbbgg MVA
         if(doMVAFlattening_){
-            MVAFlatteningFileName_ = iConfig.getUntrackedParameter<edm::FileInPath>("MVAFlatteningFileName");
-            MVAFlatteningFile_ = new TFile((MVAFlatteningFileName_.fullPath()).c_str(),"READ");
-            MVAFlatteningCumulative_ = (TGraph*)MVAFlatteningFile_->Get("cumulativeGraph"); 
+            MVAFlatteningFileNameCAT0_ = iConfig.getUntrackedParameter<edm::FileInPath>("MVAFlatteningFileNameCAT0");
+            MVAFlatteningFileCAT0_ = new TFile((MVAFlatteningFileNameCAT0_.fullPath()).c_str(),"READ");
+            MVAFlatteningCumulativeCAT0_ = (TGraph*)MVAFlatteningFileCAT0_->Get("cumulativeGraph"); 
+            MVAFlatteningFileNameCAT1_ = iConfig.getUntrackedParameter<edm::FileInPath>("MVAFlatteningFileNameCAT1");
+            MVAFlatteningFileCAT1_ = new TFile((MVAFlatteningFileNameCAT1_.fullPath()).c_str(),"READ");
+            MVAFlatteningCumulativeCAT1_ = (TGraph*)MVAFlatteningFileCAT1_->Get("cumulativeGraph"); 
         }
         MVAscaling_ = iConfig.getParameter<double>("MVAscaling");
 
@@ -300,6 +310,24 @@ namespace flashgg {
         }
         produces<vector<TagTruthBase>>();
     }
+
+    int VBFDoubleHTagProducer::chooseCategoryMVAMX( float mvavalue,float mxvalue)
+    {
+        if (!doCategorization_) {
+            return 0;
+        }
+        int mvaCat=-1;
+        for( unsigned int n = 0 ; n < nMX_ ; n++ ) {
+            if( ( double )mxvalue > mxBoundaries_[nMX_ - n - 1] ) {
+                if ( ( double )mvavalue > mvaBoundaries_[n] ) {
+                    mvaCat = n;
+                    break;
+                }
+            }
+        }
+        return mvaCat;
+    }
+
 
     int VBFDoubleHTagProducer::chooseCategory( float mvavalue)
     {
@@ -630,18 +658,20 @@ namespace flashgg {
 
 
                     // eval MVA discriminant
-                    std::vector<float> mva_vector = mvaComputer_(tag_obj);
-                    double mva = mva_vector[multiclassSignalIdx_];
+                    std::vector<float> mva_vectorCAT0 = mvaComputerCAT0_(tag_obj);
+                    double mvaCAT0 = mva_vectorCAT0[multiclassSignalIdx_];
+                    std::vector<float> mva_vectorCAT1 = mvaComputerCAT1_(tag_obj);
+                    double mvaCAT1 = mva_vectorCAT1[multiclassSignalIdx_];
                     if(doMVAFlattening_){
-                        double mvaScaled = mva/(mva*(1.-MVAscaling_)+MVAscaling_);
-                        mva = MVAFlatteningCumulative_->Eval(mvaScaled);
+                        double mvaScaledCAT0 = mvaCAT0/(mvaCAT0*(1.-MVAscaling_)+MVAscaling_);
+                        mvaCAT0 = MVAFlatteningCumulativeCAT0_->Eval(mvaScaledCAT0);
+                        double mvaScaledCAT1 = mvaCAT1/(mvaCAT1*(1.-MVAscaling_)+MVAscaling_);
+                        mvaCAT1 = MVAFlatteningCumulativeCAT1_->Eval(mvaScaledCAT1);
                     }
                     tag_obj.setEventNumber(evt.id().event() );
-                    tag_obj.setMVA( mva );
+                    if  (tag_obj.MX() > mxBoundaries_[nMX_-1])  tag_obj.setMVA( mvaCAT0 );
+                    else if  (tag_obj.MX() <= mxBoundaries_[nMX_-1])  tag_obj.setMVA( mvaCAT1 );
            
-
-
- 
                     // tag_obj.setMVAprob( mva_vector );
 
                     // tth Tagger
@@ -907,7 +937,8 @@ namespace flashgg {
                     }
             
                     // choose category and propagate weights
-                    int catnum = chooseCategory( tag_obj.MVA());
+                    //int catnum = chooseCategory( tag_obj.MVA());
+                    int catnum = chooseCategoryMVAMX( tag_obj.MVA(),tag_obj.MX());
                     tag_obj.setCategoryNumber( catnum );
                     tag_obj.includeWeights( *dipho );
                     //            tag_obj.includeWeights( *leadJet );
