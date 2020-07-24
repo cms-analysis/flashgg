@@ -22,14 +22,14 @@
 
 namespace flashgg {
 
-  // HHWWggTag is a sub class or derived class of WeightedObject 
-  class HHWWggTag: public DiPhotonTagBase, public reco::LeafCandidate // inherit from tag producer  
+  // HHWWggTag is a sub class or derived class of WeightedObject
+  class HHWWggTag: public DiPhotonTagBase, public reco::LeafCandidate // inherit from tag producer
   {
-  // access specifier 
+  // access specifier
   public:
-    //---ctors--- 
-    // when constructor overloading, each must have different number or specific types of input variables 
-    
+    //---ctors---
+    // when constructor overloading, each must have different number or specific types of input variables
+
     HHWWggTag();
 
     //---dtor---
@@ -37,36 +37,68 @@ namespace flashgg {
 
     //-- SemiLeptonic final state constructors
 
-    //- Without cut flow analysis 
+    //- Without cut flow analysis
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>); // HHWWggTag_0
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>); // HHWWggTag_1
 
     //- With Cutflow analysis
     // HHWWggTag_0
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, std::vector<edm::Ptr<flashgg::Electron>>, std::vector<edm::Ptr<flashgg::Electron>>,
-              std::vector<edm::Ptr<flashgg::Muon>>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, 
+              std::vector<edm::Ptr<flashgg::Muon>>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>,
               std::vector<edm::Ptr<flashgg::Jet>>, std::vector<edm::Ptr<flashgg::Jet>>,
-              std::vector<double>, std::vector<double>, std::vector<double>); 
+              std::vector<double>, std::vector<double>, std::vector<double>);
 
     // HHWWggTag_1
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, std::vector<edm::Ptr<flashgg::Electron>>, edm::Ptr<flashgg::Muon>, std::vector<edm::Ptr<flashgg::Muon>>, std::vector<edm::Ptr<flashgg::Muon>>,
-              edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, 
+              edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>,
               std::vector<edm::Ptr<flashgg::Jet>>, std::vector<edm::Ptr<flashgg::Jet>>,
-              std::vector<double>, std::vector<double>, std::vector<double>); 
+              std::vector<double>);
 
-    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, std::vector<double>); 
-    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, std::vector<double>); 
-    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, std::vector<double>); 
-    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, std::vector<double>);     
+    // HHWWggTag_2
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>,
+              edm::Ptr<flashgg::Met>,
+              edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>,
+              edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>);
+
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, std::vector<double>);
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, std::vector<double>);
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>, std::vector<double>);
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, std::vector<double>);
 
     // HHWWggTag_2: Untagged, with cutflow analysis
-    HHWWggTag(edm::Ptr<DiPhotonCandidate>, 
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>,
               std::vector<edm::Ptr<flashgg::Electron>>, std::vector<edm::Ptr<flashgg::Electron>>,
               std::vector<edm::Ptr<flashgg::Muon>>, std::vector<edm::Ptr<flashgg::Muon>>,
               edm::Ptr<flashgg::Met>,
               std::vector<edm::Ptr<flashgg::Jet>>, std::vector<edm::Ptr<flashgg::Jet>>,
               std::vector<double>, std::vector<double>, std::vector<double>
               );
+
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>,
+              std::vector<edm::Ptr<flashgg::Electron>>, edm::Ptr<flashgg::Muon>,
+              std::vector<edm::Ptr<flashgg::Muon>>, std::vector<edm::Ptr<flashgg::Muon>>,
+              edm::Ptr<flashgg::Met>,
+              edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>,
+              std::vector<edm::Ptr<flashgg::Jet>>, std::vector<edm::Ptr<flashgg::Jet>>,
+              std::vector<double>, std::vector<double>, std::vector<double>
+              );
+
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>,
+              edm::Ptr<flashgg::Met>,
+              edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>,
+              edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>,
+              std::vector<edm::Ptr<flashgg::Jet>>, std::vector<edm::Ptr<flashgg::Jet>>,
+              std::vector<double>, std::vector<double>);
+
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>,
+              edm::Ptr<flashgg::Met>,
+              std::vector<edm::Ptr<flashgg::Jet>>, std::vector<edm::Ptr<flashgg::Jet>>,
+              std::vector<double>);
+
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>,
+              edm::Ptr<flashgg::Met>,
+              std::vector<edm::Ptr<flashgg::Jet>>, std::vector<edm::Ptr<flashgg::Jet>>,
+              std::vector<double>, std::vector<double>);
 
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Met>, std::vector<double>);
 
@@ -77,9 +109,10 @@ namespace flashgg {
     void GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Met>);
     void GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Met> MET, edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2);
     void GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon, edm::Ptr<flashgg::Met> MET, edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2);
+    void GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Met> MET, edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2, edm::Ptr<flashgg::Jet> jet3, edm::Ptr<flashgg::Jet> jet4);
 
-    // Get Leptons and Jets 
-    
+    // Get Leptons and Jets
+
     std::vector<flashgg::Electron> GetElectrons(std::vector<edm::Ptr<flashgg::Electron>>);
     std::vector<flashgg::Muon> GetMuons(std::vector<edm::Ptr<flashgg::Muon>>);
     std::vector<flashgg::Jet> GetJets(std::vector<edm::Ptr<flashgg::Jet>>);
@@ -96,7 +129,9 @@ namespace flashgg {
     const flashgg::Muon Muon() const { return Muon_; };
     const flashgg::Jet Leading_Jet() const { return Leading_Jet_; };
     const flashgg::Jet Subleading_Jet() const { return Subleading_Jet_; };
-    const flashgg::Met MET() const {return MET_; }; 
+    const flashgg::Jet Sub2leading_Jet() const { return Sub2leading_Jet_; };
+    const flashgg::Jet Sub3leading_Jet() const { return Sub3leading_Jet_; };
+    const flashgg::Met MET() const {return MET_; };
     //---utils---
     // const std::vector<flashgg::Jet> JetVector() const {return JetVector_;}
     const std::vector<double> Cut_Variables() const { return Cut_Variables_; };
@@ -109,8 +144,14 @@ namespace flashgg {
     const std::vector<flashgg::Jet> allJets() const {return allJets_;}
     const std::vector<flashgg::Jet> goodJets() const {return goodJets_;}
 
+    const LorentzVector & dijet() const { return dijet_; }
+    const LorentzVector & dijet2() const { return dijet2_; }
+    const LorentzVector & HWW() const { return HWW_; }
+    const LorentzVector & HGG() const { return HGG_; }
+    const LorentzVector & HH() const { return HH_; }
+
     // const std::vector<flashgg::DiPhotonCandidate> diphoVector() const { return diphoVector_; };
-    // const std::vector<flashgg::Electron> electronVector() const {return electronVector_;} 
+    // const std::vector<flashgg::Electron> electronVector() const {return electronVector_;}
     // const std::vector<flashgg::Muon> muonVector() const {return muonVector_;}
     // const std::vector<flashgg::Met> METVector() const {return METVector_;}
     // const std::vector<reco::GenParticle> GenParticlesVector() const {return GenParticlesVector_;}
@@ -147,11 +188,13 @@ namespace flashgg {
     std::vector<double> MuonVars_;
     std::vector<double> JetVars_;
     flashgg::Electron Electron_;
-    flashgg::Muon Muon_; 
+    flashgg::Muon Muon_;
     flashgg::Jet Leading_Jet_;
     flashgg::Jet Subleading_Jet_;
+    flashgg::Jet Sub2leading_Jet_;
+    flashgg::Jet Sub3leading_Jet_;
     flashgg::Met MET_;
-    
+
     // std::vector<flashgg::DiPhotonCandidate> diphoVector_;
     std::vector<flashgg::Electron> allElectrons_;
     std::vector<flashgg::Electron> goodElectrons_;
@@ -159,6 +202,12 @@ namespace flashgg {
     std::vector<flashgg::Muon> goodMuons_;
     std::vector<flashgg::Jet> allJets_;
     std::vector<flashgg::Jet> goodJets_;
+
+    LorentzVector dijet_;
+    LorentzVector dijet2_;
+    LorentzVector HWW_;
+    LorentzVector HGG_;
+    LorentzVector HH_;
 
     // std::vector<flashgg::Met> METVector_;
     // std::vector<reco::GenParticle> GenParticlesVector_;
@@ -180,7 +229,7 @@ namespace flashgg {
     // float dZ_;
     // float lp_Hgg_MVA_;
     // float slp_Hgg_MVA_;
-    
+
   };
 
 }

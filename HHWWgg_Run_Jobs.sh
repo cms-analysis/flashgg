@@ -5,18 +5,18 @@
 # Abe Tishelman-Charny
 # 12 December 2019
 #
-# The purpose of this script is the run fggrunjobs with the HHWWgg tagger on data, signal, or background. 
+# The purpose of this script is the run fggrunjobs with the HHWWgg tagger on data, signal, or background.
 #
 # Example Usage:
 #
 ## -- workspaces
-# . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_Workspaces_X600 --nEvents all --json Taggers/test/HHWWgg_v2-6/HHWWgg_v2-6_X600.json --condorQueue microcentury -g -s -w 
+# . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_Workspaces_X600 --nEvents all --json Taggers/test/HHWWgg_v2-6/HHWWgg_v2-6_X600.json --condorQueue microcentury -g -s -w
 #
-## -- all final state variable branches with cut flow 
+## -- all final state variable branches with cut flow
 # . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-6_Trees --nEvents all --json Taggers/test/HHWWgg_v2-6/HHWWgg_v2-6.json --condorQueue microcentury -g -c -v -t
 # . HHWWgg_Run_Jobs.sh --labelName HHWWgg_fggBackgrounds_v2_1_oneDY --nEvents all --json Taggers/test/Era2017_RR-31Mar2018_v2_1_oneDY.json --condorQueue microcentury -g -c -v -t
-# . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-3_CutFlow_SM_CutFlow --nEvents all --json Taggers/test/HHWWgg_v2-3/HHWWgg_v2-3_SM.json --condorQueue longlunch -g -c -t 
-# . HHWWgg_Run_Jobs.sh --labelName HHWWgg_fggBkgs_1_DataMC --nEvents all --json Taggers/test/Era2017_RR-31Mar2018_v2_1.json --condorQueue longlunch -g -c -v -t 
+# . HHWWgg_Run_Jobs.sh --labelName HHWWgg_v2-3_CutFlow_SM_CutFlow --nEvents all --json Taggers/test/HHWWgg_v2-3/HHWWgg_v2-3_SM.json --condorQueue longlunch -g -c -t
+# . HHWWgg_Run_Jobs.sh --labelName HHWWgg_fggBkgs_1_DataMC --nEvents all --json Taggers/test/Era2017_RR-31Mar2018_v2_1.json --condorQueue longlunch -g -c -v -t
 # . HHWWgg_Run_Jobs.sh --labelName HHWWgg_2017Data_Again --nEvents all --json Taggers/test/HHWWgg_2017_Data_All/HHWWgg_Data_All_2017.json --condorQueue microcentury -g -c -v -t
 # . HHWWgg_Run_Jobs.sh --labelName HHWWgg_fggBackgrounds_v2_3 --nEvents all --json Taggers/test/Era2017_RR-31Mar2018_v2_3.json --condorQueue longlunch -g -c -v -t
 ###########################################################################################################################################################################################
@@ -29,28 +29,32 @@
 
 ## User specific variables. Customize to your own working area(s)
 
-fggDirec="/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/" # flashgg directory 
-ntupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg/" # condor output directory 
+#fggDirec="/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/" # flashgg directory
+#ntupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg/" # condor output directory
+fggDirec="$PWD/" # flashgg directory (It should be ${PWD})
+echo "PWD = ${fggDirec}"
+ntupleDirec="$PWD/" # condor output directory
+echo "ntupleDirec = ${ntupleDirec}"
 
-## Other script parameters 
+## Other script parameters
 
-label="" # name for condor output directory in ntupleDirec 
-numEvents="" # integer, or 'all' to run on all events 
-runWorkspaceStd="false" # use Systematics/test/workspaceStd.py as config 
-doCutFlow="false" # perform HHWWgg cutflow within workspaceStd.py workflow 
-saveHHWWggFinalStateVars="false" # save extra variables 
-runttH="false" # run on ttH background sample only 
-calcSystematics="false" # run workspaceStd.py systematics 
-dumpTrees="false" # dump trees in fggrunjobs output 
-dumpWorkspaces="false" # dump workspaces in fggrunjobs output 
-dryRun="false" # do not submit jobs 
-jsonpath="" # optional local json file to use for fggrunjobs arguments such as dataset and campaign 
+label="" # name for condor output directory in ntupleDirec
+numEvents="" # integer, or 'all' to run on all events
+runWorkspaceStd="false" # use Systematics/test/workspaceStd.py as config
+doCutFlow="false" # perform HHWWgg cutflow within workspaceStd.py workflow
+saveHHWWggFinalStateVars="false" # save extra variables
+runttH="false" # run on ttH background sample only
+calcSystematics="false" # run workspaceStd.py systematics
+dumpTrees="false" # dump trees in fggrunjobs output
+dumpWorkspaces="false" # dump workspaces in fggrunjobs output
+dryRun="false" # do not submit jobs
+jsonpath="" # optional local json file to use for fggrunjobs arguments such as dataset and campaign
 condorQueue="microcentury" # condor job flavour. Determines max running time for each job
 year=""
 
-## Get user specified argumenets 
+## Get user specified argumenets
 
-options=$(getopt -o gcvstwr --long nEvents: --long labelName: --long json: --long condorQueue: --long year: -- "$@") # end name with colon ':' to specify argument string 
+options=$(getopt -o gcvstwr --long nEvents: --long output: --long labelName: --long json: --long condorQueue: --long year: -- "$@") # end name with colon ':' to specify argument string
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
       exit 1
@@ -69,6 +73,7 @@ while true; do
       -t) dumpTrees="true" ;;
       -w) dumpWorkspaces="true" ;;
       -r) dryRun="true" ;;
+      --output) shift; ntupleDirec=$1 ;;
       --nEvents) shift; numEvents=$1 ;;
       --labelName) shift; label=$1 ;;
       --json) shift; jsonpath=$1 ;;
@@ -80,12 +85,12 @@ while true; do
             ;;
       esac
       shift
-done 
+done
 
-## Output read arguments to user 
+## Output read arguments to user
 
-echo "label = $label" 
-echo "numEvents = $numEvents" 
+echo "label = $label"
+echo "numEvents = $numEvents"
 echo "runWorkspaceStd = $runWorkspaceStd"
 echo "jsonpath = $jsonpath"
 echo "calcSystematics = $calcSystematics"
@@ -117,14 +122,14 @@ then
 fi
 
 if [ -z "$year" ]
-then 
-	echo "Please choose a year with the --year flag"
-	echo "This will determine which metaconditions to use"
-	echo "Exiting"
-	return 
-fi 
+then
+  echo "Please choose a year with the --year flag"
+  echo "This will determine which metaconditions to use"
+  echo "Exiting"
+  return
+fi
 
-## Make sure a json file is specified 
+## Make sure a json file is specified
 
 # if [ $runData == 'false' ] && [ $runSignal == 'false' ] && [ $jsonpath == '' ]
 if [ $jsonpath == '' ]
@@ -132,47 +137,47 @@ then
       echo "Please specify a json path with --jsonpath <json_path>"
       echo "exiting"
       return
-fi   
+fi
 
-## Set variables to user inputs 
+## Set variables to user inputs
 output_direc=$label
 
-# Make output directories if they don't exist 
+# Make output directories if they don't exist
 mkdir -p $output_direc;
 mkdir -p $ntupleDirec$output_direc;
 root_file_output=$ntupleDirec
 root_file_output+=$output_direc
 
-## Run HHWWgg Tagger with Systematics/test/workspaceStd.py 
+## Run HHWWgg Tagger with Systematics/test/workspaceStd.py
 
 if [ $runWorkspaceStd == 'true' ]
 then
-      echo "Submitting jobs with Systematics/test/workspaceStd.py as cmssw config"    
+      echo "Submitting jobs with Systematics/test/workspaceStd.py as cmssw config"
 
       command='fggRunJobs.py --load '
       command+=$jsonpath
-      command+=' -D -P -n 500 -d ' 
+      command+=' -D -P -n 500 -d '
       command+=$output_direc
       command+=" --stage-to="$root_file_output
-      command+=' -x cmsRun Systematics/test/workspaceStd.py maxEvents=' # workspaceStd.py 
+      command+=' -x cmsRun Systematics/test/workspaceStd.py maxEvents=' # workspaceStd.py
       command+=$numEvents
-      command+=' -q ${condorQueue} --no-use-tarball --no-copy-proxy metaConditions='   
+      command+=' -q ${condorQueue} --no-use-tarball --no-copy-proxy metaConditions='
       command+=$fggDirec
 
       metaConditions=""
       if [ $year == '2016' ]
-      then 
+      then
           metaConditions="MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json "
       elif [ $year == '2017' ]
-      then 
+      then
           metaConditions="MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json "
       elif [ $year == '2018' ]
-      then 
+      then
           metaConditions="MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json "
       else
           echo "ERROR - Need to specify 2016, 2017 or 2018 with --year flag"
           echo "Exiting script"
-          return 
+          return
       fi
 
       #command+='MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json '
@@ -184,43 +189,43 @@ then
       if [ $calcSystematics == 'true' ]
       then
            command+=' doSystematics=True '
-      else 
+      else
            command+='doSystematics=False '
       fi
 
       if [ $dumpTrees == 'true' ]
-      then 
+      then
            command+=' dumpTrees=True '
-      else 
+      else
            command+=' dumpTrees=False '
-      fi  
+      fi
 
       if [ $dumpWorkspaces == 'true' ]
-      then 
+      then
            command+=' dumpWorkspace=True '
 
-      else 
+      else
            command+=' dumpWorkspace=False '
-      fi       
+      fi
 
       echo "dryRun: $dryRun"
 
       if [ $dryRun == 'true' ]
-      then 
+      then
            command+=' dryRun=1 '
-      fi 
-      
+      fi
+
       if [ $doCutFlow == 'true' ]
       then
            command+=' doHHWWggTagCutFlow=1 '
-      fi       
+      fi
 
       if [ $saveHHWWggFinalStateVars == 'true' ]
       then
             command+=' saveHHWWggFinalStateVars=1'
-      fi 
+      fi
 fi
 
 echo "Evaluating command: $command"
-eval "$command" 
+eval "$command"
 echo "Finished job for file: $jsonpath"
