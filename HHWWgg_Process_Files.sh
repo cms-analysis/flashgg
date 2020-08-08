@@ -72,7 +72,7 @@ fi
 if [ "$runSignal" == "true" ] && [ -z "$signalType" ]
 then
       echo "If you are running signal, you need to specify the signal type with the --signalType flag"
-      echo "Options are: Res, EFT, NMSSM"
+      echo "Options are: Res, NONRES, NMSSM"
       echo "exiting"
       return 
 fi
@@ -126,7 +126,7 @@ do
 			infilePath="${nTupleDirec}/${inputFolder}/${file_i}"
 			outfilePath="${nTupleDirec}/${outputFolder}/${mass}_HHWWgg_qqlnu.root"
 
-		elif [[ $signalType == "EFT" ]]; then 
+		elif [[ $signalType == "NONRES" ]]; then 
 			node="$(cut -d'_' -f5 <<<$file_i)" # get fifth '_' delimited element. nodeX.root 
 			node=${node%?????} # remove ".root"	
 			infilePath="${nTupleDirec}/${inputFolder}/${file_i}"

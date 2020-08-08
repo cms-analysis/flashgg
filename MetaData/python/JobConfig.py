@@ -135,6 +135,11 @@ class JobConfig(object):
                                VarParsing.VarParsing.multiplicity.singleton, # singleton or list
                                VarParsing.VarParsing.varType.string,          # string, int, or float
                                "WeightName")
+        self.options.register ('HHWWggYear', ##-- hack to choose pu_distrib as input rather than read from secondary dataset 
+                               "", # default value 
+                               VarParsing.VarParsing.multiplicity.singleton, # singleton or list
+                               VarParsing.VarParsing.varType.string,          # string, int, or float
+                               "HHWWggYear")                                
         
         self.parsed = False        
         
@@ -331,7 +336,16 @@ class JobConfig(object):
                                 #         found_hack2017 = True
                                 #         print "FOUND HACK2017 PILEUP DISTRIBUTION WITH KEY:",matches[0]
                                 # if not found_hack2017:
-                                matches = filter(lambda x: x in dsetname, self.pu_distribs.keys() )
+                                
+                                ##-- Run 2 PPD mixing used:
+                                # 2016: "dbs:/Neutrino_E-10_gun/RunIISpring15PrePremix-PUMoriond17_80X_mcRun2_asymptotic_2016_TrancheIV_v2-v2/GEN-SIM-DIGI-RAW"
+                                # 2017: "dbs:/Neutrino_E-10_gun/RunIISummer17PrePremix-MCv2_correctPU_94X_mc2017_realistic_v9-v1/GEN-SIM-DIGI-RAW"
+                                # 2018: "dbs:/Neutrino_E-10_gun/RunIISummer17PrePremix-PUAutumn18_102X_upgrade2018_realistic_v15-v1/GEN-SIM-DIGI-RAW"
+                                if(self.HHWWggYear == "2016"): matches = ["PUMoriond17"]
+                                elif(self.HHWWggYear == "2017"): matches = ["94X_mc2017"]
+                                elif(self.HHWWggYear == "2018"): matches = ["Autumn18"] 
+                                else: matches = filter(lambda x: x in dsetname, self.pu_distribs.keys() )
+                                
                                 print'PU matches below'
                                 print matches
                                 if len(matches) > 1:

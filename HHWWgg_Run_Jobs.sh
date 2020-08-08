@@ -47,10 +47,11 @@ dryRun="false" # do not submit jobs
 jsonpath="" # optional local json file to use for fggrunjobs arguments such as dataset and campaign 
 condorQueue="microcentury" # condor job flavour. Determines max running time for each job
 year=""
+doNonResAnalysis="" # do non resonant analysis 
 
 ## Get user specified argumenets 
 
-options=$(getopt -o gcvstwr --long nEvents: --long labelName: --long json: --long condorQueue: --long year: -- "$@") # end name with colon ':' to specify argument string 
+options=$(getopt -o gcvstwrn --long nEvents: --long labelName: --long json: --long condorQueue: --long year: -- "$@") # end name with colon ':' to specify argument string 
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
       exit 1
@@ -69,6 +70,7 @@ while true; do
       -t) dumpTrees="true" ;;
       -w) dumpWorkspaces="true" ;;
       -r) dryRun="true" ;;
+      -n) doNonResAnalysis="true" ;;
       --nEvents) shift; numEvents=$1 ;;
       --labelName) shift; label=$1 ;;
       --json) shift; jsonpath=$1 ;;
@@ -175,8 +177,6 @@ then
           return 
       fi
 
-      #command+='MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json '
-
       command+=${metaConditions}
 
       command+=' doHHWWggTag=True HHWWggTagsOnly=True '
@@ -219,6 +219,12 @@ then
       then
             command+=' saveHHWWggFinalStateVars=1'
       fi 
+
+      if [ $doNonResAnalysis == 'true' ]
+      then 
+            command+=' doHHWWggNonResAnalysis=1'
+      fi 
+
 fi
 
 echo "Evaluating command: $command"

@@ -1372,6 +1372,18 @@
   "xs": 0.001,
   "kf": 1.06
  }, 
+ "GluGluToHHTo_WWgg_qqlnu_nodeSM": {
+   "xs": 0.001,
+   "kf": 1.06
+  }, 
+"GluGluToHHTo_WWgg_lnulnu_nodeSM": {
+   "xs": 0.001,
+   "kf": 1.06
+  }, 
+"GluGluToHHTo_WWgg_qqqq_nodeSM": {
+   "xs": 0.001,
+   "kf": 1.06
+  }, 
  "GluGluHToGG_M129_13TeV_amcatnloFXFX_pythia8": {
   "xs": 45.94, 
   "itype": -129000, 
