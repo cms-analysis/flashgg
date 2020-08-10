@@ -1,1373 +1,1373 @@
 {
  "DYJetsToEE_M-50_LTbinned_800To2000_5f_LO_13TeV-madgraph_pythia8": {
-  "xs": 0.008329, 
-  "itype": 29, 
-  "kf": 1.0, 
+  "xs": 0.008329,
+  "itype": 29,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "ggF_X320_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X320_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
-   }, 
+   },
  "ttHJetToGG_M121_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 0.5568, 
-  "itype": -121300, 
-  "kf": 1.06, 
+  "xs": 0.5568,
+  "itype": -121300,
+  "kf": 1.06,
   "br": 0.002235
- }, 
+ },
  "GluGluToHHTo2B2G_node_7_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "TTGG_0Jets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8": {
   "xs": 0.01731
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-250_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-550_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8": {
-  "xs": 5765.4, 
+  "xs": 5765.4,
   "itype": 20
- }, 
+ },
  "DiPhotonJets_MGG-80toInf_13TeV_amcatnloFXFX_pythia8": {
   "xs": 135.1
- }, 
+ },
  "VHToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 2.3131, 
-  "itype": -124400, 
-  "kf": 1.06, 
+  "xs": 2.3131,
+  "itype": -124400,
+  "kf": 1.06,
   "br": 0.002266
- }, 
+ },
  "TTGJets_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8": {
   "xs": 3.819
- }, 
+ },
  "VBFHToGG_M127_13TeV_amcatnlo_pythia8": {
-  "xs": 3.723, 
-  "itype": -127100, 
-  "kf": 1.06, 
+  "xs": 3.723,
+  "itype": -127100,
+  "kf": 1.06,
   "br": 0.002267
- }, 
+ },
  "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-pythia8": {
-  "xs": 6025.0, 
+  "xs": 6025.0,
   "itype": 20
- }, 
+ },
  "ttHJetToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
-  "xs": 0.4964, 
-  "itype": -126300, 
-  "kf": 1.06, 
+  "xs": 0.4964,
+  "itype": -126300,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "VBFHToGG_M-121_13TeV_powheg_pythia8": {
-  "xs": 3.904, 
-  "itype": -121100, 
-  "kf": 1.06, 
+  "xs": 3.904,
+  "itype": -121100,
+  "kf": 1.06,
   "br": 0.002235
- }, 
+ },
  "THQ_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5": {
-  "xs": 0.07425, 
-  "LHESourceName": "LHEEventProduct_externalLHEProducer__SIM", 
-  "weights": "rwgt_1,rwgt_2,rwgt_3,rwgt_4,rwgt_5,rwgt_6,rwgt_7,rwgt_8,rwgt_9,rwgt_10,rwgt_11,rwgt_12,rwgt_13,rwgt_14,rwgt_15,rwgt_16,rwgt_17,rwgt_18,rwgt_19,rwgt_20,rwgt_21,rwgt_22,rwgt_23,rwgt_24,rwgt_25,rwgt_26,rwgt_27,rwgt_28,rwgt_29,rwgt_30,rwgt_31,rwgt_32,rwgt_33,rwgt_34,rwgt_35,rwgt_36,rwgt_37,rwgt_38,rwgt_39,rwgt_40,rwgt_41,rwgt_42,rwgt_43,rwgt_44,rwgt_45,rwgt_46,rwgt_47,rwgt_48,rwgt_49,rwgt_50,rwgt_51,rwgt_52,rwgt_53,rwgt_54,rwgt_55,rwgt_56,rwgt_57,rwgt_58,rwgt_59,rwgt_60,rwgt_61,rwgt_62,rwgt_63,rwgt_64,rwgt_65,rwgt_66,rwgt_67,rwgt_68,rwgt_69", 
-  "kf": 1.06, 
+  "xs": 0.07425,
+  "LHESourceName": "LHEEventProduct_externalLHEProducer__SIM",
+  "weights": "rwgt_1,rwgt_2,rwgt_3,rwgt_4,rwgt_5,rwgt_6,rwgt_7,rwgt_8,rwgt_9,rwgt_10,rwgt_11,rwgt_12,rwgt_13,rwgt_14,rwgt_15,rwgt_16,rwgt_17,rwgt_18,rwgt_19,rwgt_20,rwgt_21,rwgt_22,rwgt_23,rwgt_24,rwgt_25,rwgt_26,rwgt_27,rwgt_28,rwgt_29,rwgt_30,rwgt_31,rwgt_32,rwgt_33,rwgt_34,rwgt_35,rwgt_36,rwgt_37,rwgt_38,rwgt_39,rwgt_40,rwgt_41,rwgt_42,rwgt_43,rwgt_44,rwgt_45,rwgt_46,rwgt_47,rwgt_48,rwgt_49,rwgt_50,rwgt_51,rwgt_52,rwgt_53,rwgt_54,rwgt_55,rwgt_56,rwgt_57,rwgt_58,rwgt_59,rwgt_60,rwgt_61,rwgt_62,rwgt_63,rwgt_64,rwgt_65,rwgt_66,rwgt_67,rwgt_68,rwgt_69",
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8": {
-  "xs": 878.1, 
-  "itype": 2, 
-  "kf": 1.0, 
+  "xs": 878.1,
+  "itype": 2,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "ttHJetToGG_M128_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
-  "xs": 0.4742, 
-  "itype": -128300, 
-  "kf": 1.06, 
+  "xs": 0.4742,
+  "itype": -128300,
+  "kf": 1.06,
   "br": 0.002261
- }, 
+ },
  "GluGluHToGG_M-125_13TeV_powheg_pythia8": {
-  "xs": 44.14, 
-  "itype": -125000, 
-  "kf": 1.06, 
+  "xs": 44.14,
+  "itype": -125000,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-750_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
-  "xs": 0.5071, 
-  "itype": -125300, 
-  "kf": 1.06, 
+  "xs": 0.5071,
+  "itype": -125300,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "TTJets_HT-600to800_TuneCP5_13TeV-madgraphMLM-pythia8": {
   "xs": 1.817
- }, 
+ },
  "VBFHToGG_M126_13TeV_amcatnlo_pythia8": {
-  "xs": 3.752, 
-  "itype": -126100, 
-  "kf": 1.06, 
+  "xs": 3.752,
+  "itype": -126100,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "GluGluToHHTo2B2G_node_3_13TeV-madgraph_correctedcfg": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "VBFHToGG_M-123_13TeV_powheg_pythia8": {
-  "xs": 3.842, 
-  "itype": -123100, 
-  "kf": 1.06, 
+  "xs": 3.842,
+  "itype": -123100,
+  "kf": 1.06,
   "br": 0.002258
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-600_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-650_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ttHJetToGG_M129_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 0.4639, 
-  "itype": -129300, 
-  "kf": 1.06, 
+  "xs": 0.4639,
+  "itype": -129300,
+  "kf": 1.06,
   "br": 0.002251
- }, 
+ },
  "GluGluToHHTo2B2G_node_7_13TeV-madgraph_correctedcfg": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X260_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X500_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X500_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
- }, 
+ },
  "GluGluToHHTo2B2G_node_9_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GJet_Pt-20toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8": {
-  "xs": 3186.0, 
-  "itype": 3, 
-  "kf": 1.0, 
+  "xs": 3186.0,
+  "itype": 3,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "VBFHToGG_M125_13TeV_amcatnlo_pythia8_CUETP8M1Down": {
-  "xs": 3.782, 
-  "itype": -125100, 
-  "kf": 1.06, 
+  "xs": 3.782,
+  "itype": -125100,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "GluGluToHHTo2B2G_node_12_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "VBFHToGG_M125_13TeV_amcatnlo_pythia8_CUETP8M1Up": {
-  "xs": 3.782, 
-  "itype": -125100, 
-  "kf": 1.06, 
+  "xs": 3.782,
+  "itype": -125100,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "VBFHToGG_M-122_13TeV_powheg_pythia8": {
-  "xs": 3.873, 
-  "itype": -122100, 
-  "kf": 1.06, 
+  "xs": 3.873,
+  "itype": -122100,
+  "kf": 1.06,
   "br": 0.002248
- }, 
+ },
  "W4JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8": {
   "xs": 544.0
- }, 
+ },
  "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 0.5071, 
-  "itype": -125300, 
-  "kf": 1.06, 
+  "xs": 0.5071,
+  "itype": -125300,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "VBFHToGG_M-128_13TeV_powheg_pythia8": {
-  "xs": 3.694, 
-  "itype": -128100, 
-  "kf": 1.06, 
+  "xs": 3.694,
+  "itype": -128100,
+  "kf": 1.06,
   "br": 0.002261
- }, 
+ },
  "ggF_X450_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X450_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
- },  
+ },
  "GluGluToHHTo2B2G_node_3_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToHHTo2B2G_node_2_13TeV-madgraph_correctedcfg": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToHHTo2B2G_node_6_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "Higgs_scalar": {
-  "xs": 1, 
-  "itype": -1125, 
-  "kf": 1.0, 
+  "xs": 1,
+  "itype": -1125,
+  "kf": 1.0,
   "br": 1
- }, 
+ },
  "DYJetsToEE_M-50_LTbinned_85To90_5f_LO_13TeV-madgraph_pythia8": {
-  "xs": 229.5, 
-  "itype": 23, 
-  "kf": 1.0, 
+  "xs": 229.5,
+  "itype": 23,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8": {
-  "xs": 6025.0, 
+  "xs": 6025.0,
   "itype": 20
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-700_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "W2JetsToLNu_LHEWpT_150-250_TuneCP5_13TeV-amcnloFXFX-pythia8": {
   "xs": 105.9
- }, 
+ },
  "TTJets_HT-800to1200_TuneCP5_13TeV-madgraphMLM-pythia8": {
   "xs": 0.752
- }, 
+ },
  "EGamma": {
-  "xs": 0.0, 
+  "xs": 0.0,
   "itype": 0
- }, 
+ },
  "DYJetsToEE_M-50_LTbinned_400To800_5f_LO_13TeV-madgraph_pythia8": {
-  "xs": 0.2012, 
-  "itype": 28, 
-  "kf": 1.0, 
+  "xs": 0.2012,
+  "itype": 28,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-800_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-700_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "WGToLNuG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8": {
-  "xs": 489.0, 
+  "xs": 489.0,
   "br": 1.0
- }, 
+ },
  "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 2.2569, 
-  "itype": -125400, 
-  "kf": 1.06, 
+  "xs": 2.2569,
+  "itype": -125400,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "ttHJetToGG_M129_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
-  "xs": 0.4639, 
-  "itype": -129300, 
-  "kf": 1.06, 
+  "xs": 0.4639,
+  "itype": -129300,
+  "kf": 1.06,
   "br": 0.002251
- }, 
+ },
  "DYJetsToLL_M-50_13TeV-madgraph-pythia8": {
   "xs": 4746.0
- }, 
+ },
  "DiPhotonJetsBox_MGG-80toInf_13TeV-Sherpa": {
-  "xs": 84.4, 
+  "xs": 84.4,
   "itype": 10
- }, 
+ },
  "W2JetsToLNu_LHEWpT_100-150_TuneCP5_13TeV-amcnloFXFX-pythia8": {
   "xs": 779.9
- }, 
+ },
  "ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 0.5697, 
-  "itype": -120300, 
-  "kf": 1.06, 
+  "xs": 0.5697,
+  "itype": -120300,
+  "kf": 1.06,
   "br": 0.002218
- }, 
+ },
  "VBFHToGG_M121_13TeV_amcatnlo_pythia8": {
-  "xs": 3.904, 
-  "itype": -121100, 
-  "kf": 1.06, 
+  "xs": 3.904,
+  "itype": -121100,
+  "kf": 1.06,
   "br": 0.002235
- }, 
+ },
  "W2JetsToLNu_LHEWpT_0-50_TuneCP5_13TeV-amcnloFXFX-pythia8": {
   "xs": 2066.236
- }, 
+ },
  "GluGluToHHTo2B2G_node_4_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToHHTo2B2G_node_4_13TeV-madgraph_correctedcfg": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "VBFHToGG_M125_13TeV_amcatnlo_pythia8_DownPS": {
-  "xs": 3.782, 
-  "itype": -125100, 
-  "kf": 1.06, 
+  "xs": 3.782,
+  "itype": -125100,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8": {
   "xs": 52940.0
- }, 
+ },
  "GJet_Pt-20toInf_DoubleEMEnriched_MGG-40to80_TuneCUETP8M1_13TeV_Pythia8": {
-  "xs": 3216.0, 
-  "itype": 3, 
-  "kf": 1.0, 
+  "xs": 3216.0,
+  "itype": 3,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "ggF_SM_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_SM_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
- },  
+ },
  "VHToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 2.1486, 
-  "itype": -127400, 
-  "kf": 1.06, 
+  "xs": 2.1486,
+  "itype": -127400,
+  "kf": 1.06,
   "br": 0.002267
- }, 
+ },
  "DoubleEG": {
-  "xs": 0.0, 
+  "xs": 0.0,
   "itype": 0
- }, 
+ },
  "ggF_X650_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X650_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
- },  
+ },
  "W1JetsToLNu_LHEWpT_0-50_TuneCP5_13TeV-amcnloFXFX-pythia8": {
   "xs": 4916
- }, 
+ },
  "ggF_X250_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X250_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
-   }, 
+   },
  "GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8": {
-  "xs": 52.22, 
-  "itype": -120000, 
-  "kf": 1.06, 
+  "xs": 52.22,
+  "itype": -120000,
+  "kf": 1.06,
   "br": 0.002218
- }, 
+ },
  "GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8": {
-  "xs": 232.9, 
-  "itype": 1, 
-  "kf": 1.0, 
+  "xs": 232.9,
+  "itype": 1,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "GluGluHToGG_M127_13TeV_amcatnlo_pythia8": {
-  "xs": 47.23, 
-  "itype": -127000, 
-  "kf": 1.06, 
+  "xs": 47.23,
+  "itype": -127000,
+  "kf": 1.06,
   "br": 0.002267
- }, 
+ },
  "THW_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5": {
-  "xs": 0.01517, 
-  "LHESourceName": "LHEEventProduct_externalLHEProducer__SIM", 
-  "weights": "rwgt_1,rwgt_2,rwgt_3,rwgt_4,rwgt_5,rwgt_6,rwgt_7,rwgt_8,rwgt_9,rwgt_10,rwgt_11,rwgt_12,rwgt_13,rwgt_14,rwgt_15,rwgt_16,rwgt_17,rwgt_18,rwgt_19,rwgt_20,rwgt_21,rwgt_22,rwgt_23,rwgt_24,rwgt_25,rwgt_26,rwgt_27,rwgt_28,rwgt_29,rwgt_30,rwgt_31,rwgt_32,rwgt_33,rwgt_34,rwgt_35,rwgt_36,rwgt_37,rwgt_38,rwgt_39,rwgt_40,rwgt_41,rwgt_42,rwgt_43,rwgt_44,rwgt_45,rwgt_46,rwgt_47,rwgt_48,rwgt_49,rwgt_50,rwgt_51,rwgt_52,rwgt_53,rwgt_54,rwgt_55,rwgt_56,rwgt_57,rwgt_58,rwgt_59,rwgt_60,rwgt_61,rwgt_62,rwgt_63,rwgt_64,rwgt_65,rwgt_66,rwgt_67,rwgt_68,rwgt_69", 
-  "kf": 1.06, 
+  "xs": 0.01517,
+  "LHESourceName": "LHEEventProduct_externalLHEProducer__SIM",
+  "weights": "rwgt_1,rwgt_2,rwgt_3,rwgt_4,rwgt_5,rwgt_6,rwgt_7,rwgt_8,rwgt_9,rwgt_10,rwgt_11,rwgt_12,rwgt_13,rwgt_14,rwgt_15,rwgt_16,rwgt_17,rwgt_18,rwgt_19,rwgt_20,rwgt_21,rwgt_22,rwgt_23,rwgt_24,rwgt_25,rwgt_26,rwgt_27,rwgt_28,rwgt_29,rwgt_30,rwgt_31,rwgt_32,rwgt_33,rwgt_34,rwgt_35,rwgt_36,rwgt_37,rwgt_38,rwgt_39,rwgt_40,rwgt_41,rwgt_42,rwgt_43,rwgt_44,rwgt_45,rwgt_46,rwgt_47,rwgt_48,rwgt_49,rwgt_50,rwgt_51,rwgt_52,rwgt_53,rwgt_54,rwgt_55,rwgt_56,rwgt_57,rwgt_58,rwgt_59,rwgt_60,rwgt_61,rwgt_62,rwgt_63,rwgt_64,rwgt_65,rwgt_66,rwgt_67,rwgt_68,rwgt_69",
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "ggF_X1250_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X1250_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
- },  
+ },
  "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_DownPS": {
-  "xs": 2.257, 
-  "itype": -125400, 
-  "kf": 1.06, 
+  "xs": 2.257,
+  "itype": -125400,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
-  "xs": 0.5697, 
-  "itype": -120300, 
-  "kf": 1.06, 
+  "xs": 0.5697,
+  "itype": -120300,
+  "kf": 1.06,
   "br": 0.002218
- }, 
+ },
  "GluGluHToGG_M125_13TeV_amcatnlo_pythia8": {
-  "xs": 48.58, 
-  "itype": -125000, 
-  "kf": 1.06, 
+  "xs": 48.58,
+  "itype": -125000,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "ttHJetToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
-  "xs": 0.4851, 
-  "itype": -127300, 
-  "kf": 1.06, 
+  "xs": 0.4851,
+  "itype": -127300,
+  "kf": 1.06,
   "br": 0.002267
- }, 
+ },
  "GJets_HT-400To600_TuneCUETP8M1_13TeV-madgraphMLM-pythia8": {
-  "xs": 273.0, 
+  "xs": 273.0,
   "itype": 7
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-1000_narrow_13TeV-madgraph": {
-  "xs": 0.0, 
+  "xs": 0.0,
   "kf": 1.06
- }, 
+ },
  "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Down": {
-  "xs": 0.5071, 
-  "itype": -125300, 
-  "kf": 1.06, 
+  "xs": 0.5071,
+  "itype": -125300,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "GluGluHToGG_M120_13TeV_amcatnlo_pythia8": {
-  "xs": 52.22, 
-  "itype": -120000, 
-  "kf": 1.06, 
+  "xs": 52.22,
+  "itype": -120000,
+  "kf": 1.06,
   "br": 0.002218
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-320_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ttHJetToGG_M121_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
-  "xs": 0.5568, 
-  "itype": -121300, 
-  "kf": 1.06, 
+  "xs": 0.5568,
+  "itype": -121300,
+  "kf": 1.06,
   "br": 0.002235
- }, 
+ },
  "VBFHHTo2B2G_CV_1_C2V_1_C3_1_13TeV-madgraph": {
   "xs": 0.001
- }, 
+ },
  "W1JetsToLNu_LHEWpT_100-150_TuneCP5_13TeV-amcnloFXFX-pythia8": {
   "xs": 239.22
- }, 
+ },
  "ggF_X280_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X280_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
-   },  
+   },
  "GluGluToHHTo2B2G_node_13_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X700_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X700_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
- },  
+ },
  "GluGluHToGG_M122_13TeV_amcatnloFXFX_pythia8": {
-  "xs": 50.71, 
-  "itype": -122000, 
-  "kf": 1.06, 
+  "xs": 50.71,
+  "itype": -122000,
+  "kf": 1.06,
   "br": 0.002248
- }, 
+ },
  "ttHJetToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 0.5315, 
-  "itype": -123300, 
-  "kf": 1.06, 
+  "xs": 0.5315,
+  "itype": -123300,
+  "kf": 1.06,
   "br": 0.002258
- }, 
+ },
  "GluGluHToGG_M130_13TeV_amcatnlo_pythia8": {
-  "xs": 45.31, 
-  "itype": -130000, 
-  "kf": 1.06, 
+  "xs": 45.31,
+  "itype": -130000,
+  "kf": 1.06,
   "br": 0.002238
- }, 
+ },
  "NMSSM_XYHWWggqqlnu_MX300_MY170": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-250_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6": {
-  "xs": 17180.0, 
-  "kf": 1.0, 
+  "xs": 17180.0,
+  "kf": 1.0,
   "br": 0.0379
- }, 
+ },
  "GluGluToHHTo2B2G_node_5_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X270_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X270_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
- },  
+ },
  "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Up": {
-  "xs": 2.257, 
-  "itype": -125400, 
-  "kf": 1.06, 
+  "xs": 2.257,
+  "itype": -125400,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "GluGluHToGG_M129_13TeV_amcatnlo_pythia8": {
-  "xs": 45.94, 
-  "itype": -129000, 
-  "kf": 1.06, 
+  "xs": 45.94,
+  "itype": -129000,
+  "kf": 1.06,
   "br": 0.002251
- }, 
+ },
  "GJets_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8": {
-  "xs": 8631.0, 
+  "xs": 8631.0,
   "itype": 5
- }, 
+ },
  "QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8": {
-  "xs": 113400.0, 
-  "itype": 32, 
+  "xs": 113400.0,
+  "itype": 32,
   "br": 1.0
- }, 
+ },
  "GluGluToHHTo2B2G_node_SM_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-800_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ZZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 3.38, 
+  "xs": 3.38,
   "br": 1.0
- }, 
+ },
  "ggF_X260_HHWWgg_qqlnu": {
   "xs": 0.001,
   "kf": 1.06
- },  
+ },
  "W3JetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8": {
   "xs": 991.6
- }, 
+ },
  "GluGluToHHTo2B2G_node_9_13TeV-madgraph_correctedcfg": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-750_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8": {
   "xs": 722.8
- }, 
+ },
  "SinglePhoton": {
-  "xs": 0.0, 
+  "xs": 0.0,
   "itype": 0
- }, 
+ },
  "SingleMuon": {
-  "xs": 0.0, 
+  "xs": 0.0,
   "itype": 0
- }, 
+ },
  "GluGluToHHTo2B2G_node_2_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X600_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToHHTo2B2G_node_8_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToHHTo2B2G_node_4_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GJets_HT-200To400_TuneCUETP8M1_13TeV-madgraphMLM-pythia8": {
-  "xs": 2280.0, 
+  "xs": 2280.0,
   "itype": 6
- }, 
+ },
  "ttHJetToGG_M122_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
-  "xs": 0.5438, 
-  "itype": -122300, 
-  "kf": 1.06, 
+  "xs": 0.5438,
+  "itype": -122300,
+  "kf": 1.06,
   "br": 0.002248
- }, 
+ },
  "ggF_X600_HHWWgg_qqlnu": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-350_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GJets_HT-400To600_TuneCP5_13TeV-madgraphMLM-pythia8": {
-  "xs": 257.7, 
+  "xs": 257.7,
   "itype": 7
- }, 
+ },
  "GluGluToHHTo2B2G_node_10_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToHHTo2B2G_node_12_13TeV-madgraph_correctedcfg": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluHToGG_M123_13TeV_amcatnlo_pythia8": {
-  "xs": 49.98, 
-  "itype": -123000, 
-  "kf": 1.06, 
+  "xs": 49.98,
+  "itype": -123000,
+  "kf": 1.06,
   "br": 0.002258
- }, 
+ },
  "W1JetsToLNu_LHEWpT_150-250_TuneCP5_13TeV-amcnloFXFX-pythia8": {
   "xs": 69.48
- }, 
+ },
  "GluGluToHHTo2B2G_node_11_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8": {
-  "xs": 118100.0, 
-  "itype": 32, 
+  "xs": 118100.0,
+  "itype": 32,
   "br": 1.0
- }, 
+ },
  "WGGJets_TuneCP5_13TeV_madgraphMLM_pythia8": {
   "xs": 1.693
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-550_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "NMSSM_XYHWWggqqlnu_MX1000_MY800": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "TTJets_TuneCUETP8M2T4_13TeV-amcatnloFXFX-pythia8": {
   "xs": 830
- }, 
+ },
  "VBFHToGG_M120_13TeV_amcatnlo_pythia8": {
-  "xs": 3.935, 
-  "itype": -120100, 
-  "kf": 1.06, 
+  "xs": 3.935,
+  "itype": -120100,
+  "kf": 1.06,
   "br": 0.002218
- }, 
+ },
  "GluGluHToGG_M124_13TeV_amcatnloFXFX_pythia8": {
-  "xs": 49.27, 
-  "itype": -124000, 
-  "kf": 1.06, 
+  "xs": 49.27,
+  "itype": -124000,
+  "kf": 1.06,
   "br": 0.002266
- }, 
+ },
  "W1JetsToLNu_LHEWpT_50-150_TuneCP5_13TeV-amcnloFXFX-pythia8": {
   "xs": 2661
- }, 
+ },
  "ttHJetToGG_M128_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 0.4742, 
-  "itype": -128300, 
-  "kf": 1.06, 
+  "xs": 0.4742,
+  "itype": -128300,
+  "kf": 1.06,
   "br": 0.002261
- }, 
+ },
  "GluGluHToGG_M128_13TeV_amcatnloFXFX_pythia8": {
-  "xs": 46.58, 
-  "itype": -128000, 
-  "kf": 1.06, 
+  "xs": 46.58,
+  "itype": -128000,
+  "kf": 1.06,
   "br": 0.002261
- }, 
+ },
  "QCD_Pt-30to40_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8": {
-  "xs": 22110.0, 
-  "itype": 30, 
+  "xs": 22110.0,
+  "itype": 30,
   "br": 1.0
- }, 
+ },
  "GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8": {
-  "xs": 850.8, 
-  "itype": 2, 
-  "kf": 1.0, 
+  "xs": 850.8,
+  "itype": 2,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "GJets_HT-40To100_TuneCUETP8M1_13TeV-madgraphMLM-pythia8": {
-  "xs": 23100.0, 
+  "xs": 23100.0,
   "itype": 4
- }, 
+ },
  "VBFHToGG_M122_13TeV_amcatnlo_pythia8": {
-  "xs": 3.873, 
-  "itype": -122100, 
-  "kf": 1.06, 
+  "xs": 3.873,
+  "itype": -122100,
+  "kf": 1.06,
   "br": 0.002248
- }, 
+ },
  "DYJetsToEE_M-50_LTbinned_200To400_5f_LO_13TeV-madgraph_pythia8": {
-  "xs": 3.588, 
-  "itype": 27, 
-  "kf": 1.0, 
+  "xs": 3.588,
+  "itype": 27,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_CUETP8M1Up": {
-  "xs": 48.58, 
-  "itype": -125000, 
-  "kf": 1.06, 
+  "xs": 48.58,
+  "itype": -125000,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Up": {
-  "xs": 0.5071, 
-  "itype": -125300, 
-  "kf": 1.06, 
+  "xs": 0.5071,
+  "itype": -125300,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
-  "xs": 0.4539, 
-  "itype": -130300, 
-  "kf": 1.06, 
+  "xs": 0.4539,
+  "itype": -130300,
+  "kf": 1.06,
   "br": 0.002238
- }, 
+ },
  "VBFHToGG_M130_13TeV_amcatnlo_pythia8": {
-  "xs": 3.637, 
-  "itype": -130100, 
-  "kf": 1.06, 
+  "xs": 3.637,
+  "itype": -130100,
+  "kf": 1.06,
   "br": 0.002238
- }, 
+ },
  "ggF_X300_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X300_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
- },  
+ },
  "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_DownPS": {
-  "xs": 0.5071, 
-  "itype": -125300, 
-  "kf": 1.06, 
+  "xs": 0.5071,
+  "itype": -125300,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "VBFHToGG_M125_13TeV_amcatnlo_pythia8": {
-  "xs": 3.782, 
-  "itype": -125100, 
-  "kf": 1.06, 
+  "xs": 3.782,
+  "itype": -125100,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "ZGTo2LG_TuneCUETP8M1_13TeV-amcatnloFXFX-pythia8": {
-  "xs": 117.864, 
+  "xs": 117.864,
   "br": 1.0
- }, 
+ },
  "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS": {
-  "xs": 0.5071, 
-  "itype": -125300, 
-  "kf": 1.06, 
+  "xs": 0.5071,
+  "itype": -125300,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8": {
-  "xs": 48.58, 
-  "itype": -125000, 
-  "kf": 1.06, 
+  "xs": 48.58,
+  "itype": -125000,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS": {
-  "xs": 2.257, 
-  "itype": -125400, 
-  "kf": 1.06, 
+  "xs": 2.257,
+  "itype": -125400,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "DiPhotonJetsBox2BJets_MGG-80toInf_13TeV-Sherpa": {
   "xs": 0.494
- }, 
+ },
  "GJets_HT-200To400_TuneCP5_13TeV-madgraphMLM-pythia8": {
-  "xs": 2185.0, 
+  "xs": 2185.0,
   "itype": 6
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-450_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-450_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluHToGG_M121_13TeV_amcatnlo_pythia8": {
-  "xs": 51.46, 
-  "itype": -121000, 
-  "kf": 1.06, 
+  "xs": 51.46,
+  "itype": -121000,
+  "kf": 1.06,
   "br": 0.002235
- }, 
+ },
  "bbHToGG_M-125_4FS_ybyt_13TeV_amcatnlo": {
-  "xs": 0.0448916, 
-  "kf": 1.06, 
+  "xs": 0.0448916,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-260_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "TTJets_TuneCUETP8M1_13TeV-madgraphMLM-pythia8": {
   "xs": 665
- }, 
+ },
  "DYJetsToEE_M-50_LTbinned_95To100_5f_LO_13TeV-madgraph_pythia8": {
-  "xs": 48.96, 
-  "itype": 25, 
-  "kf": 1.0, 
+  "xs": 48.96,
+  "itype": 25,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "GluGluHToGG_M126_13TeV_amcatnlo_pythia8": {
-  "xs": 47.89, 
-  "itype": -126000, 
-  "kf": 1.06, 
+  "xs": 47.89,
+  "itype": -126000,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "TTGG_0Jets_TuneCP5_13TeV_amcatnlo_madspin_pythia8": {
   "xs": 0.01687
- }, 
+ },
  "TTToHadronic_TuneCP5_13TeV-powheg-pythia8": {
   "xs": 687.1
- }, 
+ },
  "VHToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 2.3726, 
-  "itype": -123400, 
-  "kf": 1.06, 
+  "xs": 2.3726,
+  "itype": -123400,
+  "kf": 1.06,
   "br": 0.002258
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-270_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "VBFHToGG_M-124_13TeV_powheg_pythia8": {
-  "xs": 3.812, 
-  "itype": -124100, 
-  "kf": 1.06, 
+  "xs": 3.812,
+  "itype": -124100,
+  "kf": 1.06,
   "br": 0.002266
- }, 
+ },
  "QCD_Pt-30toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8": {
-  "xs": 241400.0, 
-  "itype": 31, 
+  "xs": 241400.0,
+  "itype": 31,
   "br": 1.0
- }, 
+ },
  "VHToGG_M128_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 2.0965, 
-  "itype": -128400, 
-  "kf": 1.06, 
+  "xs": 2.0965,
+  "itype": -128400,
+  "kf": 1.06,
   "br": 0.002261
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-300_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCUETP8M1_13TeV_Pythia8": {
-  "xs": 220.0, 
-  "itype": 1, 
-  "kf": 1.0, 
+  "xs": 220.0,
+  "itype": 1,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_CUETP8M1Down": {
-  "xs": 48.58, 
-  "itype": -125000, 
-  "kf": 1.06, 
+  "xs": 48.58,
+  "itype": -125000,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "VBFHToGG_M123_13TeV_amcatnlo_pythia8": {
-  "xs": 3.842, 
-  "itype": -123100, 
-  "kf": 1.06, 
+  "xs": 3.842,
+  "itype": -123100,
+  "kf": 1.06,
   "br": 0.002258
- }, 
+ },
  "WW_TuneCP5_13TeV-pythia8": {
-  "xs": 75.8, 
+  "xs": 75.8,
   "br": 1.0
- }, 
+ },
  "TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8": {
   "xs": 4.078
- }, 
+ },
  "GluGluToHHTo2B2G_node_8_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "QCD_Pt-30to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8": {
-  "xs": 24810.0, 
-  "itype": 30, 
+  "xs": 24810.0,
+  "itype": 30,
   "br": 1.0
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-400_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-270_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X1000_HHWWgg_qqlnu": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "DYToEE_NNPDF30_13TeV-powheg-pythia8": {
   "xs": 2008.33
- }, 
+ },
  "GluGluHToGG_M121_13TeV_amcatnloFXFX_pythia8": {
-  "xs": 51.46, 
-  "itype": -121000, 
-  "kf": 1.06, 
+  "xs": 51.46,
+  "itype": -121000,
+  "kf": 1.06,
   "br": 0.002235
- }, 
+ },
  "ttHJetToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
-  "xs": 0.5193, 
-  "itype": -124300, 
-  "kf": 1.06, 
+  "xs": 0.5193,
+  "itype": -124300,
+  "kf": 1.06,
   "br": 0.002266
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-340_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "W2JetsToLNu_LHEWpT_400-inf_TuneCP5_13TeV-amcnloFXFX-pythia8": {
   "xs": 3.037
- }, 
+ },
  "W1JetsToLNu_LHEWpT_400-inf_TuneCP5_13TeV-amcnloFXFX-pythia8": {
   "xs": 0.885
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-300_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluHToGG_M122_13TeV_amcatnlo_pythia8": {
-  "xs": 50.71, 
-  "itype": -122000, 
-  "kf": 1.06, 
+  "xs": 50.71,
+  "itype": -122000,
+  "kf": 1.06,
   "br": 0.002248
- }, 
+ },
  "GluGluToHHTo2B2G_node_6_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 0.4539, 
-  "itype": -130300, 
-  "kf": 1.06, 
+  "xs": 0.4539,
+  "itype": -130300,
+  "kf": 1.06,
   "br": 0.002238
- }, 
+ },
  "SingleElectron": {
-  "xs": 0.0, 
+  "xs": 0.0,
   "itype": 0
- }, 
+ },
  "GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_UpPS": {
-  "xs": 48.58, 
-  "itype": -125000, 
-  "kf": 1.06, 
+  "xs": 48.58,
+  "itype": -125000,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-280_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "TGJets_TuneCUETP8M1_13TeV_amcatnlo_madspin_pythia8": {
   "xs": 2.967
- }, 
+ },
  "VBFHToGG_M124_13TeV_amcatnlo_pythia8": {
-  "xs": 3.812, 
-  "itype": -124100, 
-  "kf": 1.06, 
+  "xs": 3.812,
+  "itype": -124100,
+  "kf": 1.06,
   "br": 0.002266
- }, 
+ },
  "VHToGG_M122_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 2.4335, 
-  "itype": -122400, 
-  "kf": 1.06, 
+  "xs": 2.4335,
+  "itype": -122400,
+  "kf": 1.06,
   "br": 0.002248
- }, 
+ },
  "ttHJetToGG_M122_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 0.5438, 
-  "itype": -122300, 
-  "kf": 1.06, 
+  "xs": 0.5438,
+  "itype": -122300,
+  "kf": 1.06,
   "br": 0.002248
- }, 
+ },
  "VHToGG_M121_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 2.4955, 
-  "itype": -121400, 
-  "kf": 1.06, 
+  "xs": 2.4955,
+  "itype": -121400,
+  "kf": 1.06,
   "br": 0.002235
- }, 
+ },
  "ggF_X800_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X800_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
- },  
+ },
  "ggF_X900_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X900_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
- },  
+ },
  "ttHJetToGG_M123_13TeV_amcatnloFXFX_madspin_pythia8_v2": {
-  "xs": 0.5315, 
-  "itype": -123300, 
-  "kf": 1.06, 
+  "xs": 0.5315,
+  "itype": -123300,
+  "kf": 1.06,
   "br": 0.002258
- }, 
+ },
  "GluGluToHHTo2B2G_node_box_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "VBFHToGG_M-127_13TeV_powheg_pythia8": {
-  "xs": 3.723, 
-  "itype": -127100, 
-  "kf": 1.06, 
+  "xs": 3.723,
+  "itype": -127100,
+  "kf": 1.06,
   "br": 0.002267
- }, 
+ },
  "GluGluToHHTo2B2G_node_8_13TeV-madgraph_correctedcfg": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X350_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X350_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
- },  
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-280_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToHHTo2B2G_node_3_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "W2JetsToLNu_LHEWpT_250-400_TuneCP5_13TeV-amcnloFXFX-pythia8": {
   "xs": 18.67
- }, 
+ },
  "GluGluHToGG_M127_13TeV_amcatnloFXFX_pythia8": {
-  "xs": 47.23, 
-  "itype": -127000, 
-  "kf": 1.06, 
+  "xs": 47.23,
+  "itype": -127000,
+  "kf": 1.06,
   "br": 0.002267
- }, 
+ },
  "GluGluHToGG_M124_13TeV_amcatnlo_pythia8": {
-  "xs": 49.27, 
-  "itype": -124000, 
-  "kf": 1.06, 
+  "xs": 49.27,
+  "itype": -124000,
+  "kf": 1.06,
   "br": 0.002266
- }, 
+ },
  "WZTo2L2Q_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 5.52, 
+  "xs": 5.52,
   "br": 1.0
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-900_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluHToGG_M126_13TeV_amcatnloFXFX_pythia8": {
-  "xs": 47.89, 
-  "itype": -126000, 
-  "kf": 1.06, 
+  "xs": 47.89,
+  "itype": -126000,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-340_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "W2JetsToLNu_LHEWpT_50-150_TuneCP5_13TeV-amcnloFXFX-pythia8": {
   "xs": 833.38
- }, 
+ },
  "VBFHToGG_M-126_13TeV_powheg_pythia8": {
-  "xs": 3.752, 
-  "itype": -126100, 
-  "kf": 1.06, 
+  "xs": 3.752,
+  "itype": -126100,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "GluGluToHHTo2B2G_node_10_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X550_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X550_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
- },  
+ },
  "GJets_HT-600ToInf_TuneCP5_13TeV-madgraphMLM-pythia8": {
-  "xs": 85.4, 
+  "xs": 85.4,
   "itype": 8
- }, 
+ },
  "DiPhotonJetsBox_M40_80-Sherpa": {
-  "xs": 303.2, 
+  "xs": 303.2,
   "itype": 10
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-900_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "VBFHToGG_M-125_13TeV_powheg_pythia8": {
-  "xs": 3.782, 
-  "itype": -125100, 
-  "kf": 1.06, 
+  "xs": 3.782,
+  "itype": -125100,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8": {
   "xs": 0.4604
- }, 
+ },
  "ttHJetToGG_M124_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 0.5193, 
-  "itype": -124300, 
-  "kf": 1.06, 
+  "xs": 0.5193,
+  "itype": -124300,
+  "kf": 1.06,
   "br": 0.002266
- }, 
+ },
  "GJets_HT-40To100_TuneCP5_13TeV-madgraphMLM-pythia8": {
-  "xs": 18640.0, 
+  "xs": 18640.0,
   "itype": 4
- }, 
+ },
  "DYJetsToEE_M-50_LTbinned_90To95_5f_LO_13TeV-madgraph_pythia8": {
-  "xs": 165.4, 
-  "itype": 24, 
-  "kf": 1.0, 
+  "xs": 165.4,
+  "itype": 24,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "TTJets_HT-2500toInf_TuneCP5_13TeV-madgraphMLM-pythia8": {
   "xs": 0.00141
- }, 
+ },
  "ttHToGG_M125_13TeV_powheg_pythia8_v2": {
-  "xs": 0.5071, 
-  "itype": -125300, 
-  "kf": 1.06, 
+  "xs": 0.5071,
+  "itype": -125300,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "DYJetsToEE_M-50_LTbinned_5To75_5f_LO_13TeV-madgraph_pythia8": {
-  "xs": 867.0, 
-  "itype": 20, 
-  "kf": 1.0, 
+  "xs": 867.0,
+  "itype": 20,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "GluGluToHHTo2B2G_node_11_13TeV-madgraph_correctedcfg": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-400_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ttHJetToGG_M127_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 0.4851, 
-  "itype": -127300, 
-  "kf": 1.06, 
+  "xs": 0.4851,
+  "itype": -127300,
+  "kf": 1.06,
   "br": 0.002267
- }, 
+ },
  "GJet_Pt20to40_doubleEMEnriched_TuneZ2star_13TeV-pythia6": {
-  "xs": 145400.0, 
-  "kf": 1.0, 
+  "xs": 145400.0,
+  "kf": 1.0,
   "br": 0.001776
- }, 
+ },
  "GJets_HT-600ToInf_TuneCUETP8M1_13TeV-madgraphMLM-pythia8": {
-  "xs": 94.5, 
+  "xs": 94.5,
   "itype": 8
- }, 
+ },
  "DYJetsToEE_M-50_LTbinned_80To85_5f_LO_13TeV-madgraph_pythia8": {
-  "xs": 159.9, 
-  "itype": 22, 
-  "kf": 1.0, 
+  "xs": 159.9,
+  "itype": 22,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "ttHJetToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 0.4964, 
-  "itype": -126300, 
-  "kf": 1.06, 
+  "xs": 0.4964,
+  "itype": -126300,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8": {
-  "xs": 6225.42, 
+  "xs": 6225.42,
   "itype": 20
- }, 
+ },
  "ggF_X1000_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToHHTo2B2G_node_12_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_DownPS": {
-  "xs": 48.58, 
-  "itype": -125000, 
-  "kf": 1.06, 
+  "xs": 48.58,
+  "itype": -125000,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "ttHToGG_M125_13TeV_powheg_pythia8": {
-  "xs": 0.5071, 
-  "itype": -125300, 
-  "kf": 1.06, 
+  "xs": 0.5071,
+  "itype": -125300,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "VBFHToGG_M-130_13TeV_powheg_pythia8": {
-  "xs": 3.637, 
-  "itype": -130100, 
-  "kf": 1.06, 
+  "xs": 3.637,
+  "itype": -130100,
+  "kf": 1.06,
   "br": 0.002238
- }, 
+ },
  "GJets_HT-100To200_TuneCUETP8M1_13TeV-madgraphMLM-pythia8": {
-  "xs": 9110.0, 
+  "xs": 9110.0,
   "itype": 5
- }, 
+ },
  "SUSYGluGluToHToAA_AToGG_M-60_TuneCUETP8M1_13TeV_pythia8": {
   "xs": 0.001
- }, 
+ },
  "DYJetsToEE_M-50_LTbinned_75To80_5f_LO_13TeV-madgraph_pythia8": {
-  "xs": 134.5, 
-  "itype": 21, 
-  "kf": 1.0, 
+  "xs": 134.5,
+  "itype": 21,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-650_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_CUETP8M1Down": {
-  "xs": 2.257, 
-  "itype": -125400, 
-  "kf": 1.06, 
+  "xs": 2.257,
+  "itype": -125400,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "GluGluToHHTo2B2G_node_9_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 2.5589, 
-  "itype": -120400, 
-  "kf": 1.06, 
+  "xs": 2.5589,
+  "itype": -120400,
+  "kf": 1.06,
   "br": 0.002218
- }, 
+ },
  "TTTo2L2Nu_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8": {
-  "xs": 87.31, 
+  "xs": 87.31,
   "br": 1.0
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-350_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8": {
-  "xs": 45.31, 
-  "itype": -130000, 
-  "kf": 1.06, 
+  "xs": 45.31,
+  "itype": -130000,
+  "kf": 1.06,
   "br": 0.002238
- }, 
+ },
  "WW_TuneCUETP8M1_13TeV-pythia8": {
-  "xs": 63.21, 
+  "xs": 63.21,
   "br": 1.0
- }, 
+ },
  "NMSSM_XYHWWggqqlnu_MX2000_MY1800": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluHToGG_M128_13TeV_amcatnlo_pythia8": {
-  "xs": 46.58, 
-  "itype": -128000, 
-  "kf": 1.06, 
+  "xs": 46.58,
+  "itype": -128000,
+  "kf": 1.06,
   "br": 0.002261
- }, 
+ },
  "NMSSM_XYHWWggqqlnu_MX1600_MY400": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToHHTo2B2G_node_5_13TeV-madgraph_correctedcfg": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToHHTo2B2G_node_7_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "VBFHToGG_M128_13TeV_amcatnlo_pythia8": {
-  "xs": 3.694, 
-  "itype": -128100, 
-  "kf": 1.06, 
+  "xs": 3.694,
+  "itype": -128100,
+  "kf": 1.06,
   "br": 0.002261
- }, 
+ },
  "DoubleMuon": {
-  "xs": 0.0, 
+  "xs": 0.0,
   "itype": 0
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-600_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "WGJJToLNu_EWK_QCD_TuneCP5_13TeV-madgraph-pythia8": {
   "xs": 4.958
- }, 
+ },
  "GluGluToHHTo2B2G_node_10_13TeV-madgraph_correctedcfg": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X400_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X400_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
- },  
+ },
  "DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-Sherpa": {
   "xs": 0.8674276
- }, 
+ },
  "VBFHToGG_M-129_13TeV_powheg_pythia8": {
-  "xs": 3.665, 
-  "itype": -129100, 
-  "kf": 1.06, 
+  "xs": 3.665,
+  "itype": -129100,
+  "kf": 1.06,
   "br": 0.002251
- }, 
+ },
  "DYJetsToLL_M-50_TuneCUETP8M1_13TeV-madgraphMLM-herwigpp_30M": {
-  "xs": 6025.0, 
+  "xs": 6025.0,
   "itype": 20
- }, 
+ },
  "DoublePhoton": {
-  "xs": 0.0, 
+  "xs": 0.0,
   "itype": 0
- }, 
+ },
  "VBFHToGG_M125_13TeV_amcatnlo_pythia8_UpPS": {
-  "xs": 3.782, 
-  "itype": -125100, 
-  "kf": 1.06, 
+  "xs": 3.782,
+  "itype": -125100,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "W1JetsToLNu_LHEWpT_250-400_TuneCP5_13TeV-amcnloFXFX-pythia8": {
   "xs": 8.05
- }, 
+ },
  "GluGluToHHTo2B2G_node_SM_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "VBFHToGG_M129_13TeV_amcatnlo_pythia8": {
-  "xs": 3.665, 
-  "itype": -129100, 
-  "kf": 1.06, 
+  "xs": 3.665,
+  "itype": -129100,
+  "kf": 1.06,
   "br": 0.002251
- }, 
+ },
  "bbHToGG_M-125_4FS_yb2_13TeV_amcatnlo": {
-  "xs": 0.532892, 
-  "kf": 1.06, 
+  "xs": 0.532892,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "TTJets_HT-1200to2500_TuneCP5_13TeV-madgraphMLM-pythia8": {
   "xs": 0.1313
- }, 
+ },
  "GluGluToHHTo2B2G_node_2_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToHHTo_WWgg_qqlnu_node2": {
   "xs": 0.001,
   "kf": 1.06
@@ -1385,96 +1385,162 @@
    "kf": 1.06
   }, 
  "GluGluHToGG_M129_13TeV_amcatnloFXFX_pythia8": {
-  "xs": 45.94, 
-  "itype": -129000, 
-  "kf": 1.06, 
+  "xs": 45.94,
+  "itype": -129000,
+  "kf": 1.06,
   "br": 0.002251
- }, 
+ },
  "QCD_Pt-30toInf_DoubleEMEnriched_MGG-40to80_TuneCUETP8M1_13TeV_Pythia8": {
-  "xs": 260500.0, 
-  "itype": 31, 
+  "xs": 260500.0,
+  "itype": 31,
   "br": 1.0
- }, 
+ },
  "GluGluToHHTo2B2G_node_6_13TeV-madgraph_correctedcfg": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "WWTo1L1Nu2Q_13TeV_amcatnloFXFX_madspin_pythia8": {
   "xs": 81.16
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-260_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToHHTo_WWgg_qqlnu_node9": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
+  "GluGluToHHTo_WWgg_qqqq_node01": {
+  "xs": 0.001
+ },
+   "GluGluToHHTo_WWgg_qqqq_node02": {
+  "xs": 0.001
+ },
+   "GluGluToHHTo_WWgg_qqqq_node03": {
+  "xs": 0.001
+ },
+   "GluGluToHHTo_WWgg_qqqq_node04": {
+  "xs": 0.001
+ },
+   "GluGluToHHTo_WWgg_qqqq_node05": {
+  "xs": 0.001
+ },
+   "GluGluToHHTo_WWgg_qqqq_node06": {
+  "xs": 0.001
+ },
+   "GluGluToHHTo_WWgg_qqqq_node07": {
+  "xs": 0.001
+ },
+   "GluGluToHHTo_WWgg_qqqq_node08": {
+  "xs": 0.001
+ },
+   "GluGluToHHTo_WWgg_qqqq_node09": {
+  "xs": 0.001
+ },
+   "GluGluToHHTo_WWgg_qqqq_node10": {
+  "xs": 0.001
+ },
+   "GluGluToHHTo_WWgg_qqqq_node11": {
+  "xs": 0.001
+ },
+   "GluGluToHHTo_WWgg_qqqq_node12": {
+  "xs": 0.001
+ },
+   "GluGluToHHTo_WWgg_qqqq_nodeSM": {
+  "xs": 0.001
+ },
+ "ggF_X1100_HHWWgg_qqqq": {
+  "xs": 0.001
+ },
+  "ggF_X1200_HHWWgg_qqqq": {
+  "xs": 0.001
+ },
+  "ggF_X1300_HHWWgg_qqqq": {
+  "xs": 0.001
+ },
+  "ggF_X1500_HHWWgg_qqqq": {
+  "xs": 0.001
+ },
+  "ggF_X2000_HHWWgg_qqqq": {
+  "xs": 0.001
+ },
+  "ggF_X260_HHWWgg_qqqq": {
+  "xs": 0.001
+ },
+  "ggF_X270_HHWWgg_qqqq": {
+  "xs": 0.001
+ },
+  "ggF_X300_HHWWgg_qqqq": {
+  "xs": 0.001
+ },
+  "ggF_X350_HHWWgg_qqqq": {
+  "xs": 0.001
+ },
  "VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 1.9989, 
-  "itype": -130400, 
-  "kf": 1.06, 
+  "xs": 1.9989,
+  "itype": -130400,
+  "kf": 1.06,
   "br": 0.002238
- }, 
+ },
  "GluGluToRadionToHHTo2B2G_M-500_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-500_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "VHToGG_M129_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 2.0463, 
-  "itype": -129400, 
-  "kf": 1.06, 
+  "xs": 2.0463,
+  "itype": -129400,
+  "kf": 1.06,
   "br": 0.002251
- }, 
+ },
  "VHToGG_M126_13TeV_amcatnloFXFX_madspin_pythia8": {
-  "xs": 2.2019, 
-  "itype": -126400, 
-  "kf": 1.06, 
+  "xs": 2.2019,
+  "itype": -126400,
+  "kf": 1.06,
   "br": 0.00227
- }, 
+ },
  "GluGluToBulkGravitonToHHTo2B2G_M-320_narrow_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluToHHTo2B2G_node_11_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X850_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "ggF_X850_HHWWgg_qqlnu": {
     "xs": 0.001,
     "kf": 1.06
- },  
+ },
  "GluGluToHHTo2B2G_node_5_13TeV-madgraph": {
-  "xs": 0.001, 
+  "xs": 0.001,
   "kf": 1.06
- }, 
+ },
  "GluGluHToGG_M123_13TeV_amcatnloFXFX_pythia8": {
-  "xs": 49.98, 
-  "itype": -123000, 
-  "kf": 1.06, 
+  "xs": 49.98,
+  "itype": -123000,
+  "kf": 1.06,
   "br": 0.002258
- }, 
+ },
  "DYJetsToEE_M-50_LTbinned_100To200_5f_LO_13TeV-madgraph_pythia8": {
-  "xs": 94.01, 
-  "itype": 26, 
-  "kf": 1.0, 
+  "xs": 94.01,
+  "itype": 26,
+  "kf": 1.0,
   "br": 1.0
- }, 
+ },
  "WGJJToLNuGJJ_EWK_aQGC-FS-FM_TuneCP5_13TeV-madgraph-pythia8": {
   "xs": 1.446
- }, 
+ },
  "VBFHToGG_M-120_13TeV_powheg_pythia8": {
-  "xs": 3.935, 
-  "itype": -120100, 
-  "kf": 1.06, 
+  "xs": 3.935,
+  "itype": -120100,
+  "kf": 1.06,
   "br": 0.002218
  }
 }

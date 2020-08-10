@@ -4,12 +4,29 @@ class HHWWggCustomize():
     """
     HH->WWgg process customizaton class
     """
-    
+
     def __init__(self, process, customize, metaConditions):
+        """constructor for HHWWggCustomize Class
+
+        Arguments:
+            process {[type]} -- [description]
+            customize {[type]} -- [description]
+            metaConditions {[type]} -- [description]
+
+        Member functions:
+            process --
+            customize --
+            metaConditions --
+            tagList -- Categories:  0 : SemiLeptonic electron channel
+                                    1 : SemiLeptonic muon channel
+                                    2 : Fully Hadronic channel (jets selection based on pT)
+                                    3 : Fully Hadronic channel (jets selection based on min W and H mass)
+                                    4 : Untagged --> Meets no criteria but want to save event to output
+        """
         self.process = process
         self.customize = customize
         self.metaConditions = metaConditions
-        self.tagList = [ ["HHWWggTag",3] ] # 2 cats: 0: SL electron channel. 1: SL muon channel. 2: Untagged --> Meets no criteria but want to save event to output 
+        self.tagList = [ ["HHWWggTag",5] ] # 2 cats: 0: SL electron channel. 1: SL muon channel. 2: Untagged --> Meets no criteria but want to save event to output
         self.customizeTagSequence()
 
     def variablesToDump(self):
@@ -17,17 +34,24 @@ class HHWWggCustomize():
         ##- Variables for the nominal output tag tree (non systematic trees for each category)
         variables = []
 
-        #-- Cut flow variables 
+        #-- Cut flow variables
         cutFlowVars = [
             "passPS[2,0,2] := Cut_Variables[0]",
             "passPhotonSels[2,0,2] := Cut_Variables[1]",
             "passbVeto[2,0,2] := Cut_Variables[2]",
             "ExOneLep[2,0,2] := Cut_Variables[3]",
-            "goodJets[2,0,2] := Cut_Variables[4]"
+            "AtLeast2GoodJets[2,0,2] := Cut_Variables[4]",
+            "AtLeast4GoodJets[2,0,2] := Cut_Variables[5]",
+            "AtLeast4GoodJets0Lep[2,0,2] := Cut_Variables[6]",
+            "mW1_40To160[2,0,2] := Cut_Variables[7]",
+            "mW1_65To105[2,0,2] := Cut_Variables[8]",
+            "mW2_0To160[2,0,2] := Cut_Variables[9]",
+            "mH_105To160[2,0,2] := Cut_Variables[10]",
+            "mH_40To210[2,0,2] := Cut_Variables[11]"
         ]
 
         #-- b scores
-        bScores = [] 
+        bScores = []
         # for jeti in range(0,6):
             # var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "
             # var2 = "jet" + str(jeti) + "_DeepCSVScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('pfDeepCSVJetTags:probb') : -99 "
@@ -39,10 +63,10 @@ class HHWWggCustomize():
           "lp_E[100,0,100] := Leading_Photon.p4().E()",
           "slp_E[100,0,100] := Subleading_Photon.p4().E()",
           "lp_initE[100,0,100] := Leading_Photon.energyAtStep('initial')",
-          "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", # also want final energies 
+          "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", # also want final energies
         ]
 
-        # variables for miscellaneous debugging 
+        # variables for miscellaneous debugging
         debugVars=[
             "leadPhoMVA[2,0,2]:=lp_Hgg_MVA",
             "subleadPhoMVA[2,0,2]:=slp_Hgg_MVA",
@@ -50,8 +74,55 @@ class HHWWggCustomize():
             "Subleading_Photon_pt:=slp_pt"
         ]
 
+        otherVariables=[
+            "W1Candidate_E := dijet.E()",
+            "W1Candidate_M := dijet.M()",
+            "W1Candidate_pt := dijet.pt()",
+            "W1Candidate_px := dijet.px()",
+            "W1Candidate_py := dijet.py()",
+            "W1Candidate_pz := dijet.pz()",
+            "W1Candidate_eta := dijet.eta()",
+            "W1Candidate_phi := dijet.phi()",
+
+            "W2Candidate_E := dijet2.E()",
+            "W2Candidate_M := dijet2.M()",
+            "W2Candidate_pt := dijet2.pt()",
+            "W2Candidate_px := dijet2.px()",
+            "W2Candidate_py := dijet2.py()",
+            "W2Candidate_pz := dijet2.pz()",
+            "W2Candidate_eta := dijet2.eta()",
+            "W2Candidate_phi := dijet2.phi()",
+
+            "HWWCandidate_E := HWW.E()",
+            "HWWCandidate_M := HWW.M()",
+            "HWWCandidate_pt := HWW.pt()",
+            "HWWCandidate_px := HWW.px()",
+            "HWWCandidate_py := HWW.py()",
+            "HWWCandidate_pz := HWW.pz()",
+            "HWWCandidate_eta := HWW.eta()",
+            "HWWCandidate_phi := HWW.phi()",
+
+            "HGGCandidate_E := HGG.E()",
+            "HGGCandidate_M := HGG.M()",
+            "HGGCandidate_pt := HGG.pt()",
+            "HGGCandidate_px := HGG.px()",
+            "HGGCandidate_py := HGG.py()",
+            "HGGCandidate_pz := HGG.pz()",
+            "HGGCandidate_eta := HGG.eta()",
+            "HGGCandidate_phi := HGG.phi()",
+
+            "HHCandidate_E := HH.E()",
+            "HHCandidate_M := HH.M()",
+            "HHCandidate_pt := HH.pt()",
+            "HHCandidate_px := HH.px()",
+            "HHCandidate_py := HH.py()",
+            "HHCandidate_pz := HH.pz()",
+            "HHCandidate_eta := HH.eta()",
+            "HHCandidate_phi := HH.phi()"
+        ]
+
         vars = ["E","pt","px","py","pz","eta","phi"]
-        objects = ["Leading_Photon","Subleading_Photon","Electron","Muon","MET","Leading_Jet","Subleading_Jet"]
+        objects = ["Leading_Photon","Subleading_Photon","Electron","Muon","MET","Leading_Jet","Subleading_Jet","Sub2leading_Jet","Sub3leading_Jet"]
         finalStateVars = []
         finalStateVars.append("Leading_Photon_MVA:=lp_Hgg_MVA")
         finalStateVars.append("Subleading_Photon_MVA:=slp_Hgg_MVA")
@@ -62,13 +133,13 @@ class HHWWggCustomize():
                 entry = "%s:=%s"%(vtitle,vname)
                 finalStateVars.append(entry)
 
-        # Add all object vars 
+        # Add all object vars
         # p4_variables = ["E","pt","eta","phi"]
         p4_variables = ["E","pt","px","py","pz","eta","phi"]
         checkN = 5
         # allCheck = 7
         # goodCheck = 3
-        objectVectors = [] 
+        objectVectors = []
         objs = ["Electrons","Muons","Jets"]
         vecTypes = ["all","good"]
         for t in vecTypes:
@@ -78,8 +149,8 @@ class HHWWggCustomize():
 
         print"vecs:",objectVectors
         for objV in objectVectors:
-            vtitle = "N_%s"%(objV) 
-            vname = "%s.size()"%(objV)  
+            vtitle = "N_%s"%(objV)
+            vname = "%s.size()"%(objV)
             entry = "%s:=%s"%(vtitle,vname)
             finalStateVars.append(entry)
             for v in p4_variables:
@@ -107,13 +178,13 @@ class HHWWggCustomize():
             #             vtitle = "%s_%s_%s"%(objV,i,mVarTitle)
             #             vname = "? %s.size() >= %s ? %s[%s].%s() : -999"%(objV,i+1,objV,i,mV)
             #             entry = "%s:=%s"%(vtitle,vname)
-            #             finalStateVars.append(entry)  
+            #             finalStateVars.append(entry)
 
-            # var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "  
+            # var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "
             if("Jets" in objV):
                 bscores = ["bDiscriminator('mini_pfDeepFlavourJetTags:probb')","bDiscriminator('pfDeepCSVJetTags:probb')",
                            "bDiscriminator('mini_pfDeepFlavourJetTags:probbb')","bDiscriminator('pfDeepCSVJetTags:probbb')"]
-                
+
                 btitles = ["bDiscriminator_mini_pfDeepFlavourJetTags_probb","bDiscriminator_pfDeepCSVJetTags_probb",
                            "bDiscriminator_mini_pfDeepFlavourJetTags_probbb","bDiscriminator_pfDeepCSVJetTags_probbb"
                           ]
@@ -123,30 +194,30 @@ class HHWWggCustomize():
                         vtitle = "%s_%s_%s"%(objV,i,btitle)
                         vname = "? %s.size() >= %s ? %s[%s].%s : -999"%(objV,i+1,objV,i,bscore)
                         entry = "%s:=%s"%(vtitle,vname)
-                        finalStateVars.append(entry)                                                                      
+                        finalStateVars.append(entry)
 
-        # Save extra Muon variables 
-        nMuons = 5 # highest 5 pT muons (no selections applied)
-        nVars = 6 # 5 IDs and Isolation
-        extraMuonVars = ["isLooseMuon","isMediumMuon","isTightMuon","isSoftMuon","isHighPtMuon","muonIso"]
-        for m in range(0,nMuons):
-            for n in range(0,nVars):
-                muonVarTitle = extraMuonVars[n]
-                # MuonVars_[muonIndex*numVars + 0] = isLooseMuon;
-                # MuonVars_[muonIndex*numVars + 1] = isMediumMuon;
-                # MuonVars_[muonIndex*numVars + 2] = isTightMuon;
-                # MuonVars_[muonIndex*numVars + 3] = isSoftMuon;
-                # MuonVars_[muonIndex*numVars + 4] = isHighPtMuon;
-                # MuonVars_[muonIndex*numVars + 5] = muonIso;
-                i = m*nVars + n
-                vname = "MuonVars[%s]"%(i)
-                vtitle = "allMuons_%s_%s"%(m,muonVarTitle)
-                entry = "%s:=%s"%(vtitle,vname)                
-                finalStateVars.append(entry) 
+        # Save extra Muon variables
+        # nMuons = 5 # highest 5 pT muons (no selections applied)
+        # nVars = 6 # 5 IDs and Isolation
+        # extraMuonVars = ["isLooseMuon","isMediumMuon","isTightMuon","isSoftMuon","isHighPtMuon","muonIso"]
+        # for m in range(0,nMuons):
+        #     for n in range(0,nVars):
+        #         muonVarTitle = extraMuonVars[n]
+        #         # MuonVars_[muonIndex*numVars + 0] = isLooseMuon;
+        #         # MuonVars_[muonIndex*numVars + 1] = isMediumMuon;
+        #         # MuonVars_[muonIndex*numVars + 2] = isTightMuon;
+        #         # MuonVars_[muonIndex*numVars + 3] = isSoftMuon;
+        #         # MuonVars_[muonIndex*numVars + 4] = isHighPtMuon;
+        #         # MuonVars_[muonIndex*numVars + 5] = muonIso;
+        #         i = m*nVars + n
+        #         vname = "MuonVars[%s]"%(i)
+        #         vtitle = "allMuons_%s_%s"%(m,muonVarTitle)
+        #         entry = "%s:=%s"%(vtitle,vname)
+        #         finalStateVars.append(entry)
 
-        # Save extra Jet variables 
+        # Save extra Jet variables
         nJets = 5 # highest 5 pT muons (no selections applied)
-        nVars = 4 # 4 IDs 
+        nVars = 4 # 4 IDs
         # nVars = 5 # 4 IDs + 1 PU ID
         # nVars = 12 # 4 IDs + 8 PU ID's
         extraJetVars = ["passLoose","passTight","passTight2017","passTight2018"]
@@ -161,7 +232,7 @@ class HHWWggCustomize():
                 #   JetVars_[jetIndex*numVars + 1] = passTight;
                 #   JetVars_[jetIndex*numVars + 2] = passTight2017;
                 #   JetVars_[jetIndex*numVars + 3] = passTight2018;
-                
+
                 #   JetVars_[jetIndex*numVars + 4] = passesJetPuIdnone;
                 #   JetVars_[jetIndex*numVars + 5] = passesJetPuIdloose;
                 #   JetVars_[jetIndex*numVars + 6] = passesJetPuIdmedium;
@@ -169,31 +240,32 @@ class HHWWggCustomize():
                 #   JetVars_[jetIndex*numVars + 8] = passesJetPuIdmixed;
                 #   JetVars_[jetIndex*numVars + 9] = passesJetPuIdforward_loose;
                 #   JetVars_[jetIndex*numVars + 10] = passesJetPuIdforward_medium;
-                #   JetVars_[jetIndex*numVars + 11] = passesJetPuIdforward_tight;                
+                #   JetVars_[jetIndex*numVars + 11] = passesJetPuIdforward_tight;
                 i = j*nVars + n
                 vname = "JetVars[%s]"%(i)
                 vtitle = "allJets_%s_%s"%(j,jetVarTitle)
-                entry = "%s:=%s"%(vtitle,vname)                
-                finalStateVars.append(entry)                                            
+                entry = "%s:=%s"%(vtitle,vname)
+                finalStateVars.append(entry)
 
-        # for removal of prompt-prompt events from QCD and GJet samples 
+        # for removal of prompt-prompt events from QCD and GJet samples
         finalStateVars.append("Leading_Photon_genMatchType:=Leading_Photon.genMatchType()")
         finalStateVars.append("Subleading_Photon_genMatchType:=Subleading_Photon.genMatchType()")
 
         print"len(finalStateVars):",len(finalStateVars)
 
-        # if self.customize.doHHWWggTagCutFlow: 
-            # variables += cutFlowVars 
-            # variables += bScores 
+        # if self.customize.doHHWWggTagCutFlow:
+            # variables += cutFlowVars
+            # variables += bScores
 
         if self.customize.saveHHWWggFinalStateVars:
-            variables += finalStateVars 
-            variables += cutFlowVars 
+            variables += otherVariables
+            variables += finalStateVars
+            variables += cutFlowVars
             # variables += bScores
-     
+
         if self.customize.doHHWWggDebug:
             variables += debugVars
-        
+
         return variables
 
         # if self.customize.dumpWorkspace == False :
@@ -210,7 +282,7 @@ class HHWWggCustomize():
         #   "lp_E[100,0,100] := Leading_Photon.p4().E()",
         #   "slp_E[100,0,100] := Subleading_Photon.p4().E()",
         #   "lp_initE[100,0,100] := Leading_Photon.energyAtStep('initial')",
-        #   "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", # also want final energies 
+        #   "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", # also want final energies
       ]
 
       debugVars=[
@@ -219,9 +291,9 @@ class HHWWggCustomize():
       ]
 
       if self.customize.doHHWWggDebug:
-        systematicVariables += debugVars 
+        systematicVariables += debugVars
 
-      
+
 
       return systematicVariables
 
@@ -281,7 +353,7 @@ class HHWWggCustomize():
 
         ## customize meta conditions
         # self.process.flashggHHWWggTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
-        # self.process.flashggHHWWggTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["doubleHTag"]["weightsFile"]))  
+        # self.process.flashggHHWWggTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["doubleHTag"]["weightsFile"]))
         # self.process.flashggHHWWggTag.MVAscaling = cms.double(self.metaConditions["doubleHTag"]["MVAscalingValue"])
         # self.process.flashggHHWWggTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["MVAFlatteningFileName"]))
         # self.process.flashggHHWWggTag.dottHTagger = cms.bool(self.customize.doHHWWggttHKiller)
@@ -328,8 +400,9 @@ class HHWWggCustomize():
              self.process.p.replace(self.process.flashggSystTagMerger,getattr(self.process, 'flashggTagSorter'+systlabel)*self.process.flashggSystTagMerger)
            setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggHHWWggTag')) ))
         #    setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggHHWWggTag', systlabel)) ))
-        
+
         # print 'from loop after:',process.flashggSystTagMerger.src
+
 
 
     # def HHWWggTagRunSequence(self,systlabels,jetsystlabels,phosystlabels):
@@ -338,12 +411,13 @@ class HHWWggCustomize():
         # print'[HHWWggTagRunSequence]: Doing Nothing for HHWWgg'
     #    if self.customize.HHWWggTagsOnly: 
         #   print'systlabels = ',systlabels 
+
         #   self.HHWWggTagMerger(systlabels)
 
 
         ## Not sure if this is necessary for HHWWgg
     #    if len(systlabels)>1 :
-    #       print'[HHWWggTagRunSequence] - Add JetesSuffixes and diphotonsuffices' 
+    #       print'[HHWWggTagRunSequence] - Add JetesSuffixes and diphotonsuffices'
     #       getattr(self.process, "flashggHHWWggTag").JetsSuffixes = cms.vstring([systlabels[0]]+jetsystlabels)
     #       getattr(self.process, "flashggHHWWggTag").DiPhotonSuffixes = cms.vstring([systlabels[0]]+phosystlabels)
 
@@ -353,7 +427,7 @@ class HHWWggCustomize():
 
     #    if self.customize.HHWWggReweight>0:
         #   self.addNodesReweighting()
-    
+
     #    if self.customize.doHHWWggGenAnalysis:
     #       self.addGenAnalysis()
 
@@ -370,7 +444,6 @@ class HHWWggCustomize():
         #     self.process.flashggHHWWggReweight.doReweight = self.customize.HHWWggReweight
         #     self.process.flashggHHWWggReweight.weightsFile = cms.untracked.FileInPath(str(self.metaConditions["HHWWggTag"]["NodesReweightingFileName"]))
         #     self.process.p.replace(self.process.flashggHHWWggTag, self.process.flashggHHWWggReweight*self.process.flashggHHWWggTag)
-
 
     # def addGenAnalysis(self):
     #     if self.customize.processId == "Data": 
@@ -445,3 +518,4 @@ class HHWWggCustomize():
 
     #     # self.process.genp = cms.Path(self.process.flashggGenDiPhotonDiBJetsSequence*self.process.flashggTaggedGenDiphotons*self.process.genDiphotonDumper)
     #     self.process.genp = cms.Path(self.process.flashggTaggedGenDiphotons*self.process.genDiphotonDumper)
+
