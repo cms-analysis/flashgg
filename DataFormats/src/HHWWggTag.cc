@@ -21,32 +21,31 @@ HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), Cut_Vari
 
 HHWWggTag::~HHWWggTag() {}
 
-void HHWWggTag::GetObjects(edm::Ptr<DiPhotonCandidate> dipho)
+void HHWWggTag::GetPhoAtt(edm::Ptr<DiPhotonCandidate> dipho)
 {
-  // Save as dumper objects
   Leading_Photon_ = dipho->leadingPhoton();
   Subleading_Photon_ = dipho->subLeadingPhoton();
 
-  lp_Hgg_MVA_ = Leading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() );
-  slp_Hgg_MVA_ = Subleading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() );
+  lp_Hgg_MVA_ = Leading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() ); 
+  slp_Hgg_MVA_ = Subleading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() ); 
+  lp_pt_ = Leading_Photon_->pt();
+  slp_pt_ = Subleading_Photon_->pt();
+}
+
+void HHWWggTag::GetObjects(edm::Ptr<DiPhotonCandidate> dipho)
+{
+  GetPhoAtt(dipho);
 }
 
 void HHWWggTag::GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Met> MET)
 {
-  // Save as dumper objects
-  Leading_Photon_ = dipho->leadingPhoton();
-  Subleading_Photon_ = dipho->subLeadingPhoton();
+  GetPhoAtt(dipho);
   MET_ = *MET;
-
-  lp_Hgg_MVA_ = Leading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() );
-  slp_Hgg_MVA_ = Subleading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() );
 }
 
 void HHWWggTag::GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Met> MET, edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2)
 {
-  // Save as dumper objects
-  Leading_Photon_ = dipho->leadingPhoton();
-  Subleading_Photon_ = dipho->subLeadingPhoton();
+  GetPhoAtt(dipho);
   Electron_ = *electron;
   MET_ = *MET;
   Leading_Jet_ = *jet1;
@@ -58,15 +57,11 @@ void HHWWggTag::GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::
   HGG_ = dipho->p4();
   HH_ = Leading_Jet_.p4() + Subleading_Jet_.p4() + Electron_.p4() + MET_.p4() + dipho->p4();
 
-  lp_Hgg_MVA_ = Leading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() );
-  slp_Hgg_MVA_ = Subleading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() );
 }
 
 void HHWWggTag::GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon, edm::Ptr<flashgg::Met> MET, edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2)
 {
-  // Save as dumper objects
-  Leading_Photon_ = dipho->leadingPhoton();
-  Subleading_Photon_ = dipho->subLeadingPhoton();
+  GetPhoAtt(dipho);
   Muon_ = *muon;
   MET_ = *MET;
   Leading_Jet_ = *jet1;
@@ -76,18 +71,12 @@ void HHWWggTag::GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::
   HWW_ = Leading_Jet_.p4() + Subleading_Jet_.p4() + Muon_.p4() + MET_.p4();
   HGG_ = dipho->p4();
   HH_ = Leading_Jet_.p4() + Subleading_Jet_.p4() + Muon_.p4() + MET_.p4() + dipho->p4();
-
-  lp_Hgg_MVA_ = Leading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() );
-  slp_Hgg_MVA_ = Subleading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() );
 }
 
 void HHWWggTag::GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Met> MET, edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2, edm::Ptr<flashgg::Jet> jet3, edm::Ptr<flashgg::Jet> jet4)
 {
-  // Save as dumper objects
-  Leading_Photon_ = dipho->leadingPhoton();
-  Subleading_Photon_ = dipho->subLeadingPhoton();
-  // Muon_ = *muon;
-  // MET_ = *MET;
+  GetPhoAtt(dipho);
+  MET_ = *MET;
   Leading_Jet_ = *jet1;
   Subleading_Jet_ = *jet2;
   Sub2leading_Jet_ = *jet3;
@@ -99,9 +88,6 @@ void HHWWggTag::GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::
   HWW_ = dijet_ + dijet2_;
   HGG_ = dipho->p4();
   HH_ = dijet_ + dijet2_ + dipho->p4();
-
-  lp_Hgg_MVA_ = Leading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() );
-  slp_Hgg_MVA_ = Subleading_Photon_->phoIdMvaDWrtVtx( dipho->vtx() );
 }
 
 std::vector<flashgg::Electron> HHWWggTag::GetElectrons(std::vector<edm::Ptr<flashgg::Electron>> electrons)

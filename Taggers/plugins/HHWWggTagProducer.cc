@@ -63,6 +63,7 @@ namespace flashgg {
 
     // TH1F* indexes;
     // TH1F* btags;
+    // TH1F* pdgId;
 
   private:
     double genTotalWeight;
@@ -165,6 +166,8 @@ namespace flashgg {
     // string bTag_;
     double btagThresh_;
     bool doHHWWggTagCutFlowAnalysis_;
+    bool doHHWWggNonResAnalysis_;
+    // bool saveHHWWggGenVars_; 
 
 
     edm::InputTag genInfo_;
@@ -237,6 +240,7 @@ namespace flashgg {
 
       // indexes = fs->make<TH1F> ("indexes","indexes",5,0,5);
       // btags = fs->make<TH1F> ("btags","btags",100,0,1);
+      // pdgId = fs->make<TH1F> ("pdgId","pdgId",6000,-3000,3000);
 
       // numEvents = fs->make<TH1F> ("numEvents","numEvents",1,0,10);
 
@@ -279,6 +283,8 @@ namespace flashgg {
       // bTag_ = pSet.getParameter<string> ( "bTag");
       btagThresh_ = pSet.getParameter<double>( "btagThresh");
       doHHWWggTagCutFlowAnalysis_ = pSet.getParameter<bool>( "doHHWWggTagCutFlowAnalysis");
+      doHHWWggNonResAnalysis_ = pSet.getParameter<bool>( "doHHWWggNonResAnalysis" );
+      // saveHHWWggGenVars_ = pSet.getParameter<bool>( "saveHHWWggGenVars" );
 
       produces<vector<HHWWggTag>>();
       // for (auto & systname : systematicsLabels) { // to deal with systematics in producer
@@ -527,6 +533,9 @@ namespace flashgg {
       int n_good_jets = 0;
       bool hasHighbTag = 0;
       float btagVal = 0;
+      double leadPho_pt = 0;
+      double subleadPho_pt = 0;
+      double sumpT = 0;
       // double dipho_MVA = -99;
       // double lead_pho_Hgg_MVA = -99, sublead_pho_Hgg_MVA = -99;
       // double CMS_hgg_mass = -99;
@@ -570,6 +579,11 @@ namespace flashgg {
       }
 
       //-- MC truth
+      // For gen study, want to save info from:
+      // 2 photons, 2 W bosons:
+      // qqlnu --> 2 quarks coming from W, lnu coming from W 
+      // lnulnu
+      // qqqq
       TagTruthBase truth_obj;
       // double genMhh=0.;
       if( ! event.isRealData() ) {
@@ -577,22 +591,27 @@ namespace flashgg {
           std::vector<edm::Ptr<reco::GenParticle> > selHiggses;
           event.getByToken( genParticleToken_, genParticles );
           reco::GenParticle::Point higgsVtx(0.,0.,0.);
-          for (unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-              int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-              // if( pdgid == 25 || pdgid == 22 ) { // not so sure if this is correct for HHWWgg because of potential photons from hadronization
-              if( pdgid == 25 ) {
+
+          for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+              int pdgid = genParticles->ptrAt( genLoop )->pdgId(); 
+              // pdgId->Fill(pdgid);
+
+              // if( pdgid == 25 || pdgid == 22 ) { // not so sure if this is correct for HHWWgg because of potential photons from hadronization 
+              if( pdgid == 25 ) { 
                   higgsVtx = genParticles->ptrAt( genLoop )->vertex();
                   // gen_vertex_z = higgsVtx.z();
                   break;
               }
           }
-          for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
-              edm::Ptr<reco::GenParticle> genPar = genParticles->ptrAt(genLoop);
-              if (selHiggses.size()>1) break;
-            if (genPar->pdgId()==25 && genPar->isHardProcess()){
-                selHiggses.push_back(genPar);
-            }
-          }
+
+          // for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+          //     edm::Ptr<reco::GenParticle> genPar = genParticles->ptrAt(genLoop);
+          //     if (selHiggses.size()>1) break;
+          //   if (genPar->pdgId()==25 && genPar->isHardProcess()){
+          //       selHiggses.push_back(genPar);
+          //   }   
+          // }
+
           // if (selHiggses.size()==2){
           //     TLorentzVector H1,H2;
           //     H1.SetPtEtaPhiE(selHiggses[0]->p4().pt(),selHiggses[0]->p4().eta(),selHiggses[0]->p4().phi(),selHiggses[0]->p4().energy());
@@ -651,39 +670,39 @@ namespace flashgg {
 
       // read diphotons
       // for (unsigned int diphoton_idx = 0; diphoton_idx < diPhotonTokens_.size(); diphoton_idx++) { //looping over all diphoton systematics
-      // cout << "diphoton_idx = " << diphoton_idx << endl;
-      // diphoton_idx_h->Fill(diphoton_idx);
-      // Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
+        // cout << "diphoton_idx = " << diphoton_idx << endl;
+        // diphoton_idx_h->Fill(diphoton_idx);
+        // Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
 
-      //---
-      // event.getByToken( diPhotonTokens_[diphoton_idx], diPhotons ); // for each diphoton systematic
-      // event.getByToken( diphotonToken_, diphotons ); // without looping over diphoton systematics
-      //---
+        //---
+        // event.getByToken( diPhotonTokens_[diphoton_idx], diPhotons ); // for each diphoton systematic 
+        // event.getByToken( diphotonToken_, diphotons ); // without looping over diphoton systematics 
+        //---
 
-      // unsigned int loopOverJets = 1;
-      // if (inputDiPhotonSuffixes_[diphoton_idx].empty()) loopOverJets = inputJetsSuffixes_.size();
+        // unsigned int loopOverJets = 1;
+        // if (inputDiPhotonSuffixes_[diphoton_idx].empty()) loopOverJets = inputJetsSuffixes_.size();
 
-      // for (unsigned int jet_col_idx = 0; jet_col_idx < loopOverJets; jet_col_idx++) {//looping over all jet systematics, only for nominal diphotons
-      // cout << "jet_col_idx = " << jet_col_idx << endl;
-      std::unique_ptr<vector<HHWWggTag> > HHWWggtags( new vector<HHWWggTag> );
+        // for (unsigned int jet_col_idx = 0; jet_col_idx < loopOverJets; jet_col_idx++) {//looping over all jet systematics, only for nominal diphotons
+          // cout << "jet_col_idx = " << jet_col_idx << endl;
+        std::unique_ptr<vector<HHWWggTag> > HHWWggtags( new vector<HHWWggTag> );
 
-      // if (diPhotons->size() > 0){ // for each systematic
+        // if (diPhotons->size() > 0){ // for each systematic 
 
-      // if(diphotons->size() > 1){
-      //   cout << "diphotons->size(): " << diphotons->size() << endl;
-      //   for (unsigned int diphoIndex = 0; diphoIndex < diphotons->size(); diphoIndex++){
-      //     edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex );
-      //     // cout << "dipho pt = " << dipho->genP4().pt() << endl;
-      //     // cout << "diphoton->genP4().pt(): " << dipho->genP4().pt() << endl;
-      //     // cout << "dipho->genP4().pt(): " << dipho->genP4().pt() << endl;
-      //     cout << "dipho->pt(): " << dipho->pt() << endl;
-      //     cout << "diphoton->sumPt(): " << dipho->sumPt() << endl;
-      //     // cout << "dipho->leadingPhoton()->pt(): " << dipho->leadingPhoton()->pt() << endl;
-      //     // cout << "dipho->subleadingPhoton()->pt(): " << dipho->subLeadingPhoton()->pt() << endl;
-      //   }
-      // }
+        // if(diphotons->size() > 1){
+        //   cout << "diphotons->size(): " << diphotons->size() << endl;
+        //   for (unsigned int diphoIndex = 0; diphoIndex < diphotons->size(); diphoIndex++){
+        //     edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex ); 
+        //     // cout << "dipho pt = " << dipho->genP4().pt() << endl; 
+        //     // cout << "diphoton->genP4().pt(): " << dipho->genP4().pt() << endl;
+        //     // cout << "dipho->genP4().pt(): " << dipho->genP4().pt() << endl;
+        //     cout << "dipho->pt(): " << dipho->pt() << endl;
+        //     cout << "diphoton->sumPt(): " << dipho->sumPt() << endl;
+        //     // cout << "dipho->leadingPhoton()->pt(): " << dipho->leadingPhoton()->pt() << endl;
+        //     // cout << "dipho->subleadingPhoton()->pt(): " << dipho->subLeadingPhoton()->pt() << endl;
+        //   }
+        // }
 
-      if (diphotons->size() > 0){ // without systematics (?)
+        if (diphotons->size() > 0){
         for( unsigned int diphoIndex = 0; diphoIndex < 1; diphoIndex++ ) { // only look at highest sumpt dipho
           // cout << "****In diphoton loop***" << endl;
           // std::unique_ptr<vector<HHWWggTag> > tags( new vector<HHWWggTag> );
@@ -707,11 +726,20 @@ namespace flashgg {
 
           // indexes->Fill(diphoton_vertex_index); // running
 
-          //-- MVA selections
+          //-- Get Photons 
           const flashgg::Photon* leadPho = dipho->leadingPhoton();
           const flashgg::Photon* subleadPho = dipho->subLeadingPhoton();
 
-          diphoton_vertex = dipho->vtx();
+          if(doHHWWggNonResAnalysis_){
+            leadPho_pt = leadPho->pt();
+            subleadPho_pt = subleadPho->pt();
+            sumpT = leadPho_pt + subleadPho_pt; 
+            // if(sumpT < 100) continue; 
+            if(!doHHWWggTagCutFlowAnalysis_ && sumpT < 100.) continue; // if not doing cut flow analysis to save events, remove event  
+          }
+
+          //-- MVA selections
+          diphoton_vertex = dipho->vtx();  
 
           passMVAs = 0;
           passMVAs = checkPassMVAs(leadPho, subleadPho, diphoton_vertex);

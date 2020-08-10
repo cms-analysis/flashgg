@@ -69,7 +69,9 @@ class HHWWggCustomize():
         # variables for miscellaneous debugging
         debugVars=[
             "leadPhoMVA[2,0,2]:=lp_Hgg_MVA",
-            "subleadPhoMVA[2,0,2]:=slp_Hgg_MVA"
+            "subleadPhoMVA[2,0,2]:=slp_Hgg_MVA",
+            "Leading_Photon_pt:=lp_pt",
+            "Subleading_Photon_pt:=slp_pt"
         ]
 
         otherVariables=[
@@ -336,8 +338,15 @@ class HHWWggCustomize():
     def customizeTagSequence(self):
         self.process.load("flashgg.Taggers.flashggHHWWggTag_cff")
 
-        if self.customize.doHHWWggTagCutFlow or self.customize.saveHHWWggFinalStateVars:
+        # if self.customize.doHHWWggTagCutFlow: 
+        if self.customize.doHHWWggTagCutFlow or self.customize.saveHHWWggFinalStateVars:  ##-- set true for either case because finalstate vars only saved during cutflow 
             self.process.flashggHHWWggTag.doHHWWggTagCutFlowAnalysis = cms.bool(True)
+
+        if self.customize.doHHWWggNonResAnalysis: 
+            self.process.flashggHHWWggTag.doHHWWggNonResAnalysis = cms.bool(True)
+
+        # if self.customize.saveHHWWggGenVars: 
+            # self.process.flashggHHWWggTag.saveHHWWggGenVars = cms.bool(True)
 
         # if self.customize.saveHHWWggFinalStateVars:
             # self.process.flashggHHWWggTag.saveHHWWggFinalStateVars = cms.bool(True)
@@ -379,13 +388,12 @@ class HHWWggCustomize():
 
         self.process.flashggTagSequence.replace(self.process.flashggTagSorter,self.process.flashggHHWWggTagSequence*self.process.flashggTagSorter)
         self.process.flashggTagSorter.TagPriorityRanges = cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggHHWWggTag')) )
-
-    def HHWWggTagMerger(self,systlabels=[]):
+ 
+    def HHWWggTagMerger(self,systlabels=[]):     
         self.process.p.remove(self.process.flashggTagSorter)
         self.process.p.replace(self.process.flashggSystTagMerger,self.process.flashggHHWWggTagSequence*self.process.flashggTagSorter*self.process.flashggSystTagMerger)
-        # print'process.p = ',self.process.p
+        # print'process.p = ',self.process.p 
 
-        ##-- Do I need this part for HHWWgg?
         for systlabel in systlabels:
            if systlabel!='':
              self.process.p.remove(getattr(self.process,'flashggTagSorter'+systlabel))
@@ -396,10 +404,14 @@ class HHWWggCustomize():
         # print 'from loop after:',process.flashggSystTagMerger.src
 
 
-    def HHWWggTagRunSequence(self,systlabels,jetsystlabels,phosystlabels):
-        print'[HHWWggTagRunSequence]: Doing Nothing for HHWWgg'
-    #    if self.customize.HHWWggTagsOnly:
-        #   print'systlabels = ',systlabels
+
+    # def HHWWggTagRunSequence(self,systlabels,jetsystlabels,phosystlabels):
+        # if self.customize.saveHHWWggGenVars:
+            # self.addGenAnalysis()           
+        # print'[HHWWggTagRunSequence]: Doing Nothing for HHWWgg'
+    #    if self.customize.HHWWggTagsOnly: 
+        #   print'systlabels = ',systlabels 
+
         #   self.HHWWggTagMerger(systlabels)
 
 
@@ -417,7 +429,10 @@ class HHWWggCustomize():
         #   self.addNodesReweighting()
 
     #    if self.customize.doHHWWggGenAnalysis:
-        #   self.addGenAnalysis()
+    #       self.addGenAnalysis()
+
+    #    if self.customize.saveHHWWggGenVars:
+
 
 
 
@@ -430,76 +445,77 @@ class HHWWggCustomize():
         #     self.process.flashggHHWWggReweight.weightsFile = cms.untracked.FileInPath(str(self.metaConditions["HHWWggTag"]["NodesReweightingFileName"]))
         #     self.process.p.replace(self.process.flashggHHWWggTag, self.process.flashggHHWWggReweight*self.process.flashggHHWWggTag)
 
+    # def addGenAnalysis(self):
+    #     if self.customize.processId == "Data": 
+    #         return 
 
-    def addGenAnalysis(self):
-        if self.customize.processId == "Data":
-            return
+    #     import flashgg.Taggers.dumperConfigTools as cfgTools
+    #     ## load gen-level bbgg 
+    #     # self.process.load( "flashgg.MicroAOD.flashggGenDiPhotonDiBJetsSequence_cff" )
 
-        import flashgg.Taggers.dumperConfigTools as cfgTools
-        ## load gen-level bbgg
-        self.process.load( "flashgg.MicroAOD.flashggGenDiPhotonDiBJetsSequence_cff" )
+    #     ## match gen-level to reco tag
+    #     self.process.load("flashgg.Taggers.flashggTaggedGenDiphotons_cfi")
+    #     # self.process.flashggTaggedGenDiphotons.src  = "flashggSelectedGenDiPhotonDiBJets"
+    #     self.process.flashggTaggedGenDiphotons.tags = "flashggTagSorter"
+    #     self.process.flashggTaggedGenDiphotons.remap = self.process.tagsDumper.classifierCfg.remap
 
-        ## match gen-level to reco tag
-        self.process.load("flashgg.Taggers.flashggTaggedGenDiphotons_cfi")
-        self.process.flashggTaggedGenDiphotons.src  = "flashggSelectedGenDiPhotonDiBJets"
-        self.process.flashggTaggedGenDiphotons.tags = "flashggTagSorter"
-        self.process.flashggTaggedGenDiphotons.remap = self.process.tagsDumper.classifierCfg.remap
+    #     ## prepare gen-level dumper
+    #     self.process.load("flashgg.Taggers.genDiphotonDumper_cfi")
+    #     self.process.genDiphotonDumper.dumpTrees = True
+    #     self.process.genDiphotonDumper.dumpWorkspace = False
+    #     self.process.genDiphotonDumper.src = "flashggTaggedGenDiphotons"
 
-        ## prepare gen-level dumper
-        self.process.load("flashgg.Taggers.genDiphotonDumper_cfi")
-        self.process.genDiphotonDumper.dumpTrees = True
-        self.process.genDiphotonDumper.dumpWorkspace = False
-        self.process.genDiphotonDumper.src = "flashggTaggedGenDiphotons"
+    #     from flashgg.Taggers.globalVariables_cff import globalVariables
+    #     self.process.genDiphotonDumper.dumpGlobalVariables = True
+    #     self.process.genDiphotonDumper.globalVariables = globalVariables
 
-        from flashgg.Taggers.globalVariables_cff import globalVariables
-        self.process.genDiphotonDumper.dumpGlobalVariables = True
-        self.process.genDiphotonDumper.globalVariables = globalVariables
-
-        genVariables = ["mgg := mass",
-                        "mbb := dijet.mass",
-                        "mhh := sqrt( pow(energy+dijet.energy,2) - pow(px+dijet.px,2) - pow(py+dijet.py,2) - pow(pz+dijet.pz,2))",
+    #     genVariables = ["mgg := mass",
+    #                     "mbb := dijet.mass",
+    #                     "mhh := sqrt( pow(energy+dijet.energy,2) - pow(px+dijet.px,2) - pow(py+dijet.py,2) - pow(pz+dijet.pz,2))",                    
 
 
-                        "leadPho_px := leadingPhoton.px",
-                        "leadPho_py := leadingPhoton.py",
-                        "leadPho_pz := leadingPhoton.pz",
-                        "leadPho_e  := leadingPhoton.energy",
-                        "subleadPho_px := subLeadingPhoton.px",
-                        "subleadPho_py := subLeadingPhoton.py",
-                        "subleadPho_pz := subLeadingPhoton.pz",
-                        "subleadPho_e  := subLeadingPhoton.energy",
+    #                     "leadPho_px := leadingPhoton.px",
+    #                     "leadPho_py := leadingPhoton.py",
+    #                     "leadPho_pz := leadingPhoton.pz",
+    #                     "leadPho_e  := leadingPhoton.energy",
+    #                     "subleadPho_px := subLeadingPhoton.px",
+    #                     "subleadPho_py := subLeadingPhoton.py",
+    #                     "subleadPho_pz := subLeadingPhoton.pz",
+    #                     "subleadPho_e  := subLeadingPhoton.energy",
 
-                        "leadJet_px := leadingJet.px",
-                        "leadJet_py := leadingJet.py",
-                        "leadJet_pz := leadingJet.pz",
-                        "leadJet_e  := leadingJet.energy",
-                        "subleadJet_px := subLeadingJet.px",
-                        "subleadJet_py := subLeadingJet.py",
-                        "subleadJet_pz := subLeadingJet.pz",
-                        "subleadJet_e  := subLeadingJet.energy",
+    #                     "leadJet_px := leadingJet.px",
+    #                     "leadJet_py := leadingJet.py",
+    #                     "leadJet_pz := leadingJet.pz",
+    #                     "leadJet_e  := leadingJet.energy",
+    #                     "subleadJet_px := subLeadingJet.px",
+    #                     "subleadJet_py := subLeadingJet.py",
+    #                     "subleadJet_pz := subLeadingJet.pz",
+    #                     "subleadJet_e  := subLeadingJet.energy",
 
-                        ]
-        # if self.customize.HHWWggReweight > 0:
-        #      for num in range(0,12):
-        #            genVariables += ["benchmark_reweight_%d := getHHbbggBenchmarkReweight(%d)"%(num,num)]
-        #      genVariables += ["benchmark_reweight_SM := getHHbbggBenchmarkReweight(12)"]
-        #      genVariables += ["benchmark_reweight_box := getHHbbggBenchmarkReweight(13)"]
-        #      genVariables += ["benchmark_reweight_2017fake := getHHbbggBenchmarkReweight(14)"]
+    #                     ]
+    #     # if self.customize.HHWWggReweight > 0: 
+    #     #      for num in range(0,12):
+    #     #            genVariables += ["benchmark_reweight_%d := getHHbbggBenchmarkReweight(%d)"%(num,num)]
+    #     #      genVariables += ["benchmark_reweight_SM := getHHbbggBenchmarkReweight(12)"]
+    #     #      genVariables += ["benchmark_reweight_box := getHHbbggBenchmarkReweight(13)"]
+    #     #      genVariables += ["benchmark_reweight_2017fake := getHHbbggBenchmarkReweight(14)"]
 
-        ## define categories for gen-level dumper
-        cfgTools.addCategory(self.process.genDiphotonDumper,  ## events with not reco-level tag
-                             "NoTag", 'isTagged("flashggNoTag")',1,
-                             variables=genVariables,
-                             )
+    #     ## define categories for gen-level dumper
+    #     cfgTools.addCategory(self.process.genDiphotonDumper,  ## events with not reco-level tag
+    #                          "NoTag", 'isTagged("flashggNoTag")',1,
+    #                          variables=genVariables,
+    #                          )
 
-        for tag in self.tagList: ## tagged events
-            tagName,subCats = tag
-            # need to define all categories explicitely because cut-based classifiers do not look at sub-category number
-            for isub in xrange(subCats):
-                cfgTools.addCategory(self.process.genDiphotonDumper,
-                                     "%s_%d" % ( tagName, isub ),
-                                     'isTagged("%s") && categoryNumber == %d' % (tagName, isub),0,
-                                     variables=genVariables##+recoVariables
-                                     )
+    #     for tag in self.tagList: ## tagged events
+    #         tagName,subCats = tag
+    #         # need to define all categories explicitely because cut-based classifiers do not look at sub-category number
+    #         for isub in xrange(subCats):
+    #             cfgTools.addCategory(self.process.genDiphotonDumper,
+    #                                  "%s_%d" % ( tagName, isub ), 
+    #                                  'isTagged("%s") && categoryNumber == %d' % (tagName, isub),0,
+    #                                  variables=genVariables##+recoVariables
+    #                                  )
 
-        self.process.genp = cms.Path(self.process.flashggGenDiPhotonDiBJetsSequence*self.process.flashggTaggedGenDiphotons*self.process.genDiphotonDumper)
+    #     # self.process.genp = cms.Path(self.process.flashggGenDiPhotonDiBJetsSequence*self.process.flashggTaggedGenDiphotons*self.process.genDiphotonDumper)
+    #     self.process.genp = cms.Path(self.process.flashggTaggedGenDiphotons*self.process.genDiphotonDumper)
+

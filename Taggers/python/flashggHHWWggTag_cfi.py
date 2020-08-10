@@ -70,7 +70,9 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     # bTag = cms.string(flashggDeepCSV),
                                     # btagThresh = cms.double(100)     # no btag (Save all btags < 100)                                 
                                     btagThresh = cms.double(0.45),
-                                    doHHWWggTagCutFlowAnalysis = cms.bool(False) # save events for cut flow analysis                                       
+                                    doHHWWggTagCutFlowAnalysis = cms.bool(False), # save events for cut flow analysis 
+                                    doHHWWggNonResAnalysis = cms.bool(False)   
+                                    # saveHHWWggGenVars = cms.bool(False)                                   
                                     # saveHHWWggFinalStateVars = cms.bool(False)
                                     )
 # flashggHHWWggTagSequence = cms.Sequence( flashggHHWWggTag ) # not used 

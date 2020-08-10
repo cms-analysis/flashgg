@@ -105,6 +105,7 @@ namespace flashgg {
     virtual HHWWggTag *clone() const override; // You need this because HHWWggTag is derived from the DiPhotonTagBase
 
     // void GetPhotons(edm::Ptr<DiPhotonCandidate> dipho);
+    void GetPhoAtt(edm::Ptr<DiPhotonCandidate> dipho);
     void GetObjects(edm::Ptr<DiPhotonCandidate> dipho);
     void GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Met>);
     void GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Met> MET, edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2);
@@ -125,6 +126,8 @@ namespace flashgg {
     const flashgg::Photon* Subleading_Photon() const { return Subleading_Photon_; };
     const float lp_Hgg_MVA() const {return lp_Hgg_MVA_;};
     const float slp_Hgg_MVA() const {return slp_Hgg_MVA_;};
+    const float lp_pt() const {return lp_pt_;};
+    const float slp_pt() const {return slp_pt_;};    
     const flashgg::Electron Electron() const { return Electron_; };
     const flashgg::Muon Muon() const { return Muon_; };
     const flashgg::Jet Leading_Jet() const { return Leading_Jet_; };
@@ -183,6 +186,8 @@ namespace flashgg {
     const flashgg::Photon* Subleading_Photon_;
     float lp_Hgg_MVA_;
     float slp_Hgg_MVA_;
+    float lp_pt_;
+    float slp_pt_;
     // std::vector<flashgg::Jet> JetVector_;
     std::vector<double> Cut_Variables_;
     std::vector<double> MuonVars_;
@@ -229,7 +234,6 @@ namespace flashgg {
     // float dZ_;
     // float lp_Hgg_MVA_;
     // float slp_Hgg_MVA_;
-
   };
 
 }
