@@ -2,7 +2,7 @@ Table of Contents
 =================
 
    * [General Info](#general-info)
-   * [Setting HHWWgg_dev Repository](#setting-hhwwgg_dev-repository)
+   * [Setting Up HHWWgg_dev Repository](#setting-hhwwgg_dev-repository)
       * [Setting up a voms Proxy](#setting-up-a-voms-proxy)
       * [HHWWgg Tagger](#hhwwgg-tagger)
          * [Running Locally](#running-locally)
@@ -40,7 +40,7 @@ Repositories:
 
 These instructions describe how to run flashgg modules specific to the `HH->WWgg` analysis. The current plugin designed to work with workspaceStd is the HHWWgg Tagger.
 
-# Setting HHWWgg_dev Repository
+# Setting Up HHWWgg_dev Repository
 
 The HHWWgg development branch is obtained in a similar fasion to the `dev_legacy_runII` branch:
 
@@ -94,25 +94,25 @@ and if desired to include tagging of other flashgg tags on the same events.
 The HHWWgg Tagger can be run locally on **signal (with 2017 metaConditions)** with:
 
 ```bash
-cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=HHWWgg_v2-6 dataset=ggF_X600_HHWWgg_qqlnu doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1
+cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=HHWWgg_v2-6 dataset=ggF_X600_HHWWgg_qqlnu doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=SL
 ```
 
 and on **2016 data**:
 
 ```bash
-cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json campaign=Era2016_RR-17Jul2018_v2 dataset=/DoubleEG/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016B-17Jul2018_ver2-v1-86023db6be00ee64cd62a3172358fb9f/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1
+cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json campaign=Era2016_RR-17Jul2018_v2 dataset=/DoubleEG/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016B-17Jul2018_ver2-v1-86023db6be00ee64cd62a3172358fb9f/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=SL
 ```
 
 and on **2017 data**:
 
 ```bash
-cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=Era2017_RR-31Mar2018_v2 dataset=/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1
+cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=Era2017_RR-31Mar2018_v2 dataset=/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=SL
 ```
 
 and on **2018 data**:
 
 ```bash
-cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json campaign=Era2018_RR-17Sep2018_v2 dataset=/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018A-17Sep2018-v2-dc8e5fb301bfbf2559680ca888829f0c/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=509 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1
+cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json campaign=Era2018_RR-17Sep2018_v2 dataset=/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018A-17Sep2018-v2-dc8e5fb301bfbf2559680ca888829f0c/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=509 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=SL
 ```
 
 All flags are either defined in `MetaData/python/JobConfig.py`, or `Systematics/test/workspaceStd.py`.
@@ -132,6 +132,7 @@ An explanation of the flags in this example:
 - **processId / processType**: Set to "`Data`" when running on data.
 - **doHHWWggTagCutFlow**: Categorize all events that pass pre-selection into HHWWgg categories. Without this flag, events that do not pass all analysis selections are cut.
 - **saveHHWWggFinalStateVars**: Save many final state variables such as kinematics for leptons and jets before and after analysis level selections. Variables are defined in [Systematics/python/HHWWggCustomize.py](https://github.com/atishelmanch/flashgg/blob/a7da39035c95cfe3f94b8aa6a428c5811e7dbc59/Systematics/python/HHWWggCustomize.py)
+- **HHWWggAnalysisChannel**: The HHWWgg channel analysis to run. This determines the possible categories events can fall into. Options are SL (Semi-Leptonic), FL (Fully-Leptonic) and FH (Fully-Hadronic). By default, if no value is specified, SL is used. NOTE that the untagged category will OVERLAP if combined with other analysis channels.
 
 With the options specified in the example, if this works properly, you should get an output file named: `output_numEvent500.root` containing a tree for each `HHWWggTag`.
 
@@ -142,12 +143,11 @@ to the leptonically decaying W boson, **and at least two 'good' jets**, correspo
 
 - **HHWWggTag_0**: Semileptonic electron final state (qqlnugg with l = electron)
 - **HHWWggTag_1**: Semileptonic muon final state (qqlnugg with l = muon)
-- **HHWWggTag_2**: Fully hadronic state (jets selected based on min Mass)
-- **HHWWggTag_3**: Fullly hadronic state (just selected 4 highest pT jets)
-- **HHWWggTag_4**: Untagged (if doHHWWggTagCutFlow=1)
+- **HHWWggTag_2**: Fully hadronic state (jets selected based on min Mass, or 4 highest pT jets if flag doHHWWggFHptOrdered=1 is set)
+- **HHWWggTag_3**: Untagged (if doHHWWggTagCutFlow=1)
 
 Note that the untagged category is only filled if you are running with the flag `doHHWWggTagCutFlow=1`. To add another category, the number of categories
-specified in [Systematics/python/HHWWggCustomize.py](https://github.com/atishelmanch/flashgg/blob/a7da39035c95cfe3f94b8aa6a428c5811e7dbc59/Systematics/python/HHWWggCustomize.py) should be changed like so: `self.tagList = [ ["HHWWggTag",3] ] -> self.tagList = [ ["HHWWggTag",4] ]`. Then, when saving a tag object
+specified in [Systematics/python/HHWWggCustomize.py](https://github.com/atishelmanch/flashgg/blob/a7da39035c95cfe3f94b8aa6a428c5811e7dbc59/Systematics/python/HHWWggCustomize.py) should be changed like so: `self.tagList = [ ["HHWWggTag",4] ] -> self.tagList = [ ["HHWWggTag",5] ]`. Then, when saving a tag object
 of the new category, you would do so in [Taggers/plugins/HHWWggTagProducer.cc](https://github.com/atishelmanch/flashgg/blob/a7da39035c95cfe3f94b8aa6a428c5811e7dbc59/Taggers/plugins/HHWWggTagProducer.cc) with `tag_obj.setCategoryNumber( 3 )` rather than `tag_obj.setCategoryNumber( catNum )` where catNum = 0, 1, or 2.
 
 ### Running on Condor
@@ -343,11 +343,6 @@ Explanation of additional flag:
 
    - The output root file name will be `output_ggF_node11_HHWWgg_qqqq_*.root` when running using condor.
    - The workspace name will be `GluGluToHHTo_WWgg_qqqq_node11`.
-
-
-
-# To-Do List
-
 
 
 

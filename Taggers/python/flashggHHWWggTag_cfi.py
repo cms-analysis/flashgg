@@ -71,8 +71,10 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     # btagThresh = cms.double(100)     # no btag (Save all btags < 100)                                 
                                     btagThresh = cms.double(0.45),
                                     doHHWWggTagCutFlowAnalysis = cms.bool(False), # save events for cut flow analysis 
-                                    doHHWWggNonResAnalysis = cms.bool(False)   
-                                    # saveHHWWggGenVars = cms.bool(False)                                   
+                                    doHHWWggNonResAnalysis = cms.bool(False),
+                                    doHHWWggFHptOrdered = cms.bool(False), # for FH final state, choose four leading pT jets as four jets    
+                                    doHHWWggDebug = cms.bool(False),
+                                    HHWWggAnalysisChannel = cms.string("SL") # final state analysis to run. SL by default. Can be SL, FL, or FH 
                                     # saveHHWWggFinalStateVars = cms.bool(False)
                                     )
 # flashggHHWWggTagSequence = cms.Sequence( flashggHHWWggTag ) # not used 

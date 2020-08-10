@@ -19,14 +19,13 @@ class HHWWggCustomize():
             metaConditions --
             tagList -- Categories:  0 : SemiLeptonic electron channel
                                     1 : SemiLeptonic muon channel
-                                    2 : Fully Hadronic channel (jets selection based on pT)
-                                    3 : Fully Hadronic channel (jets selection based on min W and H mass)
-                                    4 : Untagged --> Meets no criteria but want to save event to output
+                                    2 : Fully Hadronic channel (jets selection based on min W and H mass OR pT depending on input flag. min WH by default)
+                                    3 : Untagged --> Meets no criteria but want to save event to output
         """
         self.process = process
         self.customize = customize
         self.metaConditions = metaConditions
-        self.tagList = [ ["HHWWggTag",5] ] # 2 cats: 0: SL electron channel. 1: SL muon channel. 2: Untagged --> Meets no criteria but want to save event to output
+        self.tagList = [ ["HHWWggTag",4] ] # definitions above 
         self.customizeTagSequence()
 
     def variablesToDump(self):
@@ -344,6 +343,13 @@ class HHWWggCustomize():
 
         if self.customize.doHHWWggNonResAnalysis: 
             self.process.flashggHHWWggTag.doHHWWggNonResAnalysis = cms.bool(True)
+        if self.customize.doHHWWggFHptOrdered:
+            self.process.flashggHHWWggTag.doHHWWggFHptOrdered = cms.bool(True)
+        if self.customize.doHHWWggDebug:
+            self.process.flashggHHWWggTag.doHHWWggDebug = cms.bool(True)
+
+        # print "HHWWggAnalysisChannel:",self.customize.HHWWggAnalysisChannel 
+        self.process.flashggHHWWggTag.HHWWggAnalysisChannel = self.customize.HHWWggAnalysisChannel 
 
         # if self.customize.saveHHWWggGenVars: 
             # self.process.flashggHHWWggTag.saveHHWWggGenVars = cms.bool(True)

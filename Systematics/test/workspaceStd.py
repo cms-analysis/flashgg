@@ -102,13 +102,19 @@ customize.options.register('doHHWWggNonResAnalysis', # If true and doing HHWWggT
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doHHWWggNonResAnalysis'
-                           )                           
-# customize.options.register('saveHHWWggGenVars', # Save HHWWgg gen info 
-#                            False,
-#                            VarParsing.VarParsing.multiplicity.singleton,
-#                            VarParsing.VarParsing.varType.bool,
-#                            'saveHHWWggGenVars'
-#                            ),                                                     
+                           )  
+customize.options.register('doHHWWggFHptOrdered', # For HHWWgg analysis fully hardonic state, select jets based on pT order and not min WH difference 
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doHHWWggFHptOrdered'
+                           )     
+customize.options.register('HHWWggAnalysisChannel', # SL, FL or FH 
+                           "SL", ## run semileptonic by default if nothing specified 
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.string,
+                           'HHWWggAnalysisChannel'
+                           )                                                                               
 customize.options.register('doHHWWggDebug', # save more variables to perform checks 
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
