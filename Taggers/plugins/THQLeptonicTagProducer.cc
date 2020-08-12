@@ -45,6 +45,7 @@
 
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
+#include "flashgg/Taggers/interface/TTH_DNN_Helper.h"
 #include "TCanvas.h"
 #include <map>
 #include <typeinfo>
@@ -175,22 +176,32 @@ private:
     double deltaMassElectronZThreshold_;
     double DeltaRbjetfwdjet_;
     double DeltaRtHchainfwdjet_;
-    double MVAThreshold_thq_;
-    double MVAThreshold_ForNonPeakingBkg_;
+    double MVAThreshold_tHqVsttHBDT_;
+    double MVAThreshold_tHqVsttHDNN_;
+    double MVAThreshold_tHqVsNonHiggsBkg_;
 
     bool hasGoodElec = false;
     bool hasVetoElec = false;
     bool hasGoodMuons = false;
 
-    unique_ptr<TMVA::Reader> thqLeptonicMva_;
-    unique_ptr<TMVA::Reader> thqLeptonicMva_ForNonPeakingBkg;
-    FileInPath thqLeptonicMVAweightfile_;
-    FileInPath thqCatweightfile_ForNonPeakingBkg_;
+    unique_ptr<TMVA::Reader> thqLeptonicMva_tHqVsttHBDT;
+    unique_ptr<TMVA::Reader> thqLeptonicMva_tHqVsNonHiggsBkg;
+    FileInPath MVAweight_tHqVsttHBDT_;
+    FileInPath MVAweight_tHqVsNonHiggsBkg_;
+    FileInPath tthVstHDNNfile_;
+    std::vector<double> tthVstHDNN_global_mean_;
+    std::vector<double> tthVstHDNN_global_stddev_;
+    std::vector<double> tthVstHDNN_object_mean_;
+    std::vector<double> tthVstHDNN_object_stddev_;
+
     string  MVAMethod_;
     vector<double> boundaries;
+    bool use_MVAs_;
+    bool use_tthVstHDNN_;
+    bool use_tthVstHBDT_;
 
-    float thqLeptonicMvaResult_value_, topMass;
-    float thqCatMvaResult_ForNonPeakingBkg_;
+    float MVAscore_tHqVsttHBDT, topMass;
+    float MVAscore_tHqVsNonHiggsBkg;
     std::vector< TLorentzVector > particles_LorentzVector;
     std::vector< math::RhoEtaPhiVector > particles_RhoEtaPhiVector;
 
@@ -251,7 +262,15 @@ private:
     float fwdJet1_discr_;
     float lepton_leadPt_;
     float lepton_leadEta_;
+
+    float minPhoID_;
+    float maxPhoID_;
+    float maxBTagVal_;
+    float secondMaxBTagVal_;
+    float MVAscore_tHqVsttHDNN;
+
     bool debug_=false;
+    TTH_DNN_Helper* dnn_ttH_vs_tH;
     struct GreaterByPt
     {
     public:
@@ -424,106 +443,118 @@ THQLeptonicTagProducer::THQLeptonicTagProducer( const ParameterSet &iConfig ) :
     deltaMassElectronZThreshold_ = iConfig.getUntrackedParameter<double>( "deltaMassElectronZThreshold_", default_deltaMassElectronZThreshold_ );
     DeltaRbjetfwdjet_ = iConfig.getParameter<double>( "DeltaRbjetfwdjet" );
     DeltaRtHchainfwdjet_ = iConfig.getParameter<double>( "DeltaRtHchainfwdjet" );
-    MVAThreshold_thq_ = iConfig.getParameter<double>( "MVAThreshold_thq" );
-    MVAThreshold_ForNonPeakingBkg_ = iConfig.getParameter<double>( "MVAThreshold_ForNonPeakingBkg" );
-    thqLeptonicMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "thqleptonicMVAweightfile" );
-    thqCatweightfile_ForNonPeakingBkg_ = iConfig.getParameter<edm::FileInPath>( "thqCatweightfile_ForNonPeakingBkg");
+    MVAThreshold_tHqVsttHBDT_ = iConfig.getParameter<double>( "MVAThreshold_tHqVsttHBDT" );
+    MVAThreshold_tHqVsttHDNN_ = iConfig.getParameter<double>( "MVAThreshold_tHqVsttHDNN" );
+    MVAThreshold_tHqVsNonHiggsBkg_ = iConfig.getParameter<double>( "MVAThreshold_tHqVsNonHiggsBkg" );
+    MVAweight_tHqVsttHBDT_ = iConfig.getParameter<edm::FileInPath>( "MVAweight_tHqVsttHBDT" );
+    MVAweight_tHqVsNonHiggsBkg_ = iConfig.getParameter<edm::FileInPath>( "MVAweight_tHqVsNonHiggsBkg");
+    tthVstHDNNfile_ = iConfig.getParameter<edm::FileInPath>( "tthVstHDNNfile" );
+    tthVstHDNN_global_mean_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_global_mean" );
+    tthVstHDNN_global_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_global_stddev" );
+    tthVstHDNN_object_mean_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_object_mean" );
+    tthVstHDNN_object_stddev_ = iConfig.getParameter<std::vector<double>>( "tthVstHDNN_object_stddev" );
+            
     boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
+    use_MVAs_ = iConfig.getParameter<bool> ( "use_MVAs" );
+    use_tthVstHDNN_ = iConfig.getParameter<bool> ( "use_tthVstHDNN" );
+    use_tthVstHBDT_ = iConfig.getParameter<bool> ( "use_tthVstHBDT" );
+        thqLeptonicMva_tHqVsttHBDT.reset( new TMVA::Reader( "!Color:Silent" ) );
 
-        thqLeptonicMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "dipho_leadPt/dipho_mass", &dipho_leadPtOvermass_ );
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "dipho_subleadPt/dipho_mass", &dipho_subleadPtOvermass_ );
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "dipho_leadEta", &dipho_leadEta_ );
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "dipho_subleadEta", &dipho_subleadEta_ );
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "dipho_leadIDMVA", &dipho_leadIDMVA_ );
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "dipho_subleadIDMVA", &dipho_subleadIDMVA_ );
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "dipho_lead_haspixelseed", &dipho_lead_haspixelseed_ );
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "dipho_sublead_haspixelseed", &dipho_sublead_haspixelseed_ );
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "n_jets"  ,              &n_jets_);  
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "n_bjets",               &n_bjets_ );  
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "n_centraljets",         &n_centraljets_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "lepton_charge",         &lepton_ch_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "lepton_leadPt",         &lepton_leadPt_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "lepton_leadEta",         &lepton_leadEta_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "fwdjet1_pt",           &fwdJet1_pt_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "fwdjet1_eta",           &fwdJet1_eta_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "fwdjet1_discr",           &fwdJet1_discr_);
+	    thqLeptonicMva_tHqVsttHBDT->AddVariable( "top_mt",                 &top_mt11_  );
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "dr_tHchainfwdjet",       &dRtHchainfwdjet_  );
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "dr_leptonbjet",          &dRleptonbjet_  );
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "dr_leptonfwdjet",        &dRleptonfwdjet_  );
+	    thqLeptonicMva_tHqVsttHBDT->AddVariable( "dr_bjetfwdjet", 	  &dRbjetfwdjet_);
+	    thqLeptonicMva_tHqVsttHBDT->AddVariable( "dr_leadphofwdjet",       &dRleadphofwdjet_  );
+	    thqLeptonicMva_tHqVsttHBDT->AddVariable( "dr_subleadphofwdjet" ,   &dRsubleadphofwdjet_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "bjet1_pt",              &bjet1_pt_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "bjet2_pt",              &bjet2_pt_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "bjet3_pt",              &bjet3_pt_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "bjet1_eta",              &bjet1_eta_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "bjet2_eta",              &bjet2_eta_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "bjet3_eta",              &bjet3_eta_);
+	    thqLeptonicMva_tHqVsttHBDT->AddVariable( "bjet1_discr",            &bjet1_discr_);
+	    thqLeptonicMva_tHqVsttHBDT->AddVariable( "bjet2_discr",            &bjet2_discr_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "bjet3_discr",            &bjet3_discr_);
+	    thqLeptonicMva_tHqVsttHBDT->AddVariable( "jet1_pt",                &jet1_pt_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "jet2_pt",                &jet2_pt_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "jet3_pt",                &jet3_pt_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "jet1_eta",               &jet1_eta_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "jet2_eta",               &jet2_eta_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "jet3_eta",               &jet3_eta_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "jet1_discr",               &jet1_discr_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "jet2_discr",               &jet2_discr_);
+        thqLeptonicMva_tHqVsttHBDT->AddVariable( "jet3_discr",               &jet3_discr_);
 
-        thqLeptonicMva_->AddVariable( "dipho_leadPt/dipho_mass", &dipho_leadPtOvermass_ );
-        thqLeptonicMva_->AddVariable( "dipho_subleadPt/dipho_mass", &dipho_subleadPtOvermass_ );
-        thqLeptonicMva_->AddVariable( "dipho_leadEta", &dipho_leadEta_ );
-        thqLeptonicMva_->AddVariable( "dipho_subleadEta", &dipho_subleadEta_ );
-        thqLeptonicMva_->AddVariable( "dipho_leadIDMVA", &dipho_leadIDMVA_ );
-        thqLeptonicMva_->AddVariable( "dipho_subleadIDMVA", &dipho_subleadIDMVA_ );
-        thqLeptonicMva_->AddVariable( "dipho_lead_haspixelseed", &dipho_lead_haspixelseed_ );
-        thqLeptonicMva_->AddVariable( "dipho_sublead_haspixelseed", &dipho_sublead_haspixelseed_ );
-        thqLeptonicMva_->AddVariable( "n_jets"  ,              &n_jets_);  
-        thqLeptonicMva_->AddVariable( "n_bjets",               &n_bjets_ );  
-        thqLeptonicMva_->AddVariable( "n_centraljets",         &n_centraljets_);
-        thqLeptonicMva_->AddVariable( "lepton_charge",         &lepton_ch_);
-        thqLeptonicMva_->AddVariable( "lepton_leadPt",         &lepton_leadPt_);
-        thqLeptonicMva_->AddVariable( "lepton_leadEta",         &lepton_leadEta_);
-        thqLeptonicMva_->AddVariable( "fwdjet1_pt",           &fwdJet1_pt_);
-        thqLeptonicMva_->AddVariable( "fwdjet1_eta",           &fwdJet1_eta_);
-        thqLeptonicMva_->AddVariable( "fwdjet1_discr",           &fwdJet1_discr_);
-	    thqLeptonicMva_->AddVariable( "top_mt",                 &top_mt11_  );
-        thqLeptonicMva_->AddVariable( "dr_tHchainfwdjet",       &dRtHchainfwdjet_  );
-        thqLeptonicMva_->AddVariable( "dr_leptonbjet",          &dRleptonbjet_  );
-        thqLeptonicMva_->AddVariable( "dr_leptonfwdjet",        &dRleptonfwdjet_  );
-	    thqLeptonicMva_->AddVariable( "dr_bjetfwdjet", 	  &dRbjetfwdjet_);
-	    thqLeptonicMva_->AddVariable( "dr_leadphofwdjet",       &dRleadphofwdjet_  );
-	    thqLeptonicMva_->AddVariable( "dr_subleadphofwdjet" ,   &dRsubleadphofwdjet_);
-        thqLeptonicMva_->AddVariable( "bjet1_pt",              &bjet1_pt_);
-        thqLeptonicMva_->AddVariable( "bjet2_pt",              &bjet2_pt_);
-        thqLeptonicMva_->AddVariable( "bjet3_pt",              &bjet3_pt_);
-        thqLeptonicMva_->AddVariable( "bjet1_eta",              &bjet1_eta_);
-        thqLeptonicMva_->AddVariable( "bjet2_eta",              &bjet2_eta_);
-        thqLeptonicMva_->AddVariable( "bjet3_eta",              &bjet3_eta_);
-	    thqLeptonicMva_->AddVariable( "bjet1_discr",            &bjet1_discr_);
-	    thqLeptonicMva_->AddVariable( "bjet2_discr",            &bjet2_discr_);
-        thqLeptonicMva_->AddVariable( "bjet3_discr",            &bjet3_discr_);
-	    thqLeptonicMva_->AddVariable( "jet1_pt",                &jet1_pt_);
-        thqLeptonicMva_->AddVariable( "jet2_pt",                &jet2_pt_);
-        thqLeptonicMva_->AddVariable( "jet3_pt",                &jet3_pt_);
-        thqLeptonicMva_->AddVariable( "jet1_eta",               &jet1_eta_);
-        thqLeptonicMva_->AddVariable( "jet2_eta",               &jet2_eta_);
-        thqLeptonicMva_->AddVariable( "jet3_eta",               &jet3_eta_);
-        thqLeptonicMva_->AddVariable( "jet1_discr",               &jet1_discr_);
-        thqLeptonicMva_->AddVariable( "jet2_discr",               &jet2_discr_);
-        thqLeptonicMva_->AddVariable( "jet3_discr",               &jet3_discr_);
+        thqLeptonicMva_tHqVsttHBDT->BookMVA( MVAMethod_.c_str() , MVAweight_tHqVsttHBDT_.fullPath() );
 
-        thqLeptonicMva_->BookMVA( MVAMethod_.c_str() , thqLeptonicMVAweightfile_.fullPath() );
+        thqLeptonicMva_tHqVsNonHiggsBkg.reset( new TMVA::Reader( "!Color:Silent" ) );
 
-        thqLeptonicMva_ForNonPeakingBkg.reset( new TMVA::Reader( "!Color:Silent" ) );
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "dipho_leadPt/dipho_mass", &dipho_leadPtOvermass_ );
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "dipho_subleadPt/dipho_mass", &dipho_subleadPtOvermass_ );
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "dipho_leadEta", &dipho_leadEta_ );
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "dipho_subleadEta", &dipho_subleadEta_ );
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "dipho_leadIDMVA", &dipho_leadIDMVA_ );
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "dipho_subleadIDMVA", &dipho_subleadIDMVA_ );
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "dipho_lead_haspixelseed", &dipho_lead_haspixelseed_ );
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "dipho_sublead_haspixelseed", &dipho_sublead_haspixelseed_ );
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "n_jets"  ,              &n_jets_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "n_bjets",               &n_bjets_ );
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "n_centraljets",         &n_centraljets_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "lepton_charge",         &lepton_ch_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "lepton_leadPt",         &lepton_leadPt_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "lepton_leadEta",         &lepton_leadEta_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "fwdjet1_pt",           &fwdJet1_pt_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "fwdjet1_eta",           &fwdJet1_eta_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "fwdjet1_discr",           &fwdJet1_discr_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "top_mt",                 &top_mt11_  );
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "dr_tHchainfwdjet",       &dRtHchainfwdjet_  );
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "dr_leptonbjet",          &dRleptonbjet_  );
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "dr_leptonfwdjet",        &dRleptonfwdjet_  );
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "dr_bjetfwdjet",    &dRbjetfwdjet_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "dr_leadphofwdjet",       &dRleadphofwdjet_  );
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "dr_subleadphofwdjet" ,   &dRsubleadphofwdjet_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "bjet1_pt",              &bjet1_pt_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "bjet2_pt",              &bjet2_pt_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "bjet3_pt",              &bjet3_pt_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "bjet1_eta",              &bjet1_eta_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "bjet2_eta",              &bjet2_eta_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "bjet3_eta",              &bjet3_eta_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "bjet1_discr",            &bjet1_discr_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "bjet2_discr",            &bjet2_discr_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "bjet3_discr",            &bjet3_discr_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "jet1_pt",                &jet1_pt_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "jet2_pt",                &jet2_pt_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "jet3_pt",                &jet3_pt_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "jet1_eta",               &jet1_eta_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "jet2_eta",               &jet2_eta_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "jet3_eta",               &jet3_eta_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "jet1_discr",               &jet1_discr_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "jet2_discr",               &jet2_discr_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->AddVariable( "jet3_discr",               &jet3_discr_);
 
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "dipho_leadPt/dipho_mass", &dipho_leadPtOvermass_ );
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "dipho_subleadPt/dipho_mass", &dipho_subleadPtOvermass_ );
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "dipho_leadEta", &dipho_leadEta_ );
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "dipho_subleadEta", &dipho_subleadEta_ );
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "dipho_leadIDMVA", &dipho_leadIDMVA_ );
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "dipho_subleadIDMVA", &dipho_subleadIDMVA_ );
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "dipho_lead_haspixelseed", &dipho_lead_haspixelseed_ );
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "dipho_sublead_haspixelseed", &dipho_sublead_haspixelseed_ );
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "n_jets"  ,              &n_jets_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "n_bjets",               &n_bjets_ );
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "n_centraljets",         &n_centraljets_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "lepton_charge",         &lepton_ch_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "lepton_leadPt",         &lepton_leadPt_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "lepton_leadEta",         &lepton_leadEta_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "fwdjet1_pt",           &fwdJet1_pt_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "fwdjet1_eta",           &fwdJet1_eta_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "fwdjet1_discr",           &fwdJet1_discr_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "top_mt",                 &top_mt11_  );
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "dr_tHchainfwdjet",       &dRtHchainfwdjet_  );
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "dr_leptonbjet",          &dRleptonbjet_  );
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "dr_leptonfwdjet",        &dRleptonfwdjet_  );
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "dr_bjetfwdjet",    &dRbjetfwdjet_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "dr_leadphofwdjet",       &dRleadphofwdjet_  );
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "dr_subleadphofwdjet" ,   &dRsubleadphofwdjet_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "bjet1_pt",              &bjet1_pt_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "bjet2_pt",              &bjet2_pt_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "bjet3_pt",              &bjet3_pt_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "bjet1_eta",              &bjet1_eta_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "bjet2_eta",              &bjet2_eta_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "bjet3_eta",              &bjet3_eta_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "bjet1_discr",            &bjet1_discr_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "bjet2_discr",            &bjet2_discr_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "bjet3_discr",            &bjet3_discr_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "jet1_pt",                &jet1_pt_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "jet2_pt",                &jet2_pt_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "jet3_pt",                &jet3_pt_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "jet1_eta",               &jet1_eta_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "jet2_eta",               &jet2_eta_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "jet3_eta",               &jet3_eta_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "jet1_discr",               &jet1_discr_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "jet2_discr",               &jet2_discr_);
-        thqLeptonicMva_ForNonPeakingBkg->AddVariable( "jet3_discr",               &jet3_discr_);
+        thqLeptonicMva_tHqVsNonHiggsBkg->BookMVA( MVAMethod_.c_str() , MVAweight_tHqVsNonHiggsBkg_.fullPath() );
 
-        thqLeptonicMva_ForNonPeakingBkg->BookMVA( MVAMethod_.c_str() , thqCatweightfile_ForNonPeakingBkg_.fullPath() );
-
+        dnn_ttH_vs_tH = new TTH_DNN_Helper(tthVstHDNNfile_.fullPath());
+        dnn_ttH_vs_tH->SetInputShapes(23, 9, 8);
+        dnn_ttH_vs_tH->SetPreprocessingSchemes(tthVstHDNN_global_mean_, tthVstHDNN_global_stddev_, tthVstHDNN_object_mean_, tthVstHDNN_object_stddev_);
 
     for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
         auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
@@ -1107,6 +1138,8 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
 	dipho_pt_ = dipho->pt(); 
     dipho_leadPtOvermass_ = dipho->leadingPhoton()->pt()/dipho->mass();
     dipho_subleadPtOvermass_ = dipho->subLeadingPhoton()->pt()/dipho->mass();
+    dipho_leadEta_ = dipho->leadingPhoton()->eta();
+    dipho_subleadEta_ = dipho->subLeadingPhoton()->eta();
     dipho_leadIDMVA_ = dipho->leadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
     dipho_subleadIDMVA_ = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
     dipho_lead_haspixelseed_ = dipho->leadingPhoton()->hasPixelSeed();
@@ -1166,7 +1199,8 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
     bDiscr_fwdjets.push_back(fwdJet1_discr_ );
 
         dRbjetfwdjet_ = deltaR( b1.Eta() , b1.Phi() , fwdJet1->eta() , fwdJet1->phi() );
-        dRtHchainfwdjet_ = deltaR( tHchain.Eta() , tHchain.Phi() , fwdJL.Eta() , fwdJL.Phi() );
+        //dRtHchainfwdjet_ = deltaR( tHchain.Eta() , tHchain.Phi() , fwdJL.Eta() , fwdJL.Phi() );
+        dRtHchainfwdjet_ = deltaR( tHchain.Eta() , tHchain.Phi() , fwdJet1->eta() , fwdJet1->phi() ); //this seems to be the source of the problems
         dRleadphobjet_ = deltaR( G1.Eta() , G1.Phi(), b1.Eta() , b1.Phi());
         dRsubleadphobjet_ = deltaR( G2.Eta() , G2.Phi(), b1.Eta() , b1.Phi());
         dRleadphofwdjet_ = deltaR( G1.Eta() , G1.Phi(), fwdJet1->eta() , fwdJet1->phi());
@@ -1174,32 +1208,87 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
         dRleptonbjet_ = deltaR( l1.Eta() , l1.Phi(), b1.Eta() , b1.Phi());
         dRleptonfwdjet_ = deltaR( l1.Eta() , l1.Phi(), fwdJet1->eta() , fwdJet1->phi());
 
+        minPhoID_=TMath::Min( dipho_leadIDMVA_, dipho_subleadIDMVA_);
+        maxPhoID_=TMath::Max( dipho_leadIDMVA_, dipho_subleadIDMVA_);
 
-        thqLeptonicMvaResult_value_ = thqLeptonicMva_->EvaluateMVA( MVAMethod_.c_str() );
-        thqCatMvaResult_ForNonPeakingBkg_ = thqLeptonicMva_ForNonPeakingBkg->EvaluateMVA( MVAMethod_.c_str() );
-    	thqltags_obj.setthq_mvaresult ( thqLeptonicMvaResult_value_ );
-        thqltags_obj.setthq_mvaresult_ForNonPeakingBkg( thqCatMvaResult_ForNonPeakingBkg_ );
+        maxBTagVal_ = bDiscr_bjets.size() > 0 ? bDiscr_bjets[0] : -1.;
+        secondMaxBTagVal_ = bDiscr_bjets.size() > 1 ? bDiscr_bjets[1]: -1.;
 
-//Tagger with BDT
-	 if( thqLeptonicMvaResult_value_ < MVAThreshold_thq_){
-         SelJetVect.clear();
-         SelJetVect_EtaSorted.clear(); SelJetVect_PtSorted.clear(); SelJetVect_BSorted.clear();
-         LooseBJetVect.clear(); LooseBJetVect_PtSorted.clear();
-         BJetVect.clear(); MediumBJetVect_PtSorted.clear();
-         TightBJetVect.clear(); TightBJetVect_PtSorted.clear();
-         centraljet.clear(); forwardjet.clear();
-         continue; }
+//Evaluate MVA-----------------------
+        MVAscore_tHqVsttHBDT = thqLeptonicMva_tHqVsttHBDT->EvaluateMVA( MVAMethod_.c_str() );
+        MVAscore_tHqVsNonHiggsBkg = thqLeptonicMva_tHqVsNonHiggsBkg->EvaluateMVA( MVAMethod_.c_str() );
+//DNN input variables--------------------------------
+        std::vector<double> global_features_ttH_vs_tH;
+        global_features_ttH_vs_tH.resize(23);        
+        global_features_ttH_vs_tH[0] = dipho->leadingPhoton()->eta();
+        global_features_ttH_vs_tH[1] = dipho->subLeadingPhoton()->eta();
+        global_features_ttH_vs_tH[2] = dipho->leadingPhoton()->phi();
+        global_features_ttH_vs_tH[3] = dipho->subLeadingPhoton()->phi();
+        global_features_ttH_vs_tH[4] = dipho_leadPtOvermass_;
+        global_features_ttH_vs_tH[5] = dipho_subleadPtOvermass_;
+        global_features_ttH_vs_tH[6] = maxPhoID_;
+        global_features_ttH_vs_tH[7] = minPhoID_;
+        global_features_ttH_vs_tH[8] = log(theMET->getCorPt());
+        global_features_ttH_vs_tH[9] = theMET->getCorPhi();
+        global_features_ttH_vs_tH[10] = dipho_lead_haspixelseed_;
+        global_features_ttH_vs_tH[11] = dipho_sublead_haspixelseed_;
+        global_features_ttH_vs_tH[12] = dipho->rapidity();
+        global_features_ttH_vs_tH[13] = dipho->pt()/dipho->mass();
+        global_features_ttH_vs_tH[14] = deltaR( dipho->leadingPhoton()->eta(),dipho->leadingPhoton()->phi(), dipho->subLeadingPhoton()->eta(),dipho->subLeadingPhoton()->phi());
+        global_features_ttH_vs_tH[15] = maxBTagVal_;
+        global_features_ttH_vs_tH[16] = secondMaxBTagVal_;
+        global_features_ttH_vs_tH[17] = SelJetVect.size();
+        global_features_ttH_vs_tH[18] = (goodElectrons.size() + goodMuons.size());
 
-     if( thqCatMvaResult_ForNonPeakingBkg_ < MVAThreshold_ForNonPeakingBkg_){
-         SelJetVect.clear();
-         SelJetVect_EtaSorted.clear(); SelJetVect_PtSorted.clear(); SelJetVect_BSorted.clear();
-         LooseBJetVect.clear(); LooseBJetVect_PtSorted.clear();
-         BJetVect.clear(); MediumBJetVect_PtSorted.clear();
-         TightBJetVect.clear(); TightBJetVect_PtSorted.clear();
-         centraljet.clear(); forwardjet.clear();
-         continue; }
+        double lep1_charge, lep2_charge;
+        calculate_lepton_charges(lep1_charge, lep2_charge, goodMuons, goodElectrons);
+
+        global_features_ttH_vs_tH[19] = lep1_charge;
+        global_features_ttH_vs_tH[20] = lep2_charge;
+        global_features_ttH_vs_tH[21] = std::abs(fwdJet1_eta_);
+        global_features_ttH_vs_tH[22] = log(fwdJet1_pt_);
+
+
+        dnn_ttH_vs_tH->SetInputs(SelJetVect, goodMuons, goodElectrons, global_features_ttH_vs_tH);
+//Evaluate DNN------------------------
+        MVAscore_tHqVsttHDNN = dnn_ttH_vs_tH->EvaluateDNN();
+//cout<<"ttH_vs_tH_dnn_score=  "<<MVAscore_tHqVsttHDNN<<endl;
+//Tagger with MVAs--------------------
+     if(use_MVAs_){
+        if(use_tthVstHBDT_){
+	        if( MVAscore_tHqVsttHBDT < MVAThreshold_tHqVsttHBDT_){
+                SelJetVect.clear();
+                SelJetVect_EtaSorted.clear(); SelJetVect_PtSorted.clear(); SelJetVect_BSorted.clear();
+                LooseBJetVect.clear(); LooseBJetVect_PtSorted.clear();
+                BJetVect.clear(); MediumBJetVect_PtSorted.clear();
+                TightBJetVect.clear(); TightBJetVect_PtSorted.clear();
+                centraljet.clear(); forwardjet.clear();
+                continue; 
+                }
+            }
+        if(use_tthVstHDNN_){
+            if( MVAscore_tHqVsttHDNN > MVAThreshold_tHqVsttHDNN_){
+                SelJetVect.clear();
+                SelJetVect_EtaSorted.clear(); SelJetVect_PtSorted.clear(); SelJetVect_BSorted.clear();
+                LooseBJetVect.clear(); LooseBJetVect_PtSorted.clear();
+                BJetVect.clear(); MediumBJetVect_PtSorted.clear();
+                TightBJetVect.clear(); TightBJetVect_PtSorted.clear();
+                centraljet.clear(); forwardjet.clear();
+                continue;
+                }
+            }
+        if( MVAscore_tHqVsNonHiggsBkg < MVAThreshold_tHqVsNonHiggsBkg_){
+            SelJetVect.clear();
+            SelJetVect_EtaSorted.clear(); SelJetVect_PtSorted.clear(); SelJetVect_BSorted.clear();
+            LooseBJetVect.clear(); LooseBJetVect_PtSorted.clear();
+            BJetVect.clear(); MediumBJetVect_PtSorted.clear();
+            TightBJetVect.clear(); TightBJetVect_PtSorted.clear();
+            centraljet.clear(); forwardjet.clear();
+            continue; 
+            }
+        }
 //int catnum = -1;
-//catnum = chooseCategory( thqLeptonicMvaResult_value_ );
+//catnum = chooseCategory( MVAscore_tHqVsttHBDT );
 //catnum = chooseCategory( mvares->result );
 //catnum = chooseCategory( idmva1, idmva2 );
 //---------------------------------------------------------------------------------------
@@ -1275,8 +1364,10 @@ void THQLeptonicTagProducer::produce( Event &evt, const EventSetup & )
                 thqltags_obj.setlepton_leadPt(lepton_leadPt_);
                 thqltags_obj.setlepton_leadEta(lepton_leadEta_);
                 thqltags_obj.setmvaresult ( mvares->result ) ;     //diphoton mva
-		        thqltags_obj.setthq_mvaresult ( thqLeptonicMvaResult_value_ );
 		        thqltags_obj.setbDiscriminatorValue( bDiscr_bjets, bDiscr_jets, bDiscr_fwdjets );
+                thqltags_obj.setthq_mvaresult( MVAscore_tHqVsttHBDT );
+                thqltags_obj.setthq_mvaresult_ForNonPeakingBkg( MVAscore_tHqVsNonHiggsBkg );
+                thqltags_obj.setMVAscore_ttHvstHDNN( MVAscore_tHqVsttHDNN );
 //		thqltags_obj.setCategoryNumber( catnum );
                 thqltags_obj.bTagWeight = 1.0;
                 thqltags_obj.bTagWeightDown = 1.0;

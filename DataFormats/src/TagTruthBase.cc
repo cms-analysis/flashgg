@@ -219,6 +219,7 @@ void TagTruthBase::setHTXSInfo( int stage0bin, int stage1bin, int stage1p1bin, i
 void TagTruthBase::copyBaseInfo( const TagTruthBase &b ) {
     setGenPV( b.genPV() );
     setHTXSInfo( b.HTXSstage0bin(), b.HTXSstage1bin(), b.HTXSstage1p1bin(), b.HTXSstage1p1binFine(), b.HTXSstage1p2bin(), b.HTXSstage1p2binFine(), b.HTXSnjets(), b.HTXSpTH(), b.HTXSpTV() );
+    this->setWeight("NNLOPSweight", b.weight("NNLOPSweight"));
 }
 
 int TagTruthBase::HTXSstage0orderedBin() const {

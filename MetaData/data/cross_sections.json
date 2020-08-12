@@ -126,9 +126,8 @@
     "DoubleMuon"                                                    : { "xs" : 0.0, "itype" :0                       },
     "Higgs_scalar" : {"xs":1, "br":1, "kf":1.0, "itype":-1125},
 
-	"GluGluHToGG_M-120_13TeV_powheg_pythia8"                        : { "xs" : 47.38,   "br" : 2.22e-3, "kf" : 1.06, "itype":-120000 },
-	"GluGluHToGG_M-125_13TeV_powheg_pythia8"                        : { "xs" : 44.14,   "br" : 2.27e-3, "kf" : 1.06, "itype":-125000 },
-	"GluGluHToGG_M-130_13TeV_powheg_pythia8"                        : { "xs" : 41.23,   "br" : 2.24e-3, "kf" : 1.06, "itype":-130000 },
+    "GluGluHToGG_M-125_13TeV_powheg_pythia8"                        : { "xs" : 44.14,   "br" : 2.27e-3, "kf" : 1.06, "itype":-125000 },
+
     "GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8"                          : { "xs" : 52.2200,   "br" : 0.002218, "kf" : 1.06, "itype":-120000 },
     "GluGluHToGG_M120_13TeV_amcatnlo_pythia8"                          : { "xs" : 52.2200,   "br" : 0.002218, "kf" : 1.06, "itype":-120000 },
     "GluGluHToGG_M120_TuneCP5_13TeV-amcatnloFXFX-pythia8"                          : { "xs" : 52.2200,   "br" : 0.002218, "kf" : 1.06, "itype":-120000 },
@@ -295,6 +294,7 @@
     "THQ_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCUETP8M1_v2" : {"xs" : 0.07425,   "br" : 0.00227, "kf" : 1.06, "weights":"rwgt_1,rwgt_2,rwgt_3,rwgt_4,rwgt_5,rwgt_6,rwgt_7,rwgt_8,rwgt_9,rwgt_10,rwgt_11,rwgt_12,rwgt_13,rwgt_14,rwgt_15,rwgt_16,rwgt_17,rwgt_18,rwgt_19,rwgt_20,rwgt_21,rwgt_22,rwgt_23,rwgt_24,rwgt_25,rwgt_26,rwgt_27,rwgt_28,rwgt_29,rwgt_30,rwgt_31,rwgt_32,rwgt_33,rwgt_34,rwgt_35,rwgt_36,rwgt_37,rwgt_38,rwgt_39,rwgt_40,rwgt_41,rwgt_42,rwgt_43,rwgt_44,rwgt_45,rwgt_46,rwgt_47,rwgt_48,rwgt_49,rwgt_50,rwgt_51,rwgt_52,rwgt_53,rwgt_54,rwgt_55,rwgt_56,rwgt_57,rwgt_58,rwgt_59,rwgt_60,rwgt_61,rwgt_62,rwgt_63,rwgt_64,rwgt_65,rwgt_66,rwgt_67,rwgt_68,rwgt_69", "LHESourceName":"LHEEventProduct_externalLHEProducer__SIM"},
     "THW_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCP5": {"xs" : 0.01517, "br" : 0.00227,  "kf" : 1.06, "weights":"rwgt_1,rwgt_2,rwgt_3,rwgt_4,rwgt_5,rwgt_6,rwgt_7,rwgt_8,rwgt_9,rwgt_10,rwgt_11,rwgt_12,rwgt_13,rwgt_14,rwgt_15,rwgt_16,rwgt_17,rwgt_18,rwgt_19,rwgt_20,rwgt_21,rwgt_22,rwgt_23,rwgt_24,rwgt_25,rwgt_26,rwgt_27,rwgt_28,rwgt_29,rwgt_30,rwgt_31,rwgt_32,rwgt_33,rwgt_34,rwgt_35,rwgt_36,rwgt_37,rwgt_38,rwgt_39,rwgt_40,rwgt_41,rwgt_42,rwgt_43,rwgt_44,rwgt_45,rwgt_46,rwgt_47,rwgt_48,rwgt_49,rwgt_50,rwgt_51,rwgt_52,rwgt_53,rwgt_54,rwgt_55,rwgt_56,rwgt_57,rwgt_58,rwgt_59,rwgt_60,rwgt_61,rwgt_62,rwgt_63,rwgt_64,rwgt_65,rwgt_66,rwgt_67,rwgt_68,rwgt_69", "LHESourceName":"LHEEventProduct_externalLHEProducer__SIM"},
     "THW_ctcvcp_HToGG_M125_13TeV-madgraph-pythia8_TuneCUETP8M1_v2": {"xs" : 0.01517, "br" : 0.00227,  "kf" : 1.06, "weights":"rwgt_1,rwgt_2,rwgt_3,rwgt_4,rwgt_5,rwgt_6,rwgt_7,rwgt_8,rwgt_9,rwgt_10,rwgt_11,rwgt_12,rwgt_13,rwgt_14,rwgt_15,rwgt_16,rwgt_17,rwgt_18,rwgt_19,rwgt_20,rwgt_21,rwgt_22,rwgt_23,rwgt_24,rwgt_25,rwgt_26,rwgt_27,rwgt_28,rwgt_29,rwgt_30,rwgt_31,rwgt_32,rwgt_33,rwgt_34,rwgt_35,rwgt_36,rwgt_37,rwgt_38,rwgt_39,rwgt_40,rwgt_41,rwgt_42,rwgt_43,rwgt_44,rwgt_45,rwgt_46,rwgt_47,rwgt_48,rwgt_49,rwgt_50,rwgt_51,rwgt_52,rwgt_53,rwgt_54,rwgt_55,rwgt_56,rwgt_57,rwgt_58,rwgt_59,rwgt_60,rwgt_61,rwgt_62,rwgt_63,rwgt_64,rwgt_65,rwgt_66,rwgt_67,rwgt_68,rwgt_69", "LHESourceName":"LHEEventProduct_externalLHEProducer__SIM"},
+    "bbHToGG_M-125_4FS_yb2_TuneCP5-13TeV-amcatnlo-pythia8" : { "xs" : 0.532892,   "br" : 0.00227, "kf" : 1.06 },
     "bbHToGG_M-125_4FS_yb2_13TeV_amcatnlo" : { "xs" : 0.532892,   "br" : 0.00227, "kf" : 1.06 },
     "bbHToGG_M-125_4FS_ybyt_13TeV_amcatnlo" : { "xs" : 0.0448916,   "br" : 0.00227, "kf" : 1.06 },
 

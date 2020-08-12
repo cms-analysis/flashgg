@@ -228,6 +228,7 @@ namespace flashgg {
                     if( _JetIDLevel == "Loose" && !jet->passesJetID  ( flashgg::Tight2017 ) ) continue;
                     if( _JetIDLevel == "Tight" && !jet->passesJetID  ( flashgg::Tight ) ) continue;
                     if( _JetIDLevel == "Tight2017" && !jet->passesJetID (flashgg::Tight2017 ) ) continue;
+                    if( _JetIDLevel == "Tight2018" && !jet->passesJetID (flashgg::Tight2018 ) ) continue;
                 }
                 // rms cuts over 2.5 
                 if( fabs( jet->eta() ) > 2.5 && jet->rms() > _rmsforwardCut ){ 

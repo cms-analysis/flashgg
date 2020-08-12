@@ -1,7 +1,6 @@
 #ifndef FLASHgg_VHMetTag_h
 #define FLASHgg_VHMetTag_h
 
-//#include "DataFormats/PatCandidates/interface/MET.h"
 #include "flashgg/DataFormats/interface/Met.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "flashgg/DataFormats/interface/DiPhotonTagBase.h"
@@ -20,17 +19,23 @@ namespace flashgg {
         VHMetTag *clone() const override { return ( new VHMetTag( *this ) ); }
 
         const edm::Ptr<flashgg::Met> met() const {return theMet_;}
-        const edm::Ptr<flashgg::Jet> jet() const {return theJet_;}
+        const std::vector<edm::Ptr<Jet> > jets() const { return Jets_;}
         const edm::Ptr<DiPhotonCandidate> diPhotonCandidate() const { return theDiPhotonCandidate_;}
+        const float MinDeltaPhiJetMet() const { return minDeltaPhiJetMet_; }
+        const float MaxJetDeepCSV() const { return max_dcsv_val_; }
         void setMet( edm::Ptr<flashgg::Met> );
-        void setJet( edm::Ptr<flashgg::Jet> );
+        void setJets( std::vector<edm::Ptr<Jet> > Jets ) { Jets_ = Jets; }
+        void setMinDeltaPhiJetMet( float val ) { minDeltaPhiJetMet_ = val; }
+        void setMaxJetDeepCSV( float val ) { max_dcsv_val_ = val; }
         
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kVHMet; }
 
     private:
         edm::Ptr<DiPhotonCandidate> theDiPhotonCandidate_;
         edm::Ptr<flashgg::Met> theMet_;
-        edm::Ptr<flashgg::Jet> theJet_;
+        std::vector<edm::Ptr<Jet> > Jets_;
+        float minDeltaPhiJetMet_;
+        float max_dcsv_val_;
     };
 
 }

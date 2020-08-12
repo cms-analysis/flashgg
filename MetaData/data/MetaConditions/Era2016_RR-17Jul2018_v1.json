@@ -334,10 +334,10 @@
 
     "THQLeptonicTag":
     {
-        "MVAweights_VsAllBkg" : "flashgg/Taggers/data/TMVA_THQLeptonicTag_tHq_Vs_NonPeakingBkg_BDT_16.weights.xml",
-	"MVAweights_VsttH" : "flashgg/Taggers/data/TMVA_THQLeptonicTag_tHq_Vs_ttH_BDT.weights.xml",
+        "MVAweights_VsAllBkg" : "flashgg/Taggers/data/TMVA_THQLeptonicTag_tHq_Vs_NonPeakingBkg_BDT_16_v1.weights.xml",
+        "MVAweights_VsttH" : "flashgg/Taggers/data/TMVA_THQLeptonicTag_tHq_Vs_ttH_BDT.weights.xml",
         "MVAThreshold_VsAllBkg" : 0.08,
-	"MVAThreshold_VsttH" : 0.01
+        "MVAThreshold_VsttH" : 0.01
     }
 }
 

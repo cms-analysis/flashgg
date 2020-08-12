@@ -76,11 +76,23 @@ void DiPhotonTagBase::setIsGold( int runNumber ) {
     if ( runNumber == 258443 ) { isGold_ = 0; }
 }
 
+// theory weights (in TagTruthBase) calculated standalone without diphoton object weight applied, so multiply it in here
 float DiPhotonTagBase::getTheoryWeight(std::string key) const
 {
     float theoryWeight = truth_->weight(key);
     theoryWeight *= this->centralWeight();
     return theoryWeight;
+}
+
+// overrides default behaviour of returning 1 if weight doesn't exist to return central object weight instead
+float DiPhotonTagBase::getObjectWeight(std::string key) const
+{
+    if( this->hasWeight(key) ) {
+        return this->weight(key);
+    }
+    else {
+        return this->centralWeight();
+    }
 }
 
 string DiPhotonTagBase::stage1KinematicLabel() const { 
@@ -193,6 +205,10 @@ string DiPhotonTagBase::stage1KinematicLabel() const {
         return string("RECO_ZH_LEP_Tag0");
     case stage1recoTag::RECO_ZH_LEP_Tag1:
         return string("RECO_ZH_LEP_Tag1");
+    case stage1recoTag::RECO_VH_MET_Tag0:
+        return string("RECO_VH_MET_Tag0");
+    case stage1recoTag::RECO_VH_MET_Tag1:
+        return string("RECO_VH_MET_Tag1");
     case stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag0:
         return string("RECO_TTH_LEP_PTH_0_60_Tag0");
     case stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag1:

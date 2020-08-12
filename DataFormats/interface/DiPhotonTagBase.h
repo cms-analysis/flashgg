@@ -34,6 +34,7 @@ namespace flashgg {
                              RECO_WH_LEP_LOW_Tag0, RECO_WH_LEP_LOW_Tag1, RECO_WH_LEP_LOW_Tag2, 
                              RECO_WH_LEP_HIGH_Tag0, RECO_WH_LEP_HIGH_Tag1, RECO_WH_LEP_HIGH_Tag2, 
                              RECO_ZH_LEP_Tag0, RECO_ZH_LEP_Tag1,
+                             RECO_VH_MET_Tag0, RECO_VH_MET_Tag1,
                              RECO_TTH_LEP_PTH_0_60_Tag0, RECO_TTH_LEP_PTH_0_60_Tag1, RECO_TTH_LEP_PTH_0_60_Tag2, RECO_TTH_LEP_PTH_0_60_Tag3, 
                              RECO_TTH_LEP_PTH_60_120_Tag0, RECO_TTH_LEP_PTH_60_120_Tag1,
                              RECO_TTH_LEP_PTH_120_200_Tag0, RECO_TTH_LEP_PTH_120_200_Tag1,
@@ -67,6 +68,7 @@ namespace flashgg {
         void setTagTruth( const edm::Ptr<TagTruthBase> value ) { truth_ = value; }
         const edm::Ptr<TagTruthBase> tagTruth() const { return truth_; }
         float getTheoryWeight( std::string key ) const;
+        float getObjectWeight( std::string key ) const;
         void setSystLabel( const std::string label ) { systLabel_ = label; }
         std::string systLabel() const { return systLabel_; }
         bool hasSyst( const string &label ) const { return ( systLabel_ == label );}
