@@ -1,0 +1,39 @@
+//-----------J. Tao from IHEP-Beijing--------------
+
+1. Create EDM objects and test
+
+DataFormats/interface/DiMuonCandidate.h
+DataFormats/interface/MuMuGammaCandidate.h
+
+
+DataFormats/src/DiMuonCandidate.cc
+DataFormats/src/MuMuGammaCandidate.cc
+
+
+MicroAOD/plugins/DiMuonProducer.cc
+MicroAOD/plugins/MuMuGammaProducer.cc
+
+MicroAOD/python/flashggDiMuons_cfi.py
+MicroAOD/python/flashggMuMuGamma_cfi.py
+
+DataFormats/src/classes.h
+DataFormats/src/classes_def.xml
+
+MicroAOD/python/flashggMicroAODSequence_cff.py
+
+
+Running test:
+cmsRun Validation/TaoMMGTest/microAODstd.py
+
+
+2. Create Dumpers and test
+
+Taggers/interface/MuMuDumpers.h
+Taggers/src/MuMuDumpers.cc
+Taggers/plugins/EDMuMuDumpers.cc
+
+Taggers/python/dimuDumpConfig_cff.py
+Taggers/python/mumugammaDumpConfig_cff.py
+Taggers/python/mumugammaDumper_cfi.py
+
+cmsRun Validation/TaoMMGTest/Valid_mumugammaDumper.py

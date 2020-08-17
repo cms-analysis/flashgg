@@ -1,0 +1,98 @@
+{
+    "globalTags" :
+    {
+        "data" : "102X_dataRun2_Prompt_v11",
+        "MC" : "102X_upgrade2018_realistic_v12"
+    },
+
+    "flashggMETsFunction" : "runMETs2016",
+    "flashggMetFilters" :
+    {
+        "rerun_ecal_calib_filter" : true,
+        "data" :
+        [
+            "Flag_goodVertices",
+            "Flag_globalSuperTightHalo2016Filter",
+            "Flag_HBHENoiseFilter",
+            "Flag_HBHENoiseIsoFilter",
+            "Flag_EcalDeadCellTriggerPrimitiveFilter",
+            "Flag_BadPFMuonFilter",
+            "Flag_eeBadScFilter"
+        ],
+        "mc" :
+        [
+            "Flag_goodVertices",
+            "Flag_globalSuperTightHalo2016Filter",
+            "Flag_HBHENoiseFilter",
+            "Flag_HBHENoiseIsoFilter",
+            "Flag_EcalDeadCellTriggerPrimitiveFilter",
+            "Flag_BadPFMuonFilter"
+        ]
+    }, 
+
+    "DeepJet" : "read",
+
+    "flashggPhotons" :
+    {
+        "photonIdMVAweightfile_EB" : "flashgg/MicroAOD/data/HggPhoId_94X_barrel_BDT_v2.weights.xml",
+        "photonIdMVAweightfile_EE" : "flashgg/MicroAOD/data/HggPhoId_94X_endcap_BDT_v2.weights.xml",
+        "effAreasConfigFile" : "RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_TrueVtx.txt",
+        "is2017" : true
+    },
+
+    "flashggDiPhotons" :
+    {
+        "vertexIdMVAweightfile" : "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml",
+        "vertexProbMVAweightfile" : "flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2016.xml"
+    },
+
+    "TriggerPaths" :
+    {
+        ".*EGamma.*2018.*" :
+        [
+            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90*",
+            "HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95*",
+            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto_Mass55*",
+            "HLT_Diphoton30_18_R9IdL_AND_HE_AND_IsoCaloId_NoPixelVeto*",
+            "HLT_Ele*_WPTight_Gsf_v*"
+        ],        
+        ".*DoubleMuon.*2018.*" :
+        [
+            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v*",
+            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v*",
+            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*",
+            "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v*"
+        ]
+    },
+    
+    "MUON_ID" : "Medium",
+    "MUON_ISO" : "LooseRel",
+
+    "Ele_ID_eff_bin" : "binInfo2018",
+
+    "bTagSystematics" :
+    {
+
+	"bTagEffBins" : "bTagEffBins2017",
+
+	"bTagger" : "pfDeepJet",
+
+	"bDiscriminatorValue_pfDeepCSV" : 0.4184,
+	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_102XSF_V1.csv",
+	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_102XSF_WP_V1.csv",
+
+	"bDiscriminatorValue_pfDeepJet" : 0.2770,
+	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepJet_102XSF_V1.csv",
+	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepJet_102XSF_V1.csv",
+
+	"eta" : 2.5
+    },
+
+    "bRegression" :
+    {
+        "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2017_updated.pb",
+        "y_mean" : 1.0596693754196167,
+        "y_std" : 0.28492164611816406,
+        "useOld_year" : 1
+    }
+}

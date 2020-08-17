@@ -1,0 +1,21 @@
+<use name="DataFormats/VertexReco"/>
+<use name="DataFormats/PatCandidates"/>
+<use name="FWCore/PluginManager"/>
+<use name="DataFormats/Common"/>
+<use name="flashgg/DataFormats"/>
+<use name="Geometry/CaloTopology" />
+<use name="RecoEcal/EgammaCoreTools" />
+<use name="FWCore/Utilities"/>
+<use name="CommonTools/Utils"/>
+<use name="PhysicsTools/HepMCCandAlgos"/>
+<use name="roottmva"/>
+<use name="Geometry/CaloGeometry"/>
+<use name="MagneticField/Records"/>
+<use name="MagneticField/Engine"/>
+<use name="root"/>
+<lib name="Geom" />
+<use name="XGBoostCMSSW/XGBoostInterface"/>
+<!-- Flags CXXFLAGS="-ggdb"/ -->
+<export>
+  <lib   name="1"/>
+</export>

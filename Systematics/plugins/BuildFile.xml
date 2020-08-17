@@ -1,0 +1,13 @@
+<library name="FlashggSystematicsPlugins" file="*.cc">
+<use name="FWCore/Framework"/>
+<use name="FWCore/PluginManager"/>
+<use name="FWCore/ParameterSet"/>
+<use name="CondFormats/JetMETObjects"/>
+<use name="JetMETCorrections/Objects"/>
+<use name="flashgg/Systematics"/>
+<use name="flashgg/DataFormats"/>
+<use name="JetMETCorrections/Modules"/>
+<use name="RecoEgamma/EgammaTools"/>
+<use name="roottmva"/>
+<flags  EDM_PLUGIN="1"/>
+</library>

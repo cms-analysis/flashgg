@@ -1,0 +1,9 @@
+<library   name="FlashggMetaDataPlugins" file="*.cc">
+  <use   name="flashgg/MetaData"/>
+  <use   name="FWCore/Framework"/>
+  <use   name="FWCore/ParameterSet"/>
+  <use   name="FWCore/ServiceRegistry"/>
+  <use   name="FWCore/PluginManager"/>
+  <use   name="SimDataFormats/GeneratorProducts"/>
+<flags   EDM_PLUGIN="1"/>
+</library>

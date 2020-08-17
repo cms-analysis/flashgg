@@ -1,0 +1,25 @@
+{
+    "ncpu": 8, 
+    "processes": {
+        "vbf_m125": [
+            "VBF_HToGG_M-125_13TeV-powheg-pythia6"
+        ], 
+        "gamJet": [
+            "GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6"
+        ]
+    }, 
+    "cont": false, 
+    "verbose": false, 
+    "dry_run": false, 
+    "hadd_dataset": false, 
+    "hadd": false, 
+    "jobExe": "cmsRun", 
+    "queue": null, 
+    "cmdLine": "cmsRun VBFDiPhoDiJetMVA_Compare.py maxEvents=10000 campaign=HggPhys14-Phys14MicroAODV2 processIdMap=/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_compare//config.json", 
+    "__opts___src": "VBFMVATrainingSamples.json", 
+    "hadd_process": false, 
+    "output": "output.root", 
+    "njobs": 0, 
+    "__opts__": null, 
+    "outputDir": "/afs/cern.ch/user/l/lcorpe/work/private/FLASH_Mar2015_3/CMSSW_7_4_0_pre9/src/flashgg/Taggers/test/MVATraining/test_diphodijet_compare/"
+}

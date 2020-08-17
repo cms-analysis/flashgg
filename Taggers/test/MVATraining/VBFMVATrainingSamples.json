@@ -1,0 +1,8 @@
+{    
+    "processes" : {
+        "vbf_m125" : [ "VBF_HToGG_M-125_13TeV-powheg-pythia6" ],
+        "gamJet" : [ "GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6" ]
+        },
+
+    "cmdLine" : "campaign=HggPhys14-Phys14MicroAODV2"
+}

@@ -1,0 +1,16 @@
+{    
+    "_processes" : {
+        "gamJet" : [ "GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6" ]
+        },
+
+    "processes" : {
+        "dyJets" : [ "DYJetsToLL_M-50_13TeV-madgraph-pythia8" ],
+        "gamJet" : [ "GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6", "GJet_Pt20to40_doubleEMEnriched_TuneZ2star_13TeV-pythia6" ],
+        "ggh_m125" : [ "GluGluToHToGG_M-125_13TeV-powheg-pythia6" ],
+        "vbf_m125" : [ "VBF_HToGG_M-125_13TeV-powheg-pythia6" ],
+        "wzh_m125" : [ "WH_ZH_HToGG_M-125_13TeV_pythia6" ],
+        "tth_m125" : [ "TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola" ]
+        },
+
+    "cmdLine" : "campaign=HggPhys14-Phys14MicroAODV2"
+}

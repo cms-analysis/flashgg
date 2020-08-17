@@ -1,0 +1,5 @@
+# Cut flow for photon removal
+# cut string to put in root
+
+!(photonMatch==1 && GenPhotonPt/bestPt > 0.5 && photondRmin < 0.2)
+ 

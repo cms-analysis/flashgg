@@ -1,0 +1,17 @@
+<library   name="FlashggTaggersPlugins" file="*.cc">
+<use   name="FWCore/Framework"/>
+<use   name="FWCore/PluginManager"/>
+<use   name="flashgg/DataFormats"/>
+<use   name="flashgg/Taggers"/>
+<use   name="FWCore/Utilities"/>
+<use   name="CommonTools/Utils"/>
+<use   name="PhysicsTools/UtilAlgos"/>
+<use   name="RecoEgamma/EgammaTools"/>
+<use   name="roofit"/>
+<use   name="roottmva"/>
+<use   name="CommonTools/CandAlgos"/>
+<use   name="PhysicsTools/TensorFlow"/>
+<use   name="XGBoostCMSSW/XGBoostInterface"/>
+<Flags CXXFLAGS="-ggdb"/>
+<flags   EDM_PLUGIN="1"/>
+</library>
