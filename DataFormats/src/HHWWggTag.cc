@@ -259,23 +259,29 @@ HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho,
 // You need this because HHWWggTag is derived from another class
 void HHWWggTag::GetFLElectrons(edm::Ptr<flashgg::Electron> Ele1,edm::Ptr<flashgg::Electron> Ele2)
 {
-Leading_Electron_ = Ele1->p4();
-//auto leading_ele = Leading_Electron_4Vec;
-//Leading_Electron_ = Leading_Electron_4Vec;
-Subleading_Electron_ = Ele2->p4();
+Leading_lepton_ = Ele1->p4();
+//auto leading_ele = Leading_lepton_4Vec;
+//Leading_lepton_ = Leading_lepton_4Vec;
+Subleading_lepton_ = Ele2->p4();
 }
 
 void HHWWggTag::GetFLMuons(edm::Ptr<flashgg::Muon> muon1,edm::Ptr<flashgg::Muon> muon2)
 {
-leading_muon_ = muon1->p4();
-subleading_muon_ = muon2->p4();
+Leading_lepton_ = muon1->p4();
+Subleading_lepton_ = muon2->p4();
 }
 
 void HHWWggTag::GetDiffLeptons(edm::Ptr<flashgg::Electron> Ele,edm::Ptr<flashgg::Muon> muon)
 {
-Leading_Electron_ = Ele->p4();
-leading_muon_ = muon->p4();
+if (Ele->p4().pt()>muon->p4().pt()){
+Leading_lepton_ = Ele->p4();
+Subleading_lepton_ = muon->p4();
+}
+else {
+  Leading_lepton_ = muon->p4();
+  Subleading_lepton_ = Ele->p4();
 
+}
 }
 void HHWWggTag::GetMET(edm::Ptr<flashgg::Met> MET)
 {
@@ -301,7 +307,7 @@ void HHWWggTag::GetPhotons(edm::Ptr<DiPhotonCandidate> dipho)
 
 
 //FullLep
-HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron1, edm::Ptr<flashgg::Electron> electron2, edm::Ptr<flashgg::Met> MET,std::vector<double> Cut_Variables):Cut_Variables_(Cut_Variables)
+HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron1, edm::Ptr<flashgg::Electron> electron2, edm::Ptr<flashgg::Met> MET,std::vector<double> Cut_Variables,double dipho_MVA):Cut_Variables_(Cut_Variables),dipho_MVA_(dipho_MVA)
 {
    dipho_ = dipho;
    GetPhoAtt(dipho);
@@ -310,7 +316,7 @@ HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electr
    //std::cout<<Cut_Variables[0]<<std::endl;
 }
 
-HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon1, edm::Ptr<flashgg::Muon> muon2, edm::Ptr<flashgg::Met> MET,std::vector<double> Cut_Variables):Cut_Variables_(Cut_Variables)
+HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon1, edm::Ptr<flashgg::Muon> muon2, edm::Ptr<flashgg::Met> MET,std::vector<double> Cut_Variables,double dipho_MVA):Cut_Variables_(Cut_Variables),dipho_MVA_(dipho_MVA)
 {
    dipho_ = dipho;
    GetPhoAtt(dipho);
@@ -318,7 +324,7 @@ HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> 
    GetMET(MET);
 }
 
-HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Muon> muon, edm::Ptr<flashgg::Met> MET,std::vector<double> Cut_Variables):Cut_Variables_(Cut_Variables)
+HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Muon> muon, edm::Ptr<flashgg::Met> MET,std::vector<double> Cut_Variables,double dipho_MVA):Cut_Variables_(Cut_Variables),dipho_MVA_(dipho_MVA)
 {
    dipho_ = dipho;
    GetPhoAtt(dipho);

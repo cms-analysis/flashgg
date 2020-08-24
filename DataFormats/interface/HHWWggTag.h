@@ -119,12 +119,12 @@ namespace flashgg {
 
 
     //FullLep
-    HHWWggTag(edm::Ptr<flashgg::DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, std::vector<double>);
-    HHWWggTag(edm::Ptr<flashgg::DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, std::vector<double>);
-    HHWWggTag(edm::Ptr<flashgg::DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, std::vector<double>);
+    HHWWggTag(edm::Ptr<flashgg::DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, std::vector<double>,double);
+    HHWWggTag(edm::Ptr<flashgg::DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, std::vector<double>,double);
+    HHWWggTag(edm::Ptr<flashgg::DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, std::vector<double>,double);
     virtual HHWWggTag *clone() const override; // You need this because HHWWggTag is derived from the DiPhotonTagBase
     // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>);
-    // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>); 
+    // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>);
 
 
 
@@ -193,10 +193,9 @@ namespace flashgg {
     // const reco::Candidate::LorentzVector& leading_muon() const { return leading_muon_; };
     // const reco::Candidate::LorentzVector& subleading_muon() const { return subleading_muon_; };
     // const reco::Candidate::LorentzVector& leading_dpho() const { return leading_dpho_; };
-    const reco::Candidate::LorentzVector& Leading_Electron() const { return Leading_Electron_; };
-    const reco::Candidate::LorentzVector& Subleading_Electron() const { return Subleading_Electron_; };
-    const reco::Candidate::LorentzVector& leading_muon() const { return leading_muon_; };
-    const reco::Candidate::LorentzVector& subleading_muon() const { return subleading_muon_; };
+    const reco::Candidate::LorentzVector& Leading_lepton() const { return Leading_lepton_; };
+    const reco::Candidate::LorentzVector& Subleading_lepton() const { return Subleading_lepton_; };
+    const float dipho_MVA() const {return dipho_MVA_;};
     //float getCosThetaStar_CS(float ebeam) const;
     //std::vector<float> CosThetaAngles() const;
     //float HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boosted) const;
@@ -255,13 +254,11 @@ namespace flashgg {
     // reco::Candidate::LorentzVector leading_muon_;
     // reco::Candidate::LorentzVector subleading_muon_;
     // reco::Candidate::LorentzVector leading_dpho_;
-    reco::Candidate::LorentzVector Leading_Electron_;
-    reco::Candidate::LorentzVector Subleading_Electron_;
-    reco::Candidate::LorentzVector leading_muon_;
-    reco::Candidate::LorentzVector subleading_muon_;
+    reco::Candidate::LorentzVector Leading_lepton_;
+    reco::Candidate::LorentzVector Subleading_lepton_;
     // float theMETcorpt_;
     // std::vector<double> Vertex_Variables_;
-    // float dipho_MVA_;
+    float dipho_MVA_;
     // float CMS_hgg_mass_;
     // float dZ_;
     // float lp_Hgg_MVA_;

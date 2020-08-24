@@ -183,6 +183,7 @@ namespace flashgg {
     double DiLepPtThre_;
     double MassTThre_;
     double MassT_l2Thre_;
+    double dipho_MVA;
     edm::InputTag genInfo_;
     edm::EDGetTokenT<GenEventInfoProduct> genInfoToken_;
   };
@@ -847,13 +848,21 @@ namespace flashgg {
 
           hasGoodElec = false;
           hasGoodMuons = false;
-
+          dipho_MVA = mvares->result;
           // Electrons
-          std::vector<edm::Ptr<Electron> > goodElectrons = selectStdElectrons( electrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
+          std::vector<edm::Ptr<Electron> > goodElectrons;
+          if(HHWWggAnalysisChannel_ == "FL"){
+          goodElectrons = selectStdElectrons( electrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
                                                                             useElectronMVARecipe_,useElectronLooseID_,
-                                                                            deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_,
+                                                                            deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZ_FL_Threshold_,
                                                                             rho_, event.isRealData() );
-
+          }
+          else {
+          goodElectrons = selectStdElectrons( electrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
+                                                                              useElectronMVARecipe_,useElectronLooseID_,
+                                                                              deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_,
+                                                                              rho_, event.isRealData() );
+          }
           if(doHHWWggTagCutFlowAnalysis_){
             for( unsigned int ei = 0; ei <  electrons->size() ; ei++ ){
               edm::Ptr<flashgg::Electron> theElectron = electrons->ptrAt( ei );
@@ -864,7 +873,6 @@ namespace flashgg {
               allMuons.push_back(theMuon);
             }
           }
-
           // Muons
           std::vector<edm::Ptr<flashgg::Muon> > goodMuons = selectMuons( muons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_, leptonPtThreshold_,
           muPFIsoSumRelThreshold_, deltaRMuonPhoThreshold_, deltaRMuonPhoThreshold_ );
@@ -1241,7 +1249,10 @@ namespace flashgg {
               MassT= sqrt(2*DiEleLV.Pt()*theMET->pt()*(1-cos(abs(DiEleLV.Phi()-theMET->phi()))));
               MassT_l2 = sqrt(2*Ele2LV.Pt()*theMET->pt()*(1-cos(abs(Ele2LV.Phi()-theMET->phi()))));
                 if((tag_electron1->charge()*tag_electron2->charge()==-1) && tag_electron1->pt()>=lep1ptThre_ && tag_electron2->pt()>=lep1ptThre_  && DiEleLV.Pt()>DiLepPtThre_ && DiEleLV.M()>DiLepMassThre_ && MassT>MassTThre_ && MassT_l2 >MassT_l2Thre_ && Save == 1. && Savejet==1){
-                HHWWggTag tag_obj(dipho, tag_electron1, tag_electron2, theMET,Cut_Variables); // HHWWggTag need to be updated
+                  if(doHHWWggTagCutFlowAnalysis_){
+                    Cut_Variables[18]=0.;
+                  }
+                HHWWggTag tag_obj(dipho, tag_electron1, tag_electron2, theMET,Cut_Variables,dipho_MVA); // HHWWggTag need to be updated
                 tag_obj.setSystLabel(systLabel_);
 
                 tag_obj.setDiPhotonIndex( diphoIndex );
@@ -1300,7 +1311,10 @@ namespace flashgg {
               MassT= sqrt(2*DiMuLV.Pt()*theMET->pt()*(1-cos(abs(DiMuLV.Phi()-theMET->phi()))));
               MassT_l2 = sqrt(2*Mu2LV.Pt()*theMET->pt()*(1-cos(abs(Mu2LV.Phi()-theMET->phi()))));
                 if((tag_muon1->charge()*tag_muon2->charge() == -1) && tag_muon1->pt()>=lep1ptThre_ && tag_muon2->pt()>=lep2ptThre_  && DiMuLV.Pt()>DiLepPtThre_ && DiMuLV.M()>DiLepMassThre_ && MassT>MassTThre_ && MassT_l2>MassT_l2Thre_ && Save == 1. && Savejet==1){
-                HHWWggTag tag_obj(dipho, tag_muon1, tag_muon2, theMET,Cut_Variables);
+                if(doHHWWggTagCutFlowAnalysis_){
+                  Cut_Variables[18]=1.;
+                }
+                HHWWggTag tag_obj(dipho, tag_muon1, tag_muon2, theMET,Cut_Variables,dipho_MVA);
                 tag_obj.setSystLabel(systLabel_);
 
                 tag_obj.setDiPhotonIndex( diphoIndex );
@@ -1361,7 +1375,12 @@ namespace flashgg {
               MassT= sqrt(2*DiLepLV.Pt()*theMET->pt()*(1-cos(abs(DiLepLV.Phi()-theMET->phi()))));
               MassT_l2= sqrt(2*MuLV.Pt()*theMET->pt()*(1-cos(abs(MuLV.Phi()-theMET->phi()))));
               if((((tag_electron1->pt()>=lep1ptThre_) && (tag_muon1->pt()>=lep2ptThre_))||((tag_muon1->pt()>=lep1ptThre_) && (tag_electron1->pt()>=lep2ptThre_))) && (tag_muon1->charge()*tag_electron1->charge()==-1) && (DiLepLV.M()>DiLepMassThre_) && (DiLepLV.Pt()>DiLepPtThre_) && (MassT_l2>MassTThre_) && (MassT>MassT_l2Thre_) && (Save==1.) &&(Savejet==1)){
-                HHWWggTag tag_obj(dipho, tag_electron1, tag_muon1, theMET,Cut_Variables);
+                if(doHHWWggTagCutFlowAnalysis_){
+                  if(tag_electron1->pt()>tag_muon1->pt()){
+                  Cut_Variables[18]=2.;}//e mu
+                  else Cut_Variables[18]=3.; //mu e
+                }
+                HHWWggTag tag_obj(dipho, tag_electron1, tag_muon1, theMET,Cut_Variables,dipho_MVA);
                 tag_obj.setSystLabel(systLabel_);
                 tag_obj.setDiPhotonIndex( diphoIndex );
                 tag_obj.setMVA( -0.9 );
