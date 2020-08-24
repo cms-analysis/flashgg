@@ -750,7 +750,8 @@ if (customize.processId == "th_125" or customize.processId == "bbh_125"):
 
 #pythia8 has an unanticipated EM showering feature, check have two photons from hard scatter
 process.penultimateFilter= cms.Sequence()
-if customize.processId == "th_125": # for this sample the filter removes also H -> ZG
+if customize.processId.count("ggF_X") or customize.processId.count("ttH"):
+#  if customize.processId == "th_125": # for this sample the filter removes also H -> ZG
     process.load("flashgg/Systematics/HardProcessFinalStateFilter_cfi")
 #    process.HardProcessFinalStateFilter.debug = True
     process.penultimateFilter += process.HardProcessFinalStateFilter

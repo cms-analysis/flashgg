@@ -102,7 +102,6 @@ namespace flashgg {
 
     HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Met>, std::vector<double>);
 
-    virtual HHWWggTag *clone() const override; // You need this because HHWWggTag is derived from the DiPhotonTagBase
 
     // void GetPhotons(edm::Ptr<DiPhotonCandidate> dipho);
     void GetPhoAtt(edm::Ptr<DiPhotonCandidate> dipho);
@@ -118,6 +117,29 @@ namespace flashgg {
     std::vector<flashgg::Muon> GetMuons(std::vector<edm::Ptr<flashgg::Muon>>);
     std::vector<flashgg::Jet> GetJets(std::vector<edm::Ptr<flashgg::Jet>>);
 
+
+    //FullLep
+    HHWWggTag(edm::Ptr<flashgg::DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, std::vector<double>);
+    HHWWggTag(edm::Ptr<flashgg::DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, std::vector<double>);
+    HHWWggTag(edm::Ptr<flashgg::DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, std::vector<double>);
+    virtual HHWWggTag *clone() const override; // You need this because HHWWggTag is derived from the DiPhotonTagBase
+    // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>);
+    // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>); 
+
+
+
+    // HHWWggTag(); // SemiLeptonic final state
+    // HHWWggTag(std::vector<flashgg::DiPhotonCandidate> diphoVector,
+    //                 std::vector<flashgg::Electron> electronVector, std::vector<flashgg::Muon> muonVector, std::vector<flashgg::Met> METVector,
+    //                 std::vector<reco::GenParticle> GenParticlesVector, std::vector<flashgg::Jet> JetVector,
+    //                 std::vector<double> Vertex_Variables, std::vector<double> Cut_Variables, double dipho_MVA, double CMS_hgg_mass, double dZ);
+
+    void GetPhotons(edm::Ptr<DiPhotonCandidate> dipho);
+    void GetFLElectrons(edm::Ptr<flashgg::Electron> Ele1,edm::Ptr<flashgg::Electron> Ele2);
+    void GetFLMuons(edm::Ptr<flashgg::Muon> muon1,edm::Ptr<flashgg::Muon> muon2);
+    void GetMET(edm::Ptr<flashgg::Met> MET);
+    void GetDiffLeptons(edm::Ptr<flashgg::Electron> Ele,edm::Ptr<flashgg::Muon> muon);
+
     void setMVA(double x) { mva_ = x; }
     double MVA() const { return mva_; }
     void setEventNumber(double x) { eventNumber_ = x; }
@@ -127,7 +149,7 @@ namespace flashgg {
     const float lp_Hgg_MVA() const {return lp_Hgg_MVA_;};
     const float slp_Hgg_MVA() const {return slp_Hgg_MVA_;};
     const float lp_pt() const {return lp_pt_;};
-    const float slp_pt() const {return slp_pt_;};    
+    const float slp_pt() const {return slp_pt_;};
     const flashgg::Electron Electron() const { return Electron_; };
     const flashgg::Muon Muon() const { return Muon_; };
     const flashgg::Jet Leading_Jet() const { return Leading_Jet_; };
@@ -170,6 +192,11 @@ namespace flashgg {
     // const reco::Candidate::LorentzVector& subleading_elec() const { return subleading_elec_; };
     // const reco::Candidate::LorentzVector& leading_muon() const { return leading_muon_; };
     // const reco::Candidate::LorentzVector& subleading_muon() const { return subleading_muon_; };
+    // const reco::Candidate::LorentzVector& leading_dpho() const { return leading_dpho_; };
+    const reco::Candidate::LorentzVector& Leading_Electron() const { return Leading_Electron_; };
+    const reco::Candidate::LorentzVector& Subleading_Electron() const { return Subleading_Electron_; };
+    const reco::Candidate::LorentzVector& leading_muon() const { return leading_muon_; };
+    const reco::Candidate::LorentzVector& subleading_muon() const { return subleading_muon_; };
     //float getCosThetaStar_CS(float ebeam) const;
     //std::vector<float> CosThetaAngles() const;
     //float HelicityCosTheta( TLorentzVector Booster, TLorentzVector Boosted) const;
@@ -227,6 +254,11 @@ namespace flashgg {
     // reco::Candidate::LorentzVector subleading_elec_;
     // reco::Candidate::LorentzVector leading_muon_;
     // reco::Candidate::LorentzVector subleading_muon_;
+    // reco::Candidate::LorentzVector leading_dpho_;
+    reco::Candidate::LorentzVector Leading_Electron_;
+    reco::Candidate::LorentzVector Subleading_Electron_;
+    reco::Candidate::LorentzVector leading_muon_;
+    reco::Candidate::LorentzVector subleading_muon_;
     // float theMETcorpt_;
     // std::vector<double> Vertex_Variables_;
     // float dipho_MVA_;

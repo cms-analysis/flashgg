@@ -5,6 +5,10 @@
   "kf": 1.0,
   "br": 1.0
  },
+ "GluGluToHHTo_WWgg_lnulnugg_nodeSM":{
+  "xs": 0.001,
+  "kf": 1.06
+ },
  "ggF_X320_WWgg_qqlnugg": {
   "xs": 0.001,
   "kf": 1.06

@@ -1,0 +1,3343 @@
+Printing defaults
+doFiducial False
+acceptance NONE
+tthTagsOnly False
+Reading dataset (NonResonant_withTau) GluGluToHHTo_WWgg_lnulnugg_nodeSM
+Will use the following datasets catalog:
+['/afs/cern.ch/work/c/chuw/merge/CMSSW_10_5_0/src/flashgg/MetaData/data/NonResonant_withTau/datasets.json', '/afs/cern.ch/work/c/chuw/merge/CMSSW_10_5_0/src/flashgg/MetaData/data/NonResonant_withTau/datasets_1.json', '/afs/cern.ch/work/c/chuw/merge/CMSSW_10_5_0/src/flashgg/MetaData/data/NonResonant_withTau/datasets_2.json']
+GluGluToHHTo_WWgg_lnulnugg_nodeSM
+[setupDiPhotonSystematics] - Choosing diphoton systematics
+Printing options
+doFiducial False
+acceptance NONE
+tthTagsOnly False
+doMuFilter True
+here we print the tag sequence before
+flashggPreselectedDiPhotons+flashggDiPhotonMVA+flashggVBFMVA+flashggVBFDiPhoDiJetMVA+flashggUntagged+flashggVBFTag+flashggTTHDiLeptonTag+flashggTTHLeptonicTag+flashggTHQLeptonicTag+flashggTTHHadronicTag+flashggVHMetTag+flashggWHLeptonicTag+flashggZHLeptonicTag+flashggVHLeptonicLooseTag+flashggVHHadronicTag+flashggTagSorter
+Removing single Higgs tags
+vecs: ['allElectrons', 'allMuons', 'allJets', 'goodElectrons', 'goodMuons', 'goodJets']
+len(finalStateVars): 403
+here we print the tag sequence after
+flashggPreselectedDiPhotons+flashggDiPhotonMVA+flashggHHWWggTag+flashggTagSorter
+customize.processId: GluGluToHHTo_WWgg_lnulnugg_nodeSM
+Signal MC, so adding systematics and dZ
+--- Systematics  with independent collections ---
+['']
+-------------------------------------------------
+--- Variables to be dumped, including systematic weights ---
+['CMS_hgg_mass[160,100,180]:=diPhoton().mass', 'dZ[40,-20.,20.]:=(tagTruth().genPV().z-diPhoton().vtx().z)', 'centralObjectWeight[1,-999999.,999999.] := centralWeight']
+------------------------------------------------------------
+taglist is:
+[['HHWWggTag', 4]]
+Data, background MC, or non-central value, or no systematics: no PDF weights
+--- Dumping all modules: ---
+flashggHHWWggTag
+flashggDifferentialPhoIdInputsCorrection
+flashggDiPhotons
+flashggUnpackedJets
+flashggDiPhotonSystematics
+flashggDiPhotonMVA
+flashggMuonSystematics
+ak4PFCHSL1FastjetCorrector
+flashggMetSystematics
+flashggMetFilters
+flashggPreselectedDiPhotons
+flashggJetSystematics10
+flashggJetSystematics11
+ak4PFCHSL1FastL2L3Corrector
+ak4PFCHSL2RelativeCorrector
+flashggSystTagMerger
+flashggElectronSystematics
+flashggTagSorter
+tagsDumper
+ak4PFCHSL3AbsoluteCorrector
+flashggJetSystematics3
+flashggJetSystematics0
+flashggJetSystematics1
+flashggJetSystematics6
+flashggJetSystematics7
+flashggJetSystematics4
+flashggJetSystematics5
+flashggJetSystematics8
+flashggJetSystematics9
+flashggJetSystematics2
+--- Dumping modules that take diphotons as input: ---
+flashggHHWWggTag cms.InputTag("flashggPreselectedDiPhotons")
+flashggDiPhotonMVA cms.InputTag("flashggPreselectedDiPhotons")
+flashggPreselectedDiPhotons cms.InputTag("flashggDiPhotonSystematics")
+flashggTagSorter cms.InputTag("flashggPreselectedDiPhotons")
+--- has mvashift in input: ---
+
+-------------- DUMPING SYSTEMATIC OVERVIEW --------------
+          Systematic  Central value?   Systematic shifts?
+---------------------------------------------------------
+      MCScaleLowR9EE              NO                -1 1 
+     MCScaleHighR9EE              NO                -1 1 
+      MCScaleLowR9EB              NO                -1 1 
+     MCScaleHighR9EB              NO                -1 1 
+      MCScaleGain6EB              NO                -1 1 
+      MCScaleGain1EB              NO                -1 1 
+MaterialCentralBarrel              NO                -1 1 
+ MaterialOuterBarrel              NO                -1 1 
+     MaterialForward              NO                -1 1 
+ ShowerShapeHighR9EB              NO                -1 1 
+ ShowerShapeHighR9EE              NO                -1 1 
+  ShowerShapeLowR9EB              NO                -1 1 
+  ShowerShapeLowR9EE              NO                -1 1 
+              FNUFEB              NO                -1 1 
+              FNUFEE              NO                -1 1 
+            MvaShift              NO                -1 1 
+            PreselSF             YES                -1 1 
+      electronVetoSF             YES                -1 1 
+       TriggerWeight             YES                -1 1 
+          LooseMvaSF             YES                -1 1 
+        FracRVWeight             YES                -1 1 
+ SigmaEOverESmearing             YES                   NO
+    SigmaEOverEShift              NO                -1 1 
+---------------------------------------------------------
+  MuonMediumIDWeight             YES                -1 1 
+MuonLooseRelISOWeight             YES                -1 1 
+---------------------------------------------------------
+    ElectronIDWeight             YES                -1 1 
+  ElectronRecoWeight             YES                -1 1 
+---------------------------------------------------------
+                 JEC             YES                -1 1 
+                 JER             YES                -1 1 
+    JetBTagCutWeight             YES                -1 1 
+JetBTagReshapeWeight             YES                -1 1 
+          PUJIDShift              NO                -1 1 
+   UnmatchedPUWeight              NO                -1 1 
+---------------------------------------------------------
+------------- DUMPING 2D SYSTEMATIC OVERVIEW ------------
+          Systematic  Central value?   Systematic shifts?
+---------------------------------------------------------
+     MCSmearHighR9EE             YES       1st: 1 -1 0 0 
+                                           2nd: 0 0 1 -1 
+      MCSmearLowR9EE             YES       1st: 1 -1 0 0 
+                                           2nd: 0 0 1 -1 
+     MCSmearHighR9EB             YES       1st: 1 -1 0 0 
+                                           2nd: 0 0 1 -1 
+      MCSmearLowR9EB             YES       1st: 1 -1 0 0 
+                                           2nd: 0 0 1 -1 
+---------------------------------------------------------
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce1
+passed dipho preselection
+lp_Hgg_MVA,0.950614slp_Hgg_MVA,0.928107
+EE lp-0.03,1
+EE slp0.07,1
+[INFO] n_good_leptons = 2,	 n_good_jets = 0
+n_good_leptons2,1,1
+diff flavor tag
+MassT:70.8935DiLeppt:126.671
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce2
+passed dipho preselection
+lp_Hgg_MVA,0.991972slp_Hgg_MVA,0.834295
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 2,	 n_good_jets = 0
+n_good_leptons2,1,1
+diff flavor tag
+MassT:83.6757DiLeppt:67.7161
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce3
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce4
+passed dipho preselection
+lp_Hgg_MVA,0.969879slp_Hgg_MVA,0.978149
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce5
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce6
+passed dipho preselection
+lp_Hgg_MVA,0.973596slp_Hgg_MVA,0.939098
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 3
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce7
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce8
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce9
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce10
+passed dipho preselection
+lp_Hgg_MVA,0.972762slp_Hgg_MVA,0.84856
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce11
+passed dipho preselection
+lp_Hgg_MVA,-0.545938slp_Hgg_MVA,0.034305
+EB lp0.07,0
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce12
+passed dipho preselection
+lp_Hgg_MVA,0.916856slp_Hgg_MVA,0.525566
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 6
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce13
+passed dipho preselection
+lp_Hgg_MVA,0.586625slp_Hgg_MVA,0.429482
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce14
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce15
+passed dipho preselection
+lp_Hgg_MVA,0.979922slp_Hgg_MVA,0.974605
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 1,	 n_good_jets = 0
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce16
+passed dipho preselection
+lp_Hgg_MVA,0.905354slp_Hgg_MVA,0.899617
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 7
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce17
+passed dipho preselection
+lp_Hgg_MVA,0.42684slp_Hgg_MVA,0.100489
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 6
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce18
+passed dipho preselection
+lp_Hgg_MVA,0.979838slp_Hgg_MVA,0.900953
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 1
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce19
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce20
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce21
+passed dipho preselection
+lp_Hgg_MVA,0.821151slp_Hgg_MVA,0.518755
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce22
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce23
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce24
+passed dipho preselection
+lp_Hgg_MVA,0.966225slp_Hgg_MVA,0.796855
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+faild b Veto
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce25
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce26
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce27
+passed dipho preselection
+lp_Hgg_MVA,0.977625slp_Hgg_MVA,0.936116
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce28
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce29
+passed dipho preselection
+lp_Hgg_MVA,0.966145slp_Hgg_MVA,0.901235
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce30
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce31
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce32
+passed dipho preselection
+lp_Hgg_MVA,0.966679slp_Hgg_MVA,0.978551
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 3
+n_good_leptons2,1,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce33
+passed dipho preselection
+lp_Hgg_MVA,0.959309slp_Hgg_MVA,0.970192
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 4
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce34
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce35
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce36
+passed dipho preselection
+lp_Hgg_MVA,0.94768slp_Hgg_MVA,0.938639
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 0,	 n_good_jets = 0
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce37
+passed dipho preselection
+lp_Hgg_MVA,-0.647265slp_Hgg_MVA,0.306838
+EB lp0.07,0
+EB slp0.07,1
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce38
+passed dipho preselection
+lp_Hgg_MVA,0.984873slp_Hgg_MVA,0.931648
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce39
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce40
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce41
+passed dipho preselection
+lp_Hgg_MVA,0.979849slp_Hgg_MVA,0.904293
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce42
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce43
+passed dipho preselection
+lp_Hgg_MVA,0.959457slp_Hgg_MVA,0.948044
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce44
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce45
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce46
+passed dipho preselection
+lp_Hgg_MVA,0.682006slp_Hgg_MVA,0.924537
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce47
+passed dipho preselection
+lp_Hgg_MVA,0.790009slp_Hgg_MVA,0.963031
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce48
+passed dipho preselection
+lp_Hgg_MVA,0.819897slp_Hgg_MVA,0.839656
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce49
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce50
+passed dipho preselection
+lp_Hgg_MVA,0.983966slp_Hgg_MVA,0.838432
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 3
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce51
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce52
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce53
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce54
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce55
+passed dipho preselection
+lp_Hgg_MVA,0.99303slp_Hgg_MVA,0.97241
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 1,	 n_good_jets = 0
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce56
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce57
+passed dipho preselection
+lp_Hgg_MVA,0.969629slp_Hgg_MVA,-0.502696
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce58
+passed dipho preselection
+lp_Hgg_MVA,0.989103slp_Hgg_MVA,0.39076
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 1
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce59
+passed dipho preselection
+lp_Hgg_MVA,0.782749slp_Hgg_MVA,0.984094
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+faild b Veto
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce60
+passed dipho preselection
+lp_Hgg_MVA,0.784037slp_Hgg_MVA,0.913007
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce61
+passed dipho preselection
+lp_Hgg_MVA,0.822707slp_Hgg_MVA,0.926373
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce62
+passed dipho preselection
+lp_Hgg_MVA,0.876187slp_Hgg_MVA,0.897494
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce63
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce64
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce65
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce66
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce67
+passed dipho preselection
+lp_Hgg_MVA,-0.267026slp_Hgg_MVA,0.922573
+EB lp0.07,0
+EB slp0.07,1
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce68
+passed dipho preselection
+lp_Hgg_MVA,0.929541slp_Hgg_MVA,0.969315
+EB lp0.07,1
+EE slp0.07,1
+[INFO] n_good_leptons = 2,	 n_good_jets = 0
+n_good_leptons2,1,1
+diff flavor tag
+MassT:38.2294DiLeppt:63.8089
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce69
+passed dipho preselection
+lp_Hgg_MVA,0.594856slp_Hgg_MVA,0.319355
+EE lp-0.03,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 3
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce70
+passed dipho preselection
+lp_Hgg_MVA,0.911416slp_Hgg_MVA,0.885194
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce71
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce72
+passed dipho preselection
+lp_Hgg_MVA,0.992237slp_Hgg_MVA,0.7306
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce73
+passed dipho preselection
+lp_Hgg_MVA,0.715198slp_Hgg_MVA,0.96606
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 1,	 n_good_jets = 0
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce74
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce75
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce76
+passed dipho preselection
+lp_Hgg_MVA,0.988972slp_Hgg_MVA,-0.226103
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce77
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce78
+passed dipho preselection
+lp_Hgg_MVA,0.951968slp_Hgg_MVA,0.039387
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce79
+passed dipho preselection
+lp_Hgg_MVA,0.851334slp_Hgg_MVA,0.914657
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce80
+passed dipho preselection
+lp_Hgg_MVA,0.954466slp_Hgg_MVA,0.81187
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 2
+n_good_leptons2,1,1
+diff flavor tag
+MassT:30.3893DiLeppt:59.5728
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce81
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce82
+passed dipho preselection
+lp_Hgg_MVA,0.378994slp_Hgg_MVA,-0.119502
+EE lp-0.03,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce83
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce84
+passed dipho preselection
+lp_Hgg_MVA,0.881043slp_Hgg_MVA,0.85962
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 2
+n_good_leptons2,2,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce85
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce86
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce87
+passed dipho preselection
+lp_Hgg_MVA,0.940669slp_Hgg_MVA,0.637011
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 1
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce88
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce89
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce90
+passed dipho preselection
+lp_Hgg_MVA,0.937817slp_Hgg_MVA,0.69389
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce91
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce92
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce93
+passed dipho preselection
+lp_Hgg_MVA,0.432303slp_Hgg_MVA,-0.600636
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce94
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce95
+passed dipho preselection
+lp_Hgg_MVA,0.986793slp_Hgg_MVA,0.922559
+EE lp-0.03,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 2
+n_good_leptons2,1,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce96
+passed dipho preselection
+lp_Hgg_MVA,0.843827slp_Hgg_MVA,0.355572
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 4
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce97
+passed dipho preselection
+lp_Hgg_MVA,0.991438slp_Hgg_MVA,0.958873
+EE lp-0.03,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 4
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce98
+passed dipho preselection
+lp_Hgg_MVA,0.986654slp_Hgg_MVA,0.810382
+EE lp-0.03,1
+EE slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce99
+passed dipho preselection
+lp_Hgg_MVA,-0.0602962slp_Hgg_MVA,0.920442
+EB lp0.07,0
+EB slp0.07,1
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce100
+passed dipho preselection
+lp_Hgg_MVA,0.981327slp_Hgg_MVA,-0.403722
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce101
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce102
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce103
+passed dipho preselection
+lp_Hgg_MVA,0.986825slp_Hgg_MVA,0.975727
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 3
+n_good_leptons2,0,2
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce104
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce105
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce106
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce107
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce108
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce109
+passed dipho preselection
+lp_Hgg_MVA,0.962841slp_Hgg_MVA,0.984611
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 1
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce110
+passed dipho preselection
+lp_Hgg_MVA,0.969392slp_Hgg_MVA,0.948163
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+faild b Veto
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce111
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce112
+passed dipho preselection
+lp_Hgg_MVA,0.754842slp_Hgg_MVA,0.906352
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 5
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce113
+passed dipho preselection
+lp_Hgg_MVA,0.984534slp_Hgg_MVA,0.908363
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 2,	 n_good_jets = 0
+n_good_leptons2,2,0
+muon tag
+n_good_muons:2n_good_eles:0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce114
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce115
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce116
+passed dipho preselection
+lp_Hgg_MVA,0.986719slp_Hgg_MVA,-0.425018
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce117
+passed dipho preselection
+lp_Hgg_MVA,0.934518slp_Hgg_MVA,0.0103388
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce118
+passed dipho preselection
+lp_Hgg_MVA,0.993888slp_Hgg_MVA,0.849408
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 1
+n_good_leptons2,1,1
+diff flavor tag
+MassT:137.995DiLeppt:201.102
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce119
+passed dipho preselection
+lp_Hgg_MVA,0.989851slp_Hgg_MVA,0.938832
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce120
+passed dipho preselection
+lp_Hgg_MVA,-0.0251795slp_Hgg_MVA,0.986521
+EE lp-0.03,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce121
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce122
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce123
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce124
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce125
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce126
+passed dipho preselection
+lp_Hgg_MVA,0.830969slp_Hgg_MVA,0.843815
+EE lp-0.03,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce127
+passed dipho preselection
+lp_Hgg_MVA,-0.162131slp_Hgg_MVA,0.922599
+EB lp0.07,0
+EB slp0.07,1
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce128
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce129
+passed dipho preselection
+lp_Hgg_MVA,0.628491slp_Hgg_MVA,0.937964
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce130
+passed dipho preselection
+lp_Hgg_MVA,0.951968slp_Hgg_MVA,0.949147
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 6
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce131
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce132
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce133
+passed dipho preselection
+lp_Hgg_MVA,0.845717slp_Hgg_MVA,0.989362
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 1,	 n_good_jets = 0
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce134
+passed dipho preselection
+lp_Hgg_MVA,0.61526slp_Hgg_MVA,0.973395
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce135
+passed dipho preselection
+lp_Hgg_MVA,-0.126317slp_Hgg_MVA,0.913363
+EB lp0.07,0
+EB slp0.07,1
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce136
+passed dipho preselection
+lp_Hgg_MVA,0.891915slp_Hgg_MVA,0.969049
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce137
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce138
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce139
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce140
+passed dipho preselection
+lp_Hgg_MVA,0.885128slp_Hgg_MVA,0.580553
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce141
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce142
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce143
+passed dipho preselection
+lp_Hgg_MVA,0.989819slp_Hgg_MVA,-0.820191
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce144
+passed dipho preselection
+lp_Hgg_MVA,0.834784slp_Hgg_MVA,0.672275
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 3
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce145
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce146
+passed dipho preselection
+lp_Hgg_MVA,0.807861slp_Hgg_MVA,0.976061
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce147
+passed dipho preselection
+lp_Hgg_MVA,0.689461slp_Hgg_MVA,0.932373
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 1
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce148
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce149
+passed dipho preselection
+lp_Hgg_MVA,0.986945slp_Hgg_MVA,0.715301
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 2,	 n_good_jets = 0
+n_good_leptons2,2,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce150
+passed dipho preselection
+lp_Hgg_MVA,0.933456slp_Hgg_MVA,0.985704
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce151
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce152
+passed dipho preselection
+lp_Hgg_MVA,0.958557slp_Hgg_MVA,0.665564
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce153
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce154
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce155
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce156
+passed dipho preselection
+lp_Hgg_MVA,0.933853slp_Hgg_MVA,0.970943
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce157
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce158
+passed dipho preselection
+lp_Hgg_MVA,0.995098slp_Hgg_MVA,0.869426
+EE lp-0.03,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 1
+n_good_leptons2,2,0
+muon tag
+n_good_muons:2n_good_eles:0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce159
+passed dipho preselection
+lp_Hgg_MVA,0.98422slp_Hgg_MVA,0.980973
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce160
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce161
+passed dipho preselection
+lp_Hgg_MVA,0.880958slp_Hgg_MVA,0.98172
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce162
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce163
+passed dipho preselection
+lp_Hgg_MVA,0.977562slp_Hgg_MVA,0.941719
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 2
+n_good_leptons2,1,1
+diff flavor tag
+MassT:151.668DiLeppt:79.9633
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce164
+passed dipho preselection
+lp_Hgg_MVA,0.789851slp_Hgg_MVA,-0.69472
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce165
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce166
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce167
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce168
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce169
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce170
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce171
+passed dipho preselection
+lp_Hgg_MVA,0.977262slp_Hgg_MVA,0.428171
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 4
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce172
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce173
+passed dipho preselection
+lp_Hgg_MVA,0.990667slp_Hgg_MVA,0.950991
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 4
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce174
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce175
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce176
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce177
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce178
+passed dipho preselection
+lp_Hgg_MVA,0.991135slp_Hgg_MVA,0.768914
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce179
+passed dipho preselection
+lp_Hgg_MVA,0.513213slp_Hgg_MVA,0.206936
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce180
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce181
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce182
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce183
+passed dipho preselection
+lp_Hgg_MVA,0.916446slp_Hgg_MVA,0.964481
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce184
+passed dipho preselection
+lp_Hgg_MVA,0.976036slp_Hgg_MVA,0.787495
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 3
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce185
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce186
+passed dipho preselection
+lp_Hgg_MVA,0.991191slp_Hgg_MVA,0.97969
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 3
+n_good_leptons2,0,2
+Ele tag
+size2
+n_good_ele:2
+n_good_muon:0
+n_good_electrons == 2 && n_good_muons < 1
+MassT:31.3992MassT_l2:46.2181
+ele has taged
+ele push back
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce187
+passed dipho preselection
+lp_Hgg_MVA,0.819024slp_Hgg_MVA,0.766513
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 4
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce188
+passed dipho preselection
+lp_Hgg_MVA,-0.712757slp_Hgg_MVA,0.979654
+EB lp0.07,0
+EB slp0.07,1
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce189
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce190
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce191
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce192
+passed dipho preselection
+lp_Hgg_MVA,0.984659slp_Hgg_MVA,0.529925
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce193
+passed dipho preselection
+lp_Hgg_MVA,-0.276382slp_Hgg_MVA,0.492651
+EB lp0.07,0
+EB slp0.07,1
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce194
+passed dipho preselection
+lp_Hgg_MVA,0.97388slp_Hgg_MVA,0.98644
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce195
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce196
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce197
+passed dipho preselection
+lp_Hgg_MVA,0.983248slp_Hgg_MVA,0.963627
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 1,	 n_good_jets = 0
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce198
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce199
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce200
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce201
+passed dipho preselection
+lp_Hgg_MVA,0.972046slp_Hgg_MVA,0.977931
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce202
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce203
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce204
+passed dipho preselection
+lp_Hgg_MVA,0.452219slp_Hgg_MVA,0.993519
+EE lp-0.03,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce205
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce206
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce207
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce208
+passed dipho preselection
+lp_Hgg_MVA,0.968821slp_Hgg_MVA,0.913933
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce209
+passed dipho preselection
+lp_Hgg_MVA,0.93208slp_Hgg_MVA,0.95891
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce210
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce211
+passed dipho preselection
+lp_Hgg_MVA,0.991254slp_Hgg_MVA,-0.0970614
+EE lp-0.03,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce212
+passed dipho preselection
+lp_Hgg_MVA,0.863613slp_Hgg_MVA,0.641243
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 2
+n_good_leptons2,0,2
+Ele tag
+size2
+n_good_ele:2
+n_good_muon:0
+n_good_electrons == 2 && n_good_muons < 1
+MassT:122.124MassT_l2:70.635
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce213
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce214
+passed dipho preselection
+lp_Hgg_MVA,0.963718slp_Hgg_MVA,0.917266
+EE lp-0.03,1
+EB slp0.07,1
+[INFO] n_good_leptons = 2,	 n_good_jets = 0
+n_good_leptons2,1,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce215
+passed dipho preselection
+lp_Hgg_MVA,0.908976slp_Hgg_MVA,0.791158
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 1
+n_good_leptons2,0,2
+Ele tag
+size2
+n_good_ele:2
+n_good_muon:0
+n_good_electrons == 2 && n_good_muons < 1
+MassT:43.6775MassT_l2:22.4853
+ele has taged
+ele push back
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce216
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce217
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce218
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce219
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce220
+passed dipho preselection
+lp_Hgg_MVA,0.072007slp_Hgg_MVA,0.543407
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 1
+n_good_leptons2,1,1
+diff flavor tag
+MassT:80.176DiLeppt:33.689
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce221
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce222
+passed dipho preselection
+lp_Hgg_MVA,0.99113slp_Hgg_MVA,0.986069
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 1
+n_good_leptons2,2,0
+muon tag
+n_good_muons:2n_good_eles:0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce223
+passed dipho preselection
+lp_Hgg_MVA,0.988683slp_Hgg_MVA,0.972449
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 0,	 n_good_jets = 0
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce224
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce225
+passed dipho preselection
+lp_Hgg_MVA,0.988368slp_Hgg_MVA,0.979252
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 3
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce226
+passed dipho preselection
+lp_Hgg_MVA,0.977473slp_Hgg_MVA,0.92777
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 4
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce227
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce228
+passed dipho preselection
+lp_Hgg_MVA,0.829497slp_Hgg_MVA,0.865655
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+faild b Veto
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce229
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce230
+passed dipho preselection
+lp_Hgg_MVA,0.967673slp_Hgg_MVA,0.793399
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 5
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce231
+passed dipho preselection
+lp_Hgg_MVA,0.958149slp_Hgg_MVA,0.829052
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 2
+n_good_leptons2,0,2
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce232
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce233
+passed dipho preselection
+lp_Hgg_MVA,0.964117slp_Hgg_MVA,0.101955
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 4
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce234
+passed dipho preselection
+lp_Hgg_MVA,0.799856slp_Hgg_MVA,0.421631
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 4
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce235
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce236
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce237
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce238
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce239
+passed dipho preselection
+lp_Hgg_MVA,0.976471slp_Hgg_MVA,-0.433237
+EE lp-0.03,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce240
+passed dipho preselection
+lp_Hgg_MVA,0.54233slp_Hgg_MVA,0.891191
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 1
+n_good_leptons2,0,2
+Ele tag
+size2
+n_good_ele:2
+n_good_muon:0
+n_good_electrons == 2 && n_good_muons < 1
+MassT:37.8025MassT_l2:10.4052
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce241
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce242
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce243
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce244
+passed dipho preselection
+lp_Hgg_MVA,0.551344slp_Hgg_MVA,0.940973
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 2,	 n_good_jets = 0
+n_good_leptons2,0,2
+Ele tag
+size2
+n_good_ele:2
+n_good_muon:0
+n_good_electrons == 2 && n_good_muons < 1
+MassT:120.307MassT_l2:77.7849
+ele has taged
+ele push back
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce245
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce246
+passed dipho preselection
+lp_Hgg_MVA,0.301352slp_Hgg_MVA,0.76593
+EE lp-0.03,1
+EE slp0.07,1
+failed jet pt or btag
+faild b Veto
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce247
+passed dipho preselection
+lp_Hgg_MVA,0.796547slp_Hgg_MVA,0.942295
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 2
+n_good_leptons2,0,2
+Ele tag
+size2
+n_good_ele:2
+n_good_muon:0
+n_good_electrons == 2 && n_good_muons < 1
+MassT:16.8079MassT_l2:26.2339
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce248
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce249
+passed dipho preselection
+lp_Hgg_MVA,0.978575slp_Hgg_MVA,0.938825
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 1
+n_good_leptons2,0,2
+Ele tag
+size2
+n_good_ele:2
+n_good_muon:0
+n_good_electrons == 2 && n_good_muons < 1
+MassT:42.3586MassT_l2:19.1689
+ele has taged
+ele push back
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce250
+passed dipho preselection
+lp_Hgg_MVA,0.935856slp_Hgg_MVA,0.620313
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 4
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce251
+passed dipho preselection
+lp_Hgg_MVA,0.994991slp_Hgg_MVA,0.881013
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 2
+n_good_leptons2,1,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce252
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce253
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce254
+passed dipho preselection
+lp_Hgg_MVA,0.989115slp_Hgg_MVA,0.942685
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 3
+n_good_leptons2,0,2
+Ele tag
+size2
+n_good_ele:2
+n_good_muon:0
+n_good_electrons == 2 && n_good_muons < 1
+MassT:4.78407MassT_l2:39.3153
+ele has taged
+ele push back
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce255
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce256
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce257
+passed dipho preselection
+lp_Hgg_MVA,0.889413slp_Hgg_MVA,0.172165
+EE lp-0.03,1
+EE slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 1
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce258
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce259
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce260
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce261
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce262
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce263
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce264
+passed dipho preselection
+lp_Hgg_MVA,0.992217slp_Hgg_MVA,0.904833
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce265
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce266
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce267
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce268
+passed dipho preselection
+lp_Hgg_MVA,0.973526slp_Hgg_MVA,0.196691
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce269
+passed dipho preselection
+lp_Hgg_MVA,0.557797slp_Hgg_MVA,0.961231
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 4
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce270
+passed dipho preselection
+lp_Hgg_MVA,0.977044slp_Hgg_MVA,0.237931
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 1
+n_good_leptons2,2,0
+muon tag
+n_good_muons:2n_good_eles:0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce271
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce272
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce273
+passed dipho preselection
+lp_Hgg_MVA,-0.0331681slp_Hgg_MVA,0.969907
+EB lp0.07,0
+EB slp0.07,1
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce274
+passed dipho preselection
+lp_Hgg_MVA,0.741593slp_Hgg_MVA,0.975092
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce275
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce276
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce277
+passed dipho preselection
+lp_Hgg_MVA,0.984249slp_Hgg_MVA,0.088756
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 3
+n_good_leptons2,1,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce278
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce279
+passed dipho preselection
+lp_Hgg_MVA,0.986337slp_Hgg_MVA,0.976685
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 1
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce280
+passed dipho preselection
+lp_Hgg_MVA,0.991541slp_Hgg_MVA,0.983681
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce281
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce282
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce283
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce284
+passed dipho preselection
+lp_Hgg_MVA,0.482992slp_Hgg_MVA,0.96859
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce285
+passed dipho preselection
+lp_Hgg_MVA,0.880855slp_Hgg_MVA,0.992232
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 4
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce286
+passed dipho preselection
+lp_Hgg_MVA,0.980925slp_Hgg_MVA,0.934152
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce287
+passed dipho preselection
+lp_Hgg_MVA,0.588896slp_Hgg_MVA,0.984297
+EE lp-0.03,1
+EB slp0.07,1
+[INFO] n_good_leptons = 1,	 n_good_jets = 0
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce288
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce289
+passed dipho preselection
+lp_Hgg_MVA,0.973008slp_Hgg_MVA,0.574588
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce290
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce291
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce292
+passed dipho preselection
+lp_Hgg_MVA,0.972422slp_Hgg_MVA,0.0608965
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce293
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce294
+passed dipho preselection
+lp_Hgg_MVA,0.938896slp_Hgg_MVA,0.916407
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce295
+passed dipho preselection
+lp_Hgg_MVA,0.9772slp_Hgg_MVA,0.89308
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 1
+n_good_leptons2,2,0
+muon tag
+n_good_muons:2n_good_eles:0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce296
+passed dipho preselection
+lp_Hgg_MVA,-0.657723slp_Hgg_MVA,0.396389
+EB lp0.07,0
+EB slp0.07,1
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce297
+passed dipho preselection
+lp_Hgg_MVA,0.764151slp_Hgg_MVA,0.100841
+EE lp-0.03,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 4
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce298
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce299
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce300
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce301
+passed dipho preselection
+lp_Hgg_MVA,0.868346slp_Hgg_MVA,0.861418
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 2
+n_good_leptons2,0,2
+Ele tag
+size2
+n_good_ele:2
+n_good_muon:0
+n_good_electrons == 2 && n_good_muons < 1
+MassT:38.0207MassT_l2:63.7019
+ele has taged
+ele push back
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce302
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce303
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce304
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce305
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce306
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce307
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce308
+passed dipho preselection
+lp_Hgg_MVA,0.845496slp_Hgg_MVA,0.953238
+EE lp-0.03,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 3
+n_good_leptons2,2,0
+muon tag
+n_good_muons:2n_good_eles:0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce309
+passed dipho preselection
+lp_Hgg_MVA,0.781985slp_Hgg_MVA,0.978447
+EE lp-0.03,1
+EE slp0.07,1
+[INFO] n_good_leptons = 2,	 n_good_jets = 0
+n_good_leptons2,2,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce310
+passed dipho preselection
+lp_Hgg_MVA,0.969295slp_Hgg_MVA,0.789079
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 3
+n_good_leptons2,1,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce311
+passed dipho preselection
+lp_Hgg_MVA,0.730189slp_Hgg_MVA,0.975191
+EE lp-0.03,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 4
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce312
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce313
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce314
+passed dipho preselection
+lp_Hgg_MVA,0.782459slp_Hgg_MVA,0.815484
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 2
+n_good_leptons2,1,1
+diff flavor tag
+MassT:72.5746DiLeppt:38.7022
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce315
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce316
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce317
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce318
+passed dipho preselection
+lp_Hgg_MVA,0.9569slp_Hgg_MVA,0.714448
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 2,	 n_good_jets = 0
+n_good_leptons2,0,2
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce319
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce320
+passed dipho preselection
+lp_Hgg_MVA,0.916693slp_Hgg_MVA,0.98924
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce321
+passed dipho preselection
+lp_Hgg_MVA,0.91612slp_Hgg_MVA,-0.623068
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce322
+passed dipho preselection
+lp_Hgg_MVA,0.961319slp_Hgg_MVA,0.936794
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 2
+n_good_leptons2,2,0
+muon tag
+n_good_muons:2n_good_eles:0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce323
+passed dipho preselection
+lp_Hgg_MVA,0.943621slp_Hgg_MVA,0.452678
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce324
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce325
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce326
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce327
+passed dipho preselection
+lp_Hgg_MVA,0.691397slp_Hgg_MVA,0.948614
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 3
+n_good_leptons2,0,2
+Ele tag
+size2
+n_good_ele:2
+n_good_muon:0
+n_good_electrons == 2 && n_good_muons < 1
+MassT:33.4841MassT_l2:53.0643
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce328
+passed dipho preselection
+lp_Hgg_MVA,0.988958slp_Hgg_MVA,0.973678
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce329
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce330
+passed dipho preselection
+lp_Hgg_MVA,0.982596slp_Hgg_MVA,0.399629
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 1,	 n_good_jets = 0
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce331
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce332
+passed dipho preselection
+lp_Hgg_MVA,0.923963slp_Hgg_MVA,0.521766
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce333
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce334
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce335
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce336
+passed dipho preselection
+lp_Hgg_MVA,0.625776slp_Hgg_MVA,0.968723
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce337
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce338
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce339
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce340
+passed dipho preselection
+lp_Hgg_MVA,0.946337slp_Hgg_MVA,0.693841
+EE lp-0.03,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 3
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce341
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce342
+passed dipho preselection
+lp_Hgg_MVA,0.425056slp_Hgg_MVA,0.749517
+EE lp-0.03,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce343
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce344
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce345
+passed dipho preselection
+lp_Hgg_MVA,0.989982slp_Hgg_MVA,-0.458045
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce346
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce347
+passed dipho preselection
+lp_Hgg_MVA,0.97957slp_Hgg_MVA,0.989026
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 2,	 n_good_jets = 0
+n_good_leptons2,0,2
+Ele tag
+size2
+n_good_ele:2
+n_good_muon:0
+n_good_electrons == 2 && n_good_muons < 1
+MassT:7.73033MassT_l2:51.4699
+ele has taged
+ele push back
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce348
+passed dipho preselection
+lp_Hgg_MVA,0.880573slp_Hgg_MVA,0.967565
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 3
+n_good_leptons2,2,0
+muon tag
+n_good_muons:2n_good_eles:0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce349
+passed dipho preselection
+lp_Hgg_MVA,0.654967slp_Hgg_MVA,0.807716
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 5
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce350
+passed dipho preselection
+lp_Hgg_MVA,0.89476slp_Hgg_MVA,0.953921
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 1,	 n_good_jets = 0
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce351
+passed dipho preselection
+lp_Hgg_MVA,0.942195slp_Hgg_MVA,0.955413
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 3
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce352
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce353
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce354
+passed dipho preselection
+lp_Hgg_MVA,-0.825585slp_Hgg_MVA,0.902458
+EB lp0.07,0
+EB slp0.07,1
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce355
+passed dipho preselection
+lp_Hgg_MVA,0.989226slp_Hgg_MVA,0.993355
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce356
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce357
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce358
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce359
+passed dipho preselection
+lp_Hgg_MVA,0.789062slp_Hgg_MVA,0.885415
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 0,	 n_good_jets = 0
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce360
+passed dipho preselection
+lp_Hgg_MVA,0.859889slp_Hgg_MVA,0.985624
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce361
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce362
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce363
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce364
+passed dipho preselection
+lp_Hgg_MVA,0.984355slp_Hgg_MVA,0.960654
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 1
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce365
+passed dipho preselection
+lp_Hgg_MVA,0.982723slp_Hgg_MVA,0.978029
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 1
+n_good_leptons2,1,1
+diff flavor tag
+MassT:69.6486DiLeppt:79.4243
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce366
+passed dipho preselection
+lp_Hgg_MVA,0.952044slp_Hgg_MVA,0.978716
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 3
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce367
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce368
+passed dipho preselection
+lp_Hgg_MVA,0.805044slp_Hgg_MVA,0.875741
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce369
+passed dipho preselection
+lp_Hgg_MVA,0.992096slp_Hgg_MVA,0.975495
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce370
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce371
+passed dipho preselection
+lp_Hgg_MVA,0.9874slp_Hgg_MVA,0.977271
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce372
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce373
+passed dipho preselection
+lp_Hgg_MVA,0.98438slp_Hgg_MVA,-0.432801
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce374
+passed dipho preselection
+lp_Hgg_MVA,0.933157slp_Hgg_MVA,0.798993
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce375
+passed dipho preselection
+lp_Hgg_MVA,0.906815slp_Hgg_MVA,-0.45596
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce376
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce377
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce378
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce379
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce380
+passed dipho preselection
+lp_Hgg_MVA,0.993053slp_Hgg_MVA,0.946264
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce381
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce382
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce383
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce384
+passed dipho preselection
+lp_Hgg_MVA,0.992651slp_Hgg_MVA,0.408819
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce385
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce386
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce387
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce388
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce389
+passed dipho preselection
+lp_Hgg_MVA,0.317335slp_Hgg_MVA,-0.30483
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce390
+passed dipho preselection
+lp_Hgg_MVA,0.97708slp_Hgg_MVA,0.667235
+EB lp0.07,1
+EE slp0.07,1
+[INFO] n_good_leptons = 2,	 n_good_jets = 0
+n_good_leptons2,1,1
+diff flavor tag
+MassT:51.4057DiLeppt:190.591
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce391
+passed dipho preselection
+lp_Hgg_MVA,0.918659slp_Hgg_MVA,0.816379
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce392
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce393
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce394
+passed dipho preselection
+lp_Hgg_MVA,0.974432slp_Hgg_MVA,0.769698
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 0,	 n_good_jets = 0
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce395
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce396
+passed dipho preselection
+lp_Hgg_MVA,0.633342slp_Hgg_MVA,0.928514
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce397
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce398
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce399
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce400
+passed dipho preselection
+lp_Hgg_MVA,0.313554slp_Hgg_MVA,0.692633
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce401
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce402
+passed dipho preselection
+lp_Hgg_MVA,0.934681slp_Hgg_MVA,0.744145
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 2
+n_good_leptons2,1,1
+diff flavor tag
+MassT:15.7509DiLeppt:39.0674
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce403
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce404
+passed dipho preselection
+lp_Hgg_MVA,0.936576slp_Hgg_MVA,0.572424
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce405
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce406
+passed dipho preselection
+lp_Hgg_MVA,0.946617slp_Hgg_MVA,0.692222
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce407
+passed dipho preselection
+lp_Hgg_MVA,0.618523slp_Hgg_MVA,0.981568
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce408
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce409
+passed dipho preselection
+lp_Hgg_MVA,0.863677slp_Hgg_MVA,0.894488
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 0,	 n_good_jets = 0
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce410
+passed dipho preselection
+lp_Hgg_MVA,-0.0351853slp_Hgg_MVA,-0.52437
+EB lp0.07,0
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce411
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce412
+passed dipho preselection
+lp_Hgg_MVA,0.915393slp_Hgg_MVA,0.355709
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce413
+passed dipho preselection
+lp_Hgg_MVA,0.821672slp_Hgg_MVA,0.987302
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce414
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce415
+passed dipho preselection
+lp_Hgg_MVA,0.241224slp_Hgg_MVA,0.896153
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 2,	 n_good_jets = 0
+n_good_leptons2,2,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce416
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce417
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce418
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce419
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce420
+passed dipho preselection
+lp_Hgg_MVA,0.988027slp_Hgg_MVA,0.972423
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 3
+n_good_leptons2,1,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce421
+passed dipho preselection
+lp_Hgg_MVA,0.94959slp_Hgg_MVA,0.544125
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 4
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce422
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce423
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce424
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce425
+passed dipho preselection
+lp_Hgg_MVA,0.763676slp_Hgg_MVA,0.906279
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce426
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce427
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce428
+passed dipho preselection
+lp_Hgg_MVA,0.00638457slp_Hgg_MVA,0.912725
+EB lp0.07,0
+EB slp0.07,1
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce429
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce430
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce431
+passed dipho preselection
+lp_Hgg_MVA,0.579236slp_Hgg_MVA,-0.892786
+EB lp0.07,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce432
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce433
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce434
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce435
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce436
+passed dipho preselection
+lp_Hgg_MVA,0.979466slp_Hgg_MVA,0.951258
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 0,	 n_good_jets = 0
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce437
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce438
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce439
+passed dipho preselection
+lp_Hgg_MVA,0.549673slp_Hgg_MVA,0.42287
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 3
+n_good_leptons2,0,2
+Ele tag
+size2
+n_good_ele:2
+n_good_muon:0
+n_good_electrons == 2 && n_good_muons < 1
+MassT:71.2754MassT_l2:54.6366
+ele has taged
+ele push back
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce440
+passed dipho preselection
+lp_Hgg_MVA,0.886671slp_Hgg_MVA,0.988576
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce441
+passed dipho preselection
+lp_Hgg_MVA,0.938218slp_Hgg_MVA,0.876998
+EE lp-0.03,1
+EE slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce442
+passed dipho preselection
+lp_Hgg_MVA,0.624792slp_Hgg_MVA,0.986049
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce443
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce444
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce445
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce446
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce447
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce448
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce449
+passed dipho preselection
+lp_Hgg_MVA,0.964863slp_Hgg_MVA,0.456461
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce450
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce451
+passed dipho preselection
+lp_Hgg_MVA,0.961039slp_Hgg_MVA,-0.089688
+EE lp-0.03,1
+EB slp0.07,0
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce452
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce453
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce454
+passed dipho preselection
+lp_Hgg_MVA,0.850174slp_Hgg_MVA,0.63262
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 3
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce455
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce456
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce457
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce458
+passed dipho preselection
+lp_Hgg_MVA,0.77818slp_Hgg_MVA,0.188495
+EE lp-0.03,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce459
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce460
+passed dipho preselection
+lp_Hgg_MVA,0.982586slp_Hgg_MVA,0.994083
+EB lp0.07,1
+EB slp0.07,1
+[INFO] n_good_leptons = 1,	 n_good_jets = 0
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce461
+passed dipho preselection
+lp_Hgg_MVA,0.986795slp_Hgg_MVA,0.988867
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 2
+n_good_leptons2,1,1
+diff flavor tag
+MassT:78.5465DiLeppt:38.4603
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce462
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce463
+passed dipho preselection
+lp_Hgg_MVA,0.9545slp_Hgg_MVA,0.987456
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 1
+n_good_leptons2,1,1
+diff flavor tag
+MassT:28.239DiLeppt:71.2689
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce464
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce465
+passed dipho preselection
+lp_Hgg_MVA,0.905488slp_Hgg_MVA,0.529823
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce466
+passed dipho preselection
+lp_Hgg_MVA,0.947094slp_Hgg_MVA,0.910069
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 4
+n_good_leptons2,0,2
+Ele tag
+size2
+n_good_ele:2
+n_good_muon:0
+n_good_electrons == 2 && n_good_muons < 1
+MassT:73.3482MassT_l2:17.5619
+ele has taged
+ele push back
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce467
+passed dipho preselection
+lp_Hgg_MVA,0.990943slp_Hgg_MVA,0.853963
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 1
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce468
+passed dipho preselection
+lp_Hgg_MVA,0.78995slp_Hgg_MVA,0.94877
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce469
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce470
+passed dipho preselection
+lp_Hgg_MVA,0.988486slp_Hgg_MVA,0.911584
+EE lp-0.03,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce471
+passed dipho preselection
+lp_Hgg_MVA,0.922467slp_Hgg_MVA,0.899212
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 5
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce472
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce473
+passed dipho preselection
+lp_Hgg_MVA,0.983772slp_Hgg_MVA,0.969927
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 1
+n_good_leptons2,1,1
+diff flavor tag
+MassT:127.993DiLeppt:105.351
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce474
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce475
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce476
+passed dipho preselection
+lp_Hgg_MVA,0.653834slp_Hgg_MVA,0.866225
+EE lp-0.03,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 3
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce477
+passed dipho preselection
+lp_Hgg_MVA,0.825569slp_Hgg_MVA,0.938267
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce478
+passed dipho preselection
+lp_Hgg_MVA,0.746465slp_Hgg_MVA,0.839439
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce479
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce480
+passed dipho preselection
+lp_Hgg_MVA,0.988764slp_Hgg_MVA,0.58537
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 1
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce481
+passed dipho preselection
+lp_Hgg_MVA,-0.127585slp_Hgg_MVA,0.716554
+EB lp0.07,0
+EB slp0.07,1
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce482
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce483
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce484
+passed dipho preselection
+lp_Hgg_MVA,0.966239slp_Hgg_MVA,0.972055
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 1
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce485
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce486
+passed dipho preselection
+lp_Hgg_MVA,0.928248slp_Hgg_MVA,0.283739
+EB lp0.07,1
+EE slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 1
+n_good_leptons2,1,1
+diff flavor tag
+MassT:81.0251DiLeppt:74.2189
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce487
+passed dipho preselection
+lp_Hgg_MVA,-0.217643slp_Hgg_MVA,0.983806
+EB lp0.07,0
+EB slp0.07,1
+failed mva or pt/ggMVA0,leadPhoOverMass1,subleadPhoOverMass1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce488
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce489
+passed dipho preselection
+lp_Hgg_MVA,0.986933slp_Hgg_MVA,0.415533
+EE lp-0.03,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 2
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce490
+passed dipho preselection
+lp_Hgg_MVA,0.951709slp_Hgg_MVA,0.672581
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 2
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce491
+passed dipho preselection
+lp_Hgg_MVA,0.963907slp_Hgg_MVA,0.494201
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 3
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce492
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce493
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce494
+passed dipho preselection
+lp_Hgg_MVA,0.633703slp_Hgg_MVA,0.902612
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+[INFO] n_good_leptons = 2,	 n_good_jets = 1
+n_good_leptons2,0,2
+Ele tag
+size2
+n_good_ele:2
+n_good_muon:0
+n_good_electrons == 2 && n_good_muons < 1
+MassT:57.2378MassT_l2:22.4602
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce495
+passed dipho preselection
+lp_Hgg_MVA,0.203562slp_Hgg_MVA,0.862978
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 4
+n_good_leptons1,0,1
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce496
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce497
+passed dipho preselection
+lp_Hgg_MVA,0.910669slp_Hgg_MVA,0.935308
+EE lp-0.03,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 1,	 n_good_jets = 3
+n_good_leptons1,1,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce498
+passed dipho preselection
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce499
+passed dipho preselection
+lp_Hgg_MVA,0.992464slp_Hgg_MVA,0.79952
+EB lp0.07,1
+EB slp0.07,1
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+failed jet pt or btag
+[INFO] n_good_leptons = 0,	 n_good_jets = 5
+n_good_leptons0,0,0
+tag_obj has moved
+[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce500
+passed dipho preselection
+tag_obj has moved
