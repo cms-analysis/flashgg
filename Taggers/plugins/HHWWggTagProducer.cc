@@ -341,14 +341,12 @@ namespace flashgg {
       if (( abs(leading_pho_eta) > 0) && ( abs(leading_pho_eta) < 1.4442)){
         // if (lead_pho_EG_MVA_ > 0.42) lead_pass_TightPhoID = 1;
         if (lp_Hgg_MVA > EB_MVA) lead_pass_TightPhoID = 1;
-        cout<<"EB lp"<<EB_MVA<<","<<lead_pass_TightPhoID<<endl;
       }
 
       // EE
       else if (( abs(leading_pho_eta) > 1.566) && ( abs(leading_pho_eta) < 2.5)){
         // if (lead_pho_EG_MVA_ > 0.14) lead_pass_TightPhoID = 1;
         if (lp_Hgg_MVA > EE_MVA) lead_pass_TightPhoID = 1;
-        cout<<"EE lp"<<EE_MVA<<","<<lead_pass_TightPhoID<<endl;
       }
 
       // SubLeading Photon
@@ -356,14 +354,12 @@ namespace flashgg {
       if (( abs(sub_leading_pho_eta) > 0) && ( abs(sub_leading_pho_eta) < 1.4442)){
         // if (sublead_pho_EG_MVA_ > 0.42) sublead_pass_TightPhoID = 1;
         if (slp_Hgg_MVA > EB_MVA) sublead_pass_TightPhoID = 1;
-        cout<<"EB slp"<<EB_MVA<<","<<sublead_pass_TightPhoID<<endl;
       }
 
       // EE
       else if (( abs(sub_leading_pho_eta) > 1.566) && ( abs(sub_leading_pho_eta) < 2.5)){
         // if (sublead_pho_EG_MVA_ > 0.14) sublead_pass_TightPhoID = 1;
         if (slp_Hgg_MVA > EE_MVA) sublead_pass_TightPhoID = 1;
-        cout<<"EE slp"<<EB_MVA<<","<<sublead_pass_TightPhoID<<endl;
       }
 
       if (lead_pass_TightPhoID && sublead_pass_TightPhoID){
@@ -599,9 +595,9 @@ namespace flashgg {
     double Event_num = 1;
     void HHWWggTagProducer::produce( Event &event, const EventSetup & )
     {
-      bool DEBUG = true;
+      bool DEBUG = false;
 
-      if (1) cout << "[HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce" <<Event_num<< endl;
+      if (DEBUG) cout << "[INFO][HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce" <<Event_num<< endl;
 
       // Get particle objects
       event.getByToken( photonToken_, photons );
@@ -761,7 +757,6 @@ namespace flashgg {
       }
 
       if(doHHWWggTagCutFlowAnalysis_) Cut_Variables[0] = 1.0; // passed diphoton preselection
-      cout<<"passed dipho preselection"<<endl;
       // read diphotons
       // for (unsigned int diphoton_idx = 0; diphoton_idx < diPhotonTokens_.size(); diphoton_idx++) { //looping over all diphoton systematics
         // cout << "diphoton_idx = " << diphoton_idx << endl;
@@ -809,9 +804,7 @@ namespace flashgg {
             subleadPho_pt = subleadPho->pt();
             sumpT = leadPho_pt + subleadPho_pt;
             // if(sumpT < 100) continue;
-            cout<<"sumPT:"<<sumpT<<endl;
             if(!doHHWWggTagCutFlowAnalysis_ && sumpT < 100.) {
-              cout<<"failed sumPT"<<"sumPT:"<<sumpT<<endl;
               continue;} // if not doing cut flow analysis to save events, remove event
           }
 
@@ -838,7 +831,6 @@ namespace flashgg {
           // Not doing cut flow analysis: Skip event if photon selections are not passed
           else{
             if(!passMVAs || !pass_leadPhoOverMassThreshold || !pass_subleadPhoOverMassThreshold) {
-              cout<<"failed mva or pt/gg"<<"MVA"<<passMVAs<<",leadPhoOverMass"<<pass_leadPhoOverMassThreshold<<",subleadPhoOverMass"<<pass_subleadPhoOverMassThreshold<<endl;
               continue;} // Do not save event if leading and subleading photons don't pass MVA cuts or pt/mgg cuts
           }
 
@@ -1012,7 +1004,6 @@ namespace flashgg {
             btagVal = jet_->bDiscriminator("mini_pfDeepFlavourJetTags:probb");
             if (btagVal > btagThresh_) hasHighbTag = 1;
             if (  jet_->pt() >20 && (btagVal > btagThresh_)) Savejet = 0;
-            cout<<"failed jet pt or btag"<<endl;
           }
 
           // If doing cut flow analysis, don't skip event
@@ -1023,7 +1014,6 @@ namespace flashgg {
               Cut_Variables[2] = 1.0; // passes bveto
           }
           else if(hasHighbTag) {
-            cout<<"faild b Veto"<<endl;
             continue;} // Skip event if it has at least one jet with a btag above threshold, and you're not doing a cut flow analysis
           n_good_jets = tagJets.size();
 
@@ -1187,7 +1177,9 @@ namespace flashgg {
               }
             }  // if (n_good_leptons==0 && n_good_jets>=4)
           } // Fully Hadronic Categories
-cout<<"n_good_leptons"<<n_good_leptons<<","<<n_good_muons<<","<<n_good_electrons<<endl;
+
+
+
           if(HHWWggAnalysisChannel_ == "FL")
           {  int catnum = 3;
           Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
@@ -1206,26 +1198,19 @@ cout<<"n_good_leptons"<<n_good_leptons<<","<<n_good_muons<<","<<n_good_electrons
             sort(goodElectrons.begin(),goodElectrons.end(),compEle);
             sort(goodMuons.begin(),goodMuons.end(),compMu);
             if (n_good_electrons >= 2){
-              cout<<"Ele tag"<<endl;
-              cout << "size"<<goodElectrons.size()<< endl;
-              cout << "n_good_ele:"<<n_good_electrons<< endl;
-              cout<<"n_good_muon:"<<n_good_muons<<endl;
               //std::cout<<"ele1:"<<goodElectrons[0]->pt()<<"ele2:"<<goodElectrons[1]->pt()<<"ele3:"<<goodElectrons[2]->pt()<<std::endl;
               if(n_good_electrons == 2 && n_good_muons < 1){
               tag_electron1 = goodElectrons[0];
               tag_electron2 = goodElectrons[1];
               Save = 1.;
-              cout<<"n_good_electrons == 2 && n_good_muons < 1"<<endl;
               }
               else if(n_good_electrons > 2 && n_good_muons < 1){
               tag_electron1 = goodElectrons[0];
               tag_electron2 = goodElectrons[1];
               tag_electron3 = goodElectrons[2];
               Save = 1.;
-              cout<<"n_good_electrons > 2 && n_good_muons < 1"<<endl;
               }
               else if(n_good_electrons ==2 && n_good_muons >=1){
-              cout<<"n_good_electrons == 2 && n_good_muons >= 1"<<endl;
               if(goodMuons[0]->pt()<lep3ptThre_){
               tag_electron1 = goodElectrons[0];
               tag_electron2 = goodElectrons[1];
@@ -1249,24 +1234,20 @@ cout<<"n_good_leptons"<<n_good_leptons<<","<<n_good_muons<<","<<n_good_electrons
               tag_electron3 = goodElectrons[2];
               Save = 0.;
               }
-              cout<<"n_good_electrons > 2 && n_good_muons >= 1"<<endl;
               }
               reco::Candidate::LorentzVector Ele1LV = tag_electron1->p4();
               reco::Candidate::LorentzVector Ele2LV = tag_electron2->p4();
               reco::Candidate::LorentzVector DiEleLV = Ele1LV +  Ele2LV;
               MassT= sqrt(2*DiEleLV.Pt()*theMET->pt()*(1-cos(abs(DiEleLV.Phi()-theMET->phi()))));
               MassT_l2 = sqrt(2*Ele2LV.Pt()*theMET->pt()*(1-cos(abs(Ele2LV.Phi()-theMET->phi()))));
-              cout<<"MassT:"<<MassT<<"MassT_l2:"<<MassT_l2<<endl;
                 if((tag_electron1->charge()*tag_electron2->charge()==-1) && tag_electron1->pt()>=lep1ptThre_ && tag_electron2->pt()>=lep1ptThre_  && DiEleLV.Pt()>DiLepPtThre_ && DiEleLV.M()>DiLepMassThre_ && MassT>MassTThre_ && MassT_l2 >MassT_l2Thre_ && Save == 1. && Savejet==1){
                 HHWWggTag tag_obj(dipho, tag_electron1, tag_electron2, theMET,Cut_Variables); // HHWWggTag need to be updated
-                cout<<"ele has taged"<<endl;
                 tag_obj.setSystLabel(systLabel_);
 
                 tag_obj.setDiPhotonIndex( diphoIndex );
                 tag_obj.setMVA( -0.9 );
                 tag_obj.setCategoryNumber( catnum );
                 HHWWggtags->push_back( tag_obj );
-                cout<<"ele push back"<<endl;
                 if( ! event.isRealData() ) {
                   HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
                 }
@@ -1277,8 +1258,6 @@ cout<<"n_good_leptons"<<n_good_leptons<<","<<n_good_muons<<","<<n_good_electrons
               //passMVAs = 0;
               //passMVAs = checkPassMVAs(leadPho, subleadPho, diphoton_vertex, EB_MVA_Threshold_, EE_MVA_Threshold_);
               //if(!passMVAs) continue;
-              cout<<"muon tag"<<endl;
-              cout<<"n_good_muons:"<<n_good_muons<<"n_good_eles:"<<n_good_electrons<<endl;
               if (n_good_muons == 2 && n_good_electrons <1){
               tag_muon1 = goodMuons[0];
               tag_muon2 = goodMuons[1];
@@ -1290,7 +1269,6 @@ cout<<"n_good_leptons"<<n_good_leptons<<","<<n_good_muons<<","<<n_good_electrons
               Save = 1.;
               }
               else if(n_good_muons ==2 && n_good_electrons >=1){
-                cout<<"goodElePt:"<<goodElectrons[0]->pt()<<endl;
                 if(goodElectrons[0]->pt()<lep3ptThre_){
                 tag_muon1 = goodMuons[0];
                 tag_muon2 = goodMuons[1];
@@ -1340,7 +1318,6 @@ cout<<"n_good_leptons"<<n_good_leptons<<","<<n_good_muons<<","<<n_good_electrons
 
             if (n_good_muons >=1 && n_good_electrons >= 1){
             if (n_good_electrons == 1 && n_good_muons == 1){
-              cout<< "diff flavor tag" <<endl;
               tag_electron1 = goodElectrons[0];
               tag_muon1 = goodMuons[0];
               Save=1.;
@@ -1386,7 +1363,6 @@ cout<<"n_good_leptons"<<n_good_leptons<<","<<n_good_muons<<","<<n_good_electrons
               if((((tag_electron1->pt()>=lep1ptThre_) && (tag_muon1->pt()>=lep2ptThre_))||((tag_muon1->pt()>=lep1ptThre_) && (tag_electron1->pt()>=lep2ptThre_))) && (tag_muon1->charge()*tag_electron1->charge()==-1) && (DiLepLV.M()>DiLepMassThre_) && (DiLepLV.Pt()>DiLepPtThre_) && (MassT_l2>MassTThre_) && (MassT>MassT_l2Thre_) && (Save==1.) &&(Savejet==1)){
                 HHWWggTag tag_obj(dipho, tag_electron1, tag_muon1, theMET,Cut_Variables);
                 tag_obj.setSystLabel(systLabel_);
-                cout<<"MassT:"<<MassT<<"DiLeppt:"<<DiLepLV.Pt()<<endl;
                 tag_obj.setDiPhotonIndex( diphoIndex );
                 tag_obj.setMVA( -0.9 );
                 tag_obj.setCategoryNumber( catnum );
@@ -1427,7 +1403,6 @@ cout<<"n_good_leptons"<<n_good_leptons<<","<<n_good_muons<<","<<n_good_electrons
         } // Diphoton loop //add cut flow below this line
       } // if at least 1 PS diphoton
       event.put( std::move( HHWWggtags ) );
-      cout<<"tag_obj has moved"<<endl;
       event.put( std::move( truths ) );
       Event_num=Event_num + 1;
     } // HHWWggTagProducer::produce
