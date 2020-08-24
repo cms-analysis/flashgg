@@ -972,9 +972,8 @@ namespace flashgg {
                   allJets.push_back(thejet);
 
                   // JetID sleection
-                  // if(!thejet->passesJetID  ( flashgg::Tight2017 ) ){ cout<<"failed JetID"<<endl;
-                    // continue; }//nead to fix
-                  if(thejet->passesJetID  ( flashgg::Tight2017 ) ) {}
+                  if(!thejet->passesJetID  ( flashgg::Tight2017 ) ){continue;}
+                  //if(thejet->passesJetID  ( flashgg::Tight2017 ) ) {}
                   if( fabs( thejet->eta() ) > jetEtaThreshold_ ) { keepJet=false; }
 
                   if( thejet->pt() < jetPtThreshold_ ) { keepJet=false; }
