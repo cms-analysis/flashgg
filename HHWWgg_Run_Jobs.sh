@@ -225,7 +225,7 @@ then
 
       fi 
 
-      if [ $doNonResAnalysis == 'true' ]
+      if [[ $doNonResAnalysis == 'true' ]]
       then 
             command+=' doHHWWggNonResAnalysis=1'
       fi 

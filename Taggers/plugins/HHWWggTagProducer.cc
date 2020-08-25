@@ -1190,7 +1190,7 @@ namespace flashgg {
           if(HHWWggAnalysisChannel_ == "FL")
           {  int catnum = 3;
           Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
-          if ( (n_good_leptons >=2 ) && (theMET->getCorPt() >= MetPtThreshold_) && num_FL_dr>=1 && (leadPho->p4().pt()+subleadPho->p4().pt())>100){
+          if ( (n_good_leptons >=2 ) && (theMET->getCorPt() >= MetPtThreshold_) && num_FL_dr>=1 && (leadPho->p4().pt()+subleadPho->p4().pt())>0){
 
             double Save=0.;
             double MassT;
