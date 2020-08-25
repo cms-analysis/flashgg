@@ -1,7 +1,0 @@
------ Begin Fatal Exception 25-Aug-2020 10:58:44 CEST-----------------------
-An exception of category 'ConfigFileReadError' occurred while
-   [0] Processing the python configuration file named /afs/cern.ch/work/c/chuw/HHWWgg/CMSSW_10_5_0/src/flashgg/HHWWgg_v2-6_Trees_X600_Test/workspaceStd.py
-Exception Message:
-python encountered the error: <type 'exceptions.ImportError'>
-No module named Systematics.SystematicDumperDefaultVariables
------ End Fatal Exception -------------------------------------------------
