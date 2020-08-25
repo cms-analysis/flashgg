@@ -20,12 +20,13 @@ class HHWWggCustomize():
             tagList -- Categories:  0 : SemiLeptonic electron channel
                                     1 : SemiLeptonic muon channel
                                     2 : Fully Hadronic channel (jets selection based on min W and H mass OR pT depending on input flag. min WH by default)
-                                    3 : Untagged --> Meets no criteria but want to save event to output
+                                    3 : Fully-leptonic channel
+                                    4 : Untagged --> Meets no criteria but want to save event to output
         """
         self.process = process
         self.customize = customize
         self.metaConditions = metaConditions
-        self.tagList = [ ["HHWWggTag",4] ] # definitions above
+        self.tagList = [ ["HHWWggTag",5] ] # definitions above
         self.customizeTagSequence()
 
     def variablesToDump(self):
