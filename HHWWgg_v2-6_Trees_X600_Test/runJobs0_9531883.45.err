@@ -1,0 +1,33 @@
+25-Aug-2020 10:58:22 CEST  Initiating request to open file root://eosuser.cern.ch//eos/user/c/chuw/flashgg/Non_res_withTau/94X_mc2017-RunIIFall18/GluGluToHHTo_WWgg_lnulnugg_node5/Non_res_withTau-94X_mc2017-RunIIFall18-v0-wangjin-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/200808_110223/0000//myMicroAODOutputFile_247.root
+25-Aug-2020 10:58:28 CEST  Successfully opened file root://eosuser.cern.ch//eos/user/c/chuw/flashgg/Non_res_withTau/94X_mc2017-RunIIFall18/GluGluToHHTo_WWgg_lnulnugg_node5/Non_res_withTau-94X_mc2017-RunIIFall18-v0-wangjin-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/200808_110223/0000//myMicroAODOutputFile_247.root
+25-Aug-2020 10:58:35 CEST  Closed file root://eosuser.cern.ch//eos/user/c/chuw/flashgg/Non_res_withTau/94X_mc2017-RunIIFall18/GluGluToHHTo_WWgg_lnulnugg_node5/Non_res_withTau-94X_mc2017-RunIIFall18-v0-wangjin-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/200808_110223/0000//myMicroAODOutputFile_247.root
+----- Begin Fatal Exception 25-Aug-2020 10:58:35 CEST-----------------------
+An exception of category 'DictionaryNotFound' occurred while
+   [0] Constructing the EventProcessor
+   [1] Constructing module: class=FlashggDiPhotonProducer label='flashggDiPhotons'
+   [2] Calling ProductRegistryHelper::addToRegistry, checking dictionaries for produced types
+Exception Message:
+No data dictionary found for the following classes:
+
+  edm::Wrapper<std::vector<flashgg::DiPhotonCandidate> >
+  std::vector<flashgg::DiPhotonCandidate>
+
+Most likely each dictionary was never generated, but it may
+be that it was generated in the wrong package. Please add
+(or move) the specification '<class name="whatever"/>' to
+the appropriate classes_def.xml file along with any other
+information needed there. For example, if this class has any
+transient members, you need to specify them in classes_def.xml.
+Also include the class header in classes.h
+
+A type listed above might or might not be the same as a
+type declared by a producer module with the function 'produces'.
+Instead it might be the type of a data member, base class,
+wrapped type, or other object needed by a produced type. Below
+is some additional information which lists the types declared
+to be produced by a producer module that are associated with
+the types whose dictionaries were not found:
+
+  std::vector<flashgg::DiPhotonCandidate>
+
+----- End Fatal Exception -------------------------------------------------

@@ -1,0 +1,9 @@
+25-Aug-2020 10:59:08 CEST  Initiating request to open file root://eosuser.cern.ch//eos/user/c/chuw/flashgg/Non_res_withTau/94X_mc2017-RunIIFall18/GluGluToHHTo_WWgg_lnulnugg_node5/Non_res_withTau-94X_mc2017-RunIIFall18-v0-wangjin-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/200808_110223/0000//myMicroAODOutputFile_255.root
+25-Aug-2020 10:59:14 CEST  Successfully opened file root://eosuser.cern.ch//eos/user/c/chuw/flashgg/Non_res_withTau/94X_mc2017-RunIIFall18/GluGluToHHTo_WWgg_lnulnugg_node5/Non_res_withTau-94X_mc2017-RunIIFall18-v0-wangjin-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/200808_110223/0000//myMicroAODOutputFile_255.root
+25-Aug-2020 10:59:24 CEST  Closed file root://eosuser.cern.ch//eos/user/c/chuw/flashgg/Non_res_withTau/94X_mc2017-RunIIFall18/GluGluToHHTo_WWgg_lnulnugg_node5/Non_res_withTau-94X_mc2017-RunIIFall18-v0-wangjin-100000events_wPU_MINIAOD-5f646ecd4e1c7a39ab0ed099ff55ceb9/200808_110223/0000//myMicroAODOutputFile_255.root
+----- Begin Fatal Exception 25-Aug-2020 10:59:25 CEST-----------------------
+An exception of category 'PluginLibraryLoadError' occurred while
+   [0] Constructing the EventProcessor
+Exception Message:
+unable to load /afs/cern.ch/work/c/chuw/HHWWgg/CMSSW_10_5_0/lib/slc7_amd64_gcc700/pluginFlashggSystematicsPlugins.so because /afs/cern.ch/work/c/chuw/HHWWgg/CMSSW_10_5_0/lib/slc7_amd64_gcc700/pluginFlashggSystematicsPlugins.so: cannot open shared object file: No such file or directory
+----- End Fatal Exception -------------------------------------------------
