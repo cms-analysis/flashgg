@@ -42,7 +42,7 @@
 #include <algorithm>
 #include "TGraph.h"
 #include "TLorentzVector.h"
- 
+
 using namespace std;
 using namespace edm;
 
@@ -328,7 +328,6 @@ namespace flashgg {
       // Get MVA values wrt diphoton vertex
       lp_Hgg_MVA = leading_photon->phoIdMvaDWrtVtx( diphoton_vertex );
       slp_Hgg_MVA = subleading_photon->phoIdMvaDWrtVtx( diphoton_vertex );
-    cout<<"lp_Hgg_MVA,"<<lp_Hgg_MVA<<"slp_Hgg_MVA,"<<slp_Hgg_MVA<<endl;
       // Get eta values
       leading_pho_eta = leading_photon->p4().eta();
       sub_leading_pho_eta = subleading_photon->p4().eta();
