@@ -1044,7 +1044,7 @@ namespace flashgg {
             else Cut_Variables[15] = 0.0;
             if(num_FL_dr>=1) Cut_Variables[16] = 1.0;
             else Cut_Variables[16] = 0.0;
-            if(theMET->getCorPt() >= MetPtThreshold_) Cut_Variables[12] = 1.0;
+            if(theMET->getCorPt() >= MetPtThreshold_) Cut_Variables[17] = 1.0;
             else Cut_Variables[17] = 0.0;
           }
 
