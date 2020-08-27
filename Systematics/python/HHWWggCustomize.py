@@ -54,7 +54,7 @@ class HHWWggCustomize():
             "TwoGoodEles:= Cut_Variables[15]",
             "passLepDR:= Cut_Variables[16]",
             "passMetPt:= Cut_Variables[17]",
-	    "FL_Lep_Flavor :=Cut_Variables[17]"
+	    "FL_Lep_Flavor :=Cut_Variables[18]"
         ]
 
         #-- b scores
