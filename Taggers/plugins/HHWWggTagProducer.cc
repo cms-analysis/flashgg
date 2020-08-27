@@ -891,18 +891,6 @@ namespace flashgg {
 
           // FL: Require at dr(l,l) > 0.4
           // For which pairs of the >=2 good leptons should dr be greater than 4?
-          if(doHHWWggTagCutFlowAnalysis_){
-          if(hasGoodElec)
-          Cut_Variables[2] = 1.0; // pass goodEle
-          else
-          Cut_Variables[2] = 0.0; // do not pass goodEle
-          }
-          if(doHHWWggTagCutFlowAnalysis_){
-          if(hasGoodMuons)
-          Cut_Variables[3] = 1.0; //  pass goodMuon
-          else
-          Cut_Variables[3] = 0.0; // do not pass goodMuon
-          }
           if (hasGoodElec && hasGoodMuons){
             for (unsigned int ei = 0; ei < goodElectrons.size(); ei++){
               Ptr<flashgg::Electron> electron = goodElectrons[ei];
