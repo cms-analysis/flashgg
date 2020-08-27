@@ -74,7 +74,7 @@ flashggPreselectedDiPhotons = cms.EDFilter(
         " && (abs(leadingPhoton.superCluster.eta) < 1.4442 || abs(leadingPhoton.superCluster.eta) > 1.566)"
         " && (abs(subLeadingPhoton.superCluster.eta) < 1.4442 || abs(subLeadingPhoton.superCluster.eta) > 1.566)"
         " && (leadPhotonId > -0.9 && subLeadPhotonId > -0.9)" 
-#        " && (leadingPhoton.pt > mass/3. && subLeadingPhoton.pt > mass/4.)"
+        #  " && (leadingPhoton.pt > mass/3 && subLeadingPhoton.pt > mass/4.)"
 #        " && (leadingPhoton.passElectronVeto) && (subLeadingPhoton.passElectronVeto)"
         ),
     variables = rediscoveryHLTvariables,

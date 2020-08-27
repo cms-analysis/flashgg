@@ -20,12 +20,13 @@ class HHWWggCustomize():
             tagList -- Categories:  0 : SemiLeptonic electron channel
                                     1 : SemiLeptonic muon channel
                                     2 : Fully Hadronic channel (jets selection based on min W and H mass OR pT depending on input flag. min WH by default)
-                                    3 : Untagged --> Meets no criteria but want to save event to output
+                                    3 : Fully-leptonic channel
+                                    4 : Untagged --> Meets no criteria but want to save event to output
         """
         self.process = process
         self.customize = customize
         self.metaConditions = metaConditions
-        self.tagList = [ ["HHWWggTag",4] ] # definitions above 
+        self.tagList = [ ["HHWWggTag",5] ] # definitions above
         self.customizeTagSequence()
 
     def variablesToDump(self):
@@ -46,7 +47,14 @@ class HHWWggCustomize():
             "mW1_65To105[2,0,2] := Cut_Variables[8]",
             "mW2_0To160[2,0,2] := Cut_Variables[9]",
             "mH_105To160[2,0,2] := Cut_Variables[10]",
-            "mH_40To210[2,0,2] := Cut_Variables[11]"
+            "mH_40To210[2,0,2] := Cut_Variables[11]",
+            "AtLeastTwoLeps:= Cut_Variables[12]",
+            "TwoDiffLeps:= Cut_Variables[13]",
+            "TwoGoodMuons:= Cut_Variables[14]",
+            "TwoGoodEles:= Cut_Variables[15]",
+            "passLepDR:= Cut_Variables[16]",
+            "passMetPt:= Cut_Variables[17]",
+	    "FL_Lep_Flavor :=Cut_Variables[18]"
         ]
 
         #-- b scores
@@ -118,6 +126,54 @@ class HHWWggCustomize():
             "HHCandidate_pz := HH.pz()",
             "HHCandidate_eta := HH.eta()",
             "HHCandidate_phi := HH.phi()"
+        ]
+        FL_vars =[
+          "lp_pt                               := Leading_Photon.p4().pt()",
+          "lp_eta                              := Leading_Photon.p4().eta()",
+          "lp_SC_eta                           := Leading_Photon.superCluster().eta()",
+          "lp_phi                              := Leading_Photon.p4().phi()",
+          "lp_E                                := Leading_Photon.p4().E()",
+          "lp_initE                            := Leading_Photon.energyAtStep('initial')",
+          "lp_r9                               := Leading_Photon.old_r9()",
+          "lp_full5x5_r9                       := Leading_Photon.full5x5_r9()",
+          "lp_Hgg_MVA                          := lp_Hgg_MVA()",
+          "lp_passElectronVeto                 := Leading_Photon.passElectronVeto()",
+          "lp_hasPixelSeed                     := Leading_Photon.hasPixelSeed",
+          # Subleading Photon
+          # slp = Subleading Photon
+          "slp_pt                              := Subleading_Photon.p4().pt()",
+          "slp_eta                             := Subleading_Photon.p4().eta()",
+          "slp_SC_eta                          := Subleading_Photon.superCluster().eta()",
+          "slp_phi                             := Subleading_Photon.p4().phi()",
+          "slp_E                               := Subleading_Photon.p4().E()",
+          "slp_initE                           := Subleading_Photon.energyAtStep('initial')",
+          "slp_r9                              := Subleading_Photon.old_r9()",
+          "slp_full5x5_r9                      := Subleading_Photon.full5x5_r9()",
+          "slp_Hgg_MVA                         := slp_Hgg_MVA()",
+          "slp_passElectronVeto                := Subleading_Photon.passElectronVeto()",
+          "slp_hasPixelSeed                    := Subleading_Photon.hasPixelSeed",
+
+          # DiPhoton(s)
+        #  "n_dipho                             := diphoVector.size()",
+        #  "dipho_MVA                           := dipho_MVA()",
+        #  "CMS_hgg_mass                        := CMS_hgg_mass() ", # for cuts within HHWWggCandidate.cc before workspace
+       #   "leading_dpho_pt                     := ? leading_dpho.pt() != 0 ? leading_dpho.pt() : -99",
+        #  "leading_dpho_eta                    := ? leading_dpho.eta() != 0 ? leading_dpho.eta() : -99",
+         # "leading_dpho_phi                    := ? leading_dpho.phi() != 0 ? leading_dpho.phi() : -99",
+         # "leading_dpho_E                      := ? leading_dpho.E() != 0 ? leading_dpho.E() : -99",
+
+          # Electrons
+          # If there is no leading electron (electronVector_.size() == 0) or no subleading electron (electronVector_.size() <= 1) plot -99
+          "Leading_lepton_pt                     := Leading_lepton.pt() ",
+          "Leading_lepton_eta                    := Leading_lepton.eta()",
+          "Leading_lepton_phi                    := Leading_lepton.phi()",
+          "Leading_lepton_E                      := Leading_lepton.E()",
+          "Subleading_lepton_pt                  := Subleading_lepton.pt()",
+          "Subleading_lepton_eta                 := Subleading_lepton.eta()",
+          "Subleading_lepton_phi                 := Subleading_lepton.phi()",
+          "Subleading_lepton_E                   := Subleading_lepton.E()",
+          # If there is no leading muon (muonVector_.size() == 0) or no subleading muon (muonVector_.size() <= 1) plot -99
+          "Met_pt                              := MET.pt()"
         ]
 
         vars = ["E","pt","px","py","pz","eta","phi"]
@@ -260,6 +316,7 @@ class HHWWggCustomize():
             variables += otherVariables
             variables += finalStateVars
             variables += cutFlowVars
+            variables += FL_vars
             # variables += bScores
 
         if self.customize.doHHWWggDebug:
@@ -337,21 +394,21 @@ class HHWWggCustomize():
     def customizeTagSequence(self):
         self.process.load("flashgg.Taggers.flashggHHWWggTag_cff")
 
-        # if self.customize.doHHWWggTagCutFlow: 
-        if self.customize.doHHWWggTagCutFlow or self.customize.saveHHWWggFinalStateVars:  ##-- set true for either case because finalstate vars only saved during cutflow 
+        # if self.customize.doHHWWggTagCutFlow:
+        if self.customize.doHHWWggTagCutFlow or self.customize.saveHHWWggFinalStateVars:  ##-- set true for either case because finalstate vars only saved during cutflow
             self.process.flashggHHWWggTag.doHHWWggTagCutFlowAnalysis = cms.bool(True)
 
-        if self.customize.doHHWWggNonResAnalysis: 
+        if self.customize.doHHWWggNonResAnalysis:
             self.process.flashggHHWWggTag.doHHWWggNonResAnalysis = cms.bool(True)
         if self.customize.doHHWWggFHptOrdered:
             self.process.flashggHHWWggTag.doHHWWggFHptOrdered = cms.bool(True)
         if self.customize.doHHWWggDebug:
             self.process.flashggHHWWggTag.doHHWWggDebug = cms.bool(True)
 
-        # print "HHWWggAnalysisChannel:",self.customize.HHWWggAnalysisChannel 
-        self.process.flashggHHWWggTag.HHWWggAnalysisChannel = self.customize.HHWWggAnalysisChannel 
+        # print "HHWWggAnalysisChannel:",self.customize.HHWWggAnalysisChannel
+        self.process.flashggHHWWggTag.HHWWggAnalysisChannel = self.customize.HHWWggAnalysisChannel
 
-        # if self.customize.saveHHWWggGenVars: 
+        # if self.customize.saveHHWWggGenVars:
             # self.process.flashggHHWWggTag.saveHHWWggGenVars = cms.bool(True)
 
         # if self.customize.saveHHWWggFinalStateVars:
@@ -394,11 +451,11 @@ class HHWWggCustomize():
 
         self.process.flashggTagSequence.replace(self.process.flashggTagSorter,self.process.flashggHHWWggTagSequence*self.process.flashggTagSorter)
         self.process.flashggTagSorter.TagPriorityRanges = cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggHHWWggTag')) )
- 
-    def HHWWggTagMerger(self,systlabels=[]):     
+
+    def HHWWggTagMerger(self,systlabels=[]):
         self.process.p.remove(self.process.flashggTagSorter)
         self.process.p.replace(self.process.flashggSystTagMerger,self.process.flashggHHWWggTagSequence*self.process.flashggTagSorter*self.process.flashggSystTagMerger)
-        # print'process.p = ',self.process.p 
+        # print'process.p = ',self.process.p
 
         for systlabel in systlabels:
            if systlabel!='':
@@ -413,10 +470,10 @@ class HHWWggCustomize():
 
     # def HHWWggTagRunSequence(self,systlabels,jetsystlabels,phosystlabels):
         # if self.customize.saveHHWWggGenVars:
-            # self.addGenAnalysis()           
+            # self.addGenAnalysis()
         # print'[HHWWggTagRunSequence]: Doing Nothing for HHWWgg'
-    #    if self.customize.HHWWggTagsOnly: 
-        #   print'systlabels = ',systlabels 
+    #    if self.customize.HHWWggTagsOnly:
+        #   print'systlabels = ',systlabels
 
         #   self.HHWWggTagMerger(systlabels)
 
@@ -452,11 +509,11 @@ class HHWWggCustomize():
         #     self.process.p.replace(self.process.flashggHHWWggTag, self.process.flashggHHWWggReweight*self.process.flashggHHWWggTag)
 
     # def addGenAnalysis(self):
-    #     if self.customize.processId == "Data": 
-    #         return 
+    #     if self.customize.processId == "Data":
+    #         return
 
     #     import flashgg.Taggers.dumperConfigTools as cfgTools
-    #     ## load gen-level bbgg 
+    #     ## load gen-level bbgg
     #     # self.process.load( "flashgg.MicroAOD.flashggGenDiPhotonDiBJetsSequence_cff" )
 
     #     ## match gen-level to reco tag
@@ -477,7 +534,7 @@ class HHWWggCustomize():
 
     #     genVariables = ["mgg := mass",
     #                     "mbb := dijet.mass",
-    #                     "mhh := sqrt( pow(energy+dijet.energy,2) - pow(px+dijet.px,2) - pow(py+dijet.py,2) - pow(pz+dijet.pz,2))",                    
+    #                     "mhh := sqrt( pow(energy+dijet.energy,2) - pow(px+dijet.px,2) - pow(py+dijet.py,2) - pow(pz+dijet.pz,2))",
 
 
     #                     "leadPho_px := leadingPhoton.px",
@@ -499,7 +556,7 @@ class HHWWggCustomize():
     #                     "subleadJet_e  := subLeadingJet.energy",
 
     #                     ]
-    #     # if self.customize.HHWWggReweight > 0: 
+    #     # if self.customize.HHWWggReweight > 0:
     #     #      for num in range(0,12):
     #     #            genVariables += ["benchmark_reweight_%d := getHHbbggBenchmarkReweight(%d)"%(num,num)]
     #     #      genVariables += ["benchmark_reweight_SM := getHHbbggBenchmarkReweight(12)"]
@@ -517,11 +574,10 @@ class HHWWggCustomize():
     #         # need to define all categories explicitely because cut-based classifiers do not look at sub-category number
     #         for isub in xrange(subCats):
     #             cfgTools.addCategory(self.process.genDiphotonDumper,
-    #                                  "%s_%d" % ( tagName, isub ), 
+    #                                  "%s_%d" % ( tagName, isub ),
     #                                  'isTagged("%s") && categoryNumber == %d' % (tagName, isub),0,
     #                                  variables=genVariables##+recoVariables
     #                                  )
 
     #     # self.process.genp = cms.Path(self.process.flashggGenDiPhotonDiBJetsSequence*self.process.flashggTaggedGenDiphotons*self.process.genDiphotonDumper)
     #     self.process.genp = cms.Path(self.process.flashggTaggedGenDiphotons*self.process.genDiphotonDumper)
-
