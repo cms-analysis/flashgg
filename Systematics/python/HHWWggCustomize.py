@@ -81,7 +81,8 @@ class HHWWggCustomize():
             "Subleading_Photon_pt:=slp_pt"
         ]
 
-        otherVariables=[
+        ##-- W, H variables 
+        HHVariables=[
             "W1Candidate_E := dijet.E()",
             "W1Candidate_M := dijet.M()",
             "W1Candidate_pt := dijet.pt()",
@@ -127,6 +128,7 @@ class HHWWggCustomize():
             "HHCandidate_eta := HH.eta()",
             "HHCandidate_phi := HH.phi()"
         ]
+
         FL_vars =[
           "lp_pt                               := Leading_Photon.p4().pt()",
           "lp_eta                              := Leading_Photon.p4().eta()",
@@ -313,10 +315,11 @@ class HHWWggCustomize():
             # variables += bScores
 
         if self.customize.saveHHWWggFinalStateVars:
-            variables += otherVariables
             variables += finalStateVars
+            variables += HHVariables
             variables += cutFlowVars
-            variables += FL_vars
+            if self.customize.HHWWggAnalysisChannel == "FL": variables += FL_vars
+
             # variables += bScores
 
         if self.customize.doHHWWggDebug:
@@ -405,8 +408,10 @@ class HHWWggCustomize():
         if self.customize.doHHWWggDebug:
             self.process.flashggHHWWggTag.doHHWWggDebug = cms.bool(True)
 
-        # print "HHWWggAnalysisChannel:",self.customize.HHWWggAnalysisChannel
+        print "HHWWggAnalysisChannel:",self.customize.HHWWggAnalysisChannel
         self.process.flashggHHWWggTag.HHWWggAnalysisChannel = self.customize.HHWWggAnalysisChannel
+        if self.customize.HHWWggAnalysisChannel == "FL": 
+           self.process.flashggHHWWggTag.deltaMassElectronZThreshold = 5 # 5 instead of default 10  
 
         # if self.customize.saveHHWWggGenVars:
             # self.process.flashggHHWWggTag.saveHHWWggGenVars = cms.bool(True)
