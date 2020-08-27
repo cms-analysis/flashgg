@@ -1121,7 +1121,6 @@ namespace flashgg {
 
           if(HHWWggAnalysisChannel_ == "FH")
           {
-
             if (n_good_leptons==0 && n_good_jets>=4)
             {
               catnum = 2;
@@ -1244,6 +1243,7 @@ namespace flashgg {
                 tag_obj.setDiPhotonIndex( diphoIndex );
                 tag_obj.setMVA( -0.9 );
                 tag_obj.setCategoryNumber( catnum );
+                tag_obj.includeWeights( *dipho );
                 HHWWggtags->push_back( tag_obj );
                 if( ! event.isRealData() ) {
                   HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
@@ -1306,6 +1306,7 @@ namespace flashgg {
                 tag_obj.setDiPhotonIndex( diphoIndex );
                 tag_obj.setMVA( -0.9 );
                 tag_obj.setCategoryNumber( catnum);
+                tag_obj.includeWeights( *dipho );
                 HHWWggtags->push_back( tag_obj );
 
                 if( ! event.isRealData() ) {
@@ -1371,6 +1372,7 @@ namespace flashgg {
                 tag_obj.setDiPhotonIndex( diphoIndex );
                 tag_obj.setMVA( -0.9 );
                 tag_obj.setCategoryNumber( catnum );
+                tag_obj.includeWeights( *dipho );
                 HHWWggtags->push_back( tag_obj );
 
                 if( ! event.isRealData() ) {
