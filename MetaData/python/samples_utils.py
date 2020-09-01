@@ -597,6 +597,7 @@ class SamplesManager(object):
         except KeyError:
             try:
                 parent_info = das_query("dataset dataset=%s instance=prod/phys03" % parent_dset) # hardcoding instance=prod/phys03 for HHWWgg private samples 
+                #parent_info = das_query("dataset dataset=%s instance=prod/global" % parent_dset) # hardcoding instance=prod/phys03 for HHWWgg private samples 
                 parent_info = parent_info['data'][-1]['dataset'][0][parent_n_info]
             except KeyError:
                 parent_info = None

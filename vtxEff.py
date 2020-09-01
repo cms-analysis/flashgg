@@ -9,7 +9,8 @@ files = []
 # files.append(['/eos/cms/store/user/torimoto/physics/4gamma/H4Gamma_2016Analysis/Signal_LowMassPreselOnly/signal_hgg','GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8_13TeV','hgg'])
 # files.append(['/eos/cms/store/user/torimoto/physics/4gamma/H4Gamma_2016Analysis/Signal_LowMassPreselOnly/signal_m_60','SUSYGluGluToHToAA_AToGG_M_60_TuneCUETP8M1_13TeV_pythia8_13TeV','h4g'])
 # files.append(['/afs/cern.ch/work/t/twamorka/ThesisAnalysis/CMSSW_10_5_0/src/flashgg/Signal_Jul15_ver5/signal_60/signal_m_60','SUSYGluGluToHToAA_AToGG_M_60_TuneCUETP8M1_13TeV_pythia8_13TeV','h4g'])
-files.append(['/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/X250_HHWWgg_qqlnu','_13TeV','HHWWgg'])
+# files.append(['/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/X250_HHWWgg_qqlnu','_13TeV','HHWWgg'])
+files.append(['/eos/user/a/atishelm/ntuples/HHWWgg/HHWWgg_v2-3_SM_CutFlowHadded/ggF_SM_WWgg_qqlnugg_Hadded','13TeV','HHWWgg'])
 
 Cut = []
 Cut.append(['abs(dZ)','1'])  # zero vtx 
@@ -37,7 +38,9 @@ for fi, f in enumerate(files):
     ch = TChain()
     # ch.Add(f[0]+str('.root/h4gCandidateDumper/trees/')+f[1]+str('_2photons'))
     # ch.Add(f[0]+str('.root/h4gCandidateDumper/trees/')+f[1]+str('_3photons'))
-    ch.Add(f[0]+str('.root/HHWWggCandidateDumper/trees/ggF_125')+f[1]+str('_SL'))
+    # ch.Add(f[0]+str('.root/HHWWggCandidateDumper/trees/ggF_125')+f[1]+str('_SL'))
+    # ch.Add(f[0]+str('.root/tagsDumper/trees/ggF_125')+f[1]+str('_SL'))
+    ch.Add(f[0]+str('.root/tagsDumper/trees/ggF_SM_WWgg_qqlnugg_13TeV_HHWWggTag_0'))
 
     print ch.GetEntries()
     for ci, c in enumerate(Cut):

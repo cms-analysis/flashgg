@@ -15,7 +15,8 @@
 
 ## User specific variables. Customize to your own working area(s)
 # nTupleDirec="/eos/user/r/rasharma/post_doc_ihep/double-higgs/ntuples/HHWWgg_5July_v3/"
-nTupleDirec="$PWD/" # condor output directory
+# nTupleDirec="$PWD/" # condor output directory
+nTupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg/"
 echo "nTupleDirec = ${nTupleDirec}"
 fggDirec="$PWD/" # flashgg directory (It should be ${PWD}, if now please change this)
 
@@ -120,8 +121,6 @@ scriptLoc=$fggDirec
 scriptLoc+="Systematics/scripts/hadd_all.py"
 scriptLoc+=" $haddVar"
 
-echo "SCRIPT: $scriptLoc"
-
 cd $fggDirec
 cmsenv
 cd $nTupleDirec
@@ -152,23 +151,23 @@ do
 
 	if [[ $runSignal == "true" ]]; then
 
-		if [[ $signalType == "Res" ]]; then
-      mass="$(cut -d'_' -f3 <<<$file_i)" # get third '_' delimited element of file path. Should be X250, X260, etc.
-      channel="$(cut -d'_' -f5 <<<$file_i)" # get fifth '_' delimited element of file path. Should be qqlnu, lnulnu, qqqq
-      channel=${node%?????} # remove ".root"
-      infilePath="${nTupleDirec}/${inputFolder}/${file_i}"
-			outfilePath="${nTupleDirec}/${outputFolder}/${mass}_HHWWgg_${channel}.root"
-
+            if [[ $signalType == "Res" ]]; then
+                  mass="$(cut -d'_' -f3 <<<$file_i)" # get third '_' delimited element of file path. Should be X250, X260, etc.
+                  channel="$(cut -d'_' -f5 <<<$file_i)" # get fifth '_' delimited element of file path. Should be qqlnu, lnulnu, qqqq
+                  channel=${node%?????} # remove ".root" #// try: channel=${channel//'.root'/}
+                  infilePath="${nTupleDirec}/${inputFolder}/${file_i}"
+                  outfilePath="${nTupleDirec}/${outputFolder}/${mass}_HHWWgg_${channel}.root" ##-- I think it's helpful to have the production mode in the name 
+		
 		elif [[ $signalType == "NONRES" ]]; then
-      # Input root file should be named such that its fourth '_' delimited
-      # element should be "qqqq" or "lnuqq" or "lnulnu" (channel name) and
-      # fifth '_' delimited element should be like "nodeX".
+                  # Input root file should be named such that its fourth '_' delimited
+                  # element should be "qqqq" or "lnuqq" or "lnulnu" (channel name) and
+                  # fifth '_' delimited element should be like "nodeX".
 			node="$(cut -d'_' -f5 <<<$file_i)" # get fifth '_' delimited element. nodeX.root
 			node=${node%?????} # remove ".root"
-      channel="$(cut -d'_' -f4 <<<$file_i)" # get fourth '_' delimited element. qqqq_nodeX.root
+                  channel="$(cut -d'_' -f4 <<<$file_i)" # get fourth '_' delimited element. qqqq_nodeX.root
 			infilePath="${nTupleDirec}/${inputFolder}/${file_i}"
-      outfilePath="${nTupleDirec}/${outputFolder}/${node}_HHWWgg_${channel}.root"
-      # EXAMPLE: outfilePath="${nTupleDirec}/${outputFolder}/node11_HHWWgg_qqqq.root"
+                  outfilePath="${nTupleDirec}/${outputFolder}/${node}_HHWWgg_${channel}.root" ##-- I think it's helpful to have the production mode in the name 
+                  # EXAMPLE: outfilePath="${nTupleDirec}/${outputFolder}/node11_HHWWgg_qqqq.root"
 			# EXAMPLE: outfilePath="${nTupleDirec}/${outputFolder}/node11_HHWWgg_lnuqq.root"
 
 		elif [[ $signalType == "NMSSM" ]]; then
@@ -177,7 +176,7 @@ do
 			mY="$(cut -d'_' -f 5 <<<$file_i)"
 			mY=${mY%?????} # remove ".root"
 			infilePath="${nTupleDirec}/${inputFolder}/${file_i}"
-			outfilePath="${nTupleDirec}/${outputFolder}/${mX}_${mY}_HHWWgg_qqlnu.root"
+			outfilePath="${nTupleDirec}/${outputFolder}/${mX}_${mY}_HHWWgg_qqlnu.root" ##-- I think it's helpful to have the production mode in the name 
 		else
                   infilePath="${nTupleDirec}/${inputFolder}/${file_i}"
                   outfilePath="${nTupleDirec}/${outputFolder}/${file_i}"
@@ -197,7 +196,7 @@ do
 	echo "infilePath: $infilePath"
 	echo "outfilePath: $outfilePath"
 	mv $infilePath $outfilePath
-	#. ../run.sh ../RenameWorkspace_SignalTagger $infilePath $outfilePath $mass
+	#. ../run.sh ../RenameWorkspace_SignalTagger $infilePath $outfilePath $mass # could potential be helpful 
 	let "i=i+1"
 
 done
