@@ -250,7 +250,7 @@ namespace flashgg {
 
       // WTags = fs->make<TH1F> ("WTags","W Tags",3,0,3);
       EB_Photon_MVA_Threshold_ =pSet.getParameter<double>( "EB_Photon_MVA_Threshold");
-      EE_Photon_MVA_Threshold =pSet.getParameter<double>( "EE_Photon_MVA_Threshold");
+      EE_Photon_MVA_Threshold_ =pSet.getParameter<double>( "EE_Photon_MVA_Threshold");
       MetPtThreshold_ =pSet.getParameter<double>( "MetPtThreshold");
       deltaRLeps_ =pSet.getParameter<double>( "deltaRLeps");
       leptonPtThreshold_ = pSet.getParameter<double>( "leptonPtThreshold");
