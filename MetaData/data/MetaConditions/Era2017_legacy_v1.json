@@ -91,8 +91,10 @@
 
     "JetCorrectorParametersCollection_version" :
     {
-        "data" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_DATA_AK4PFchs",
-        "MC" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_MC_AK4PFchs"
+        "data" : "JetCorrectorParametersCollection_Summer19UL17_RunBCDEF_V5_DATA_AK4PFchs",
+        "data_db" : "flashgg/Systematics/data/JEC/Summer19UL17_RunBCDEF_V5_DATA.db",
+        "MC" : "JetCorrectorParametersCollection_Summer19UL17_V5_MC_AK4PFchs",
+        "MC_db" : "flashgg/Systematics/data/JEC/Summer19UL17_V5_MC.db"
     },
 	
     "flashggDiPhotonMVA" : 

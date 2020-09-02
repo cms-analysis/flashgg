@@ -277,8 +277,8 @@ class jetSystematicsCustomize:
          module,tag = self.createJetSystematicsForTag(jetInputTag)
          self.process.jetSystematicsSequence += module
          systematicsInputList.append(tag)
-         self.createJECESource()  
-         #  createJERESource(self.process)  
+         self.createJECESource()
+         #createJERESource(self.process)
       return systematicsInputList
 
    def createJECESource(self):
@@ -288,19 +288,32 @@ class jetSystematicsCustomize:
       # self.process.load("CondCore.DBCommon.CondDBCommon_cfi")
       # self.process.load("CondCore.DBCommon.CondDBSetup_cfi")
       self.process.load("CondCore.CondDB.CondDB_cfi")
-      self.process.jec = cms.ESSource("PoolDBESSource",
-                                      DBParameters = cms.PSet(
-                                         messageLevel = cms.untracked.int32(0)
-                                      ),
-                                      timetype = cms.string('runnumber'),
-                                      toGet = cms.VPSet(cms.PSet(
-                                         record = cms.string('JetCorrectionsRecord'),
-                                         tag    = cms.string(
-                                            str(self.metaConditions['JetCorrectorParametersCollection_version']["data" if self.options.processType=="data" else "MC"])),   
-                                         label  = cms.untracked.string("AK4PFchs")
-                                      )),
-                                      connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
-                                   )                               
+      if 'data_db' in self.metaConditions['JetCorrectorParametersCollection_version'].keys():
+          CondDBJECFile = self.process.CondDB.clone(connect = cms.string('sqlite_fip:%s'%str(self.metaConditions['JetCorrectorParametersCollection_version']["data_db" if self.options.processType=="data" else "MC_db"])))
+          self.process.jec = cms.ESSource("PoolDBESSource",
+                                          CondDBJECFile,
+                                          timetype = cms.string('runnumber'),
+                                          toGet = cms.VPSet(cms.PSet(
+                                             record = cms.string('JetCorrectionsRecord'),
+                                             tag    = cms.string(
+                                                str(self.metaConditions['JetCorrectorParametersCollection_version']["data" if self.options.processType=="data" else "MC"])),   
+                                             label  = cms.untracked.string("AK4PFchs")
+                                          ))
+                                       )                               
+      else:
+          self.process.jec = cms.ESSource("PoolDBESSource",
+                                          DBParameters = cms.PSet(
+                                             messageLevel = cms.untracked.int32(0)
+                                          ),
+                                          timetype = cms.string('runnumber'),
+                                          toGet = cms.VPSet(cms.PSet(
+                                             record = cms.string('JetCorrectionsRecord'),
+                                             tag    = cms.string(
+                                                str(self.metaConditions['JetCorrectorParametersCollection_version']["data" if self.options.processType=="data" else "MC"])),   
+                                             label  = cms.untracked.string("AK4PFchs")
+                                          )),
+                                          connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
+                                          )
       self.process.es_prefer_jec = cms.ESPrefer('PoolDBESSource', 'jec')
 
    def createJERESource(self):
