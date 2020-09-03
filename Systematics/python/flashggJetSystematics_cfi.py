@@ -318,7 +318,6 @@ class jetSystematicsCustomize:
       if 'JetResolutionParametersCollection_version' not in self.metaConditions.keys():
          return
       
-      self.process.load('Configuration.StandardSequences.Services_cff')
       self.process.load("JetMETCorrections.Modules.JetResolutionESProducer_cfi")
       self.process.load("CondCore.CondDB.CondDB_cfi")
 
