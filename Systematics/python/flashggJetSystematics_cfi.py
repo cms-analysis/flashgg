@@ -278,15 +278,13 @@ class jetSystematicsCustomize:
          self.process.jetSystematicsSequence += module
          systematicsInputList.append(tag)
          self.createJECESource()
-         #createJERESource(self.process)
+         self.createJERESource()
       return systematicsInputList
 
    def createJECESource(self):
       if 'JetCorrectorParametersCollection_version' not in self.metaConditions.keys():
          return
-      
-      # self.process.load("CondCore.DBCommon.CondDBCommon_cfi")
-      # self.process.load("CondCore.DBCommon.CondDBSetup_cfi")
+
       self.process.load("CondCore.CondDB.CondDB_cfi")
       if 'data_db' in self.metaConditions['JetCorrectorParametersCollection_version'].keys():
           CondDBJECFile = self.process.CondDB.clone(connect = cms.string('sqlite_fip:%s'%str(self.metaConditions['JetCorrectorParametersCollection_version']["data_db" if self.options.processType=="data" else "MC_db"])))
@@ -298,8 +296,8 @@ class jetSystematicsCustomize:
                                              tag    = cms.string(
                                                 str(self.metaConditions['JetCorrectorParametersCollection_version']["data" if self.options.processType=="data" else "MC"])),   
                                              label  = cms.untracked.string("AK4PFchs")
-                                          ))
-                                       )                               
+                                             ))
+                                         )                               
       else:
           self.process.jec = cms.ESSource("PoolDBESSource",
                                           DBParameters = cms.PSet(
@@ -317,32 +315,32 @@ class jetSystematicsCustomize:
       self.process.es_prefer_jec = cms.ESPrefer('PoolDBESSource', 'jec')
 
    def createJERESource(self):
-      if 'JR_PtResolution_version' not in self.metaConditions.keys() or 'JR_SF_version' not in self.metaConditions.keys():
+      if 'JetResolutionParametersCollection_version' not in self.metaConditions.keys():
          return
       
       self.process.load('Configuration.StandardSequences.Services_cff')
       self.process.load("JetMETCorrections.Modules.JetResolutionESProducer_cfi")
-      # from CondCore.DBCommon.CondDBSetup_cfi import CondDBSetup
-      from CondCore.CondDB.CondDB_cfi import CondDBSetup
+      self.process.load("CondCore.CondDB.CondDB_cfi")
+
+      CondDBJERFile = self.process.CondDB.clone(connect = cms.string('sqlite_fip:%s'%str(self.metaConditions['JetResolutionParametersCollection_version']["data_db" if self.options.processType=="data" else "MC_db"])))
          
       self.process.jer = cms.ESSource("PoolDBESSource",
-                                      CondDBSetup,
+                                      CondDBJERFile,
                                       toGet = cms.VPSet(
                                          # Resolution
                                          cms.PSet(
                                             record = cms.string('JetResolutionRcd'),
-                                            tag    = cms.string(str(self.metaConditions['JR_PtResolution_version'])),       
+                                            tag    = cms.string(str(self.metaConditions['JetResolutionParametersCollection_version']["data_res" if self.options.processType=="data" else "MC_res"])),       
                                             label  = cms.untracked.string('AK4PFchs_pt')
                                          ),                                  
                                          # Scale factors
                                          cms.PSet(
                                             record = cms.string('JetResolutionScaleFactorRcd'),
-                                            tag    = cms.string(str(self.metaConditions['JR_SF_version'])),       
+                                            tag    = cms.string(str(self.metaConditions['JetResolutionParametersCollection_version']["data_sf" if self.options.processType=="data" else "MC_sf"])),       
                                             label  = cms.untracked.string('AK4PFchs')
                                          ),
-                                      ),
-                                      connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS')
-      )
-   
+                                      )
+                                     )
+
       self.process.es_prefer_jer = cms.ESPrefer('PoolDBESSource', 'jer')
       

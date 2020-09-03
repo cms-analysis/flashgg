@@ -96,6 +96,16 @@
         "MC" : "JetCorrectorParametersCollection_Summer19UL17_V5_MC_AK4PFchs",
         "MC_db" : "flashgg/Systematics/data/JEC/Summer19UL17_V5_MC.db"
     },
+
+    "JetResolutionParametersCollection_version" :
+    {
+        "data_res" : "JR_Summer19UL17_JRV2_DATA_PtResolution_AK4PFchs",
+        "data_sf" : "JR_Summer19UL17_JRV2_DATA_SF_AK4PFchs",
+        "data_db" : "flashgg/Systematics/data/JER/Summer19UL17_JRV2_DATA.db",
+        "MC_res" : "JR_Summer19UL17_JRV2_MC_PtResolution_AK4PFchs",
+        "MC_sf" : "JR_Summer19UL17_JRV2_MC_SF_AK4PFchs",
+        "MC_db" : "flashgg/Systematics/data/JER/Summer19UL17_JRV2_MC.db"
+    },
 	
     "flashggDiPhotonMVA" : 
     {  
