@@ -195,7 +195,7 @@ class WorkNodeJob(object):
             script += "export SCRAM_ARCH=%s\n" % os.environ['SCRAM_ARCH']
             script += "scram project CMSSW %s\n" % os.environ['CMSSW_VERSION']
             script += "cd %s\n" % os.environ['CMSSW_VERSION']
-            script += "tar zxf %s\n" % self.tarball
+            script += "tar zxf %s -h\n" % self.tarball
             script += "cp src/XGBoostCMSSW/XGBoostInterface/toolbox/*xml config/toolbox/$SCRAM_ARCH/tools/selected/\n"
             script += "scram setup rabit\n"
             script += "scram setup xgboost\n"
@@ -249,6 +249,7 @@ class WorkNodeJob(object):
         script += 'if [[ $retval == 0 ]]; then\n'
         script += '    errors=""\n'
         script += '    for file in $(find -name %s); do\n' % " -or -name ".join(self.stage_patterns)
+        script += '        echo "%s ${file} %s"\n' % ( self.stage_cmd, self.stage_dest )
         script += '        %s $file %s\n' % ( self.stage_cmd, self.stage_dest )
         # filesOutPath = '/eos/user/a/atishelm/ntuples/Event_Dumper/HHWWgg_2017'
         # script += '        %s $file %s\n' % ( self.stage_cmd, filesOutPath )
@@ -301,7 +302,7 @@ class WorkNodeJobFactory(object):
     # ------------------------------------------------------------------------------------------------
     def mkTarball(self,tarball=None,
                   tarball_entries=["python","lib","bin","external","flashgg/MetaData/python/PU_MixFiles_2017_miniaodv2_310"],tarball_patterns=[("src/*","data")],
-                  tarball_transform=None):
+                  tarball_transform=None, light=False):
         
         self.tarball = tarball
         content=tarball_entries
@@ -319,7 +320,11 @@ class WorkNodeJobFactory(object):
         args = []
         if tarball_transform:
             args.extend( ["--transform",tarball_transform] )
-        args.extend(["-h","--show-transformed","-zvcf",tarball])
+
+        if light:
+            args.extend(["--show-transformed","-zvcf",tarball]) #add -h to follow symlinks and include stuff from there
+        else:
+            args.extend(["-h","--show-transformed","-zvcf",tarball])
         args.extend(content)
         print 
         print "Preparing tarball with the following content:"
@@ -372,7 +377,7 @@ class HTCondorJob(object):
     """ a thread to run condor_submit and wait until it completes """
 
     #----------------------------------------
-    def __init__(self, htcondorQueue, jobName="", async=True, replacesJob=None, copy_proxy=False):
+    def __init__(self, htcondorQueue, jobName="", async=True, replacesJob=None, copy_proxy=False, ncondorcpu=1):
         """ 
         @param cmd is the command to be executed inside the bsub script. Some CMSSW specific wrapper
         code will be added
@@ -388,6 +393,7 @@ class HTCondorJob(object):
         self.cmd = None
         self.replacesJob = replacesJob
         self.copy_proxy = copy_proxy
+        self.ncondorcpu = ncondorcpu
 
         if async != True:
             print "HTCondorJob: synchronous job processing is not supported by for HTCondor jobs ... running async jobs instead"
@@ -428,6 +434,7 @@ class HTCondorJob(object):
             fout.write('+JobFlavour   = "'+self.htcondorQueue+'"\n\n')
             fout.write('+OnExitHold   = ExitStatus != 0 \n\n')
             fout.write('periodic_release =  (NumJobStarts < 4) && ((CurrentTime - EnteredCurrentStatus) > 60) \n\n')
+            fout.write('getenv        = True \n')
             fout.write('input         = %s/.dasmaps/das_maps_dbs_prod.js \n' % os.environ['HOME'])
             fout.write('executable    = '+self.execName+'\n')
             fout.write('arguments     = $(ProcId)\n')
@@ -437,7 +444,8 @@ class HTCondorJob(object):
             fout.write('output        = '+self.jobName+'_$(ClusterId).$(ProcId).out\n')
             fout.write('error         = '+self.jobName+'_$(ClusterId).$(ProcId).err\n')
             fout.write('log           = '+self.jobName+'_$(ClusterId).$(ProcId)_htc.log\n\n')
-            fout.write('max_retries   = 1\n')
+            fout.write('RequestCpus   = {}\n'.format(self.ncondorcpu))
+            fout.write('max_retries   = 2\n')
             fout.write('queue '+str(njobs)+' \n')
             fout.close()        
 
@@ -857,7 +865,8 @@ class LsfMonitor(object):
 class SGEJob(LsfJob):
     """ a thread to run qsub and wait until it completes """
     def __init__(self,*args,**kwargs):
-        self.rebootMitigation = (BatchRegistry.getDomain() in ["hep.ph.ic.ac.uk"])
+        #self.rebootMitigation = (BatchRegistry.getDomain() in ["hep.ph.ic.ac.uk"])
+        self.rebootMitigation = False
         
         super(SGEJob, self).__init__(*args, **kwargs)
 
@@ -907,9 +916,11 @@ class SGEJob(LsfJob):
         if mydomain == "hep.ph.ic.ac.uk":
             qsubCmdParts = [ "qsub", "-q hep.q" ]
             if self.lsfQueue == "hepshort.q":
-                qsubCmdParts.append("-l h_rt=3:0:0")
+                qsubCmdParts.append("-l h_rt=3:0:0 -l h_vmem=24G")
             elif self.lsfQueue == "hepmedium.q":
-                qsubCmdParts.append("-l h_rt=6:0:0")
+                qsubCmdParts.append("-l h_rt=10:0:0 -l h_vmem=12G")
+            elif self.lsfQueue == "heplong.q":
+                qsubCmdParts.append("-l h_rt=48:0:0 -l h_vmem=6G")
             else:
                 # assume long queue is intended
                 qsubCmdParts.append("-l h_rt=48:0:0")
@@ -1137,7 +1148,8 @@ class SGEMonitor(LsfMonitor):
     ###         sleep(5.)
 
     def __init__(self,*args,**kwargs):
-        self.rebootMitigation = (BatchRegistry.getDomain() in ["hep.ph.ic.ac.uk"])
+        #self.rebootMitigation = (BatchRegistry.getDomain() in ["hep.ph.ic.ac.uk"])
+        self.rebootMitigation = False
         
         super(SGEMonitor, self).__init__(*args, **kwargs)
 
@@ -1214,7 +1226,7 @@ class Wrap:
     
 # -----------------------------------------------------------------------------------------------------
 class Parallel:
-    def __init__(self,ncpu,lsfQueue=None,lsfJobName="job",asyncLsf=False,maxThreads=500,jobDriver=None,batchSystem="auto"):
+    def __init__(self,ncpu,lsfQueue=None,lsfJobName="job",asyncLsf=False,maxThreads=500,jobDriver=None,batchSystem="auto",ncondorcpu=1):
         self.returned = Queue()
 	self.njobs = 0
         self.JobDriver=jobDriver
@@ -1226,6 +1238,9 @@ class Parallel:
         self.maxThreads = maxThreads
         self.asyncLsf = asyncLsf
         self.batchSystem = batchSystem
+        
+        if BatchRegistry.getBatchSystem() == 'htcondor':
+            self.ncondorcpu = ncondorcpu
 
         if self.lsfQueue:
             self.running = Queue()
@@ -1268,8 +1283,11 @@ class Parallel:
     def addJob(self,cmd,args,batchId,jobName=None):
         if not self.asyncLsf:
             return
-        
-        job = self.JobDriver(self.lsfQueue,jobName,async=True)
+
+        if BatchRegistry.getBatchSystem() == 'htcondor':
+            job = self.JobDriver(self.lsfQueue,jobName,async=True,ncondorcpu=self.ncondorcpu)
+        else:
+            job = self.JobDriver(self.lsfQueue,jobName,async=True)
 
         job.setJobId(batchId)
         job.cmd = " ".join([cmd]+args)
@@ -1306,7 +1324,10 @@ class Parallel:
             if self.lsfQueue and not interactive:
                 if not jobName:
                     jobName = "%s%d" % (self.lsfJobName,self.getJobId())
-                cmd = self.JobDriver(self.lsfQueue,jobName,async=self.asyncLsf,replacesJob=replacesJob)
+                if BatchRegistry.getBatchSystem() == 'htcondor':
+                    cmd = self.JobDriver(self.lsfQueue,jobName,async=self.asyncLsf,replacesJob=replacesJob, ncondorcpu=self.ncondorcpu)
+                else:
+                    cmd = self.JobDriver(self.lsfQueue,jobName,async=self.asyncLsf,replacesJob=replacesJob)
             else:
                 cmd = commands.getstatusoutput
 

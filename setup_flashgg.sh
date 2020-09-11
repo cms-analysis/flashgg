@@ -50,7 +50,8 @@ cp $CMSSW_BASE/src/flashgg/MicroAOD/data/QGL_AK4chs_94X.db $CMSSW_BASE/src/flash
 # EGamma post reco tools for energy scales and smearings
 echo "Settinga up Scales and Smearings form EGM"
 git cms-addpkg RecoEgamma/EgammaTools
-git clone https://github.com/cms-data/EgammaAnalysis-ElectronTools.git EgammaAnalysis/ElectronTools/data
+### Switch to my fork until the old format UL17 S+S files are uploaded in the main repo
+git clone https://github.com/rchatter/EgammaAnalysis-ElectronTools.git EgammaAnalysis/ElectronTools/data
 cd EgammaAnalysis/ElectronTools/data
 cd $CMSSW_BASE/src
 git apply flashgg/EnergyScaleCorrection.patch
@@ -74,6 +75,10 @@ git clone https://github.com/simonepigazzini/XGBoostCMSSW.git
 cp XGBoostCMSSW/XGBoostInterface/toolbox/*xml $CMSSW_BASE/config/toolbox/$SCRAM_ARCH/tools/selected/
 scram setup rabit
 scram setup xgboost
+
+# Patch IOPool to avoid Run and Lumi trees being dropped when loading a parent dataset
+git cms-addpkg IOPool/Input
+git apply flashgg/LoadRunAndLumis.patch
 
 # HTCondor python API
 pip install --user htcondor

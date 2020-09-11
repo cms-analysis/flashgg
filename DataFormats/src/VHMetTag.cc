@@ -19,11 +19,6 @@ void VHMetTag::setMet( edm::Ptr<flashgg::Met> met )
     theMet_ = met;
 }
 
-void VHMetTag::setJet( edm::Ptr<flashgg::Jet> jet )
-{
-    theJet_ = jet;
-}
-
 // Local Variables:
 // mode:c++
 // indent-tabs-mode:nil

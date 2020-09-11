@@ -1,9 +1,15 @@
 stxs_truth_variables=[
-    "HTXSstage0cat := tagTruth().HTXSstage0cat",
-    "HTXSstage1cat := tagTruth().HTXSstage1cat",
-    "HTXSnjets := tagTruth().HTXSnjets",
-    "HTXSpTH := tagTruth().HTXSpTH",
-    "HTXSpTV := tagTruth().HTXSpTV"
+    "HTXSstage0bin := tagTruth().HTXSstage0bin()",
+    "HTXSstage1bin := tagTruth().HTXSstage1bin()",
+    "HTXSstage0bin := tagTruth().HTXSstage0bin()",
+    "HTXSstage1bin := tagTruth().HTXSstage1bin()",
+    "HTXSstage1p1bin := tagTruth().HTXSstage1p1bin()",
+    "HTXSstage1p1binFine := tagTruth().HTXSstage1p1binFine()",
+    "HTXSstage1p2bin := tagTruth().HTXSstage1p2bin()",
+    "HTXSstage1p2binFine := tagTruth().HTXSstage1p2binFine()",
+    "HTXSnjets := tagTruth().HTXSnjets()",
+    "HTXSpTH := tagTruth().HTXSpTH()",
+    "HTXSpTV := tagTruth().HTXSpTV()"
     ]
 
 dipho_variables=[

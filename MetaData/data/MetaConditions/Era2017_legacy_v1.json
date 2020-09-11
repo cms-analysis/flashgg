@@ -1,0 +1,338 @@
+{
+    "globalTags" :
+    {
+        "data" : "106X_dataRun2_v28",
+        "MC" : "106X_mc2017_realistic_v7"
+    },
+
+    "flashggMETsFunction" : "runMETs2017",
+    "flashggMetFilters" :
+    {
+        "rerun_ecal_calib_filter" : true,
+        "data" : 
+        [
+            "Flag_goodVertices", 
+            "Flag_globalSuperTightHalo2016Filter", 
+            "Flag_HBHENoiseFilter", 
+            "Flag_HBHENoiseIsoFilter", 
+            "Flag_EcalDeadCellTriggerPrimitiveFilter",
+            "Flag_BadPFMuonFilter", 
+            "Flag_eeBadScFilter"
+        ],
+        "mc" : 
+        [
+            "Flag_goodVertices",
+            "Flag_globalSuperTightHalo2016Filter",
+            "Flag_HBHENoiseFilter",
+            "Flag_HBHENoiseIsoFilter",
+            "Flag_EcalDeadCellTriggerPrimitiveFilter",
+            "Flag_BadPFMuonFilter"
+        ]
+    },
+
+    "DeepJet" : "rerun",
+
+    "flashggPhotons" :
+    {
+        "photonIdMVAweightfile_EB" : "flashgg/MicroAOD/data/HggPhoId_94X_barrel_BDT_v2.weights.xml",
+        "photonIdMVAweightfile_EE" : "flashgg/MicroAOD/data/HggPhoId_94X_endcap_BDT_v2.weights.xml",
+        "effAreasConfigFile" : "RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_TrueVtx.txt",
+        "is2017" : true
+    },
+
+    "flashggDiPhotons" :
+    {
+        "vertexIdMVAweightfile" : "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml",
+        "vertexProbMVAweightfile" : "flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2016.xml"
+    },
+
+    "TriggerPaths" :
+    {
+        ".*DoubleEG.*" :
+        {
+	    "mainAnalysis" : 
+            [
+		"HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass90*",
+		"HLT_Diphoton30_22_R9Id_OR_IsoCaloId_AND_HE_R9Id_Mass95*"
+	    ],
+	    "lowMassAnalysis":
+	    [
+		"HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_PixelVeto_Mass55*",
+		"HLT_Diphoton30PV_18PV_R9Id_AND_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55*",
+		"HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55*",
+		"HLT_Diphoton30EB_18EB_R9Id_OR_IsoCaloId_AND_HE_R9Id_PixelVeto_Mass55*",
+		"HLT_Diphoton30_18_PVrealAND_R9Id_AND_IsoCaloId_AND_HE_R9Id_PixelVeto_Mass55*",
+		"HLT_Diphoton30_18_PVrealAND_R9Id_AND_IsoCaloId_AND_HE_R9Id_NoPixelVeto_Mass55*"
+	    ]
+        },
+        ".*SingleEle.*" :
+        {
+	    "tagAndProbe" : 
+            [
+		"HLT_Ele32_WPTight_Gsf*"
+	    ]
+        },
+        ".*DoubleMuon.*" :
+        {
+	    "ZmumuGamma" :
+	    [
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_v*",
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_v*",
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v*",
+		"HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass8_v*"
+	    ]
+        }
+    },
+
+    "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2017_cfi",
+
+
+    "sigmaM_M_decorr" : "flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_2017_Mgg100to180.root",
+
+    "JetCorrectorParametersCollection_version" :
+    {
+        "data" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_DATA_AK4PFchs",
+        "MC" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_MC_AK4PFchs"
+    },
+	
+    "flashggDiPhotonMVA" : 
+    {  
+        "weightFile" : "flashgg/Taggers/data/STXSmodels/legacyDiphoModelMerged.xml",
+        "version" : "xgb"
+    },
+
+    "flashggJetSystematics" : 
+    {  
+        "textFileName" : "flashgg/Systematics/data/JEC/Regrouped_Fall17_17Nov2017_V32_MC_UncertaintySources_AK4PFchs.txt",
+        "listOfSources" : [
+                           "Absolute",
+                           "Absolute2017",
+                           "BBEC1",
+                           "BBEC12017",
+                           "EC2",
+                           "EC22017",
+                           "FlavorQCD",
+                           "HF",
+                           "HF2017",
+                           "RelativeBal",
+                           "RelativeSample2017"
+                          ]
+    },
+
+    "flashggVBFMVA" : 
+    {  
+        "weightFile" : "flashgg/Taggers/data/STXSmodels/dijetDataDrivenMerged.xml",
+        "jetID" : "Tight2017"
+    },
+
+    "flashggVHhadMVA" : 
+    {  
+        "weightFile" : "flashgg/Taggers/data/STXSmodels/vhHadDataDrivenMerged.xml",
+        "jetID" : "Tight2017"
+    },
+
+    "stageOneCombinedTag" :
+    {  
+        "rawDiphoBounds" : [
+                             0.783, 0.701, 0.525,
+                             0.836, 0.791, 0.655,
+                             
+                             0.854, 0.794, 0.690,
+                             0.883, 0.841, 0.746,
+                             0.922, 0.885, 0.814,
+                             
+                             0.831, 0.761, 0.637,
+                             0.891, 0.867, 0.726,
+                             0.918, 0.893, 0.829,
+                             
+                             0.945, 0.882,
+                             0.924, 0.802,
+                             0.844,
+                             0.815,
+
+                             0.832,
+                             0.745,
+
+                             0.800, 0.779,
+                             0.790, 0.606,
+                             0.826, 0.650,
+                             0.774, 0.800,
+                             0.509, 0.918,
+
+                             0.829, 0.720
+                           ],
+        "rawDijetBounds" : [
+                             0.379, 0.279,
+                             0.410, 0.260,
+                             0.302, 0.137,
+                             0.611, 0.218,
+                             0.268, 0.051,
+
+                             0.599, 0.478
+                           ],
+        "rawGghBounds" : [
+                             0.565, 0.726, 
+                             0.583, 0.919,
+                             0.928, 0.876,
+                             0.362, 0.742,
+                             0.756, 0.965,
+
+                             0.482, 0.319
+                           ],
+        "rawVhHadBounds" : [
+                             0.842,
+                             0.613
+                           ]
+    },
+
+    "MUON_ID" : "Medium",
+    "MUON_ISO" : "LooseRel",
+
+    "MUON_ID_JSON_FileName" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ID.json",
+    "MUON_ID_JSON_FileName_LowPt" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ID_lowPt.json",
+    "MUON_ISO_JSON_FileName" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ISO.json",
+
+    "MUON_ID_RefTracks" :  "genTracks",
+    "MUON_ID_RefTracks_LowPt" : "genTracks",
+
+    "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_eleIDSFs_2017.json",
+    "Ele_ID_version" : "mvaEleID-Fall17-iso-V2-wp90",
+
+    "Ele_reco_SF_FileName" : "flashgg/Systematics/data/2017_reco-eff.json",
+
+    "bTagSystematics" :
+    {
+
+	"bTagEffBins" : "bTagEffBins2017",
+
+	"bTagger" : "pfDeepJet",
+
+	"bDiscriminatorValue_pfDeepCSV" : 0.4941,
+	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_94XSF_V4_B_F.csv",
+	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_94XSF_WP_V4_B_F.csv",
+
+	"bDiscriminatorValue_pfDeepJet" : 0.3033,
+	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepFlavour_94XSF_V2_B_F.csv",
+	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepFlavour_94XSF_WP_V2_B_F.csv",
+
+	"eta" : 2.5
+    },
+
+    "mc2hessianCSV" : "PhysicsTools/HepMCCandAlgos/data/NNPDF30_lo_as_0130_hessian_60.csv",
+
+    "bRegression" :
+    {
+        "weightFile" : "/src/flashgg/Taggers/data/DNN_models/breg_training_2017_JECv32.pb",
+        "y_mean" : 1.055067777633667,
+        "y_std" : 0.28225210309028625,
+        "year" : 2017,
+        "useBRegressionJERsf" : false, 
+        "JER_central" : 1.1, 
+        "JER_up" : 0.1, 
+        "JER_down" : -0.1 
+    },
+
+    "doubleHTag":
+    {
+	"jetID" : "Tight2017",
+	"weightsFile" : {
+		"with_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_18_12_2019_training1.weights.xml",
+		"wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_with_18_12_2019_wo_Mjj_training1.weights.xml"
+	},
+	"MVAFlatteningFileName" : {
+		"with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20191812_btag_upd_2017.root",
+		"wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTransformation_20192401_wo_Mjj_leptonveto_2017.root"
+	},
+	"MVAscalingValue" : 1.0,
+	"NodesReweightingFileName" : "flashgg/Taggers/data/HHTagger/HHreweight_2017_15112019.root",
+	"ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",
+	"ttHKiller_mean" : [  3.22491144e+02,   7.22919780e+01,   1.49387571e-01,   4.94052483e-03,
+                              5.10246425e-04,   1.38947662e+00,   5.31453078e+00,   7.45455854e+00,
+                              1.35956692e+02,   7.06566234e+01,   3.71319449e+01,   6.74400372e+01,
+                              3.78045958e+01,   1.73739779e+02,   2.44105199e-02,   8.74739133e-02,
+                              -1.06521292e-02,  -8.08607645e-02,  -5.39241839e-03,  -3.57037140e-02,
+                              1.59510158e-01,   2.73751540e-02,   1.89251401e-02,  -4.07854484e-03,
+                              4.75087259e-01,   4.65906361e-01,   1.23640841e+02,   5.92089022e+01,
+                              -8.63826805e-03,  -4.54561747e-03,  -2.04075881e-02,   5.20315820e-03], 
+	"ttHKiller_std" : [  2.23688125e+02,   6.14480046e+01,   1.89750669e+00,   1.84765326e+00,
+                             1.81706814e+00,   6.16140431e-01,   1.57790173e+00,   1.21559976e+01,
+                             3.18350560e+02,   5.51059043e+01,   2.27778847e+01,   5.34930606e+01,
+                             2.33020848e+01,   1.13925303e+02,   1.07162645e+00,   1.11756573e+00,
+                             1.06602334e+00,   1.05170943e+00,   1.03730169e+00,   1.79671005e+00,
+                             1.76463679e+00,   1.81416114e+00,   1.72905029e+00,   1.81772461e+00,
+                             2.79300773e-01,   2.82007646e-01,   6.50499362e+01,   3.08319388e+01,
+                             9.72514714e-01,   1.09188163e+00,   1.80664926e+00,   1.80460847e+00],
+	"ttHKiller_listmean" : [  1.04960120e+02,  -5.49804481e-03,   3.08285275e-02],
+	"ttHKiller_liststd" : [ 85.77034272,   1.03762195,   1.83170033]
+    },
+
+    "VBFdoubleHTag":
+    {
+        "jetID" : "Tight2017",
+        "MVAscalingValue" : 1.0,
+        "weightsFile" : {
+                "with_Mjj" : "flashgg/Taggers/data/HHTagger/training_30_04_2020_vbfHHbbgg_C2V0_2017.weights.xml",
+                "wo_Mjj" : "flashgg/Taggers/data/HHTagger/training_30_04_2020_vbfHHbbgg_C2V0_2017.weights.xml"
+        },
+        "MVAFlatteningFileName" : {
+                "with_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTrans_30_04_2020_vbfHHbbgg_C2V0_training_2017.root",
+                "wo_Mjj" : "flashgg/Taggers/data/HHTagger/cumulativeTrans_30_04_2020_vbfHHbbgg_C2V0_training_2017.root"
+        },
+        "ttHWeightfile" : "flashgg/Taggers/data/ttHKiller/Keras2017_converted_allnode.pb",
+        "ttHKiller_mean" : [  3.22491144e+02,   7.22919780e+01,   1.49387571e-01,   4.94052483e-03,
+                              5.10246425e-04,   1.38947662e+00,   5.31453078e+00,   7.45455854e+00,
+                              1.35956692e+02,   7.06566234e+01,   3.71319449e+01,   6.74400372e+01,
+                              3.78045958e+01,   1.73739779e+02,   2.44105199e-02,   8.74739133e-02,
+                              -1.06521292e-02,  -8.08607645e-02,  -5.39241839e-03,  -3.57037140e-02,
+                              1.59510158e-01,   2.73751540e-02,   1.89251401e-02,  -4.07854484e-03,
+                              4.75087259e-01,   4.65906361e-01,   1.23640841e+02,   5.92089022e+01,
+                              -8.63826805e-03,  -4.54561747e-03,  -2.04075881e-02,   5.20315820e-03],
+        "ttHKiller_std" : [  2.23688125e+02,   6.14480046e+01,   1.89750669e+00,   1.84765326e+00,
+                             1.81706814e+00,   6.16140431e-01,   1.57790173e+00,   1.21559976e+01,
+                             3.18350560e+02,   5.51059043e+01,   2.27778847e+01,   5.34930606e+01,
+                             2.33020848e+01,   1.13925303e+02,   1.07162645e+00,   1.11756573e+00,
+                             1.06602334e+00,   1.05170943e+00,   1.03730169e+00,   1.79671005e+00,
+                             1.76463679e+00,   1.81416114e+00,   1.72905029e+00,   1.81772461e+00,
+                             2.79300773e-01,   2.82007646e-01,   6.50499362e+01,   3.08319388e+01,
+                             9.72514714e-01,   1.09188163e+00,   1.80664926e+00,   1.80460847e+00],
+        "ttHKiller_listmean" : [  1.04960120e+02,  -5.49804481e-03,   3.08285275e-02],
+        "ttHKiller_liststd" : [ 85.77034272,   1.03762195,   1.83170033]
+    },
+
+
+
+   "PhoIdInputCorrections":
+    {
+	"corrections_summary" : "flashgg/Taggers/data/PhoIdInputsCorrections/corrections_summary_2017.json",
+	"SS_variables" :   ["f0 := pt",
+                            "f1 := superCluster.eta",
+                            "f2 := phi",
+                            "f3 := global.rho",
+                            "f4 := sieip",
+                            "f5 := s4",
+                            "f6 := full5x5_r9",
+                            "f7 := superCluster.phiWidth",
+                            "f8 := full5x5_sigmaIetaIeta",
+                            "f9 := superCluster.etaWidth"
+                           ]
+    },
+
+    "L1Prefiring" :
+    {
+        "isRelevant" : true,
+        "applyToCentral" : false,
+        "photonFileName" : "flashgg/Taggers/data/L1prefiring_photonpt_2017BtoF.root",
+        "photonHistName" : "L1prefiring_photonpt_2017BtoF",
+        "jetFileName"    : "flashgg/Taggers/data/L1prefiring_jetpt_2017BtoF.root",
+        "jetHistName"    : "L1prefiring_jetpt_2017BtoF"
+    },
+
+    "THQLeptonicTag":
+    {
+        "MVAweights_VsAllBkg" : "flashgg/Taggers/data/TMVA_THQLeptonicTag_tHq_Vs_NonPeakingBkg_BDT_17.weights.xml",
+	"MVAweights_VsttH" : "flashgg/Taggers/data/TMVA_THQLeptonicTag_tHq_Vs_ttH_BDT.weights.xml",
+        "MVAThreshold_VsAllBkg" : 0.05,
+	"MVAThreshold_VsttH" : -0.02
+    }
+    
+}

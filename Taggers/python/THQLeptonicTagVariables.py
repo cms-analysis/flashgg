@@ -7,7 +7,6 @@ import flashgg.Taggers.globalVariables_cff as globalVars
 from flashgg.MicroAOD.flashggJets_cfi import flashggBTag
 from flashgg.MicroAOD.flashggJets_cfi import flashggDeepCSVb
 from flashgg.MicroAOD.flashggJets_cfi import flashggDeepCSVbb
-
 vtx_variables=[
     "vtxprob                := diPhotonMVA.vtxprob",
     "ptbal                  := diPhoton.ptBal",
@@ -110,11 +109,11 @@ photon_variables=[
     "dipho_sublead_effSigma    :=  diPhoton.subLeadingPhoton.esEffSigmaRR",
     "dipho_sublead_scraw       :=  diPhoton.subLeadingPhoton.superCluster.rawEnergy",
     "dipho_sublead_ese         :=  diPhoton.subLeadingPhoton.superCluster.preshowerEnergy",
-        
+    "LeptonType                := getLeptonType()"        
 ]
 
 lepton_variables=[
-    "LeptonType             := getLeptonType()",
+#    "LeptonType             := getLeptonType()",
     "n_ele                  := electrons.size",
     "n_loose_ele            := n_Ele_Loose",
     "n_veto_ele             := n_Ele_Veto",
@@ -233,7 +232,10 @@ jet_variables=[
     "fwdjet1_e              := ?Jets_EtaSorted.size>0? Jets_EtaSorted.at(0).energy: -999.",
     "fwdjet2_e              := ?Jets_EtaSorted.size>1? Jets_EtaSorted.at(1).energy: -999.",
     "fwdjet3_e              := ?Jets_EtaSorted.size>2? Jets_EtaSorted.at(2).energy: -999.",
-    
+#    "fwdjet1_discr  := ?Jets_EtaSorted.size>0? (Jets_EtaSorted.at(0).bDiscriminator( "'+ flashggDeepCSVb +'" ) + Jets_EtaSorted.at(0).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999", 
+#    "fwdjet2_discr  := ?Jets_EtaSorted.size>1? (Jets_EtaSorted.at(1).bDiscriminator( "'+ flashggDeepCSVb +'" ) + Jets_EtaSorted.at(1).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+#    "fwdjet3_discr  := ?Jets_EtaSorted.size>2? (Jets_EtaSorted.at(2).bDiscriminator( "'+ flashggDeepCSVb +'" ) + Jets_EtaSorted.at(2).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+    "fwdjet1_discr          := ?Jets_EtaSorted.size>0? bDiscriminatorValue_fwdjets.at(0) : -999",
     "n_M_bjets                := nMedium_bJets",
     "n_L_bjets                := nLoose_bJets",
     "n_T_bjets                := nTight_bJets",
@@ -260,9 +262,10 @@ jet_variables=[
     'bjet1_discr  := ?bJets.size>0? (bJets.at(0).bDiscriminator( "'+ flashggDeepCSVb +'" ) + bJets.at(0).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999',
     'bjet2_discr  := ?bJets.size>1? (bJets.at(1).bDiscriminator( "'+ flashggDeepCSVb +'" ) + bJets.at(1).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999',
     'bjet3_discr  := ?bJets.size>2? (bJets.at(2).bDiscriminator( "'+ flashggDeepCSVb +'" ) + bJets.at(2).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999',
-#    'bjet1_discr_1 := ?bJets.size>0? bDiscriminatorValue.at(0) : -999',
-#    'bjet2_discr_2 := ?bJets.size>1? bDiscriminatorValue.at(1) : -999',
-#    'bjet3_discr_3 := ?bJets.size>2? bDiscriminatorValue.at(2) : -999',
+    'bjet4_discr  := ?bJets.size>3? (bJets.at(3).bDiscriminator( "'+ flashggDeepCSVb +'" ) + bJets.at(3).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999',
+#    'bjet1_discr_1 := ?bJets.size>0? bDiscriminatorValue_bjets.at(0) : -999',
+#    'bjet2_discr_2 := ?bJets.size>1? bDiscriminatorValue_bjets.at(1) : -999',
+#    'bjet3_discr_3 := ?bJets.size>2? bDiscriminatorValue_bjets.at(2) : -999',
 
 
     # new variables
@@ -270,15 +273,26 @@ jet_variables=[
     "jet1_pt                := ?jets.size>0? jets.at(0).pt : -999",
     "jet2_pt                := ?jets.size>1? jets.at(1).pt : -999",
     "jet3_pt                := ?jets.size>2? jets.at(2).pt : -999",
+    "jet4_pt                := ?jets.size>3? jets.at(3).pt : -999",
     "jet1_eta               := ?jets.size>0? jets.at(0).eta : -999",
     "jet2_eta               := ?jets.size>1? jets.at(1).eta : -999",
     "jet3_eta               := ?jets.size>2? jets.at(2).eta : -999",
+    "jet4_eta               := ?jets.size>3? jets.at(3).eta : -999",
     "jet1_phi               := ?jets.size>0? jets.at(0).phi : -999",
     "jet2_phi               := ?jets.size>1? jets.at(1).phi : -999",
     "jet3_phi               := ?jets.size>2? jets.at(2).phi : -999",
+    "jet4_phi               := ?jets.size>3? jets.at(3).phi : -999",
     "jet1_e                 := ?jets.size>0? jets.at(0).energy : -999",
     "jet2_e                 := ?jets.size>1? jets.at(1).energy : -999",
     "jet3_e                 := ?jets.size>2? jets.at(2).energy : -999",
+    "jet4_e                 := ?jets.size>3? jets.at(3).energy : -999",
+#    "jet1_discr  := ?jets.size>0? (jets[0].bDiscriminator( "'+ flashggDeepCSVb +'" ) + jets[0].bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+#    "jet2_discr  := ?jets.size>1? (jets.at(1).bDiscriminator( "'+ flashggDeepCSVb +'" ) + jets.at(1).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999", 
+#    "jet3_discr  := ?jets.size>2? (jets.at(2).bDiscriminator( "'+ flashggDeepCSVb +'" ) + jets.at(2).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+#    "jet4_discr  := ?jets.size>3? (jets.at(3).bDiscriminator( "'+ flashggDeepCSVb +'" ) + jets.at(3).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+    'jet1_discr := ?jets.size>0? bDiscriminatorValue_jets.at(0) : -999',
+    'jet2_discr := ?jets.size>1? bDiscriminatorValue_jets.at(1) : -999',
+    'jet3_discr := ?jets.size>2? bDiscriminatorValue_jets.at(2) : -999',
 
     "recoMET_pt             :=getRECOMET().getCorPt()",
     "recoMET_eta            :=getRECOMET().eta()",
@@ -295,6 +309,16 @@ jet_variables=[
     "HT                     :=getHT()"    
 ]
 
+#bDiscr_values=[
+#    "jet1_discr  := ?jets.size>0? (jets.at(0).bDiscriminator( "'+ flashggDeepCSVb +'" ) + jets.at(0).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+#    "jet2_discr  := ?jets.size>1? (jets.at(1).bDiscriminator( "'+ flashggDeepCSVb +'" ) + jets.at(1).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999", 
+#    "jet3_discr  := ?jets.size>2? (jets.at(2).bDiscriminator( "'+ flashggDeepCSVb +'" ) + jets.at(2).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+#    "jet4_discr  := ?jets.size>3? (jets.at(3).bDiscriminator( "'+ flashggDeepCSVb +'" ) + jets.at(3).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+#    "fwdjet1_discr  := ?Jets_EtaSorted.size>0? (Jets_EtaSorted.at(0).bDiscriminator( "'+ flashggDeepCSVb +'" ) + Jets_EtaSorted.at(0).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999", 
+#    "fwdjet2_discr  := ?Jets_EtaSorted.size>1? (Jets_EtaSorted.at(1).bDiscriminator( "'+ flashggDeepCSVb +'" ) + Jets_EtaSorted.at(1).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+#    "fwdjet3_discr  := ?Jets_EtaSorted.size>2? (Jets_EtaSorted.at(2).bDiscriminator( "'+ flashggDeepCSVb +'" ) + Jets_EtaSorted.at(2).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
+#]
+
 dr_variable=[
     "dr_tHchainfwdjet        :=getdRtHchainfwdjet()",
     "dr_bjetfwdjet           :=getdRbjetfwdjet()",
@@ -307,12 +331,16 @@ dr_variable=[
     "dEta_leptonfwdjet       :=getdEtaleptonfwdjet()",
 #    "top_mt		     :=gettop_mt()",
     "lepton_charge           :=getlepton_ch()",
+    "lepton_leadPt           :=getlepton_leadPt()",
+    "lepton_leadEta          :=getlepton_leadEta()",
     "n_centraljets           := nCentralJets",
     "n_forwardjets           := nForwardJets",
     "forwardjet1_eta         := ?forwardJet.size>0? forwardJet.at(0).eta : -999 ",
     "forwardjet1_pt          := ?forwardJet.size>0? forwardJet.at(0).pt : -999 ",
+#    "jet1_discr  := ?jets.size>0? (jets.at(0).bDiscriminator( "'+ flashggDeepCSVb +'" ) + jets.at(0).bDiscriminator( "'+ flashggDeepCSVbb +'" )) : -999",
     "likelihood_value        :=getlikelihood()",
 #    "MVAresult_thq	     :=getthq_mvaresult"
+    
 ]
 
 thqmva_variables=[
@@ -324,9 +352,11 @@ thqmva_variables=[
     "Aplanarity             :=getAplanarity()",
     "MET_pt                 :=getRECOMET().getCorPt()",
     "MET_phi                :=getRECOMET().getCorPhi()",
-    "MVAresult              :=getmvaresult",
+    "Dipho_MVAresult        :=getmvaresult",
 #   "likelihood_value	    :=getlikelihood()"
-    "MVAresult_thq          :=getthq_mvaresult"
+    "MVAscore_tHqVsttH_BDT          :=getthq_mvaresult",
+    "MVAscore_thqVsNonHiggsBkg :=getthq_mvaresult_ForNonPeakingBkg",
+    "MVAscore_tHqVsttH_DNN  :=getMVAscore_ttHvstHDNN",
 ]
 
 for label in ["HighestBTagVal", "Medium" , "Loose" , "Tight"]:
@@ -443,7 +473,7 @@ thqSystematicVariables = [
     "n_L_bjets   := nLoose_bJets",
     "n_T_bjets   := nTight_bJets",
     "n_M_bjets   := nMedium_bJets",
-    "LeptonType  := getLeptonType()",
+#    "LeptonType  := getLeptonType()",
     "MET_pt      := getRECOMET().getCorPt()",
     "HT          := getHT()"
 ]

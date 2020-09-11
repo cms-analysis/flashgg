@@ -21,6 +21,7 @@
 
 #include "TMVA/Reader.h"
 #include "TMath.h"
+#include "TGraph.h"
 //#include <typeinfo>
 
 #include <algorithm>
@@ -66,15 +67,20 @@ namespace flashgg {
         double minObjectWeightWarning;
         double maxObjectWeightWarning;
 
+        bool isGluonFusion_;
+        FileInPath NNLOPSWeightFile_;
+        std::vector<std::unique_ptr<TGraph> > NNLOPSWeights_;
+        bool applyNNLOPSweight_;
 
         bool debug_;
         bool storeOtherTagInfo_;
         bool blindedSelectionPrintout_;
 
         bool createNoTag_;
-        EDGetTokenT<int> stage0catToken_, stage1catToken_, njetsToken_;
-        EDGetTokenT<float> pTHToken_,pTVToken_;
+        bool setHTXSinfo_;
+        bool addTruthInfo_;
         EDGetTokenT<HTXS::HiggsClassification> newHTXSToken_;
+        EDGetTokenT<View<reco::GenParticle> >      genPartToken_;
 
         std::vector<std::tuple<DiPhotonTagBase::tag_t,int,int> > otherTags_; // (type,category,diphoton index)
 
@@ -82,7 +88,8 @@ namespace flashgg {
     };
 
     TagSorter::TagSorter( const ParameterSet &iConfig ) :
-        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) )
+        diPhotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( iConfig.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
+        genPartToken_( consumes<View<reco::GenParticle> >( iConfig.getParameter<InputTag> ( "GenParticleTag" ) ) )
     {
 
         massCutUpper = iConfig.getParameter<double>( "MassCutUpper" );
@@ -92,11 +99,26 @@ namespace flashgg {
         minObjectWeightWarning = iConfig.getParameter<double>( "MinObjectWeightWarning" );
         maxObjectWeightWarning = iConfig.getParameter<double>( "MaxObjectWeightWarning" );
 
+        isGluonFusion_ = iConfig.getParameter<bool>("isGluonFusion");
+        NNLOPSWeightFile_ = iConfig.getParameter<FileInPath>( "NNLOPSWeightFile" );
+        TFile* f = TFile::Open(NNLOPSWeightFile_.fullPath().c_str());
+        NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_0jet"))->Clone() );
+        NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_1jet"))->Clone() );
+        NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_2jet"))->Clone() );
+        NNLOPSWeights_.emplace_back((TGraph*)((TGraph*) f->Get("gr_NNLOPSratio_pt_mcatnlo_3jet"))->Clone() );
+        f->Close();
+        delete f;
+        applyNNLOPSweight_ = iConfig.getParameter<bool>("applyNNLOPSweight");
+        if( isGluonFusion_ && applyNNLOPSweight_ ) {
+            std::cout << "[WARNING]: configuration is set to reweigh from madgraph to NNLOPS, please check this is a ggH sample" << std::endl;
+        }
 
         debug_ = iConfig.getUntrackedParameter<bool>( "Debug", false );
         storeOtherTagInfo_ = iConfig.getParameter<bool>( "StoreOtherTagInfo" );
         blindedSelectionPrintout_ = iConfig.getParameter<bool>("BlindedSelectionPrintout");
         createNoTag_ = iConfig.getParameter<bool>("CreateNoTag");
+        setHTXSinfo_ = iConfig.getParameter<bool>("SetHTXSinfo");
+        addTruthInfo_ = iConfig.getParameter<bool>("AddTruthInfo");
 
         const auto &vpset = iConfig.getParameterSetVector( "TagPriorityRanges" );
 
@@ -119,11 +141,6 @@ namespace flashgg {
         }
 
         ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
-        stage0catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage0cat") );
-        stage1catToken_ = consumes<int>( HTXSps.getParameter<InputTag>("stage1cat") );
-        njetsToken_ = consumes<int>( HTXSps.getParameter<InputTag>("njets") );
-        pTHToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTH") );
-        pTVToken_ = consumes<float>( HTXSps.getParameter<InputTag>("pTV") );
         newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
 
         produces<edm::OwnVector<flashgg::DiPhotonTagBase> >();
@@ -134,6 +151,9 @@ namespace flashgg {
     {
         unique_ptr<edm::OwnVector<flashgg::DiPhotonTagBase> > SelectedTag( new edm::OwnVector<flashgg::DiPhotonTagBase> );
         unique_ptr<edm::OwnVector<flashgg::TagTruthBase> > SelectedTagTruth( new edm::OwnVector<flashgg::TagTruthBase> );
+
+        Handle<HTXS::HiggsClassification> htxsClassification;
+        evt.getByToken(newHTXSToken_,htxsClassification);
 
         // Cache other tags for each event; but do not use the old ones next time
         otherTags_.clear(); 
@@ -226,13 +246,71 @@ namespace flashgg {
                               << "] - " << tpr->name << " chosen_i=" << chosen_i << " - consider investigating!" << std::endl;
                 }
 
-
                 SelectedTag->push_back( *TagVectorEntry->ptrAt( chosen_i ) );
-                edm::Ptr<TagTruthBase> truth = TagVectorEntry->ptrAt( chosen_i )->tagTruth();
-                if( truth.isNonnull() ) {
-                    SelectedTagTruth->push_back( *truth );
-                    SelectedTag->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) ); // Normally this 0 would be the index number
+
+                if( ! evt.isRealData() ) {
+                    if( addTruthInfo_ ) {
+                        TagTruthBase truth;
+                        if( TagVectorEntry->ptrAt( chosen_i )->tagTruth().isNonnull() ) { truth = *(TagVectorEntry->ptrAt( chosen_i )->tagTruth()->clone()); }
+                        Handle<View<reco::GenParticle> > genParticles;
+                        evt.getByToken( genPartToken_, genParticles );
+                        TagTruthBase::Point higgsVtx;
+                        for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+                            int pdgid = genParticles->ptrAt( genLoop )->pdgId();
+                            if( pdgid == 25 || pdgid == 22 ) {
+                                higgsVtx = genParticles->ptrAt( genLoop )->vertex();
+                                break;
+                            }
+                        }
+                        truth.setGenPV( higgsVtx );
+                        if( htxsClassification.isValid() && setHTXSinfo_ ) { 
+                            truth.setHTXSInfo( int(htxsClassification->stage0_cat),
+                                               int(htxsClassification->stage1_cat_pTjet30GeV),
+                                               int(htxsClassification->stage1_1_cat_pTjet30GeV),
+                                               int(htxsClassification->stage1_1_fine_cat_pTjet30GeV),
+                                               int(htxsClassification->stage1_2_cat_pTjet30GeV),
+                                               int(htxsClassification->stage1_2_fine_cat_pTjet30GeV),
+                                               float(htxsClassification->jets30.size()),
+                                               float(htxsClassification->p4decay_higgs.pt()),
+                                               float(htxsClassification->p4decay_V.pt()) );
+                        }
+                        if( isGluonFusion_ ) {
+                            int stxsNjets = htxsClassification->jets30.size();
+                            float stxsPtH = htxsClassification->p4decay_higgs.pt();
+                            float NNLOPSweight = 1;
+                            if ( stxsNjets == 0) NNLOPSweight = NNLOPSWeights_[0]->Eval(min(stxsPtH,float(125.0)));
+                            else if ( stxsNjets == 1) NNLOPSweight = NNLOPSWeights_[1]->Eval(min(stxsPtH,float(625.0)));
+                            else if ( stxsNjets == 2) NNLOPSweight = NNLOPSWeights_[2]->Eval(min(stxsPtH,float(800.0)));
+                            else if ( stxsNjets >= 3) NNLOPSweight = NNLOPSWeights_[3]->Eval(min(stxsPtH,float(925.0)));
+                            truth.setWeight("NNLOPSweight", NNLOPSweight);
+                            if( debug_ ) {
+                                std::cout << "[TagSorter DEBUG] computed and stored an NNLOPS weight of " << truth.weight("NNLOPSweight") << std::endl;
+                            }
+                            if( applyNNLOPSweight_ ) {
+                                if( debug_ ) {
+                                    std::cout << "[TagSorter DEBUG] reweighing to NNLOPS, central weight being altered by a factor of " << NNLOPSweight << std::endl;
+                                    std::cout << "[TagSorter DEBUG]  central weight before: " << SelectedTag->back().centralWeight() << std::endl;
+                                }
+                                WeightedObject NNLOPSobject;
+                                NNLOPSobject.setCentralWeight( NNLOPSweight );
+                                SelectedTag->back().includeWeights( NNLOPSobject );
+                                if( debug_ ) {
+                                    std::cout << "[TagSorter DEBUG]  central weight after: " << SelectedTag->back().centralWeight() << std::endl;
+                                }
+                            }
+                        }
+                        SelectedTagTruth->push_back( truth );
+                        SelectedTag->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) ); // Normally this 0 would be the index number
+                    }
+                    else {
+                        edm::Ptr<TagTruthBase> truth = TagVectorEntry->ptrAt( chosen_i )->tagTruth();
+                        if( truth.isNonnull() ) {
+                            SelectedTagTruth->push_back( *truth );
+                            SelectedTag->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) ); // Normally this 0 would be the index number
+                        }
+                    }
                 }
+
                 if ( debug_ ) {
                     std::cout << "[TagSorter DEBUG] Priority " << priority << " Tag Found! Tag entry "<< chosen_i  << " with sumPt "
                               << TagVectorEntry->ptrAt(chosen_i)->sumPt() << ", systLabel " << TagVectorEntry->ptrAt(chosen_i)->systLabel() << std::endl;
@@ -305,8 +383,8 @@ namespace flashgg {
                     std::cout << "* Other tag interpretations not stored (config)" << std::endl;
                 }
                 if( SelectedTagTruth->size() != 0 ) {
-                    std::cout << "* HTXS Category 0 (1): " << SelectedTagTruth->back().HTXSstage0cat() << " ("
-                              << SelectedTagTruth->back().HTXSstage1cat() << ")" << std::endl;
+                    std::cout << "* HTXS Category 0 (1): " << SelectedTagTruth->back().HTXSstage0bin() << " ("
+                              << SelectedTagTruth->back().HTXSstage1bin() << ")" << std::endl;
                     std::cout << "* HTXS njets, pTH, pTV: " << SelectedTagTruth->back().HTXSnjets() << ", "
                               << SelectedTagTruth->back().HTXSpTH() << ", "
                               << SelectedTagTruth->back().HTXSpTV() << std::endl;
@@ -318,39 +396,54 @@ namespace flashgg {
         assert( SelectedTag->size() == 1 || SelectedTag->size() == 0 );
         if (createNoTag_ && SelectedTag->size() == 0) {
             SelectedTag->push_back(NoTag());
+            SelectedTag->back().setStage1recoTag(flashgg::DiPhotonTagBase::NOTAG);
             edm::RefProd<edm::OwnVector<TagTruthBase> > rTagTruth = evt.getRefBeforePut<edm::OwnVector<TagTruthBase> >();
             TagTruthBase truth_obj;
-            Handle<int> stage0cat, stage1cat, njets;
-            Handle<float> pTH, pTV;
-            evt.getByToken(stage0catToken_, stage0cat);
-            evt.getByToken(stage1catToken_,stage1cat);
-            evt.getByToken(njetsToken_,njets);
-            evt.getByToken(pTHToken_,pTH);
-            evt.getByToken(pTVToken_,pTV);
-            Handle<HTXS::HiggsClassification> htxsClassification;
-            evt.getByToken(newHTXSToken_,htxsClassification);
-            if ( stage0cat.isValid() ) {
-                truth_obj.setHTXSInfo( *( stage0cat.product() ),
-                                       *( stage1cat.product() ),
-                                       *( njets.product() ),
-                                       *( pTH.product() ),
-                                       *( pTV.product() ) );
-            } else if ( htxsClassification.isValid() ) {
-                truth_obj.setHTXSInfo( htxsClassification->stage0_cat,
-                                       htxsClassification->stage1_cat_pTjet30GeV,
-                                       htxsClassification->jets30.size(),
-                                       htxsClassification->p4decay_higgs.pt(),
-                                       htxsClassification->p4decay_V.pt() );
-            } else {
-                truth_obj.setHTXSInfo( 0, 0, 0, 0., 0. );
+            if ( htxsClassification.isValid() && setHTXSinfo_ ) {
+                truth_obj.setHTXSInfo( int(htxsClassification->stage0_cat),
+                                       int(htxsClassification->stage1_cat_pTjet30GeV),
+                                       int(htxsClassification->stage1_1_cat_pTjet30GeV),
+                                       int(htxsClassification->stage1_1_fine_cat_pTjet30GeV),
+                                       int(htxsClassification->stage1_2_cat_pTjet30GeV),
+                                       int(htxsClassification->stage1_2_fine_cat_pTjet30GeV),
+                                       float(htxsClassification->jets30.size()),
+                                       float(htxsClassification->p4decay_higgs.pt()),
+                                       float(htxsClassification->p4decay_V.pt()) );
+            }
+            if( isGluonFusion_ ) {
+                int stxsNjets = htxsClassification->jets30.size();
+                float stxsPtH = htxsClassification->p4decay_higgs.pt();
+                float NNLOPSweight = 1;
+                if ( stxsNjets == 0) NNLOPSweight = NNLOPSWeights_[0]->Eval(min(stxsPtH,float(125.0)));
+                else if ( stxsNjets == 1) NNLOPSweight = NNLOPSWeights_[1]->Eval(min(stxsPtH,float(625.0)));
+                else if ( stxsNjets == 2) NNLOPSweight = NNLOPSWeights_[2]->Eval(min(stxsPtH,float(800.0)));
+                else if ( stxsNjets >= 3) NNLOPSweight = NNLOPSWeights_[3]->Eval(min(stxsPtH,float(925.0)));
+                truth_obj.setWeight("NNLOPSweight", NNLOPSweight);
+                if( debug_ ) {
+                    std::cout << "[TagSorter DEBUG] computed and stored an NNLOPS weight of " << truth_obj.weight("NNLOPSweight") << std::endl;
+                }
+                if( applyNNLOPSweight_ ) {
+                    if( debug_ ) {
+                        std::cout << "[TagSorter DEBUG] reweighing to NNLOPS, central weight being altered by a factor of " << NNLOPSweight << std::endl;
+                        std::cout << "[TagSorter DEBUG]  central weight before: " << SelectedTag->back().centralWeight() << std::endl;
+                    }
+                    WeightedObject NNLOPSobject;
+                    NNLOPSobject.setCentralWeight( NNLOPSweight );
+                    SelectedTag->back().includeWeights( NNLOPSobject );
+                    if( debug_ ) {
+                        std::cout << "[TagSorter DEBUG]  central weight after: " << SelectedTag->back().centralWeight() << std::endl;
+                    }
+                }
             }
             SelectedTagTruth->push_back(truth_obj);
             SelectedTag->back().setTagTruth( edm::refToPtr( edm::Ref<edm::OwnVector<TagTruthBase> >( rTagTruth, 0 ) ) );
             if( SelectedTagTruth->size() != 0 && debug_ ) {
                 std::cout << "******************************" << std::endl;
                 std::cout << " TRUTH FOR NO TAG..." << std::endl;
-                std::cout << "* HTXS Category 0 (1): " << SelectedTagTruth->back().HTXSstage0cat() << " ("
-                          << SelectedTagTruth->back().HTXSstage1cat() << ")" << std::endl;
+                std::cout << "* HTXS Category 0 (1) {1.1} [1.1 fine]: " << SelectedTagTruth->back().HTXSstage0bin() << " ("
+                          << SelectedTagTruth->back().HTXSstage1bin() << ")" << " {"
+                          << SelectedTagTruth->back().HTXSstage1p1bin() << "}" << " ["
+                          << SelectedTagTruth->back().HTXSstage1p1binFine() << "]" << std::endl;
                 std::cout << "* HTXS njets, pTH, pTV: " << SelectedTagTruth->back().HTXSnjets() << ", "
                           << SelectedTagTruth->back().HTXSpTH() << ", "
                           << SelectedTagTruth->back().HTXSpTV() << std::endl;
@@ -395,6 +488,8 @@ namespace flashgg {
             return string("VHLeptonicLoose");
         case DiPhotonTagBase::tag_t::kVHMet:
             return string("VHMet");
+        case DiPhotonTagBase::tag_t::kStageOneCombined:
+            return string("StageOne");
         }
         return string("TAG NOT ON LIST");
     }

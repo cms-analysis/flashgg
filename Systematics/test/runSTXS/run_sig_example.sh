@@ -1,0 +1,1 @@
+fggRunJobs.py --load example_sig.json -d Sig2018_11Mar20 --stage-to /eos/home-e/escott/HggLegacy/WorkspaceTest/2018/Sig/ -x cmsRun workspaceStd.py maxEvents=-1 -q tomorrow -n 50 --no-copy-proxy  dumpWorkspace=True doStageOne=True doSystematics=True useParentDataset=True dumpTrees=False recalculatePDFWeights=True

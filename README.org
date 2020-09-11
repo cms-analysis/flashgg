@@ -1,0 +1,101 @@
+* flashgg
+** Setup
+   Before you start, **please take note** of these warnings and comments:
+   - **N.B.** The setup script will check out many packages and take a while!
+   - **N.B.** You can ignore "error: addinfo_cache" lines. 
+   - **N.B.** These setup instructions now include the STXS workflow
+
+   Supported releases:
+   - 10_6_1_patch2 required for the STXS stage 1.1 information
+   - 10_6_8 required for the STXS stage 1.2 information
+
+   get flashgg:
+   #+BEGIN_EXAMPLE
+   export SCRAM_ARCH=slc7_amd64_gcc700
+   cmsrel CMSSW_10_6_8
+   cd CMSSW_10_6_8/src
+   cmsenv
+   git cms-init
+   cd $CMSSW_BASE/src 
+   git clone -b dev_legacy_runII https://github.com/cms-analysis/flashgg 
+   source flashgg/setup_flashgg.sh
+   #+END_EXAMPLE
+
+   If everything now looks reasonable, you can build:
+   #+BEGIN_EXAMPLE
+   cd $CMSSW_BASE/src
+   scram b -j 4
+   #+END_EXAMPLE
+
+** Examples to run on RunII legacy test campaign:
+   *Note: copying the proxy file to the working node is not yet supported when using HTCondor as bacth system. Therefore the user must set*
+   *the =X509_USER_PROXY= environment variable and run with the =--no-copy-proxy= option*
+   #+BEGIN_EXAMPLE
+   cd Systematics/test
+   voms-proxy-init -voms cms --valid 168:00
+   cp /tmp/MYPROXY ~/
+   export X509_USER_PROXY=~/MYPROXY
+   fggRunJobs.py --load legacy_runII_v1_YEAR.json -d test_legacy_YEAR workspaceStd.py -n 300 -q workday --no-copy-proxy
+   #+END_EXAMPLE
+
+   *Note: 2018 workflow is just a skeleton, only scales and smearings are known to be correct.*
+
+** Notes on fggRunJobs.py usage (with HTCondor as batch system):
+   *It is highly recommended to run =fggRunJobs.py --help= in order to get a clear picture of the script features*
+
+   To fully exploit the HTCondor cluster logic the fggRunJobs workflow has been reviewed for this specific batch system.
+   With other batch system (SGE, LSF, ...) each job is run independently in a single task, with HTCondor instead one cluster
+   of jobs is created for each sample (i.e. one cluster for each process specified in the configuration json file).
+   The number of jobs in each cluster is determined, as for other system, by fggRunJobs. The user can specify the maximum number
+   of jobs for each sample through the =-n= option.
+
+   HTCondor does not allow the user to manually resubmit single jobs within a cluster, jobs are instead resubmitted automatically if the job exit
+   code matches a failure condition set by the user (here the user as to be intended as fggRunJobs itself). Currently the fggRunJobs
+   consider as failed only jobs for which the cmsRun execution failed and instructs HTCondor to resubmit such jobs up to maximum 3 times
+   (this value is hard-coded). Failure in transferring the output ROOT file will not result in a job resubmission since in most cases
+   the transfer error is due to lack of disk space and therefore any resubmission will fail as well (the user should clean up the stage out area
+   first and then submit new jobs with fggRunJobs). In order to make sure all analysis jobs are processed correctly and no data is
+   left behind fggRunJobs keeps an internal bookkeeping of the job that failed even after three automatic resubmission, the user can
+   instruct fggRunJobs to resubmit these jobs again by setting the =-m= option to a value greater than 1.
+   *Note that it is very unlikely that sporadic failures results in a job fail three consecutive automatic resubmission, so besides increasing*
+   *the number of manual resubmission attempts through the =-m= option it is worth investigating deeper the log files to understand the root cause of*
+   *the failure.*
+
+   A typical analysis task is summarized below:
+   #+BEGIN_EXAMPLE
+   voms-proxy-init -voms cms --valid 168:00
+   cp /tmp/MYPROXY ~/
+   export X509_USER_PROXY=~/MYPROXY
+   fggRunJobs.py --load myconfig.json -d outputdir/ cmsrun_cfg.py -n N -q QUEUE --no-copy-proxy
+   #+END_EXAMPLE
+   By default =-m= is set to 2, this means that each jobs will be retried up to 6 times (3 automatic resubmits by HTCondor * 2 "manual" resubmits
+   by fggRunJobs).
+
+   fggRunJobs.py can be left running (e.g. in a screen session) or be killed. The monitoring can be restarted at anytime with:
+   #+BEGIN_EXAMPLE
+   fggRunJobs.py --load outputdir/config.json --cont
+   #+END_EXAMPLE
+   If all jobs terminated successfully the script will display a success message, otherwise the monitoring will resume.
+   The status of jobs can be also monitored running the standard HTCondor scripts like =condor_q=. fggRunJobs clusters are named "runJobsXX".
+   The number of "manual" resubmission can be increase by adding =-m 3= to the above command.
+   
+
+** Manual tests:
+   And a very basic workflow test (for reference, this is not supposed to give paper-grade results):
+   #+BEGIN_EXAMPLE
+   cd $CMSSW_BASE/src/flashgg
+   cmsRun MicroAOD/test/microAODstd.py processType=sig datasetName=glugluh conditionsJSON=MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json 
+   #processType=data/bkg/sig, depending on input file
+   #conditionsJSON= add appropriate JSON file for 2016, 2017 or 2018 from MetaData/data/MetaConditions/
+
+   cmsRun Systematics/test/workspaceStd.py processId=ggh_125 doHTXS=1
+   #+END_EXAMPLE
+
+   These are just some test examples; the first makes MicroAOD from a MiniAOD file accessed via xrootd, 
+   the second produces tag objects and screen output from the new MicroAOD file,
+   and the other two process the MicroAOD file to test ntuple and workspace output.
+
+   The setup code will automatically change the initial remote branch's name to upstream to synchronize with the project's old conventions.  
+   The code will also automatically create an "origin" repo based on its guess as to where your personal flashgg fork is.
+   Check that this has worked correctly if you have trouble pushing.  (See setup_*.sh for what it does.)
+

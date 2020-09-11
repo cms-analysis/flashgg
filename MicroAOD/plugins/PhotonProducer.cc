@@ -1,4 +1,5 @@
-
+#include "Geometry/CaloTopology/interface/CaloTopology.h"
+#include "Geometry/CaloEventSetup/interface/CaloTopologyRecord.h"
 #include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
@@ -148,10 +149,8 @@ namespace flashgg {
 
     void PhotonProducer::produce( Event &evt, const EventSetup &iSetup )
     {
-
-        /// if (!corV8_.IsInitialized()) {
-        ///   corV8_.Initialize(regressionWeightFile_.fullPath(),8);
-        /// }
+        edm::ESHandle<CaloTopology> topology ;
+        iSetup.get<CaloTopologyRecord>().get( topology );
 
         Handle<View<pat::Photon> > photons;
         evt.getByToken( photonToken_, photons );
@@ -252,7 +251,7 @@ namespace flashgg {
                 phoTools_.fillExtraClusterShapes( fg, zsLazyTool );
             }
             if( addRechitFlags_ ) {
-                phoTools_.fillRechHitFlags( fg, noZsLazyTool );
+                phoTools_.fillRechHitFlags( fg, noZsLazyTool, topology.product() );
             }
 
             phoTools_.removeOverlappingCandidates( doOverlapRemovalForIsolation_ );

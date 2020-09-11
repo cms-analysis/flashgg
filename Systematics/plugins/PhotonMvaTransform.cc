@@ -95,40 +95,7 @@ namespace flashgg {
             for(auto keyval = beforeMap.begin(); keyval != beforeMap.end(); ++keyval) {
                 vtx = keyval->first;
                 mvaVal = keyval->second;
-                shift = shift_val + (mvaVal - corrections_[correctionIndex]->Eval(mvaVal))*abs(syst_shift);
-                // cout < "mvaVal: " << mvaVal << endl;
-                // # diphoton vertex x = -0.0245905
-                // # diphoton vertex y = 0.0705721
-                // # diphoton vertex z = -0.969548
-                //if(abs(shift)>0){
-                //    std::cout << "shift: " << shift << endl;
-                //    std::cout << " PhoID MVA Syst shift from transformation : Photon has pt= " << y.pt() << " eta=" << y.eta();
-                //    std::cout << "     MVA VALUES BEFORE: ";
-                //    for(auto keyval = beforeMap.begin(); keyval != beforeMap.end(); ++keyval) {
-                //        keys.push_back( keyval->first );
-                //        std::cout << keyval->second << " ";
-                //    }
-                //    std::cout << std::endl;                    
-                //}
-                //     cout << "---------------------------------" << endl;
-                //     // cout << "shift: " << shift << endl;
-                //     std::map<edm::Ptr<reco::Vertex>, float> test = y.phoIdMvaD();
-                //     cout << "mva val = " << test[vtx] << endl; 
-                //     cout << "being shifted by : " << endl;
-                //     cout << shift << endl;
-                //     cout << "" << endl;
-                //     cout << "Vertex x: " << vtx->x() << endl;
-                //     cout << "Vertex y: " << vtx->y() << endl;
-                //     cout << "Vertex z: " << vtx->z() << endl;
-                // //     // cout << "y.phoIdMvaD()[vtx]: " << y.phoIdMvaD()[vtx] << endl;
-                //     cout << "---------------------------------" << endl;
-                // //     cout << "mvaVal: " << mvaVal << endl;
-                // //     cout << "corrections_[correctionIndex]->Eval(mvaVal): " << corrections_[correctionIndex]->Eval(mvaVal) << endl;
-                // //     cout << "abs(syst_shift): " << abs(syst_shift) << endl;
-                // //     cout << "shift_val: " << shift_val << endl;
-                // //     cout << "(mvaVal - corrections_[correctionIndex]->Eval(mvaVal))*abs(syst_shift) = " << (mvaVal - corrections_[correctionIndex]->Eval(mvaVal))*abs(syst_shift) << endl;
-                // }
-                
+                shift = shift_val + (corrections_[correctionIndex]->Eval(mvaVal) - mvaVal )*abs(syst_shift);
                 y.shiftMvaValueBy(shift, vtx);
             }
 /*
