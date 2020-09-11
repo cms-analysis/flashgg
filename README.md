@@ -51,7 +51,7 @@ cd CMSSW_10_6_8/src
 cmsenv
 git cms-init
 cd $CMSSW_BASE/src 
-git clone -b HHWWgg_dev https://github.com/cms-analysis/flashgg 
+git clone -b HHWWgg_dev https://github.com/atishelmanch/flashgg/tree/HHWWgg_dev 
 source flashgg/setup_flashgg.sh
 ```
 
