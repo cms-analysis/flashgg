@@ -42,7 +42,7 @@ while true; do
       -s) runSignal="true";;
       -d) runData="true";;
       -b) runBackground="true";;
-	-c) allData="true";;
+      -c) allData="true";;
       -w) haddWorkspace="true";;
       -t) haddTrees="true";;
       --nTupleDir) shift; nTupleDirec=$1 ;;
@@ -127,7 +127,8 @@ cd $nTupleDirec
 cd $inputFolder
 
 ls > filesBefore.txt
-python $scriptLoc # Create workspace hadded files
+echo "Hadding workspaces..."
+python $scriptLoc > /dev/null # do not print any output from command # Create workspace hadded files
 ls > filesAfter.txt
 
 # Save new files to filesDiff.txt
@@ -162,13 +163,13 @@ do
                   # Input root file should be named such that its fourth '_' delimited
                   # element should be "qqqq" or "lnuqq" or "lnulnu" (channel name) and
                   # fifth '_' delimited element should be like "nodeX".
-			node="$(cut -d'_' -f5 <<<$file_i)" # get fifth '_' delimited element. nodeX.root
-			node=${node%?????} # remove ".root"
+		  node="$(cut -d'_' -f5 <<<$file_i)" # get fifth '_' delimited element. nodeX.root
+		  node=${node%?????} # remove ".root"
                   channel="$(cut -d'_' -f4 <<<$file_i)" # get fourth '_' delimited element. qqqq_nodeX.root
-			infilePath="${nTupleDirec}/${inputFolder}/${file_i}"
+		  infilePath="${nTupleDirec}/${inputFolder}/${file_i}"
                   outfilePath="${nTupleDirec}/${outputFolder}/${node}_HHWWgg_${channel}.root" ##-- I think it's helpful to have the production mode in the name 
                   # EXAMPLE: outfilePath="${nTupleDirec}/${outputFolder}/node11_HHWWgg_qqqq.root"
-			# EXAMPLE: outfilePath="${nTupleDirec}/${outputFolder}/node11_HHWWgg_lnuqq.root"
+		  # EXAMPLE: outfilePath="${nTupleDirec}/${outputFolder}/node11_HHWWgg_lnuqq.root"
 
 		elif [[ $signalType == "NMSSM" ]]; then
 			#ex: output_NMSSM_XYHWWggqqlnu_MX2000_MY1800_15.root
