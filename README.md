@@ -46,12 +46,12 @@ The HHWWgg development branch is obtained in a similar fasion to the `dev_legacy
 
 ```bash
 export SCRAM_ARCH=slc7_amd64_gcc700
-cmsrel CMSSW_10_5_0
-cd CMSSW_10_5_0/src
+cmsrel CMSSW_10_6_8
+cd CMSSW_10_6_8/src
 cmsenv
 git cms-init
-cd $CMSSW_BASE/src
-git clone -b HHWWgg_dev https://github.com/atishelmanch/flashgg
+cd $CMSSW_BASE/src 
+git clone -b HHWWgg_dev https://github.com/cms-analysis/flashgg 
 source flashgg/setup_flashgg.sh
 ```
 
