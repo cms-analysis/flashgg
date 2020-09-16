@@ -42,7 +42,6 @@
 #include <algorithm>
 #include "TGraph.h"
 #include "TLorentzVector.h"
-// #include "TH2.h"
 
 using namespace std;
 using namespace edm;
@@ -64,9 +63,7 @@ namespace flashgg {
     edm::Service<TFileService> fs;
 
     // TH1F* indexes;
-    TH2F* diphopTs;
-    // TH1F* diphopt;
-    // TH1F* phoptsum;
+    // TH2F* diphopTs;
 
   private:
     double genTotalWeight;
@@ -253,7 +250,7 @@ namespace flashgg {
       // diphopt = fs->make<TH1F> ("diphopt", "diphopt", 500,0,500);
       // phoptsum = fs->make<TH1F> ("phoptsum", "phoptsum", 500,0,500);
 
-      diphopTs = fs->make<TH2F> ("diphopTs","diphoton pTs", 50,0,500,50,0,500); // for looking at dipho pT and sum of dipho photon pTs
+      // diphopTs = fs->make<TH2F> ("diphopTs","diphoton pTs", 50,0,500,50,0,500); // for looking at dipho pT and sum of dipho photon pTs
 
       // WTags = fs->make<TH1F> ("WTags","W Tags",3,0,3);
       EB_Photon_MVA_Threshold_ =pSet.getParameter<double>( "EB_Photon_MVA_Threshold");
@@ -771,24 +768,22 @@ namespace flashgg {
 
         // if (diPhotons->size() > 0){ // for each systematic
 
-      if(doHHWWggDebug_){
+      // if(doHHWWggDebug_){
     
-        for( unsigned int diphoIndex = 0; diphoIndex < diphotons->size(); diphoIndex++ ){
-          edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex );
-          const flashgg::Photon* leadPho = dipho->leadingPhoton();
-          const flashgg::Photon* subleadPho = dipho->subLeadingPhoton();     
-          diPho_pT = dipho->pt();
-          // cout << "dipho " << diphoIndex << " pT: " << diPho_pT << endl;
-          leadPho_pt = leadPho->pt();
-          subleadPho_pt = subleadPho->pt();
-          sumpT = leadPho_pt + subleadPho_pt; 
-          // cout << "dipho " << diphoIndex << " sum pT: " << sumpT << endl;     
-          diphopTs->Fill(diPho_pT,sumpT);  
-          // diphopt->Fill(diPho_pT);
-          // phoptsum->Fill(sumpT);           
-        }
+      //   for( unsigned int diphoIndex = 0; diphoIndex < diphotons->size(); diphoIndex++ ){
+      //     edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex );
+      //     const flashgg::Photon* leadPho = dipho->leadingPhoton();
+      //     const flashgg::Photon* subleadPho = dipho->subLeadingPhoton();     
+      //     diPho_pT = dipho->pt();
+      //     // cout << "dipho " << diphoIndex << " pT: " << diPho_pT << endl;
+      //     leadPho_pt = leadPho->pt();
+      //     subleadPho_pt = subleadPho->pt();
+      //     sumpT = leadPho_pt + subleadPho_pt; 
+      //     // cout << "dipho " << diphoIndex << " sum pT: " << sumpT << endl;     
+      //     // diphopTs->Fill(diPho_pT,sumpT);  
+      //   }
 
-      }
+      // }
 
         if (diphotons->size() > 0){
         for( unsigned int diphoIndex = 0; diphoIndex < 1; diphoIndex++ )

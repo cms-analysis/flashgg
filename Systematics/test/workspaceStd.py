@@ -22,7 +22,7 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000000 )
 # process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
-# process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 ) # I think this kills / slows down jobs!
+# process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 ) # Printing out info every event may kill / slow down jobs!
 
 systlabels = [""]
 phosystlabels = []
@@ -247,8 +247,10 @@ customize.options.register('applyNNLOPSweight',
 print "Printing defaults"
 print 'acceptance '+str(customize.acceptance)
 print 'tthTagsOnly '+str(customize.tthTagsOnly)
+
 # import flashgg customization to check if we have signal or background
 from flashgg.MetaData.JobConfig import customize
+customize.crossSections.append("$CMSSW_BASE/src/flashgg/MetaData/data/HHWWgg-cross_sections.json") # Add HHWWgg cross sections 
 # set default options if needed
 customize.setDefault("maxEvents",-1)
 customize.setDefault("targetLumi",1.00e+3)
@@ -278,7 +280,6 @@ modifyTagSequenceForSystematics(process,jetSystematicsInputTags) # normally unco
 print "Printing options"
 print 'acceptance '+str(customize.acceptance)
 print 'tthTagsOnly '+str(customize.tthTagsOnly)
-
 
 # process.load("flashgg/Taggers/flashggTagSequence_cfi")
 # process.flashggTagSequence = flashggPrepareTagSequence(customize.metaConditions)
@@ -577,7 +578,6 @@ process.TFileService = cms.Service("TFileService",
 
 process.extraDumpers = cms.Sequence()
 
-
 # process.tagsDumper.className = "DiPhotonTagDumper"
 # process.tagsDumper.src = "flashggSystTagMerger"
 # #process.tagsDumper.src = "flashggTagSystematics"
@@ -727,6 +727,8 @@ for tag in tagList:
 #     if dset in customize.datasetName():
 #         hlt_paths.extend(customize.metaConditions["TriggerPaths"][dset])
 # process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring(hlt_paths))
+# print"[HHWWgg workspaceStd.py debug] - process:",process
+# print"[HHWWgg workspaceStd.py debug] - customize:",customize
 filterHLTrigger(process, customize)
 
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
