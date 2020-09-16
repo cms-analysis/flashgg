@@ -299,6 +299,10 @@ if customize.tthTagsOnly or customize.HHWWggTagsOnly:
     process.flashggDiPhotons.vertexIdMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexIdMVAweightfile'].encode("ascii")
     process.flashggDiPhotons.vertexProbMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexProbMVAweightfile'].encode("ascii")
 
+##-- Provide messages every event if debugging 
+if customize.doHHWWggDebug:
+    process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
+
 print 'here we print the tag sequence before'
 print process.flashggTagSequence
 
@@ -438,7 +442,7 @@ useEGMTools(process)
 # convention: ggh vbf wzh (wh zh) tth
 signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh","WWgg"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
-
+print"is_signal:",is_signal
 applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
 
 #if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance") or customize.processId.count("hh_"): 
@@ -687,7 +691,8 @@ for tag in tagList:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
       is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
-      if ( customize.doPdfWeights and customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId.count("bbh_") or customize.processId.count("thw_") or customize.processId.count("thq_")):
+      ##-- Don't have PDF weights for HHWWgg yet 
+      if (not customize.doHHWWggTag) and ( customize.doPdfWeights and customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId.count("bbh_") or customize.processId.count("thw_") or customize.processId.count("thq_")):
           #print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60

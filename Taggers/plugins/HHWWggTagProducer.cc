@@ -585,9 +585,9 @@ namespace flashgg {
     double Event_num = 1;
     void HHWWggTagProducer::produce( Event &event, const EventSetup & )
     {
-      bool DEBUG = false;
 
-      if (DEBUG) cout << "[INFO][HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce" <<Event_num<< endl;
+      // if (doHHWWggDebug_) cout << "[INFO][HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce" <<Event_num<< endl;
+      if (doHHWWggDebug_) cout << "[HHWWggTagProducer.cc] - systLabel: " << systLabel_ << endl;  
 
       // Get particle objects
       event.getByToken( photonToken_, photons );
@@ -1042,7 +1042,7 @@ namespace flashgg {
           /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
           //-- Categorize Events
-          if (DEBUG) std::cout << "[INFO] n_good_leptons = " << n_good_leptons << ",\t n_good_jets = " << n_good_jets << std::endl;
+          if (doHHWWggDebug_) std::cout << "[INFO] n_good_leptons = " << n_good_leptons << ",\t n_good_jets = " << n_good_jets << std::endl;
 
           //-- Semi-Leptonic Final state tags
           if(HHWWggAnalysisChannel_ == "SL")
