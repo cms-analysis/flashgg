@@ -1,0 +1,12 @@
+{
+        "processes": {
+                "Data"   : [
+                                "/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER",
+                                "/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017C-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER",
+                                "/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017D-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER",
+                                "/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017E-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER",
+                                "/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017F-31Mar2018-v1-6275f8d5048d2e0a580d591e02fde0b8/USER"
+                           ]
+                },
+        "cmdLine" : "campaign=Era2017_RR-31Mar2018_v2 HHWWggAnalysisChannel=SL doHHWWggNonResAnalysis=1 targetLumi=41.5e+3 useAAA=True processId=Data processType=Data"
+}

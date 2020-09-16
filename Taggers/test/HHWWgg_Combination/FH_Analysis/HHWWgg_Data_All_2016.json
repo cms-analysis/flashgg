@@ -1,0 +1,14 @@
+{
+    "processes" : {
+        "Data": [
+            "/DoubleEG/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016B-17Jul2018_ver2-v1-86023db6be00ee64cd62a3172358fb9f/USER",
+            "/DoubleEG/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016C-17Jul2018-v1-86023db6be00ee64cd62a3172358fb9f/USER",
+            "/DoubleEG/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016D-17Jul2018-v1-86023db6be00ee64cd62a3172358fb9f/USER",
+            "/DoubleEG/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016E-17Jul2018-v1-86023db6be00ee64cd62a3172358fb9f/USER",
+            "/DoubleEG/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016F-17Jul2018-v1-86023db6be00ee64cd62a3172358fb9f/USER",
+            "/DoubleEG/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016G-17Jul2018-v1-86023db6be00ee64cd62a3172358fb9f/USER",
+            "/DoubleEG/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016H-17Jul2018-v1-86023db6be00ee64cd62a3172358fb9f/USER"
+	]
+    },
+    "cmdLine"  : "campaign=Era2016_RR-17Jul2018_v2 HHWWggAnalysisChannel=FH doHHWWggNonResAnalysis=1 useAAA=True processId=Data processType=Data metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json "
+}
