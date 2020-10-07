@@ -41,6 +41,9 @@
 <class name="flashgg::VHhadMVAResult"/>
 <class name="std::vector<flashgg::VHhadMVAResult>"/>
 <class name="edm::Wrapper<std::vector<flashgg::VHhadMVAResult> >"/>
+<class name="flashgg::GluGluHMVAResult"/>
+<class name="std::vector<flashgg::GluGluHMVAResult>"/>
+<class name="edm::Wrapper<std::vector<flashgg::GluGluHMVAResult> >"/>
 <class name="std::vector<flashgg::DiPhotonTagBase>"/>
 <class name="edm::Wrapper<std::vector<flashgg::DiPhotonTagBase> >"/>
 <class name="flashgg::UntaggedTag" ClassVersion="13">
