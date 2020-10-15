@@ -200,9 +200,9 @@
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
 
-    "MUON_ID_JSON_FileName" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ID.json",
-    "MUON_ID_JSON_FileName_LowPt" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ID_lowPt.json",
-    "MUON_ISO_JSON_FileName" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ISO.json",
+    "MUON_ID_JSON_FileName" : "flashgg/Systematics/data/Muon_UL2017_RunBCDEF_SF_ID.json",
+    "MUON_ID_JSON_FileName_LowPt" : "flashgg/Systematics/data/Muon_UL2017_RunBCDEF_SF_ID_lowPt.json",
+    "MUON_ISO_JSON_FileName" : "flashgg/Systematics/data/Muon_UL2017_RunBCDEF_SF_ISO.json",
 
     "MUON_ID_RefTracks" :  "genTracks",
     "MUON_ID_RefTracks_LowPt" : "genTracks",
@@ -219,13 +219,13 @@
 
 	"bTagger" : "pfDeepJet",
 
-	"bDiscriminatorValue_pfDeepCSV" : 0.4941,
-	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_94XSF_V4_B_F.csv",
-	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_94XSF_WP_V4_B_F.csv",
+	"bDiscriminatorValue_pfDeepCSV" : 0.4506,
+	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_106XUL17SF.csv",
+	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_106XUL17SF_WPonly.csv",
 
-	"bDiscriminatorValue_pfDeepJet" : 0.3033,
-	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepFlavour_94XSF_V2_B_F.csv",
-	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepFlavour_94XSF_WP_V2_B_F.csv",
+	"bDiscriminatorValue_pfDeepJet" : 0.3040,
+	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepJet_106XUL17SF.csv",
+	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepJet_106XUL17SF_WPonly.csv",
 
 	"eta" : 2.5
     },
