@@ -114,7 +114,8 @@
     },
 
     "flashggJetSystematics" : 
-    {  
+    { 
+	"doHEMuncertainty" : false, 
         "textFileName" : "flashgg/Systematics/data/JEC/Regrouped_Fall17_17Nov2017_V32_MC_UncertaintySources_AK4PFchs.txt",
         "listOfSources" : [
                            "Absolute",
@@ -219,13 +220,13 @@
 
 	"bTagger" : "pfDeepJet",
 
-	"bDiscriminatorValue_pfDeepCSV" : 0.4941,
-	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_94XSF_V4_B_F.csv",
-	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_94XSF_WP_V4_B_F.csv",
+	"bDiscriminatorValue_pfDeepCSV" : 0.4506,
+	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_106XUL17SF.csv",
+	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_106XUL17SF_WPonly.csv",
 
-	"bDiscriminatorValue_pfDeepJet" : 0.3033,
-	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepFlavour_94XSF_V2_B_F.csv",
-	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepFlavour_94XSF_WP_V2_B_F.csv",
+	"bDiscriminatorValue_pfDeepJet" : 0.3040,
+	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepJet_106XUL17SF.csv",
+	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepJet_106XUL17SF_WPonly.csv",
 
 	"eta" : 2.5
     },
