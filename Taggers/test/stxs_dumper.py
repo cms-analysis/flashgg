@@ -82,6 +82,7 @@ else: process.GlobalTag.globaltag = str(customize.metaConditions['globalTags']['
 
 #Systematics customize
 from flashgg.Systematics.SystematicsCustomize import *
+#jetSystematicsInputTags = None
 jetSystematicsInputTags = createStandardSystematicsProducers(process,customize)
 modifyTagSequenceForSystematics(process,jetSystematicsInputTags,2)
 
@@ -270,7 +271,7 @@ all_variables = var.dipho_variables + var.dijet_variables + new_variables
 
 if customize.processId != "Data":
     all_variables += matching_photon# + jet_syst_weights
-    all_variables += var.stxs_truth_variables
+    #all_variables += var.stxs_truth_variables
 
 cats = []
 
