@@ -316,7 +316,7 @@
 
    "PhoIdInputCorrections":
     {
-	"corrections_summary" : "flashgg/Taggers/data/PhoIdInputsCorrections/corrections_summary_2017.json",
+	"corrections_summary" : "flashgg/Taggers/data/PhoIdInputsCorrections/corrections_summary_2017_Legacy.json",
 	"SS_variables" :   ["f0 := pt",
                             "f1 := superCluster.eta",
                             "f2 := phi",
