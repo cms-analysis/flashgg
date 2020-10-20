@@ -4,6 +4,9 @@ from flashgg.Taggers.globalVariables_cff import globalVariables
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag # should include jet systematics
 from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections, flashggDeepCSV
 
+import flashgg.Taggers.flashggDoubleHReweight_cfi as reweight_settings
+from flashgg.Taggers.flashggDoubleHReweight_cfi import flashggDoubleHReweight
+
 # # to not run jets systematics
 # UnpackedJetCollectionVInputTag =  cms.VInputTag(
 #     cms.InputTag("flashggUnpackedJets","0"), cms.InputTag("flashggUnpackedJets","1"), cms.InputTag("flashggUnpackedJets","2"), cms.InputTag("flashggUnpackedJets","3"), cms.InputTag("flashggUnpackedJets","4"),
@@ -78,7 +81,13 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     # saveHHWWggFinalStateVars = cms.bool(False)
                                     deltaRLeps = cms.double(0.4),
                                     MetPtThreshold = cms.double(20.),
-                                    EB_Photon_MVA_Threshold = cms.double(0.07),#tth -0.7
+                                    
+                                    ##-- Non-Resonant Reweighting 
+                                    doReweight = flashggDoubleHReweight.doReweight,
+                                    reweight_producer = cms.string(reweight_settings.reweight_producer),
+                                    reweight_names = cms.vstring(reweight_settings.reweight_names),  
+
+                                    EB_Photon_MVA_Threshold = cms.double(0.07),
                                     EE_Photon_MVA_Threshold = cms.double(-0.03),
                                     #bTag = cms.string(flashggDeepCSV),
                                     # btagThresh = cms.double(100)     # no btag (Save all btags < 100)

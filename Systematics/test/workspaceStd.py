@@ -869,7 +869,8 @@ if customize.doDoubleHTag:
     process.p.remove(process.flashggMetFilters)
     hhc.doubleHTagRunSequence(systlabels,jetsystlabels,phosystlabels)
   
-# if customize.doHHWWggTag:
+if customize.doHHWWggTag:
+    hhwwggc.HHWWggTagRunSequence(systlabels,jetsystlabels,phosystlabels)
     # hhwwggc.HHWWggTagRunSequence(systlabels,jetsystlabels,phosystlabels)  
 
 

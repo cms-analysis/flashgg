@@ -142,6 +142,9 @@ namespace flashgg {
     const reco::Candidate::LorentzVector& Subleading_lepton() const { return Subleading_lepton_; };
     const float dipho_MVA() const {return dipho_MVA_;};
 
+    void setBenchmarkReweight(std::vector<float> x) { benchmark_reweights_ = x; }
+    float getBenchmarkReweight(int targetNode) const { return benchmark_reweights_[targetNode]; }
+
   private:
     double mva_;
     long eventNumber_;
@@ -177,6 +180,7 @@ namespace flashgg {
     reco::Candidate::LorentzVector Leading_lepton_;
     reco::Candidate::LorentzVector Subleading_lepton_;
     float dipho_MVA_;
+    vector<float> benchmark_reweights_;    
   };
 
 }

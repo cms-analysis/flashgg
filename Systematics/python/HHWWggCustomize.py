@@ -34,6 +34,15 @@ class HHWWggCustomize():
         ##- Variables for the nominal output tag tree (non systematic trees for each category)
         variables = []
 
+        ##-- Weights for non-resonant reweighting 
+        doubleHReweight_vars = []
+        if self.customize.doubleHReweight > 0: 
+            for num in range(0,12):  #12 benchmarks + 1 SM
+                 doubleHReweight_vars.append("benchmark_reweight_%d := getBenchmarkReweight(%d)"%(num,num))
+            doubleHReweight_vars.append("benchmark_reweight_SM := getBenchmarkReweight(12)")
+            doubleHReweight_vars.append("benchmark_reweight_box := getBenchmarkReweight(13)")
+            doubleHReweight_vars.append("benchmark_reweight_2017fake := getBenchmarkReweight(14)")
+
         #-- Cut flow variables
         cutFlowVars = [
             "passPS[2,0,2] := Cut_Variables[0]",
@@ -54,7 +63,7 @@ class HHWWggCustomize():
             "TwoGoodEles:= Cut_Variables[15]",
             "passLepDR:= Cut_Variables[16]",
             "passMetPt:= Cut_Variables[17]",
-	    "FL_Lep_Flavor :=Cut_Variables[18]"
+	        "FL_Lep_Flavor :=Cut_Variables[18]"
         ]
 
         #-- b scores
@@ -254,25 +263,21 @@ class HHWWggCustomize():
                         finalStateVars.append(entry)
 
         # Save extra Muon variables
-        # nMuons = 5 # highest 5 pT muons (no selections applied)
-        # nVars = 6 # 5 IDs and Isolation
-        # extraMuonVars = ["isLooseMuon","isMediumMuon","isTightMuon","isSoftMuon","isHighPtMuon","muonIso"]
-        # for m in range(0,nMuons):
-        #     for n in range(0,nVars):
-        #         muonVarTitle = extraMuonVars[n]
-        #         # MuonVars_[muonIndex*numVars + 0] = isLooseMuon;
-        #         # MuonVars_[muonIndex*numVars + 1] = isMediumMuon;
-        #         # MuonVars_[muonIndex*numVars + 2] = isTightMuon;
-        #         # MuonVars_[muonIndex*numVars + 3] = isSoftMuon;
-        #         # MuonVars_[muonIndex*numVars + 4] = isHighPtMuon;
-        #         # MuonVars_[muonIndex*numVars + 5] = muonIso;
-        #         i = m*nVars + n
-        #         vname = "MuonVars[%s]"%(i)
-        #         vtitle = "allMuons_%s_%s"%(m,muonVarTitle)
-        #         entry = "%s:=%s"%(vtitle,vname)
-        #         finalStateVars.append(entry)
+        muon_vars = [] 
+        nMuons = 5 # highest 5 pT muons (no selections applied)
+        nVars = 6 # 5 IDs and Isolation
+        extraMuonVars = ["isLooseMuon","isMediumMuon","isTightMuon","isSoftMuon","isHighPtMuon","muonIso"]
+        for m in range(0,nMuons):
+            for n in range(0,nVars):
+                muonVarTitle = extraMuonVars[n]
+                i = m*nVars + n
+                vname = "MuonVars[%s]"%(i)
+                vtitle = "allMuons_%s_%s"%(m,muonVarTitle)
+                entry = "%s:=%s"%(vtitle,vname)
+                muon_vars.append(entry)
 
         # Save extra Jet variables
+        jet_vars = [] 
         nJets = 5 # highest 5 pT muons (no selections applied)
         nVars = 4 # 4 IDs
         # nVars = 5 # 4 IDs + 1 PU ID
@@ -302,25 +307,27 @@ class HHWWggCustomize():
                 vname = "JetVars[%s]"%(i)
                 vtitle = "allJets_%s_%s"%(j,jetVarTitle)
                 entry = "%s:=%s"%(vtitle,vname)
-                finalStateVars.append(entry)
+                jet_vars.append(entry)
+                # finalStateVars.append(entry)
 
         # for removal of prompt-prompt events from QCD and GJet samples
         finalStateVars.append("Leading_Photon_genMatchType:=Leading_Photon.genMatchType()")
         finalStateVars.append("Subleading_Photon_genMatchType:=Subleading_Photon.genMatchType()")
 
         print"len(finalStateVars):",len(finalStateVars)
-
-        # if self.customize.doHHWWggTagCutFlow:
-            # variables += cutFlowVars
-            # variables += bScores
+        print"len(muon_vars):",len(muon_vars)
+        print"len(jet_vars):",len(jet_vars)
 
         if self.customize.saveHHWWggFinalStateVars:
+            variables += doubleHReweight_vars
             variables += finalStateVars
             variables += HHVariables
             variables += cutFlowVars
-            if self.customize.HHWWggAnalysisChannel == "FL": variables += FL_vars
-
-            # variables += bScores
+            if self.customize.HHWWggAnalysisChannel == "FL": 
+                variables += FL_vars
+            if self.customize.HHWWggAnalysisChannel == "SL": 
+                variables += muon_vars
+                variables += jet_vars 
 
         if self.customize.doHHWWggDebug:
             variables += debugVars
@@ -331,7 +338,6 @@ class HHWWggCustomize():
         #     return variables
         # else :
         #     return var_workspace
-
 
     def systematicVariables(self):
     #   systematicVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass","Mjj[120,70,190]:=dijet().M()","HHbbggMVA[100,0,1.]:=MVA()","MX[300,250,5000]:=MX()"]
@@ -344,6 +350,13 @@ class HHWWggCustomize():
         #   "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", # also want final energies
       ]
 
+
+      if self.customize.doubleHReweight > 0: 
+        for num in range(0,12):  #12 benchmarks
+            systematicVariables += ["benchmark_reweight_%d[100,0,200] := getBenchmarkReweight(%d)"%(num,num)]
+        systematicVariables+= ["benchmark_reweight_SM[100,0,200] := getBenchmarkReweight(12)"]
+        systematicVariables+= ["benchmark_reweight_box[100,0,200] := getBenchmarkReweight(13)"]      
+
       debugVars=[
           "leadPhoMVA[2,0,2]:=lp_Hgg_MVA",
           "subleadPhoMVA[2,0,2]:=slp_Hgg_MVA"
@@ -351,8 +364,6 @@ class HHWWggCustomize():
 
       if self.customize.doHHWWggDebug:
         systematicVariables += debugVars
-
-
 
       return systematicVariables
 
@@ -412,7 +423,7 @@ class HHWWggCustomize():
         self.process.flashggHHWWggTag.HHWWggAnalysisChannel = self.customize.HHWWggAnalysisChannel
         if self.customize.HHWWggAnalysisChannel == "FL": 
            self.process.flashggHHWWggTag.deltaMassElectronZThreshold = 5 # 5 instead of default 10  
-
+        
         # if self.customize.saveHHWWggGenVars:
             # self.process.flashggHHWWggTag.saveHHWWggGenVars = cms.bool(True)
 
@@ -473,7 +484,13 @@ class HHWWggCustomize():
 
 
 
-    # def HHWWggTagRunSequence(self,systlabels,jetsystlabels,phosystlabels):
+    def HHWWggTagRunSequence(self,systlabels,jetsystlabels,phosystlabels):
+        
+        ##-- Non Resonant reweighting
+        if self.customize.doubleHReweight>0:
+            print"self.customize.doubleHReweight:",self.customize.doubleHReweight
+            self.addNodesReweighting()
+
         # if self.customize.saveHHWWggGenVars:
             # self.addGenAnalysis()
         # print'[HHWWggTagRunSequence]: Doing Nothing for HHWWgg'
@@ -491,27 +508,20 @@ class HHWWggCustomize():
 
 
 
-
-
-    #    if self.customize.HHWWggReweight>0:
-        #   self.addNodesReweighting()
-
     #    if self.customize.doHHWWggGenAnalysis:
     #       self.addGenAnalysis()
 
     #    if self.customize.saveHHWWggGenVars:
 
-
-
-
+    ##-- Non-Resonant Reweighting 
     def addNodesReweighting(self):
-        print'[addNodesReweighting]: Doing Nothing for HHWWgg'
-        # if self.customize.HHWWggReweight > 0 :
-        #     from flashgg.Taggers.flashggHHWWggReweight_cfi import flashggHHWWggReweight
-        #     self.process.flashggHHWWggReweight = flashggHHWWggReweight
-        #     self.process.flashggHHWWggReweight.doReweight = self.customize.HHWWggReweight
-        #     self.process.flashggHHWWggReweight.weightsFile = cms.untracked.FileInPath(str(self.metaConditions["HHWWggTag"]["NodesReweightingFileName"]))
-        #     self.process.p.replace(self.process.flashggHHWWggTag, self.process.flashggHHWWggReweight*self.process.flashggHHWWggTag)
+        if self.customize.doubleHReweight > 0 :
+            # from flashgg.Taggers.flashggHHWWggReweight_cfi import flashggHHWWggReweight
+            from flashgg.Taggers.flashggDoubleHReweight_cfi import flashggDoubleHReweight
+            self.process.flashggDoubleHReweight = flashggDoubleHReweight
+            self.process.flashggDoubleHReweight.doReweight = self.customize.doubleHReweight
+            self.process.flashggDoubleHReweight.weightsFile = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["NodesReweightingFileName"]))
+            self.process.p.replace(self.process.flashggHHWWggTagSequence, self.process.flashggDoubleHReweight*self.process.flashggHHWWggTagSequence)
 
     # def addGenAnalysis(self):
     #     if self.customize.processId == "Data":

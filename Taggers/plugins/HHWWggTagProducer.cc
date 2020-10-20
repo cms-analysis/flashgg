@@ -125,6 +125,8 @@ namespace flashgg {
 
     //----output collection
     // auto_ptr<vector<HHWWggCandidate> > HHWWggColl_;
+    vector< edm::EDGetTokenT<float> > reweights_;
+    int doReweight_; // non resonant reweighting 
 
     double EB_Photon_MVA_Threshold_;
     double EE_Photon_MVA_Threshold_;
@@ -249,6 +251,12 @@ namespace flashgg {
       genInfoToken_ = consumes<GenEventInfoProduct>( genInfo_ );
       // diphopt = fs->make<TH1F> ("diphopt", "diphopt", 500,0,500);
       // phoptsum = fs->make<TH1F> ("phoptsum", "phoptsum", 500,0,500);
+
+      doReweight_ = (pSet.getParameter<int>("doReweight")); 
+      auto names = pSet.getParameter<vector<string>>("reweight_names");
+      for (auto & name : names ) {
+          reweights_.push_back(consumes<float>(edm::InputTag(pSet.getParameter<string>("reweight_producer") , name))) ;
+      }
 
       // diphopTs = fs->make<TH2F> ("diphopTs","diphoton pTs", 50,0,500,50,0,500); // for looking at dipho pT and sum of dipho photon pTs
 
@@ -586,8 +594,32 @@ namespace flashgg {
     void HHWWggTagProducer::produce( Event &event, const EventSetup & )
     {
 
-      // if (doHHWWggDebug_) cout << "[INFO][HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce" <<Event_num<< endl;
+      if (doHHWWggDebug_) cout << "[INFO][HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce" <<Event_num<< endl;
       if (doHHWWggDebug_) cout << "[HHWWggTagProducer.cc] - systLabel: " << systLabel_ << endl;  
+
+
+
+      //read reweighting
+      vector<float> reweight_values;
+      if (doReweight_>0) 
+      {
+          for (auto & reweight_token : reweights_)
+          {
+              edm::Handle<float> reweight_hadle;
+              event.getByToken(reweight_token, reweight_hadle);
+              reweight_values.push_back(*reweight_hadle);
+          }
+      }
+
+
+      if(doHHWWggDebug_){
+        cout << "[HHWWggDebug]" << endl;
+        cout << " oReweight_: " << doReweight_ << endl;
+        cout << "reweight_values.size(): " << reweight_values.size() << endl;
+        for(unsigned int i = 0; i < reweight_values.size(); i++){
+          cout << "reweight_values[" << i << "] = " << reweight_values[i] << endl;
+        }
+      }
 
       // Get particle objects
       event.getByToken( photonToken_, photons );
@@ -838,7 +870,6 @@ namespace flashgg {
           else{
             if(!passMVAs || !pass_leadPhoOverMassThreshold || !pass_subleadPhoOverMassThreshold) continue; // Do not save event if leading and subleading photons don't pass MVA cuts or pt/mgg cuts
           }
-
 
           // Check MET Filters
           // if(passMETfilters){
@@ -1097,6 +1128,10 @@ namespace flashgg {
               tag_obj.setDiPhotonIndex( diphoIndex );
               tag_obj.setCategoryNumber( catnum );
               tag_obj.includeWeights( *dipho );
+              if (doReweight_>0){ 
+                
+                tag_obj.setBenchmarkReweight( reweight_values ); 
+              }
               HHWWggtags->push_back( tag_obj );
               if( ! event.isRealData() ) {
                 HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
@@ -1149,6 +1184,7 @@ namespace flashgg {
               tag_obj.setDiPhotonIndex( diphoIndex );
               tag_obj.setCategoryNumber( catnum );
               tag_obj.includeWeights( *dipho );
+              if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
               HHWWggtags->push_back( tag_obj );
               if( ! event.isRealData() ) {
                 HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
@@ -1238,6 +1274,7 @@ namespace flashgg {
                   tag_obj.setMVA( -0.9 );
                   tag_obj.setCategoryNumber( catnum );
                   tag_obj.includeWeights( *dipho );
+                  if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
                   HHWWggtags->push_back( tag_obj );
                   if( ! event.isRealData() ) {
                     HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
@@ -1306,6 +1343,7 @@ namespace flashgg {
                   tag_obj.setMVA( -0.9 );
                   tag_obj.setCategoryNumber( catnum);
                   tag_obj.includeWeights( *dipho );
+                  if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
                   HHWWggtags->push_back( tag_obj );
 
                   if( ! event.isRealData() ) {
@@ -1377,6 +1415,7 @@ namespace flashgg {
                   tag_obj.setMVA( -0.9 );
                   tag_obj.setCategoryNumber( catnum );
                   tag_obj.includeWeights( *dipho );
+                  if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
                   HHWWggtags->push_back( tag_obj );
 
                   if( ! event.isRealData() ) {
@@ -1390,12 +1429,14 @@ namespace flashgg {
           // Untagged category
           else {
             if(doHHWWggTagCutFlowAnalysis_){
+              if(doHHWWggDebug_) cout << "Filling untagged category..." << endl;
               catnum = 4;
               HHWWggTag tag_obj(dipho, allElectrons, goodElectrons, allMuons, goodMuons, theMET, allJets, tagJets, Cut_Variables, MuonVars, JetVars);
               tag_obj.setSystLabel(systLabel_);
               tag_obj.setDiPhotonIndex( diphoIndex );
               tag_obj.setCategoryNumber( catnum ); // Untagged category. Does not meet any selection criteria but want to save event
               tag_obj.includeWeights( *dipho );
+              if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
               HHWWggtags->push_back( tag_obj );
 
               if( ! event.isRealData() ) {
