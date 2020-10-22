@@ -124,6 +124,7 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
 
 
 
+from flashgg.Taggers.flashggTagSorter_cfi import HTXSInputTags
 flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                SystLabel=cms.string(""),
