@@ -89,9 +89,17 @@
                 "nevents": 24960, 
                 "totEvents": 24960, 
                 "weights": 19719.83984375
+            }, 
+            {
+                "bad": false, 
+                "events": 24972, 
+                "name": "/store/user/alesauva/flashgg/UL2017_4/10_6_4/ZH_HToGG_ZToAll_M125_TuneCP5_13TeV-powheg-pythia8/UL2017_4-10_6_4-v0-RunIISummer19UL17MiniAOD-106X_mc2017_realistic_v6-v2/201006_090430/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 24972, 
+                "totEvents": 24972, 
+                "weights": 19778.53125
             }
         ], 
-        "parent_n_units": 264108, 
+        "parent_n_units": 280656, 
         "vetted": true
     }
 }
