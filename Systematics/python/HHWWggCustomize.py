@@ -34,6 +34,12 @@ class HHWWggCustomize():
         ##- Variables for the nominal output tag tree (non systematic trees for each category)
         variables = []
 
+        ##-- Gen Level Variables
+        gen_vars = [
+            "genMhh := genMhh()"
+            # "genAbsCosThetaStar_CS := abs(genCosThetaStar_CS())",           
+        ]
+
         ##-- Weights for non-resonant reweighting 
         doubleHReweight_vars = []
         if self.customize.doubleHReweight > 0: 
@@ -319,6 +325,7 @@ class HHWWggCustomize():
         print"len(jet_vars):",len(jet_vars)
 
         if self.customize.saveHHWWggFinalStateVars:
+            variables += gen_vars            
             variables += doubleHReweight_vars
             variables += finalStateVars
             variables += HHVariables

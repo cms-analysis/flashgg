@@ -14,7 +14,8 @@
 
 using namespace flashgg; // makes flashgg sub members visible
 //---ctors---
-HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), Cut_Variables_ (), MuonVars_ (), JetVars_ ()
+// HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), Cut_Variables_ (), MuonVars_ (), JetVars_ (), genMhh_(0.), genCosThetaStar_CS_(0.)
+HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), Cut_Variables_ (), MuonVars_ (), JetVars_ (), genMhh_(0.)
 {
 
 }
@@ -22,7 +23,22 @@ HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), Cut_Vari
 //---dtor---
 HHWWggTag::~HHWWggTag() {}
 
-//-- Utilities 
+// //-- Utilities
+// float HHWWggTag::getCosThetaStar_CS() const {
+
+//     LorentzVector hh_lor = diPhoton()->p4();
+//     TLorentzVector hh;
+//     hh.SetPxPyPzE(hh_lor.Px(),hh_lor.Py(),hh_lor.Pz(),hh_lor.E()) ;
+
+//     LorentzVector h1_lor = diPhoton()->p4();
+//     TLorentzVector h_1;
+//     h_1.SetPxPyPzE(h1_lor.Px(),h1_lor.Py(),h1_lor.Pz(),h1_lor.E()) ; 
+
+//     h_1.Boost(-hh.BoostVector());   
+
+//     return h_1.CosTheta();
+// }
+
 void HHWWggTag::GetPhoAtt(edm::Ptr<DiPhotonCandidate> dipho)
 {
   Leading_Photon_ = dipho->leadingPhoton();
