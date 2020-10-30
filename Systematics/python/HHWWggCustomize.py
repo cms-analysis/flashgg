@@ -36,8 +36,9 @@ class HHWWggCustomize():
 
         ##-- Gen Level Variables
         gen_vars = [
-            "genMhh := genMhh()"
-            # "genAbsCosThetaStar_CS := abs(genCosThetaStar_CS())",           
+            "genMhh := genMhh()",
+            "genCosThetaStar_CS := getGenCosThetaStar_CS()",           
+            "genAbsCosThetaStar_CS := abs(getGenCosThetaStar_CS())"        
         ]
 
         ##-- Weights for non-resonant reweighting 
