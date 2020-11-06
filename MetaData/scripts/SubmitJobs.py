@@ -6,8 +6,10 @@
 #
 # Example Usage:
 #
+# python MetaData/scripts/SubmitJobs.py --fggDirec /afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg --outDirec /eos/user/a/atishelm/ntuples/HHWWgg_flashgg --label Private-SL-SM-saveGenVars --nEvents -1 --saveHHWWggFinalStateVars --HHWWgg --dumpTrees --jsonPath Taggers/test/HHWWgg_Combination/SL_Analysis/SL_SM2017.json --year 2017 --condorQueue longlunch --doHHWWggTagCutFlow --extraFlagsStr doubleHReweight=1
 # python MetaData/scripts/SubmitJobs.py --fggDirec /afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg --outDirec /eos/user/a/atishelm/ntuples/HHWWgg_flashgg --label testNewScript --nEvents 1000 --saveHHWWggFinalStateVars --HHWWgg --dumpTrees --jsonPath Taggers/test/HHWWgg_Combination/SL_Analysis/SL_SM2017.json --year 2017 --condorQueue espresso --doHHWWggTagCutFlow --extraFlagsStr   
 # python MetaData/scripts/SubmitJobs.py --fggDirec /afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg --outDirec /eos/user/a/atishelm/ntuples/HHWWgg_flashgg --label testNewScript --nEvents 1000 --saveHHWWggFinalStateVars --HHWWgg --dumpTrees --jsonPath Taggers/test/HHWWgg_Combination/SL_Analysis/SL_SM2017.json --year 2017 --condorQueue espresso --doHHWWggTagCutFlow --extraFlagsStr doubleHReweight=1  
+# python MetaData/scripts/SubmitJobs.py --fggDirec /afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg --outDirec /eos/user/a/atishelm/ntuples/HHWWgg_flashgg --label testNewScript --nEvents -1 --saveHHWWggFinalStateVars --HHWWgg --dumpTrees --jsonPath Taggers/test/HHWWgg_Combination/SL_Analysis/SL_SM2017.json --year 2017 --condorQueue espresso --doHHWWggTagCutFlow --extraFlagsStr doubleHReweight=1  
 ############################################################################################################################################################################################
 
 # Before running, run:
