@@ -22,6 +22,8 @@ class MuonSF_JSONReader :
         format_bins = r'^(?P<VarName>.*):\[(?P<From>-?\d*.\d*),(?P<To>-?\d*.\d*)\]'
         minPt = 1000
         for eta_region in self.Info[sub_branch_name] :
+            if eta_region == 'binning':
+               continue
             for pt_region in self.Info[sub_branch_name][eta_region] :
                 pt_values = re.match( format_bins , pt_region , re.M|re.I )
                 if pt_values and len( pt_values.groups() ) == 3 :
@@ -44,6 +46,8 @@ class MuonSF_JSONReader :
 
 
         for eta_region in self.Info[sub_branch_name] :
+            if eta_region == 'binning':
+               continue
             eta_values = re.match( format_bins , eta_region , re.M|re.I )
             if eta_values and len( eta_values.groups() ) == 3 :
                 eta_from = float( eta_values.group("From") )
