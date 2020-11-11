@@ -17,13 +17,13 @@ For reference, the current members of the FLASHgg team are:
 *Example question here*
 **Helpful answer here**
 
-*A second question *
-**Another good answer **
+*A second question*
+**Another good answer**
 
 ## microAOD
 
 *Example question here*
 **Helpful answer here**
 
-*A second question *
-**Another good answer **
+*A second question*
+**Another good answer**
