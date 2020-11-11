@@ -12,18 +12,25 @@ For reference, the current members of the FLASHgg team are:
 - codebase contacts: You-Ying Li and Yu Zhang
 - microAOD contacts: Antoine Lesauvage and Lata Panwar
 
+
+# FAQs
+
 ## General 
 
 *Example question here* 
+
 **Helpful answer here** 
 
 *A second question* 
+
 **Another good answer** 
 
 ## microAOD 
 
 *Example question here* 
+
 **Helpful answer here** 
 
 *A second question* 
+
 **Another good answer** 
