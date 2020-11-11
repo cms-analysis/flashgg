@@ -4,7 +4,7 @@
    The basic instructions to setup and run flashgg are described here and in corresponding READMEs 
    in subdirectories of the repository.
 
-   If you get stuck or have questions, please first consult the FAQs page [here](https://www.google.com/).
+   If you get stuck or have questions, please first consult the FAQs page [[https://cms-analysis.github.io/flashgg/][here]].
    
 ** Setup
    Before you start, **please take note** of these warnings and comments:
