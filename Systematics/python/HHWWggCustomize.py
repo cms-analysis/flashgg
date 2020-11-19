@@ -199,6 +199,12 @@ class HHWWggCustomize():
         finalStateVars = []
         finalStateVars.append("Leading_Photon_MVA:=lp_Hgg_MVA")
         finalStateVars.append("Subleading_Photon_MVA:=slp_Hgg_MVA")
+
+        vertex_variables = []
+        vertex_variables.append("GenVtx_z := GenVtx_z()")
+        vertex_variables.append("HggVtx_z := HggVtx_z()")
+        vertex_variables.append("ZeroVtx_z := ZeroVtx_z()")
+
         for obj in objects:
             for var in vars:
                 vname = "%s.p4().%s()"%(obj,var)
@@ -326,6 +332,7 @@ class HHWWggCustomize():
         print"len(jet_vars):",len(jet_vars)
 
         if self.customize.saveHHWWggFinalStateVars:
+            variables += vertex_variables
             variables += gen_vars            
             variables += doubleHReweight_vars
             variables += finalStateVars
@@ -417,6 +424,8 @@ class HHWWggCustomize():
         self.process.load("flashgg.Taggers.flashggHHWWggTag_cff")
 
         # if self.customize.doHHWWggTagCutFlow:
+        if self.customize.HHWWgguseZeroVtx:
+            self.process.flashggHHWWggTag.HHWWgguseZeroVtx = cms.bool(True)
         if self.customize.doHHWWggTagCutFlow or self.customize.saveHHWWggFinalStateVars:  ##-- set true for either case because finalstate vars only saved during cutflow
             self.process.flashggHHWWggTag.doHHWWggTagCutFlowAnalysis = cms.bool(True)
 

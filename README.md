@@ -315,6 +315,48 @@ Explanation of additional flag:
 - Script [RenameWorkspace_DataTagger.cpp](https://github.com/atishelmanch/flashgg/blob/a7da39035c95cfe3f94b8aa6a428c5811e7dbc59/RenameWorkspace_DataTagger.cpp) helps to rename workspace for data.
 - Script [RenameWorkspace_SignalTagger.cpp](https://github.com/atishelmanch/flashgg/blob/a7da39035c95cfe3f94b8aa6a428c5811e7dbc59/RenameWorkspace_SignalTagger.cpp) helps to rename workspaces for signal.
 
+# Examples 
+
+The purpose of this portion of the README is to provide examples of running the HHWWggTagger. 
+
+## 2018 Semi-Leptonic SM NLO 
+
+The following instructions are an example workflow for producing STAT only results with the centrall produced 2018 SM SL 2018 signal sample. You can first check that the analysis runs locally with the command:
+
+```bash
+    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=SL-EFT-2018 dataset=GluGluToHHTo2G2Qlnu_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8 doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=SL
+```
+
+This should produce an output root file with a tree for each tag, and electron / muon events in tags 0 / 1. As long as it is non zero, this should mean the tagger is working properly. 
+
+The next step is to run over all events using the fggRunJobs script. This can be run and customized with the script MetaData/scripts/SubmitJobs.py. It's helpful first check that everything works by submitting a low number of events and producing output trees:
+
+```bash
+    python MetaData/scripts/SubmitJobs.py --fggDirec /afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg --outDirec /eos/user/a/atishelm/ntuples/HHWWgg_flashgg --label HHWWgg-SL-SM-NLO-LowEvents-Trees --nEvents 1000 --saveHHWWggFinalStateVars --HHWWgg --dumpTrees --jsonPath Taggers/test/Examples/HHWWgg-SL-SM-NLO/SL_SM2018.json
+```
+
+Where of course the paths for fggDirec and outDirec should be changed to your flashgg location and output directory. You can then monitor your condor job progress with a [Monidor](https://github.com/atishelmanch/Monidor). If the output trees have entries and values of CMS_hgg_mass for example look sensible, you can run on all events simply by changing the --nEvents flag, and switching from trees to workspaces in order to have an output compatible with fggfinalfit:
+
+```bash
+    python MetaData/scripts/SubmitJobs.py --fggDirec /afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg --outDirec /eos/user/a/atishelm/ntuples/HHWWgg_flashgg --label HHWWgg-SL-SM-NLO-2018 --nEvents -1 --HHWWgg --dumpWorkspace --jsonPath Taggers/test/Examples/HHWWgg-SL-SM-NLO/SL_SM2018.json
+```
+
+Where again progress can be monitored via a [Monidor](https://github.com/atishelmanch/Monidor). If all works properly, you should have a number of output files equal to the number of condor jobs submitted. 
+
+One can then run on 2018 data, first running on a low number of events to make sure everything is compatible:
+
+```bash 
+    python MetaData/scripts/SubmitJobs.py --fggDirec /afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg --outDirec /eos/user/a/atishelm/ntuples/HHWWgg_flashgg --label 2018-DoubleEG-Data-LowEvents --nEvents 1000 --HHWWgg --dumpTrees --jsonPath Taggers/test/Examples/HHWWgg-SL-SM-NLO/HHWWgg_Data_All_2018.json --saveHHWWggFinalStateVars --condorQueue microCentury
+```
+
+If the output trees have some number of events greater than 0, especially in the untagged category (currently HHWWggTag_4), the tagger should be working properly. One can then run on all events with the command:
+
+```bash
+    python MetaData/scripts/SubmitJobs.py --fggDirec /afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg --outDirec /eos/user/a/atishelm/ntuples/HHWWgg_flashgg --label 2018-DoubleEG-Data --nEvents -1 --HHWWgg --dumpWorkspace --jsonPath Taggers/test/Examples/HHWWgg-SL-SM-NLO/HHWWgg_Data_All_2018.json --condorQueue microCentury    
+```
+
+Where the condorQueue flag can be adjusted if more time is required to complete jobs on the first attempt. If jobs fail, they can be resubmitted with the script Systematics/scripts/resubmit_jobs.py. 
+
 # Few Important Things To Note Before running the framework
 
 1. Campaign `RunIIFall17-3-2-0` contains `flashggMetsCorr` as **InputTag** not `flashggMets`.

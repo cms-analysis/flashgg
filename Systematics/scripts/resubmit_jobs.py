@@ -157,6 +157,8 @@ def main():
   print(not_finished)
   print 'Number of missing files : ',len(not_finished)
   #print 'Missing the following files : ' not_finished
+  
+  ##-- Comment below for dry run 
   runJobs_dict = find_runJobs(not_finished,dir)
   print 'runJobs to be resubmitted : ',runJobs_dict
   prepare_runJobs_missing(runJobs_dict,dir,options.parentDataset, options.filterNegR9)

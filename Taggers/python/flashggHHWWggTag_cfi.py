@@ -98,6 +98,9 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     DiLepMassThre = cms.double(0.),
                                     MassTThre = cms.double(0.),
                                     MassT_l2Thre = cms.double(0.),
-                                    SaveOthers = cms.bool(True)
+                                    SaveOthers = cms.bool(True),
+
+                                    # vertex
+                                    HHWWgguseZeroVtx = cms.bool(False)                             
                                     )
 # flashggHHWWggTagSequence = cms.Sequence( flashggHHWWggTag ) # not used

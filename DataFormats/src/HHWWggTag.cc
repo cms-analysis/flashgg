@@ -15,7 +15,7 @@
 using namespace flashgg; // makes flashgg sub members visible
 //---ctors---
 // HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), Cut_Variables_ (), MuonVars_ (), JetVars_ (), genMhh_(0.), genCosThetaStar_CS_(0.)
-HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), Cut_Variables_ (), MuonVars_ (), JetVars_ (), genMhh_(0.), genCosThetaStar_CS_(0.)
+HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), Cut_Variables_(), MuonVars_(), JetVars_(), genMhh_(0.), genCosThetaStar_CS_(0.), GenVtx_z_(-99), HggVtx_z_(-99), ZeroVtx_z_(-99)
 {
 
 }
@@ -24,6 +24,12 @@ HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), Cut_Vari
 HHWWggTag::~HHWWggTag() {}
 
 // //-- Utilities
+// void SetVtxVals(double GenVtx_z, double HggVtx_z, double ZeroVtx_z){
+//   GenVtx_z_ = GenVtx_z;  
+//   HggVtx_z_ = HggVtx_z;  
+//   ZeroVtx_z_ = ZeroVtx_z;  
+// }
+
 // double HHWWggTag::genCosThetaStar_CS() {
 
 //     LorentzVector hh_lor = diPhoton()->p4();

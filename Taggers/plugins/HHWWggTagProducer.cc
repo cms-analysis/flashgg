@@ -146,7 +146,6 @@ namespace flashgg {
     double muPFIsoSumRelThreshold_;
     double PhoMVAThreshold_;
     double METThreshold_;
-    bool useVertex0only_;
     double deltaRJetMuonThreshold_;
     double deltaRPhoLeadJet_;
     double deltaRPhoSubLeadJet_;
@@ -190,6 +189,8 @@ namespace flashgg {
     double dipho_MVA;
     edm::InputTag genInfo_;
     edm::EDGetTokenT<GenEventInfoProduct> genInfoToken_;
+
+    bool HHWWgguseZeroVtx_; 
   };
 
     //---standard
@@ -279,7 +280,6 @@ namespace flashgg {
       muPFIsoSumRelThreshold_ = pSet.getParameter<double>( "muPFIsoSumRelThreshold");
       PhoMVAThreshold_ = pSet.getParameter<double>( "PhoMVAThreshold");
       METThreshold_ = pSet.getParameter<double>( "METThreshold");
-      useVertex0only_              = pSet.getParameter<bool>("useVertex0only");
       deltaRJetMuonThreshold_ = pSet.getParameter<double>( "deltaRJetMuonThreshold");
       deltaRPhoLeadJet_ = pSet.getParameter<double>( "deltaRPhoLeadJet");
       deltaRPhoSubLeadJet_ = pSet.getParameter<double>( "deltaRPhoSubLeadJet");
@@ -313,6 +313,7 @@ namespace flashgg {
       DiLepMassThre_ = pSet.getParameter<double>("DiLepMassThre");
       MassTThre_ = pSet.getParameter<double>("MassTThre");
       MassT_l2Thre_ = pSet.getParameter<double>("MassT_l2Thre");
+      HHWWgguseZeroVtx_ = pSet.getParameter<bool>("HHWWgguseZeroVtx");
       produces<vector<HHWWggTag>>();
       // for (auto & systname : systematicsLabels) { // to deal with systematics in producer
       //     produces<vector<HHWWggTag>>(systname);
@@ -654,6 +655,7 @@ namespace flashgg {
       // std::vector<double> Cut_Results = {1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0}; // Cut_Results[i] = 1: Event Passed Cut i
       std::vector<double> Cut_Variables(20,0.0); // Cut_Results[i] = 1.0: Event Passed Cut i
       // std::vector<double> Vertex_Variables(20,0.0); // Cut_Results[i] = 1.0: Event Passed Cut i
+      // std::vector<double> Vertex_Variables(); 
       std::vector<double> MuonVars; // For saving Muon ID's and isolation
       std::vector<double> JetVars;
 
@@ -673,6 +675,11 @@ namespace flashgg {
       double subleadPho_pt = 0;
       double sumpT = 0;
       double diPho_pT = 0;
+
+      // Vertex 
+      double GenVtx_z = -999; 
+      double HggVtx_z = -999;
+      double ZeroVtx_z = -999; 
 
       // Electrons
 
@@ -720,6 +727,8 @@ namespace flashgg {
 
       if (vertices->size() > 0){
         zero_vertex = vertices->ptrAt( 0 );
+        ZeroVtx_z = zero_vertex->z();
+        // cout << "ZeroVtx_z : " << ZeroVtx_z << endl; 
       }
 
       //-- MC truth
@@ -738,6 +747,7 @@ namespace flashgg {
               if (genPar->pdgId()==25 && genPar->isHardProcess()){
                   selHiggses.push_back(genPar); // to obtain diHiggs 
                   higgsVtx = genParticles->ptrAt( genLoop )->vertex(); // for dZ calculation
+                  GenVtx_z = higgsVtx.z();
               } 
 
               // int pdgid = genParticles->ptrAt( genLoop )->pdgId();
@@ -851,13 +861,6 @@ namespace flashgg {
           edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex ); // without systematic look (?)
           edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );
           // cout << "dipho pt = " << dipho->genP4().pt() << endl;
-          diphoton_vertex = dipho->vtx();
-
-          // diphoton_vertex_index = dipho->vertexIndex();
-          // cout << "diphoton vertex index = " << diphoton_vertex_index << endl;
-          // cout << "diphoton vertex x = " << diphoton_vertex->x() << endl;
-          // cout << "diphoton vertex y = " << diphoton_vertex->y() << endl;
-          // cout << "diphoton vertex z = " << diphoton_vertex->z() << endl;
 
           // indexes->Fill(diphoton_vertex_index); // running
 
@@ -874,7 +877,14 @@ namespace flashgg {
 
           //-- MVA selections
           diphoton_vertex = dipho->vtx();
-
+          // diphoton_vertex_index = dipho->vertexIndex();
+          // cout << "diphoton vertex index = " << diphoton_vertex_index << endl;
+          // cout << "diphoton vertex x = " << diphoton_vertex->x() << endl;
+          // cout << "diphoton vertex y = " << diphoton_vertex->y() << endl;
+          // cout << "diphoton vertex z = " << diphoton_vertex->z() << endl;
+          if(HHWWgguseZeroVtx_) HggVtx_z = -999; 
+          else HggVtx_z = diphoton_vertex->z();
+          
           passMVAs = 0;
           passMVAs = checkPassMVAs(leadPho, subleadPho, diphoton_vertex, EB_Photon_MVA_Threshold_, EE_Photon_MVA_Threshold_);
 
@@ -1120,6 +1130,10 @@ namespace flashgg {
                   Ptr<flashgg::Electron> tag_electron = goodElectrons[0];
                   HHWWggTag tag_obj_(dipho, tag_electron, allElectrons, goodElectrons, allMuons, theMET, jet1, jet2, allJets, tagJets, Cut_Variables, MuonVars, JetVars);
                   tag_obj = tag_obj_;
+                  tag_obj.setGenVtx_z(GenVtx_z);
+                  tag_obj.setHggVtx_z(HggVtx_z);
+                  tag_obj.setZeroVtx_z(ZeroVtx_z);                  
+                  // tag_obj.SetVtxVals(GenVtx_z, HggVtx_z, ZeroVtx_z);
                 }
 
                 // If not doing cutflow analysis, save the minimum which is just the dipho information for the final fit, to keep process and output lightweight 
@@ -1127,6 +1141,7 @@ namespace flashgg {
                   HHWWggTag tag_obj_(dipho); // diphoton, electron, MET, jet1, jet2
                   tag_obj = tag_obj_;
                 } 
+                // tag_obj.includeWeights(*tag_electron);
               } // n_good_electrons == 1 
 
               // HHWWggTag_1 - Semileptonic Muon 
@@ -1141,12 +1156,16 @@ namespace flashgg {
                   Ptr<flashgg::Muon> tag_muon = goodMuons[0];
                   HHWWggTag tag_obj_(dipho, allElectrons, tag_muon, allMuons, goodMuons, theMET, jet1, jet2, allJets, tagJets, Cut_Variables, MuonVars, JetVars);
                   tag_obj = tag_obj_;
+                  tag_obj.setGenVtx_z(GenVtx_z);
+                  tag_obj.setHggVtx_z(HggVtx_z);
+                  tag_obj.setZeroVtx_z(ZeroVtx_z);                    
                 }
                 // If not doing cutflow analysis, save the minimum which is just the dipho information for the final fit, to keep process and output lightweight 
                 else{
                   HHWWggTag tag_obj_(dipho); // diphoton, muon, MET, jet1, jet2
                   tag_obj = tag_obj_;
                 } 
+                // tag_obj.includeWeights(*tag_muon);
               } // n_good_muons == 1 
 
               // Save tag object attributes in any case 
@@ -1203,6 +1222,9 @@ namespace flashgg {
                 // save tag
                 HHWWggTag tag_obj_(dipho, theMET, jet1, jet2, jet3, jet4, allJets, tagJets, Cut_Variables, JetVars);
                 tag_obj = tag_obj_;
+                tag_obj.setGenVtx_z(GenVtx_z);
+                tag_obj.setHggVtx_z(HggVtx_z);
+                tag_obj.setZeroVtx_z(ZeroVtx_z);                  
               }
               else{
                 HHWWggTag tag_obj_(dipho); // diphoton, electron, MET, jet1, jet2
@@ -1291,7 +1313,10 @@ namespace flashgg {
                     if(doHHWWggTagCutFlowAnalysis_){
                       Cut_Variables[18]=0.;
                       HHWWggTag tag_obj_(dipho, tag_electron1, tag_electron2, theMET,Cut_Variables,dipho_MVA); 
-                      tag_obj = tag_obj_;                  
+                      tag_obj = tag_obj_;    
+                      tag_obj.setGenVtx_z(GenVtx_z);
+                      tag_obj.setHggVtx_z(HggVtx_z);
+                      tag_obj.setZeroVtx_z(ZeroVtx_z);          
                     }
 
                     else{
@@ -1365,6 +1390,9 @@ namespace flashgg {
                     Cut_Variables[18]=1.;
                     HHWWggTag tag_obj_(dipho, tag_muon1, tag_muon2, theMET,Cut_Variables,dipho_MVA);
                     tag_obj = tag_obj_;
+                    tag_obj.setGenVtx_z(GenVtx_z);
+                    tag_obj.setHggVtx_z(HggVtx_z);
+                    tag_obj.setZeroVtx_z(ZeroVtx_z);        
                   }
                   else{
                     HHWWggTag tag_obj_(dipho);
@@ -1439,6 +1467,9 @@ namespace flashgg {
                     else Cut_Variables[18]=3.; //mu e
                     HHWWggTag tag_obj_(dipho, tag_electron1, tag_muon1, theMET,Cut_Variables,dipho_MVA);
                     tag_obj = tag_obj_; 
+                    tag_obj.setGenVtx_z(GenVtx_z);
+                    tag_obj.setHggVtx_z(HggVtx_z);
+                    tag_obj.setZeroVtx_z(ZeroVtx_z);             
                   }
                   else{
                     HHWWggTag tag_obj_(dipho);
@@ -1473,7 +1504,10 @@ namespace flashgg {
               tag_obj.setCategoryNumber( catnum ); // Untagged category. Does not meet any selection criteria but want to save event
               tag_obj.includeWeights( *dipho );
               tag_obj.setGenMhh( genMhh );
-              tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );              
+              tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS ); 
+              tag_obj.setGenVtx_z(GenVtx_z);
+              tag_obj.setHggVtx_z(HggVtx_z);
+              tag_obj.setZeroVtx_z(ZeroVtx_z);                           
               if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
               HHWWggtags->push_back( tag_obj );
 

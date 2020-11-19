@@ -35,9 +35,10 @@ namespace flashgg {
     ~HHWWggTag();
 
     //-- Utilities 
-    // double getGenCosThetaStar_CS() { return genCosThetaStar_CS_; }
-    // double genCosThetaStar_CS(); 
-    // float getCosThetaStar_CS() const;
+    // Vertex
+    // void SetVtxVals(double, double, double);
+
+    // Other 
     void GetPhoAtt(edm::Ptr<DiPhotonCandidate> dipho);
     void GetObjects(edm::Ptr<DiPhotonCandidate> dipho);
     void GetObjects(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Met>);
@@ -152,8 +153,13 @@ namespace flashgg {
     double genMhh() const { return genMhh_; }
     void setGenCosThetaStar_CS(double x) { genCosThetaStar_CS_ = x; }
     double getGenCosThetaStar_CS() const { return genCosThetaStar_CS_; }
-    // float fabs_CosThetaStar_CS() const {return fabs_CosThetaStar_CS_;}
-    // float getCosThetaStar_CS() const;
+
+    double GenVtx_z() const { return GenVtx_z_; }
+    void setGenVtx_z(double x) { GenVtx_z_ = x; }
+    double HggVtx_z() const { return HggVtx_z_; }
+    void setHggVtx_z(double x) { HggVtx_z_ = x; }
+    double ZeroVtx_z() const {return ZeroVtx_z_; }
+    void setZeroVtx_z(double x) { ZeroVtx_z_ = x; }
 
   private:
     double mva_;
@@ -194,8 +200,11 @@ namespace flashgg {
 
     double genMhh_;
     double genCosThetaStar_CS_;
-    // double fabs_CosThetaStar_CS_;
 
+    // Vertex Variables
+    double GenVtx_z_; 
+    double HggVtx_z_; 
+    double ZeroVtx_z_; 
   };
 
 }

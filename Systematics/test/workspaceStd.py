@@ -157,7 +157,13 @@ customize.options.register('doHHWWggDebug', # save more variables to perform che
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doHHWWggDebug'
-                           )                         
+                           ),
+customize.options.register('HHWWgguseZeroVtx', # save more variables to perform checks 
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'HHWWgguseZeroVtx'
+                           )                                                    
 customize.options.register('doBJetRegression',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -287,17 +293,18 @@ print 'tthTagsOnly '+str(customize.tthTagsOnly)
 # needed for 0th vertex from microAOD
 # HHWWgg: Want zeroeth vertex 
 if customize.tthTagsOnly or customize.HHWWggTagsOnly:
-    process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
-    process.flashggDiPhotons.whichVertex = cms.uint32(0)
-    process.flashggDiPhotons.useZerothVertexFromMicro = cms.bool(True)
-    if customize.HHWWggTagsOnly: # not sure if this is needed for tthTagsOnly, but it is needed for HHWWgg 
-        # process.flashggDiPhotons.vertexProbMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2016.xml" # Prob or Id ? 
-        # process.flashggDiPhotons.vertexIdMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml"
-        process.flashggDiPhotons.vertexIdMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexIdMVAweightfile'].encode("ascii")
-        process.flashggDiPhotons.vertexProbMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexProbMVAweightfile'].encode("ascii")        
+    if(customize.HHWWgguseZeroVtx) or customize.tthTagsOnly:
+        process.load("flashgg/MicroAOD/flashggDiPhotons_cfi")
+        process.flashggDiPhotons.whichVertex = cms.uint32(0)
+        process.flashggDiPhotons.useZerothVertexFromMicro = cms.bool(True)
+        if customize.HHWWggTagsOnly: # not sure if this is needed for tthTagsOnly, but it is needed for HHWWgg 
+            # process.flashggDiPhotons.vertexProbMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxProb_SL_2016.xml" # Prob or Id ? 
+            # process.flashggDiPhotons.vertexIdMVAweightfile = "flashgg/MicroAOD/data/TMVAClassification_BDTVtxId_SL_2016.xml"
+            process.flashggDiPhotons.vertexIdMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexIdMVAweightfile'].encode("ascii")
+            process.flashggDiPhotons.vertexProbMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexProbMVAweightfile'].encode("ascii")        
 
-    process.flashggDiPhotons.vertexIdMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexIdMVAweightfile'].encode("ascii")
-    process.flashggDiPhotons.vertexProbMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexProbMVAweightfile'].encode("ascii")
+        process.flashggDiPhotons.vertexIdMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexIdMVAweightfile'].encode("ascii")
+        process.flashggDiPhotons.vertexProbMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexProbMVAweightfile'].encode("ascii")
 
 ##-- Provide messages every event if debugging 
 if customize.doHHWWggDebug:
@@ -440,7 +447,7 @@ useEGMTools(process)
 
 # Only run systematics for signal events
 # convention: ggh vbf wzh (wh zh) tth
-signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh","WWgg"]
+signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh","WWgg","GluGluToHHTo2G2Qlnu"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 print"is_signal:",is_signal
 applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
@@ -795,28 +802,47 @@ process.flashggMetFilters.filtersInputTag = filtersInputTag
 
 # HHWWggTagsOnly requires zeroeth vertex, but not modifySystematicsWorkflowForttH
 if customize.tthTagsOnly or customize.HHWWggTagsOnly:
-    #debug
-    process.content = cms.EDAnalyzer("EventContentAnalyzer")
-    process.p = cms.Path(process.dataRequirements*
-                         process.flashggMetFilters*
-                         process.genFilter*
-                         process.flashggDiPhotons* # needed for 0th vertex from microAOD
-                         process.flashggDifferentialPhoIdInputsCorrection*
-                         process.flashggDiPhotonSystematics*
-                         process.flashggMetSystematics*
-                         process.flashggMuonSystematics*process.flashggElectronSystematics*
-                         (process.flashggUnpackedJets*process.jetSystematicsSequence)*
-                        #  process.content* ##-- nice for printing out info 
-                         (process.flashggTagSequence*process.systematicsTagSequences)*
-                         process.flashggSystTagMerger*
-                         process.penultimateFilter*
-                         process.finalFilter*
-                         process.tagsDumper)
+    if(customize.HHWWgguseZeroVtx) or customize.tthTagsOnly:
+        #debug
+        process.content = cms.EDAnalyzer("EventContentAnalyzer")
+        process.p = cms.Path(process.dataRequirements*
+                            process.flashggMetFilters*
+                            process.genFilter*
+                            process.flashggDiPhotons* # needed for 0th vertex from microAOD
+                            process.flashggDifferentialPhoIdInputsCorrection*
+                            process.flashggDiPhotonSystematics*
+                            process.flashggMetSystematics*
+                            process.flashggMuonSystematics*process.flashggElectronSystematics*
+                            (process.flashggUnpackedJets*process.jetSystematicsSequence)*
+                            #  process.content* ##-- nice for printing out info 
+                            (process.flashggTagSequence*process.systematicsTagSequences)*
+                            process.flashggSystTagMerger*
+                            process.penultimateFilter*
+                            process.finalFilter*
+                            process.tagsDumper)
 
-    # Now, we put the ttH tags back in the sequence with modified systematics workflow
-    if customize.tthTagsOnly: modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)    
+        # Now, we put the ttH tags back in the sequence with modified systematics workflow
+        if customize.tthTagsOnly: modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)    
+
+    else: 
+        print "Not running zeroth vertex only"
+        process.p = cms.Path(process.dataRequirements*
+                            process.flashggMetFilters*
+                            process.genFilter*
+                            #  process.flashggDiPhotons* # needed for 0th vertex from microAOD
+                            process.flashggDifferentialPhoIdInputsCorrection*
+                            process.flashggDiPhotonSystematics*
+                            process.flashggMetSystematics*
+                            process.flashggMuonSystematics*process.flashggElectronSystematics*
+                            (process.flashggUnpackedJets*process.jetSystematicsSequence)*
+                            (process.flashggTagSequence*process.systematicsTagSequences)*
+                            process.flashggSystTagMerger*
+                            process.penultimateFilter*
+                            process.finalFilter*
+                            process.tagsDumper)
 
 else:
+    print "Not running zeroth vertex only"
     process.p = cms.Path(process.dataRequirements*
                          process.flashggMetFilters*
                          process.genFilter*

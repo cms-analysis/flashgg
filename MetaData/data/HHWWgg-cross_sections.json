@@ -1,5 +1,4 @@
 {
-
    "GluGluToHHTo_WWgg_qqlnu_nodeSM":{
       "xs": 0.001,
       "kf": 1.06
@@ -228,6 +227,15 @@
 "ggF_X700_HHWWgg_qqlnu": {
 "xs": 0.001,
 "kf": 1.06
+},
+"GluGluToHHTo2G2Qlnu_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8":{
+"xs": 0.001,
+"kf": 1.06
+},
+
+"GluGluToHHTo2G2Qlnu_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8":{
+   "xs": 0.001,
+   "kf": 1.06   
 }
 
 }
