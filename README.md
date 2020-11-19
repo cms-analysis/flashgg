@@ -91,25 +91,25 @@ and if desired to include tagging of other flashgg tags on the same events.
 You can try the HHWWgg Tagger locally on the SM HH->WWgg->qqlnugg **signal (with 2017 metaConditions)** with:
 
 ```bash
-cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=HHWWgg_SM2017 dataset=GluGluToHHTo_WWgg_qqlnu_nodeSM doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=SL
+cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=HHWWgg_SM2017 dataset=GluGluToHHTo_WWgg_qqlnu_nodeSM doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=SL HHWWgguseZeroVtx=1
 ```
 
 and on **2016 data**:
 
 ```bash
-cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json campaign=Era2016_RR-17Jul2018_v2 dataset=/DoubleEG/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016B-17Jul2018_ver2-v1-86023db6be00ee64cd62a3172358fb9f/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=SL
+cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json campaign=Era2016_RR-17Jul2018_v2 dataset=/DoubleEG/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016B-17Jul2018_ver2-v1-86023db6be00ee64cd62a3172358fb9f/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=SL HHWWgguseZeroVtx=1
 ```
 
 and on **2017 data**:
 
 ```bash
-cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=Era2017_RR-31Mar2018_v2 dataset=/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=SL
+cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=Era2017_RR-31Mar2018_v2 dataset=/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=SL HHWWgguseZeroVtx=1 
 ```
 
 and on **2018 data**:
 
 ```bash
-cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json campaign=Era2018_RR-17Sep2018_v2 dataset=/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018A-17Sep2018-v2-dc8e5fb301bfbf2559680ca888829f0c/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=509 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=SL
+cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json campaign=Era2018_RR-17Sep2018_v2 dataset=/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018A-17Sep2018-v2-dc8e5fb301bfbf2559680ca888829f0c/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=509 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=SL HHWWgguseZeroVtx=1
 ```
 
 All flags are either defined in `MetaData/python/JobConfig.py`, or `Systematics/test/workspaceStd.py`.
@@ -130,6 +130,7 @@ An explanation of the flags in this example:
 - **doHHWWggTagCutFlow**: Categorize all events that pass pre-selection into HHWWgg categories. Without this flag, events that do not pass all analysis selections are cut.
 - **saveHHWWggFinalStateVars**: Save many final state variables such as kinematics for leptons and jets before and after analysis level selections. Variables are defined in [Systematics/python/HHWWggCustomize.py](https://github.com/atishelmanch/flashgg/blob/a7da39035c95cfe3f94b8aa6a428c5811e7dbc59/Systematics/python/HHWWggCustomize.py)
 - **HHWWggAnalysisChannel**: The HHWWgg channel analysis to run. This determines the possible categories events can fall into. Options are SL (Semi-Leptonic), FL (Fully-Leptonic) and FH (Fully-Hadronic). By default, if no value is specified, SL is used. NOTE that the untagged category will OVERLAP if combined with other analysis channels.
+- **HHWWgguseZeroVtx**: When running over diphoton candidates, checking if they pass preselection, only consider diphoton candidates produced with respect to the Zeroeth vertex. Note that if this is set to false, the standard Hgg vertex will be used for diphoton candidate reconstruction.
 
 With the options specified in the example, if this works properly, you should get an output file named: `output_numEvent500.root` containing a tree for each `HHWWggTag`.
 
@@ -321,10 +322,10 @@ The purpose of this portion of the README is to provide examples of running the 
 
 ## 2018 Semi-Leptonic SM NLO 
 
-The following instructions are an example workflow for producing STAT only results with the centrall produced 2018 SM SL 2018 signal sample. You can first check that the analysis runs locally with the command:
+The following instructions are an example workflow for producing STAT only results with the centrally produced 2018 SM SL 2018 signal sample. You can first check that the analysis runs locally with the command:
 
 ```bash
-    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=SL-EFT-2018 dataset=GluGluToHHTo2G2Qlnu_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8 doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=SL
+    cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=SL-EFT-2018 dataset=GluGluToHHTo2G2Qlnu_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8 doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=SL HHWWgguseZeroVtx=1
 ```
 
 This should produce an output root file with a tree for each tag, and electron / muon events in tags 0 / 1. As long as it is non zero, this should mean the tagger is working properly. 
