@@ -626,7 +626,7 @@ namespace flashgg {
 
       if(doHHWWggDebug_){
         cout << "[HHWWggDebug]" << endl;
-        cout << " oReweight_: " << doReweight_ << endl;
+        cout << "doReweight_: " << doReweight_ << endl;
         cout << "reweight_values.size(): " << reweight_values.size() << endl;
         for(unsigned int i = 0; i < reweight_values.size(); i++){
           cout << "reweight_values[" << i << "] = " << reweight_values[i] << endl;
@@ -674,7 +674,7 @@ namespace flashgg {
       double leadPho_pt = 0;
       double subleadPho_pt = 0;
       double sumpT = 0;
-      double diPho_pT = 0;
+      // double diPho_pT = 0;
 
       // Vertex 
       double GenVtx_z = -999; 
@@ -706,13 +706,14 @@ namespace flashgg {
 
 
       // int n_METs = METs->size(); // Should be 1, but using as a way to obtain met four vector
-      double diphoMVA = -99;
+      // double diphoMVA = -99;
       // double lead_pho_Hgg_MVA = -99, sublead_pho_Hgg_MVA = -99;
 
       // Saved Objects after selections
       std::vector<flashgg::Jet> tagJets_;
       std::vector<flashgg::Muon> goodMuons_;
-      std::vector<flashgg::Electron> goodElectrons_;
+      // std::vector<flashgg::Electron> goodElectrons_;
+      // std::vector<edm::Ptr<flashgg::Electron> > goodElectrons_;
       std::vector<flashgg::Met> theMET_;
       std::vector<flashgg::DiPhotonCandidate> diphoVector_;
 
@@ -916,8 +917,8 @@ namespace flashgg {
           hasGoodMuons = false;
           dipho_MVA = mvares->result;
           // Electrons
-          std::vector<edm::Ptr<Electron> > goodElectrons;
-          goodElectrons = selectStdElectrons( electrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
+          // std::vector<edm::Ptr<Electron> > goodElectrons;
+          std::vector<edm::Ptr<Electron> > goodElectrons = selectStdElectrons( electrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
                                                                               useElectronMVARecipe_,useElectronLooseID_,
                                                                               deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_,
                                                                               rho_, event.isRealData() );
@@ -1121,13 +1122,14 @@ namespace flashgg {
 
               if (n_good_electrons == 1){
                 catnum = 0;
+                Ptr<flashgg::Electron> tag_electron = goodElectrons[0];
   
                 // If doing cutflow analysis, save all final state object variables 
                 if(doHHWWggTagCutFlowAnalysis_){
                   jet1 = tagJets[0];
                   jet2 = tagJets[1];
                   Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
-                  Ptr<flashgg::Electron> tag_electron = goodElectrons[0];
+                  // Ptr<flashgg::Electron> tag_electron = goodElectrons[0];
                   HHWWggTag tag_obj_(dipho, tag_electron, allElectrons, goodElectrons, allMuons, theMET, jet1, jet2, allJets, tagJets, Cut_Variables, MuonVars, JetVars);
                   tag_obj = tag_obj_;
                   tag_obj.setGenVtx_z(GenVtx_z);
@@ -1138,22 +1140,36 @@ namespace flashgg {
 
                 // If not doing cutflow analysis, save the minimum which is just the dipho information for the final fit, to keep process and output lightweight 
                 else{
-                  HHWWggTag tag_obj_(dipho); // diphoton, electron, MET, jet1, jet2
+                  HHWWggTag tag_obj_(dipho); // diphoton
                   tag_obj = tag_obj_;
                 } 
-                // tag_obj.includeWeights(*tag_electron);
+                // tag_obj.includeWeights(*goodElectrons.at(0));
+                // tag_obj.includeWeights(*goodElectrons[0]);
+                tag_obj.includeWeights( *goodElectrons.at(0) );
+                // tag_obj.includeWeights(*goodElectrons[0]);
+
+                // if(doHHWWggDebug_){
+                // cout << "**************************************************" << endl; 
+                // cout << " CAT NUM : " << catnum << endl;
+                // // cout << "dipho : " << dipho << endl;
+                // // cout << "tag_electron: " << tag_electron << endl;
+                // for (auto it = tag_obj.weightListBegin() ; it != tag_obj.weightListEnd(); it++) {
+                //         std::cout << " Weight Debug " << *it << " " << tag_obj.weight(*it) << std::endl;
+
+                //     }
+                // }                
               } // n_good_electrons == 1 
 
               // HHWWggTag_1 - Semileptonic Muon 
               if (n_good_muons == 1){
                 catnum = 1;
+                Ptr<flashgg::Muon> tag_muon = goodMuons[0];
 
                 // If doing cutflow analysis, save all final state object variables 
                 if (doHHWWggTagCutFlowAnalysis_){
                   jet1 = tagJets[0];
                   jet2 = tagJets[1];
                   Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );                
-                  Ptr<flashgg::Muon> tag_muon = goodMuons[0];
                   HHWWggTag tag_obj_(dipho, allElectrons, tag_muon, allMuons, goodMuons, theMET, jet1, jet2, allJets, tagJets, Cut_Variables, MuonVars, JetVars);
                   tag_obj = tag_obj_;
                   tag_obj.setGenVtx_z(GenVtx_z);
@@ -1166,6 +1182,8 @@ namespace flashgg {
                   tag_obj = tag_obj_;
                 } 
                 // tag_obj.includeWeights(*tag_muon);
+                // tag_obj.includeWeights(*tag_muon);
+                tag_obj.includeWeights(*goodMuons.at(0));
               } // n_good_muons == 1 
 
               // Save tag object attributes in any case 
@@ -1174,7 +1192,30 @@ namespace flashgg {
               tag_obj.setCategoryNumber( catnum );
               tag_obj.includeWeights( *dipho ); ///////***** Need to add weights for all analysis objects. jets, leptons. can use include weights or includeweightsbylabel
               tag_obj.setGenMhh( genMhh );
-              tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );              
+              tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );    
+
+              if(doHHWWggDebug_){
+              cout << "**************************************************" << endl; 
+              cout << " CAT NUM : " << catnum << endl;
+              // cout << "dipho : " << dipho << endl;
+              // cout << "tag_electron: " << tag_electron << endl;
+              for (auto it = tag_obj.weightListBegin() ; it != tag_obj.weightListEnd(); it++) {
+                      std::cout << " Weight Debug " << *it << " " << tag_obj.weight(*it) << std::endl;
+
+                  }
+              }  
+
+              // if(doHHWWggDebug_){
+              //   cout << "**************************************************" << endl; 
+              //   cout << " CAT NUM : " << catnum << endl;
+              //   cout << ""
+              // //   for (auto it = tag_obj.weightListBegin() ; it != tag_obj.weightListEnd(); it++) {
+              // //           std::cout << " Weight Debug " << *it << " " << tag_obj.weight(*it) << std::endl;
+
+              // //       }
+              // }
+
+
               if (doReweight_>0){ 
                 
                 tag_obj.setBenchmarkReweight( reweight_values ); 
@@ -1248,7 +1289,7 @@ namespace flashgg {
 
           if(HHWWggAnalysisChannel_ == "FL")
           {  
-            int catnum = 3;
+            catnum = 3;
             Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
             if ( (n_good_leptons >=2 ) && (theMET->getCorPt() >= MetPtThreshold_) && num_FL_dr>=1 && (leadPho->p4().pt()+subleadPho->p4().pt())>0){
 
@@ -1494,28 +1535,37 @@ namespace flashgg {
         }//FL selection
 
           // Untagged category
-          else {
-            if(doHHWWggTagCutFlowAnalysis_){
-              if(doHHWWggDebug_) cout << "Filling untagged category..." << endl;
-              catnum = 4;
-              HHWWggTag tag_obj(dipho, allElectrons, goodElectrons, allMuons, goodMuons, theMET, allJets, tagJets, Cut_Variables, MuonVars, JetVars);
-              tag_obj.setSystLabel(systLabel_);
-              tag_obj.setDiPhotonIndex( diphoIndex );
-              tag_obj.setCategoryNumber( catnum ); // Untagged category. Does not meet any selection criteria but want to save event
-              tag_obj.includeWeights( *dipho );
-              tag_obj.setGenMhh( genMhh );
-              tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS ); 
-              tag_obj.setGenVtx_z(GenVtx_z);
-              tag_obj.setHggVtx_z(HggVtx_z);
-              tag_obj.setZeroVtx_z(ZeroVtx_z);                           
-              if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
-              HHWWggtags->push_back( tag_obj );
+          // else {
+          // Only push tag into this category if catnum has not changed (not tagged by other categories)
+            if(catnum == 4){
+              if(doHHWWggTagCutFlowAnalysis_){
+                if(doHHWWggDebug_) cout << "Filling untagged category..." << endl;
+                catnum = 4;
+                HHWWggTag tag_obj(dipho, allElectrons, goodElectrons, allMuons, goodMuons, theMET, allJets, tagJets, Cut_Variables, MuonVars, JetVars);
+                tag_obj.setSystLabel(systLabel_);
+                tag_obj.setDiPhotonIndex( diphoIndex );
+                tag_obj.setCategoryNumber( catnum ); // Untagged category. Does not meet any selection criteria but want to save event
+                tag_obj.includeWeights( *dipho );
+                tag_obj.setGenMhh( genMhh );
+                tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS ); 
+                tag_obj.setGenVtx_z(GenVtx_z);
+                tag_obj.setHggVtx_z(HggVtx_z);
+                tag_obj.setZeroVtx_z(ZeroVtx_z);                           
+                if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
+                // if(doHHWWggDebug_){
+                //   for (auto it = tag_obj.weightListBegin() ; it != tag_obj.weightListEnd(); it++) {
+                //           std::cout << " UNTAGGED category, Weight Debug " << *it << " " << tag_obj.weight(*it) << std::endl;
 
-              if( ! event.isRealData() ) {
-                HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
+                //       }
+                // }              
+                HHWWggtags->push_back( tag_obj );
+
+                if( ! event.isRealData() ) {
+                  HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
+                }
               }
             }
-          } // Untagged category
+          // } // Untagged category
 
         } // Diphoton loop //add cut flow below this line
       } // if at least 1 PS diphoton
