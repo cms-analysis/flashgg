@@ -241,21 +241,18 @@ namespace flashgg {
         if (ptV > 150.) {
             for( int n = 0 ; n < n_GT150 ; n++ ) {
                 if( ( double )mva > boundaries_GT150[n_GT150 - n - 1] ) { 
-                    cout << n << " " << ptV << " " << mva << " > "  << boundaries_GT150[n_GT150 - n - 1] << endl;
                     return n;
                 }
             }
         } else if (ptV > 75. && ptV < 150.) {
             for( int n = 0 ; n < n_75_150; n++ ) {
                 if( ( double )mva > boundaries_75_150[n_75_150 - n - 1] ) { 
-                    cout << n + n_GT150 << " " << ptV << " " << mva << " > "  << boundaries_75_150[n_75_150 - n - 1] << endl;
                     return n + n_GT150; 
                 }
             }
         } else if (ptV > 0.) {
             for( int n = 0 ; n < n_0_75; n++ ) {
                 if( ( double )mva > boundaries_0_75[n_0_75 - n - 1] ) { 
-                    cout << n + n_75_150 + n_GT150 << " " << ptV << " " << mva << " > "  << boundaries_0_75[n_0_75 - n - 1] << endl;
                     return n + n_75_150 + n_GT150; 
                 }
             }
