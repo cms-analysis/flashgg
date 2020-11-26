@@ -1,0 +1,17 @@
+{
+    "/QCD_HT50to100_TuneCP5_13TeV-madgraphMLM-pythia8/rasharma-crab_QCD_HT50to100_TuneCP5_13TeV-madgraphMLM-pythia8_ext1-894aca5f1702fc00de4ca2fc3fbcfe4c/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 5099, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT50to100_TuneCP5_13TeV-madgraphMLM-pythia8/crab_QCD_HT50to100_TuneCP5_13TeV-madgraphMLM-pythia8_ext1/200922_064217/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 5099, 
+                "totEvents": 5099, 
+                "weights": 5099.0
+            }
+        ], 
+        "parent_n_units": 40456172, 
+        "vetted": true
+    }
+}

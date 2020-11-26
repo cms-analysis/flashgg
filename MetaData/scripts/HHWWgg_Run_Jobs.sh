@@ -30,11 +30,11 @@
 ## User specific variables. Customize to your own working area(s)
 
 #fggDirec="/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/" # flashgg directory
-fggDirec="/afs/cern.ch/work/a/atishelm/private/HHWWgg_flashgg/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/"
-ntupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg/" # condor output directory
-#fggDirec="$PWD/" # flashgg directory (It should be ${PWD})
-echo "PWD = ${fggDirec}"
-#ntupleDirec="$PWD/" # condor output directory
+# fggDirec="/afs/cern.ch/work/a/atishelm/private/HHWWgg_flashgg/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/"
+# ntupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg/" # condor output directory
+fggDirec="$PWD/" # flashgg directory (It should be ${PWD})
+echo "fggDirec = ${fggDirec}"
+ntupleDirec="$PWD/" # condor output directory
 echo "ntupleDirec = ${ntupleDirec}"
 
 ## Other script parameters
@@ -52,13 +52,12 @@ dryRun="false" # do not submit jobs
 jsonpath="" # optional local json file to use for fggrunjobs arguments such as dataset and campaign
 condorQueue="microcentury" # condor job flavour. Determines max running time for each job
 year=""
-doNonResAnalysis="" # do non resonant analysis 
+doNonResAnalysis="" # do non resonant analysis
+HHWWggAnalysisChannel="SL"
+doHHWWggFHptOrdered="false" # fully hadronic jets selection; if pt ordered selection it should be true
 
 ## Get user specified argumenets
-
-##-- what is the purpose of "output" ?
-#options=$(getopt -o gcvstwr --long nEvents: --long output: --long labelName: --long json: --long condorQueue: --long year: -- "$@") # end name with colon ':' to specify argument string
-options=$(getopt -o gcvstwrn --long nEvents: --long labelName: --long json: --long condorQueue: --long year: -- "$@") # end name with colon ':' to specify argument string 
+options=$(getopt -o gcvstwrnf --long channel: --long nEvents: --long output: --long labelName: --long json: --long condorQueue: --long year: -- "$@") # end name with colon ':' to specify argument string
 
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
@@ -74,8 +73,10 @@ while true; do
       -t) dumpTrees="true" ;;
       -w) dumpWorkspaces="true" ;;
       -r) dryRun="true" ;;
-      #--output) shift; ntupleDirec=$1 ;; ##-- What's the purpose of this flag?
       -n) doNonResAnalysis="true" ;;
+      -f) doHHWWggFHptOrdered="true" ;;
+      --channel) shift; HHWWggAnalysisChannel=$1 ;;
+      --output) shift; ntupleDirec=$1 ;;
       --nEvents) shift; numEvents=$1 ;;
       --labelName) shift; label=$1 ;;
       --json) shift; jsonpath=$1 ;;
@@ -224,12 +225,20 @@ then
       then
             command+=' saveHHWWggFinalStateVars=1'
 
-      fi 
+      fi
 
       if [[ $doNonResAnalysis == 'true' ]]
       then 
             command+=' doHHWWggNonResAnalysis=1'
-      fi 
+      fi
+
+      if [ $doHHWWggFHptOrdered == 'true' ]
+      then
+        command+=' doHHWWggFHptOrdered=True '
+        #statements
+      fi
+
+      command+=' HHWWggAnalysisChannel='${HHWWggAnalysisChannel}
 fi
 
 echo "Evaluating command: $command"

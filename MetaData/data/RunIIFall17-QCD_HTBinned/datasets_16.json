@@ -1,0 +1,470 @@
+{
+    "/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/rasharma-crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8-894aca5f1702fc00de4ca2fc3fbcfe4c/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": true, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/HHWWgg_v2-2_Test/94X_mc2017-RunIIFall18/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200811_094113/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25243
+            }, 
+            {
+                "bad": false, 
+                "events": 10344, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 10344, 
+                "totEvents": 10344, 
+                "weights": 10246.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11240, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 11240, 
+                "totEvents": 11240, 
+                "weights": 11122.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11217, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 11217, 
+                "totEvents": 11217, 
+                "weights": 11103.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10418, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_30.root", 
+                "nevents": 10418, 
+                "totEvents": 10418, 
+                "weights": 10268.0
+            }, 
+            {
+                "bad": false, 
+                "events": 12079, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_46.root", 
+                "nevents": 12079, 
+                "totEvents": 12079, 
+                "weights": 11941.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11970, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_49.root", 
+                "nevents": 11970, 
+                "totEvents": 11970, 
+                "weights": 11846.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11167, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_38.root", 
+                "nevents": 11167, 
+                "totEvents": 11167, 
+                "weights": 11021.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11229, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_51.root", 
+                "nevents": 11229, 
+                "totEvents": 11229, 
+                "weights": 11101.0
+            }, 
+            {
+                "bad": false, 
+                "events": 13119, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 13119, 
+                "totEvents": 13119, 
+                "weights": 12981.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11086, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 11086, 
+                "totEvents": 11086, 
+                "weights": 10964.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10259, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 10259, 
+                "totEvents": 10259, 
+                "weights": 10143.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11070, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 11070, 
+                "totEvents": 11070, 
+                "weights": 10930.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11115, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_42.root", 
+                "nevents": 11115, 
+                "totEvents": 11115, 
+                "weights": 10993.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10168, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 10168, 
+                "totEvents": 10168, 
+                "weights": 10066.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10202, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_45.root", 
+                "nevents": 10202, 
+                "totEvents": 10202, 
+                "weights": 10120.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11288, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 11288, 
+                "totEvents": 11288, 
+                "weights": 11144.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9304, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 9304, 
+                "totEvents": 9304, 
+                "weights": 9216.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9246, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_40.root", 
+                "nevents": 9246, 
+                "totEvents": 9246, 
+                "weights": 9152.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9240, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 9240, 
+                "totEvents": 9240, 
+                "weights": 9128.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9943, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 9943, 
+                "totEvents": 9943, 
+                "weights": 9845.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9367, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 9367, 
+                "totEvents": 9367, 
+                "weights": 9255.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10284, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_52.root", 
+                "nevents": 10284, 
+                "totEvents": 10284, 
+                "weights": 10158.0
+            }, 
+            {
+                "bad": false, 
+                "events": 8416, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_44.root", 
+                "nevents": 8416, 
+                "totEvents": 8416, 
+                "weights": 8330.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9341, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 9341, 
+                "totEvents": 9341, 
+                "weights": 9239.0
+            }, 
+            {
+                "bad": false, 
+                "events": 12064, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 12064, 
+                "totEvents": 12064, 
+                "weights": 11920.0
+            }, 
+            {
+                "bad": false, 
+                "events": 12150, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_57.root", 
+                "nevents": 12150, 
+                "totEvents": 12150, 
+                "weights": 12004.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11130, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_41.root", 
+                "nevents": 11130, 
+                "totEvents": 11130, 
+                "weights": 11028.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11972, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_32.root", 
+                "nevents": 11972, 
+                "totEvents": 11972, 
+                "weights": 11870.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9337, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_53.root", 
+                "nevents": 9337, 
+                "totEvents": 9337, 
+                "weights": 9227.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10276, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_55.root", 
+                "nevents": 10276, 
+                "totEvents": 10276, 
+                "weights": 10170.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11001, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_50.root", 
+                "nevents": 11001, 
+                "totEvents": 11001, 
+                "weights": 10891.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10253, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_35.root", 
+                "nevents": 10253, 
+                "totEvents": 10253, 
+                "weights": 10147.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9381, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_34.root", 
+                "nevents": 9381, 
+                "totEvents": 9381, 
+                "weights": 9285.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10213, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_39.root", 
+                "nevents": 10213, 
+                "totEvents": 10213, 
+                "weights": 10119.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9457, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_33.root", 
+                "nevents": 9457, 
+                "totEvents": 9457, 
+                "weights": 9349.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10326, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_47.root", 
+                "nevents": 10326, 
+                "totEvents": 10326, 
+                "weights": 10214.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10248, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 10248, 
+                "totEvents": 10248, 
+                "weights": 10156.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11218, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_56.root", 
+                "nevents": 11218, 
+                "totEvents": 11218, 
+                "weights": 11126.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10365, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_54.root", 
+                "nevents": 10365, 
+                "totEvents": 10365, 
+                "weights": 10231.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9271, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 9271, 
+                "totEvents": 9271, 
+                "weights": 9159.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11130, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 11130, 
+                "totEvents": 11130, 
+                "weights": 11010.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11173, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 11173, 
+                "totEvents": 11173, 
+                "weights": 11039.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9448, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 9448, 
+                "totEvents": 9448, 
+                "weights": 9344.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9403, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 9403, 
+                "totEvents": 9403, 
+                "weights": 9309.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10260, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 10260, 
+                "totEvents": 10260, 
+                "weights": 10158.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9232, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 9232, 
+                "totEvents": 9232, 
+                "weights": 9142.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10149, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_43.root", 
+                "nevents": 10149, 
+                "totEvents": 10149, 
+                "weights": 10033.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10347, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 10347, 
+                "totEvents": 10347, 
+                "weights": 10233.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10147, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 10147, 
+                "totEvents": 10147, 
+                "weights": 10075.0
+            }, 
+            {
+                "bad": false, 
+                "events": 6959, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_58.root", 
+                "nevents": 6959, 
+                "totEvents": 6959, 
+                "weights": 6885.0
+            }, 
+            {
+                "bad": false, 
+                "events": 12951, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 12951, 
+                "totEvents": 12951, 
+                "weights": 12813.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10251, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_48.root", 
+                "nevents": 10251, 
+                "totEvents": 10251, 
+                "weights": 10127.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9244, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_37.root", 
+                "nevents": 9244, 
+                "totEvents": 9244, 
+                "weights": 9138.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9459, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 9459, 
+                "totEvents": 9459, 
+                "weights": 9371.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11351, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 11351, 
+                "totEvents": 11351, 
+                "weights": 11225.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10281, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_31.root", 
+                "nevents": 10281, 
+                "totEvents": 10281, 
+                "weights": 10141.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10219, 
+                "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 10219, 
+                "totEvents": 10219, 
+                "weights": 10087.0
+            }
+        ], 
+        "parent_n_units": 11634434, 
+        "vetted": true
+    }
+}

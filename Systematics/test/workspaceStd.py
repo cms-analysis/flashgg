@@ -145,7 +145,25 @@ customize.options.register('doHHWWggFHptOrdered', # For HHWWgg analysis fully ha
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doHHWWggFHptOrdered'
-                           )     
+                           )
+customize.options.register('doHHWWggFHminWHJets', # For HHWWgg analysis fully hardonic state, select jets based on pT order and not min WH difference
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doHHWWggFHminWHJets'
+                           )
+customize.options.register('doHHWWggFHminWHLead2Jet', # For HHWWgg analysis fully hardonic state, select jets based on pT order and not min WH difference
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doHHWWggFHminWHLead2Jet'
+                           )
+customize.options.register('doHHWWggFHminHiggsMassOnly', # For HHWWgg analysis fully hardonic state, select jets based on pT order and not min WH difference
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doHHWWggFHminHiggsMassOnly'
+                           )
 customize.options.register('HHWWggAnalysisChannel', # SL, FL or FH 
                            "SL", ## run semileptonic by default if nothing specified 
                            VarParsing.VarParsing.multiplicity.singleton,

@@ -8030,7 +8030,7 @@
                 "weights": 105.94682312011719
             }, 
             {
-                "bad": false, 
+                "bad": true, 
                 "events": 24946, 
                 "name": "/store/user/alesauva/flashgg/2016_1/10_6_4/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/2016_1-10_6_4-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_144526/0000/myMicroAODOutputFile_20.root", 
                 "nevents": 24946, 

@@ -2,23 +2,26 @@ Table of Contents
 =================
 
    * [General Info](#general-info)
-   * [Setting Up HHWWgg_dev Repository](#setting-hhwwgg_dev-repository)
+   * [Summary workflow of this framework](#summary-workflow-of-this-framework)
+   * [Setting Up HHWWgg_dev Repository](#setting-up-hhwwgg_dev-repository)
       * [Setting up a voms Proxy](#setting-up-a-voms-proxy)
       * [HHWWgg Tagger](#hhwwgg-tagger)
          * [Running Locally](#running-locally)
          * [Running on Condor](#running-on-condor)
             * [Example: 2017 Data / MC Variables](#example-2017-data--mc-variables)
+            * [Resubmit failed jobs](#resubmit-failed-jobs)
       * [nTuple Processing](#ntuple-processing)
          * [Workspaces](#workspaces)
             * [Hadd Signal](#hadd-signal)
             * [Hadd Data](#hadd-data)
          * [Trees](#trees)
-            * [Hadd Background](#hadd-background)
+            * [Hadd MC Background](#hadd-mc-background)
       * [Rename Workspace](#rename-workspace)
+   * [Examples](#examples)
+      * [2018 Semi-Leptonic SM NLO](#2018-semi-leptonic-sm-nlo)
    * [Few Important Things To Note Before running the framework](#few-important-things-to-note-before-running-the-framework)
-   * [To-Do List](#to-do-list)
 
-Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc).
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 # General Info
 Contacts:
@@ -36,6 +39,19 @@ Repositories:
 - [HHWWgg Analysis Tools](https://github.com/NEUAnalyses/HHWWgg_Tools/tree/master)
 
 These instructions describe how to run flashgg modules specific to the `HH->WWgg` analysis. The HHWWgg Tagger plugin, HHWWggTagProducer, is designed to work with workspaceStd.
+
+# Summary workflow of this framework
+
+1. You should have the MicroAOD
+2. Prepare the campaign
+3. Add cross-section value in the cross-section.json
+4. Check running interactive
+5. Condor job submission
+  1. Before moving to next step check if all jobs processed successfully or not?
+  2. If any job filed resubmit them.
+  2. Wait for all jobs to finish
+6. Hadd the outputs using hadd script.
+7. Finally use the flashggfinalfit for limit extraction.
 
 # Setting Up HHWWgg_dev Repository
 
@@ -241,6 +257,22 @@ simply submit with the command:
 
 For this example, workday may be a better choice of work flavour as there are some backgrounds with many events such as GJet, QCD, Drell Yan and DiPhotonJetsBox that may take a long time to run.
 
+#### Resubmit failed jobs
+
+There is a script [resubmit_jobs.py](Systematics/scripts/resubmit_jobs.py) which helps us to resubmit the jobs.
+
+Uses:
+
+```bash
+python Systematics/scripts/resubmit_jobs.py --dir HHWWgg_v2-6_PtOrderNoBqrk_RadionWorkspace  -s /eos/user/r/rasharma/post_doc_ihep/double-higgs/ntuples/August12/HHWWgg_v2-6_PtOrderNoBqrk_RadionWorkspace/
+```
+
+Explanation of each flag:
+
+- **dir**: Name of local condor directory in which condor logs are present.
+- **s**: Full path of the directory in which first condor job send its output.
+
+
 ## nTuple Processing
 
 After your condor jobs are complete, you should have a number of output files for each signal point or data taking era. The first check is to make sure the output number of files equals the number of condor jobs. If there are output files missing, the condor .err .out and .log files may point to the reason why.
@@ -306,7 +338,7 @@ If you ran with trees, these are hadded in the usual way with the hadd command. 
 Explanation of additional flag:
 - **t**: Specifies to hadd the trees.
 
-#### Hadd Background
+#### Hadd MC Background
 
 ```bash
 . HHWWgg_Process_Files.sh --nTupleDir /eos/user/r/rasharma/post_doc_ihep/double-higgs/ntuples/background/ --inFolder Allbkg --outFolder Allbkg_Hadded -b -t
@@ -364,8 +396,17 @@ Where the condorQueue flag can be adjusted if more time is required to complete 
 
 # Few Important Things To Note Before running the framework
 
-1. Campaign `RunIIFall17-3-2-0` contains `flashggMetsCorr` as **InputTag** not `flashggMets`.
-    1. Whenever we need to run over this campaign then we need to uncomment the MetTag in [Taggers/python/flashggHHWWggTag_cfi.py](https://github.com/atishelmanch/flashgg/blob/a7da39035c95cfe3f94b8aa6a428c5811e7dbc59/Taggers/python/flashggHHWWggTag_cfi.py).
+1. Campaign `RunIIFall17-3-2-0` contains `flashggMetsCorr` as **InputTag** not `flashggMets`. 
+  1. Whenever we need to run over this campaign then we need to edit three files:
+    1. uncomment/comment the MetTag in [Taggers/python/flashggHHWWggTag_cfi.py](https://github.com/atishelmanch/flashgg/blob/a7da39035c95cfe3f94b8aa6a428c5811e7dbc59/Taggers/python/flashggHHWWggTag_cfi.py).
+    1. uncomment/comment the MetTag in [Taggers/python/flashggHHWWggCandidate_cfi.py](https://github.com/atishelmanch/flashgg/blob/a7da39035c95cfe3f94b8aa6a428c5811e7dbc59/Taggers/python/flashggHHWWggCandidate_cfi.py).
+    1. uncomment/comment the MetTag in [Systematics/python/flashggMetSystematics_cfi.py](https://github.com/atishelmanch/flashgg/blob/a7da39035c95cfe3f94b8aa6a428c5811e7dbc59/Systematics/python/flashggMetSystematics_cfi.py).
+
+  1. **Alternatively, you can apply the patch `flashggMets_To_flashggMetsCorr.patch` using command below**
+
+      ```bash
+      git apply flashggMets_To_flashggMetsCorr.patch
+      ```
 
 2. Sample name flow:
 
