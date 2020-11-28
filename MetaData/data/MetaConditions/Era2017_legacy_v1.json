@@ -34,8 +34,8 @@
 
     "flashggPhotons" :
     {
-        "photonIdMVAweightfile_EB" : "flashgg/MicroAOD/data/HggPhoId_94X_barrel_BDT_v2.weights.xml",
-        "photonIdMVAweightfile_EE" : "flashgg/MicroAOD/data/HggPhoId_94X_endcap_BDT_v2.weights.xml",
+        "photonIdMVAweightfile_EB" : "flashgg/MicroAOD/data/PhoID_barrel_UL2017_GJetMC_SATrain_nTree2k_LR_0p1_13052020_BDTG.weights.xml",
+        "photonIdMVAweightfile_EE" : "flashgg/MicroAOD/data/PhoID_endcap_UL2017_GJetMC_SATrain_nTree2k_LR_0p1_13052020_BDTG.weights.xml",
         "effAreasConfigFile" : "RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_TrueVtx.txt",
         "is2017" : true
     },
@@ -84,15 +84,27 @@
         }
     },
 
-    "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2017_cfi",
+    "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2017_Legacy_cfi",
 
 
     "sigmaM_M_decorr" : "flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_2017_Mgg100to180.root",
 
     "JetCorrectorParametersCollection_version" :
     {
-        "data" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_DATA_AK4PFchs",
-        "MC" : "JetCorrectorParametersCollection_Fall17_17Nov2017_V32_102X_MC_AK4PFchs"
+        "data" : "JetCorrectorParametersCollection_Summer19UL17_RunBCDEF_V5_DATA_AK4PFchs",
+        "data_db" : "flashgg/Systematics/data/JEC/Summer19UL17_RunBCDEF_V5_DATA.db",
+        "MC" : "JetCorrectorParametersCollection_Summer19UL17_V5_MC_AK4PFchs",
+        "MC_db" : "flashgg/Systematics/data/JEC/Summer19UL17_V5_MC.db"
+    },
+
+    "JetResolutionParametersCollection_version" :
+    {
+        "data_res" : "JR_Summer19UL17_JRV2_DATA_PtResolution_AK4PFchs",
+        "data_sf" : "JR_Summer19UL17_JRV2_DATA_SF_AK4PFchs",
+        "data_db" : "flashgg/Systematics/data/JER/Summer19UL17_JRV2_DATA.db",
+        "MC_res" : "JR_Summer19UL17_JRV2_MC_PtResolution_AK4PFchs",
+        "MC_sf" : "JR_Summer19UL17_JRV2_MC_SF_AK4PFchs",
+        "MC_db" : "flashgg/Systematics/data/JER/Summer19UL17_JRV2_MC.db"
     },
 	
     "flashggDiPhotonMVA" : 
@@ -102,8 +114,8 @@
     },
 
     "flashggJetSystematics" : 
-    {  
-	"doHEMuncertainty" : false,
+    { 
+	"doHEMuncertainty" : false, 
         "textFileName" : "flashgg/Systematics/data/JEC/Regrouped_Fall17_17Nov2017_V32_MC_UncertaintySources_AK4PFchs.txt",
         "listOfSources" : [
                            "Absolute",
@@ -189,17 +201,17 @@
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
 
-    "MUON_ID_JSON_FileName" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ID.json",
-    "MUON_ID_JSON_FileName_LowPt" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ID_lowPt.json",
-    "MUON_ISO_JSON_FileName" : "flashgg/Systematics/data/Muon2017_RunBCDEF_SF_ISO.json",
+    "MUON_ID_JSON_FileName" : "flashgg/Systematics/data/Muon_UL2017_RunBCDEF_SF_ID.json",
+    "MUON_ID_JSON_FileName_LowPt" : "flashgg/Systematics/data/Muon_UL2017_RunBCDEF_SF_ID_lowPt.json",
+    "MUON_ISO_JSON_FileName" : "flashgg/Systematics/data/Muon_UL2017_RunBCDEF_SF_ISO.json",
 
-    "MUON_ID_RefTracks" :  "genTracks",
+    "MUON_ID_RefTracks" :  "TrackerMuons",
     "MUON_ID_RefTracks_LowPt" : "genTracks",
 
-    "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_eleIDSFs_2017.json",
+    "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_MVA_eleIDSFs_UL_2017.json",
     "Ele_ID_version" : "mvaEleID-Fall17-iso-V2-wp90",
 
-    "Ele_reco_SF_FileName" : "flashgg/Systematics/data/2017_reco-eff.json",
+    "Ele_reco_SF_FileName" : "flashgg/Systematics/data/2017_UL_reco-eff.json",
 
     "bTagSystematics" :
     {
@@ -208,13 +220,13 @@
 
 	"bTagger" : "pfDeepJet",
 
-	"bDiscriminatorValue_pfDeepCSV" : 0.4941,
-	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_94XSF_V4_B_F.csv",
-	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_94XSF_WP_V4_B_F.csv",
+	"bDiscriminatorValue_pfDeepCSV" : 0.4506,
+	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_106XUL17SF.csv",
+	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_106XUL17SF_WPonly.csv",
 
-	"bDiscriminatorValue_pfDeepJet" : 0.3033,
-	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepFlavour_94XSF_V2_B_F.csv",
-	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepFlavour_94XSF_WP_V2_B_F.csv",
+	"bDiscriminatorValue_pfDeepJet" : 0.3040,
+	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepJet_106XUL17SF.csv",
+	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepJet_106XUL17SF_WPonly.csv",
 
 	"eta" : 2.5
     },
@@ -304,7 +316,7 @@
 
    "PhoIdInputCorrections":
     {
-	"corrections_summary" : "flashgg/Taggers/data/PhoIdInputsCorrections/corrections_summary_2017.json",
+	"corrections_summary" : "flashgg/Taggers/data/PhoIdInputsCorrections/corrections_summary_2017_Legacy.json",
 	"SS_variables" :   ["f0 := pt",
                             "f1 := superCluster.eta",
                             "f2 := phi",
