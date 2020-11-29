@@ -52,14 +52,14 @@ dryRun="false" # do not submit jobs
 jsonpath="" # optional local json file to use for fggrunjobs arguments such as dataset and campaign
 condorQueue="microcentury" # condor job flavour. Determines max running time for each job
 year=""
-calcPdfWeight="false"
+calcPdfWeights="false"
 doNonResAnalysis="" # do non resonant analysis 
 
 ## Get user specified argumenets
 
 ##-- what is the purpose of "output" ?
 #options=$(getopt -o gcvstwr --long nEvents: --long output: --long labelName: --long json: --long condorQueue: --long year: -- "$@") # end name with colon ':' to specify argument string
-options=$(getopt -o gcvstwrn --long nEvents: --long labelName: --long json: --long condorQueue: --long year: --long calcPdfWeight: -- "$@") # end name with colon ':' to specify argument string 
+options=$(getopt -o gcvstwrn --long nEvents: --long labelName: --long json: --long condorQueue: --long year: --long calcPdfWeights: -- "$@") # end name with colon ':' to specify argument string 
 
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
@@ -82,7 +82,7 @@ while true; do
       --json) shift; jsonpath=$1 ;;
       --condorQueue) shift; condorQueue=$1 ;;
       --year) shift; year=$1 ;;
-      --calcPdfWeight) shift; calcSystematics=$1 ;;
+      --calcPdfWeights) shift; calcPdfWeights=$1 ;;
       --)
             shift
             break
@@ -101,7 +101,7 @@ echo "calcSystematics = $calcSystematics"
 echo "dumpTrees = $dumpTrees"
 echo "dumpWorkspaces = $dumpWorkspaces"
 echo "year = $year"
-echo "calcPdfWeight = $calcPdfWeight"
+echo "calcPdfWeights = $calcPdfWeights"
 
 ## Make sure numEvents and label arguments are specified. These are compulsory
 
@@ -218,9 +218,9 @@ then
            command+=' dryRun=1 '
       fi
 
-      echo "calcPdfWeight: $calcPdfWeight"
+      echo "calcPdfWeights: $calcPdfWeights"
 
-      if [ $calcPdfWeight == 'true' ]
+      if [ $calcPdfWeights == 'true' ]
       then
            command+='useParentDataset=True recalculatePDFWeights=True'
       fi
