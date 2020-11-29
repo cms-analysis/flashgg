@@ -30,8 +30,8 @@
 ## User specific variables. Customize to your own working area(s)
 
 #fggDirec="/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/" # flashgg directory
-fggDirec="/afs/cern.ch/work/a/atishelm/private/HHWWgg_flashgg/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/"
-ntupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg/" # condor output directory
+fggDirec="/afs/cern.ch/user/c/chuw/chuw/HHWWgg/CMSSW_10_6_8/src/flashgg/"
+ntupleDirec="/afs/cern.ch/user/c/chuw/chuw/HHWWgg/CMSSW_10_6_8/src/flashgg/" # condor output directory
 #fggDirec="$PWD/" # flashgg directory (It should be ${PWD})
 echo "PWD = ${fggDirec}"
 #ntupleDirec="$PWD/" # condor output directory
@@ -52,13 +52,14 @@ dryRun="false" # do not submit jobs
 jsonpath="" # optional local json file to use for fggrunjobs arguments such as dataset and campaign
 condorQueue="microcentury" # condor job flavour. Determines max running time for each job
 year=""
+calcPdfWeight="false"
 doNonResAnalysis="" # do non resonant analysis 
 
 ## Get user specified argumenets
 
 ##-- what is the purpose of "output" ?
 #options=$(getopt -o gcvstwr --long nEvents: --long output: --long labelName: --long json: --long condorQueue: --long year: -- "$@") # end name with colon ':' to specify argument string
-options=$(getopt -o gcvstwrn --long nEvents: --long labelName: --long json: --long condorQueue: --long year: -- "$@") # end name with colon ':' to specify argument string 
+options=$(getopt -o gcvstwrn --long nEvents: --long labelName: --long json: --long condorQueue: --long year: --long calcPdfWeight: -- "$@") # end name with colon ':' to specify argument string 
 
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
@@ -81,6 +82,7 @@ while true; do
       --json) shift; jsonpath=$1 ;;
       --condorQueue) shift; condorQueue=$1 ;;
       --year) shift; year=$1 ;;
+      --calcPdfWeight) shift; calcSystematics=$1 ;;
       --)
             shift
             break
@@ -99,6 +101,7 @@ echo "calcSystematics = $calcSystematics"
 echo "dumpTrees = $dumpTrees"
 echo "dumpWorkspaces = $dumpWorkspaces"
 echo "year = $year"
+echo "calcPdfWeight = $calcPdfWeight"
 
 ## Make sure numEvents and label arguments are specified. These are compulsory
 
@@ -213,6 +216,13 @@ then
       if [ $dryRun == 'true' ]
       then
            command+=' dryRun=1 '
+      fi
+
+      echo "calcPdfWeight: $calcPdfWeight"
+
+      if [ $calcPdfWeight == 'true' ]
+      then
+           command+='useParentDataset=True recalculatePDFWeights=True'
       fi
 
       if [ $doCutFlow == 'true' ]

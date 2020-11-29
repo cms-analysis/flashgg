@@ -157,6 +157,9 @@ namespace flashgg {
 
     double deltaRPhoElectronThreshold_;
     double deltaMassElectronZThreshold_;
+    double DiLepMassHigThre_;
+    double DiLepMassLowThre_;
+    double Dipho_pT_Thre_;
     bool hasGoodElec = false;
     bool hasGoodMuons = false;
 
@@ -180,7 +183,6 @@ namespace flashgg {
     double lep1ptThre_;
     double lep2ptThre_;
     double lep3ptThre_;
-    double DiLepMassThre_;
     double DiLepPtThre_;
     double MassTThre_;
     double MassT_l2Thre_;
@@ -299,12 +301,13 @@ namespace flashgg {
       doHHWWggFHptOrdered_ = pSet.getParameter<bool>( "doHHWWggFHptOrdered" );
       doHHWWggDebug_ = pSet.getParameter<bool>( "doHHWWggDebug" );
       HHWWggAnalysisChannel_ = pSet.getParameter<string>( "HHWWggAnalysisChannel" );
-      SaveOthers_ = pSet.getParameter<bool>("SaveOthers");
       lep1ptThre_ = pSet.getParameter<double>("lep1ptThre");//means > lep1pt
       lep2ptThre_ = pSet.getParameter<double>("lep2ptThre");//means > lep2pt
       lep3ptThre_ = pSet.getParameter<double>("lep3ptThre");//means < lep3pt
       DiLepPtThre_ = pSet.getParameter<double>("DiLepPtThre");
-      DiLepMassThre_ = pSet.getParameter<double>("DiLepMassThre");
+      DiLepMassHigThre_ = pSet.getParameter<double>("DiLepMassHigThre");
+      DiLepMassLowThre_ = pSet.getParameter<double>("DiLepMassLowThre");
+      Dipho_pT_Thre_ = pSet.getParameter<double>("Dipho_pT_Thre");
       MassTThre_ = pSet.getParameter<double>("MassTThre");
       MassT_l2Thre_ = pSet.getParameter<double>("MassT_l2Thre");
       HHWWgguseZeroVtx_ = pSet.getParameter<bool>("HHWWgguseZeroVtx");
@@ -876,8 +879,11 @@ namespace flashgg {
           if(doHHWWggNonResAnalysis_){
             leadPho_pt = leadPho->pt();
             subleadPho_pt = subleadPho->pt();
+            if(HHWWggAnalysisChannel_ == "SL"){
             sumpT = leadPho_pt + subleadPho_pt;
-            if(!doHHWWggTagCutFlowAnalysis_ && sumpT < 100.) continue; // if not doing cut flow analysis to save events, remove event
+            }
+            else sumpT=dipho->pt();
+            if(!doHHWWggTagCutFlowAnalysis_ && sumpT < Dipho_pT_Thre_) continue; // if not doing cut flow analysis to save events, remove event
           }
 
           //-- MVA selections
@@ -1337,7 +1343,7 @@ namespace flashgg {
                 reco::Candidate::LorentzVector DiEleLV = Ele1LV +  Ele2LV;
                 MassT= sqrt(2*DiEleLV.Pt()*theMET->pt()*(1-cos(abs(DiEleLV.Phi()-theMET->phi()))));
                 MassT_l2 = sqrt(2*Ele2LV.Pt()*theMET->pt()*(1-cos(abs(Ele2LV.Phi()-theMET->phi()))));
-                  if((tag_electron1->charge()*tag_electron2->charge()==-1) && tag_electron1->pt()>=lep1ptThre_ && tag_electron2->pt()>=lep1ptThre_  && DiEleLV.Pt()>DiLepPtThre_ && DiEleLV.M()>DiLepMassThre_ && MassT>MassTThre_ && MassT_l2 >MassT_l2Thre_ && Save == 1. && Savejet==1){
+                  if((tag_electron1->charge()*tag_electron2->charge()==-1) && tag_electron1->pt()>=lep1ptThre_ && tag_electron2->pt()>=lep1ptThre_  && DiEleLV.Pt()>DiLepPtThre_ && (DiEleLV.M() > DiLepMassHigThre_ || DiEleLV.M() < DiLepMassLowThre_ )  && MassT>MassTThre_ && MassT_l2 >MassT_l2Thre_ && Save == 1. && Savejet==1){
                     HHWWggTag tag_obj;
 
                     if(doHHWWggTagCutFlowAnalysis_){
@@ -1359,8 +1365,19 @@ namespace flashgg {
                   tag_obj.setMVA( -0.9 );
                   tag_obj.setCategoryNumber( catnum );
                   tag_obj.includeWeights( *dipho );
+                  tag_obj.includeWeights( *tag_electron1);
+                  tag_obj.includeWeights( *tag_electron2);
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
+                  if(doHHWWggDebug_){
+                  cout<<"=============================="<<endl;
+                  cout << "FL tag object scale factors:" << endl; 
+                  PrintScaleFactorsObj(tag_obj);
+                  cout << "FL tag Electron1 scale factors:" << endl; 
+                  PrintScaleFactorsPtr(tag_electron1);
+                  cout << "FL tag Electron2 scale factors:" << endl; 
+                  PrintScaleFactorsPtr(tag_electron2);
+                  }
                   if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
                   HHWWggtags->push_back( tag_obj );
                   if( ! event.isRealData() ) {
@@ -1413,7 +1430,7 @@ namespace flashgg {
                 reco::Candidate::LorentzVector DiMuLV = Mu1LV +  Mu2LV;
                 MassT= sqrt(2*DiMuLV.Pt()*theMET->pt()*(1-cos(abs(DiMuLV.Phi()-theMET->phi()))));
                 MassT_l2 = sqrt(2*Mu2LV.Pt()*theMET->pt()*(1-cos(abs(Mu2LV.Phi()-theMET->phi()))));
-                if((tag_muon1->charge()*tag_muon2->charge() == -1) && tag_muon1->pt()>=lep1ptThre_ && tag_muon2->pt()>=lep2ptThre_  && DiMuLV.Pt()>DiLepPtThre_ && DiMuLV.M()>DiLepMassThre_ && MassT>MassTThre_ && MassT_l2>MassT_l2Thre_ && Save == 1. && Savejet==1){
+                if((tag_muon1->charge()*tag_muon2->charge() == -1) && tag_muon1->pt()>=lep1ptThre_ && tag_muon2->pt()>=lep2ptThre_  && DiMuLV.Pt()>DiLepPtThre_ && (DiMuLV.M() > DiLepMassHigThre_ || DiMuLV.M() < DiLepMassLowThre_ ) && MassT>MassTThre_ && MassT_l2>MassT_l2Thre_ && Save == 1. && Savejet==1){
                   HHWWggTag tag_obj;
 
                   if(doHHWWggTagCutFlowAnalysis_){
@@ -1433,8 +1450,19 @@ namespace flashgg {
                   tag_obj.setMVA( -0.9 );
                   tag_obj.setCategoryNumber( catnum);
                   tag_obj.includeWeights( *dipho );
+                  tag_obj.includeWeights( *tag_muon1 );
+                  tag_obj.includeWeights( *tag_muon2 );
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
+                  if(doHHWWggDebug_){
+                  cout<<"=============================="<<endl;
+                  cout << "FL tag object scale factors:" << endl; 
+                  PrintScaleFactorsObj(tag_obj);
+                  cout << "FL tag muon1 scale factors:" << endl; 
+                  PrintScaleFactorsPtr(tag_muon1);
+                  cout << "FL tag muon2 scale factors:" << endl; 
+                  PrintScaleFactorsPtr(tag_muon2);
+                  }  
                   if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
                   HHWWggtags->push_back( tag_obj );
 
@@ -1490,7 +1518,7 @@ namespace flashgg {
                 reco::Candidate::LorentzVector DiLepLV = EleLV +  MuLV;
                 MassT= sqrt(2*DiLepLV.Pt()*theMET->pt()*(1-cos(abs(DiLepLV.Phi()-theMET->phi()))));
                 MassT_l2= sqrt(2*MuLV.Pt()*theMET->pt()*(1-cos(abs(MuLV.Phi()-theMET->phi()))));
-                if((((tag_electron1->pt()>=lep1ptThre_) && (tag_muon1->pt()>=lep2ptThre_))||((tag_muon1->pt()>=lep1ptThre_) && (tag_electron1->pt()>=lep2ptThre_))) && (tag_muon1->charge()*tag_electron1->charge()==-1) && (DiLepLV.M()>DiLepMassThre_) && (DiLepLV.Pt()>DiLepPtThre_) && (MassT_l2>MassTThre_) && (MassT>MassT_l2Thre_) && (Save==1.) &&(Savejet==1)){
+                if((((tag_electron1->pt()>=lep1ptThre_) && (tag_muon1->pt()>=lep2ptThre_))||((tag_muon1->pt()>=lep1ptThre_) && (tag_electron1->pt()>=lep2ptThre_))) && (tag_muon1->charge()*tag_electron1->charge()==-1) && (DiLepLV.M() > DiLepMassHigThre_ || DiLepLV.M() < DiLepMassLowThre_ )  && (DiLepLV.Pt()>DiLepPtThre_) && (MassT_l2>MassTThre_) && (MassT>MassT_l2Thre_) && (Save==1.) &&(Savejet==1)){
                   HHWWggTag tag_obj;
                   if(doHHWWggTagCutFlowAnalysis_){
                     if(tag_electron1->pt()>tag_muon1->pt()) Cut_Variables[18]=2.;//e mu
@@ -1510,8 +1538,19 @@ namespace flashgg {
                   tag_obj.setMVA( -0.9 );
                   tag_obj.setCategoryNumber( catnum );
                   tag_obj.includeWeights( *dipho );
+                  tag_obj.includeWeights( *tag_electron1 );
+                  tag_obj.includeWeights( *tag_muon1 );
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
+                  if(doHHWWggDebug_){
+                  cout<<"==============================="<<endl;
+                  cout << "FL tag object scale factors:" << endl; 
+                  PrintScaleFactorsObj(tag_obj);
+                  cout << "FL tag Electron scale factors:" << endl; 
+                  PrintScaleFactorsPtr(tag_electron1);
+                  cout << "FL tag muon scale factors:" << endl; 
+                  PrintScaleFactorsPtr(tag_muon1);
+                  }
                   if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
                   HHWWggtags->push_back( tag_obj );
 
