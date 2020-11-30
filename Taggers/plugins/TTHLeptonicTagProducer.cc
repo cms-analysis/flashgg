@@ -133,10 +133,12 @@ namespace flashgg {
         vector<double> MVAThreshold_pt2_;
         vector<double> MVAThreshold_pt3_;
         vector<double> MVAThreshold_pt4_;
+        vector<double> MVAThreshold_pt5_;
         vector<double> STXSPtBoundaries_pt1;
         vector<double> STXSPtBoundaries_pt2;
         vector<double> STXSPtBoundaries_pt3;
         vector<double> STXSPtBoundaries_pt4;
+        vector<double> STXSPtBoundaries_pt5;
         double deltaRJetLeadPhoThreshold_;
         double deltaRJetSubLeadPhoThreshold_;
         double jetsNumberThreshold_;
@@ -496,10 +498,12 @@ namespace flashgg {
         MVAThreshold_pt2_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt2");
         MVAThreshold_pt3_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt3");
         MVAThreshold_pt4_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt4");
+        MVAThreshold_pt5_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt5");
         STXSPtBoundaries_pt1 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt1" );
         STXSPtBoundaries_pt2 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt2" );
         STXSPtBoundaries_pt3 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt3" );
         STXSPtBoundaries_pt4 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt4" );
+        STXSPtBoundaries_pt5 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt5" );
         //assert( is_sorted( STXSPtBoundaries_pt1.begin(), STXSBoundaries_pt1.end() ) ); // 
         //assert( is_sorted( STXSPtBoundaries_pt2.begin(), STXSBoundaries_pt2.end() ) ); // 
         PhoMVAThreshold_ = iConfig.getParameter<double>( "PhoMVAThreshold");
@@ -696,6 +700,16 @@ namespace flashgg {
                 }
             }
         }
+
+        if (pT > STXSPtBoundaries_pt5[0] && pT < STXSPtBoundaries_pt5[1]) {
+            for(int n = 0 ; n < ( int )MVAThreshold_pt5_.size() ; n++ ) {
+                if( ( double )tthmvavalue > MVAThreshold_pt5_[MVAThreshold_pt5_.size() - n - 1] ) {
+                    //cout << "pT range: [" << STXSPtBoundaries_pt5[0] << ", " << STXSPtBoundaries_pt5[1] << "], Leptonic cat " << n + MVAThreshold_pt1_.size() << endl; 
+                    return n + MVAThreshold_pt1_.size() + MVAThreshold_pt2_.size() + MVAThreshold_pt3_.size() + MVAThreshold_pt4_.size();
+                }
+            }
+        }
+ 
 
         return -1; // Does not pass, object will not be produced
     }
@@ -1580,28 +1594,22 @@ namespace flashgg {
             chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag1;
         }
         else if ( catNum == 2 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag2;
-        }
-        else if ( catNum == 3 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag3;
-        }
-        else if ( catNum == 4 ) {
             chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_60_120_Tag0;
         }
-        else if ( catNum == 5 ) {
+        else if ( catNum == 3 ) {
             chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_60_120_Tag1;
         }
-        else if ( catNum == 6 ) {
+        else if ( catNum == 4 ) {
             chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_120_200_Tag0;
         }
-        else if ( catNum == 7 ) {
+        else if ( catNum == 5 ) {
             chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_120_200_Tag1;
         }
-        else if ( catNum == 8 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_GT200_Tag0;
+        else if ( catNum == 6 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_200_300_Tag0;
         }
-        else if ( catNum == 9 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_GT200_Tag1;
+        else if ( catNum == 7 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_GT300_Tag0;
         }
         return chosenTag_;
     }

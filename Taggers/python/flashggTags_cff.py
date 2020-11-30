@@ -28,10 +28,10 @@ flashggSigmaMoMpToMTag = cms.EDProducer("FlashggSigmaMpTTagPreCleanerProducer",
                                         )
 
 import TTHDNNPreprocessingConstructor, os
-ttHHadronic_ttH_vs_ttGG_DNN_preprocess_scheme_path = os.path.expandvars("$CMSSW_BASE/src/flashgg/Taggers/data/metadata_Hadronic_ttHHadronic_ttH_vs_ttGG_v3.10_8Oct2019.json")
+ttHHadronic_ttH_vs_ttGG_DNN_preprocess_scheme_path = os.path.expandvars("$CMSSW_BASE/src/flashgg/Taggers/data/metadata_Hadronic_ttHHadronic_ttH_vs_ttGG_legacy_v1.1_27Nov2020.json")
 ttHHadronic_ttH_vs_ttGG_DNN_preprocess_scheme = TTHDNNPreprocessingConstructor.construct(ttHHadronic_ttH_vs_ttGG_DNN_preprocess_scheme_path, "Hadronic")
 
-ttHHadronic_ttH_vs_dipho_DNN_preprocess_scheme_path = os.path.expandvars("$CMSSW_BASE/src/flashgg/Taggers/data/metadata_Hadronic_ttHHadronic_ttH_vs_dipho_v3.10_8Oct2019.json")
+ttHHadronic_ttH_vs_dipho_DNN_preprocess_scheme_path = os.path.expandvars("$CMSSW_BASE/src/flashgg/Taggers/data/metadata_Hadronic_ttHHadronic_ttH_vs_dipho_legacy_v1.1_27Nov2020.json")
 ttHHadronic_ttH_vs_dipho_DNN_preprocess_scheme = TTHDNNPreprocessingConstructor.construct(ttHHadronic_ttH_vs_dipho_DNN_preprocess_scheme_path, "Hadronic")
 
 flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
@@ -58,17 +58,17 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
 #                                       tthMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_tth_hadronic_2017Data_35vars_v0.weights.xml"),
                                        tthMVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_tth_hadronic_2017Data_30vars_v0.weights.xml"),
                                        topTaggerXMLfile = cms.FileInPath("flashgg/Taggers/data/resTop_xgb_csv_order_deepCTag.xml"),
-                                       tthVsDiphoDNNfile = cms.FileInPath("flashgg/Taggers/data/Hadronic_ttHHadronic_ttH_vs_dipho_v3.10_8Oct2019_weights.pb"),
+                                       tthVsDiphoDNNfile = cms.FileInPath("flashgg/Taggers/data/Hadronic_ttHHadronic_ttH_vs_dipho_legacy_v1.1_27Nov2020_weights.pb"),
                                        tthVsDiphoDNN_global_mean = ttHHadronic_ttH_vs_dipho_DNN_preprocess_scheme["global_mean"],
                                        tthVsDiphoDNN_global_stddev = ttHHadronic_ttH_vs_dipho_DNN_preprocess_scheme["global_stddev"],
                                        tthVsDiphoDNN_object_mean = ttHHadronic_ttH_vs_dipho_DNN_preprocess_scheme["object_mean"],
                                        tthVsDiphoDNN_object_stddev = ttHHadronic_ttH_vs_dipho_DNN_preprocess_scheme["object_stddev"],
-                                       tthVsttGGDNNfile = cms.FileInPath("flashgg/Taggers/data/Hadronic_ttHHadronic_ttH_vs_ttGG_v3.10_8Oct2019_weights.pb"),
+                                       tthVsttGGDNNfile = cms.FileInPath("flashgg/Taggers/data/Hadronic_ttHHadronic_ttH_vs_ttGG_legacy_v1.1_27Nov2020_weights.pb"),
                                        tthVsttGGDNN_global_mean = ttHHadronic_ttH_vs_ttGG_DNN_preprocess_scheme["global_mean"],
                                        tthVsttGGDNN_global_stddev = ttHHadronic_ttH_vs_ttGG_DNN_preprocess_scheme["global_stddev"],
                                        tthVsttGGDNN_object_mean = ttHHadronic_ttH_vs_ttGG_DNN_preprocess_scheme["object_mean"],
                                        tthVsttGGDNN_object_stddev = ttHHadronic_ttH_vs_ttGG_DNN_preprocess_scheme["object_stddev"],
-                                       tthMVA_RunII_weightfile = cms.FileInPath("flashgg/Taggers/data/Hadronic__v3.10_8Oct2019_RunII_MVA_Presel_impute_addDNNs_addTopTag__bdt.xml"),
+                                       tthMVA_RunII_weightfile = cms.FileInPath("flashgg/Taggers/data/Hadronic_legacy_v1.1_27Nov2020_bdt.xml"),
                                        MVAMethod = cms.string("BDT"),     
                                        RECOfilters = cms.InputTag('TriggerResults::RECO'),
                                        leadPhoOverMassThreshold = cms.double(0.33),
@@ -99,14 +99,16 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        secondMaxBTagTTHHMVAThreshold = cms.double(0.0),  
                                        #Boundaries = cms.vdouble(0.9675, 0.9937, 0.9971, 0.9991), 
                                        Boundaries = cms.vdouble(0.986025, 0.9948537, 0.9983046, 0.9990729),
-                                       Boundaries_pt1 = cms.vdouble(0.97087705, 0.9878033, 0.9900327, 0.99430627),
-                                       Boundaries_pt2 = cms.vdouble(0.97961617, 0.9922437, 0.99585503, 0.9980591),
-                                       Boundaries_pt3 = cms.vdouble(0.9776608, 0.9908235, 0.9947924, 0.9986299),
-                                       Boundaries_pt4 = cms.vdouble(0.99397224, 0.99614656, 0.9980287, 0.9989561),
+                                       Boundaries_pt1 = cms.vdouble(0.953620, 0.9934),
+                                       Boundaries_pt2 = cms.vdouble(0.979135, 0.9960),
+                                       Boundaries_pt3 = cms.vdouble(0.968207, 0.9918),
+                                       Boundaries_pt4 = cms.vdouble(0.983024, 0.9942),
+                                       Boundaries_pt5 = cms.vdouble(0.984718, 0.9951),
                                        STXSPtBoundaries_pt1 = cms.vdouble(0,60),
                                        STXSPtBoundaries_pt2 = cms.vdouble(60,120),
                                        STXSPtBoundaries_pt3 = cms.vdouble(120,200),
-                                       STXSPtBoundaries_pt4 = cms.vdouble(200,13001),
+                                       STXSPtBoundaries_pt4 = cms.vdouble(200,300),
+                                       STXSPtBoundaries_pt5 = cms.vdouble(300,13001),
                                        dRJetPhoLeadCut =  cms.double(0.4),
                                        dRJetPhoSubleadCut = cms.double(0.4),                          
                                        MuonEtaCut = cms.double(2.4),
@@ -174,10 +176,10 @@ flashggVHEtTag = cms.EDProducer("FlashggVHEtTagProducer",
                                 #Boundaries=cms.vdouble(0.21,0.6,0.81)
 )
 
-ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme_path = os.path.expandvars("$CMSSW_BASE/src/flashgg/Taggers/data/metadata_Leptonic_ttHLeptonic_ttH_vs_ttGG_v3.10_8Oct2019.json")
+ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme_path = os.path.expandvars("$CMSSW_BASE/src/flashgg/Taggers/data/metadata_Leptonic_ttHLeptonic_ttH_vs_ttGG_legacy_v1.1_27Nov2020.json")
 ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme = TTHDNNPreprocessingConstructor.construct(ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme_path, "Leptonic")
 
-ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme_path = os.path.expandvars("$CMSSW_BASE/src/flashgg/Taggers/data/metadata_Leptonic_ttHLeptonic_ttH_vs_tH_v4.14_ttH_vs_tH_13Jan2020.json")
+ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme_path = os.path.expandvars("$CMSSW_BASE/src/flashgg/Taggers/data/metadata_Leptonic_ttHLeptonic_ttH_vs_tH_legacy_v1.0_ttH_vs_tH_26Nov2020.json")
 ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme = TTHDNNPreprocessingConstructor.construct(ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme_path, "Leptonic", True)
 
 flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
@@ -206,31 +208,33 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        MVAweightfile = cms.FileInPath("flashgg/Taggers/data/TMVAClassification_BDT_training_v2.json.weights.xml"),
                                        topTaggerXMLfile = cms.FileInPath("flashgg/Taggers/data/resTop_xgb_csv_order_deepCTag.xml"),
 
-                                       tthVsttGGDNNfile = cms.FileInPath("flashgg/Taggers/data/Leptonic_ttHLeptonic_ttH_vs_ttGG_v3.10_8Oct2019_weights.pb"),
+                                       tthVsttGGDNNfile = cms.FileInPath("flashgg/Taggers/data/Leptonic_ttHLeptonic_ttH_vs_ttGG_legacy_v1.1_27Nov2020_weights.pb"),
                                        tthVsttGGDNN_global_mean = ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme["global_mean"],
                                        tthVsttGGDNN_global_stddev = ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme["global_stddev"],
                                        tthVsttGGDNN_object_mean = ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme["object_mean"],
                                        tthVsttGGDNN_object_stddev = ttHLeptonic_ttH_vs_ttGG_DNN_preprocess_scheme["object_stddev"],
-                                       tthVstHDNNfile = cms.FileInPath("flashgg/Taggers/data/Leptonic_ttHLeptonic_ttH_vs_tH_v4.14_ttH_vs_tH_13Jan2020_weights.pb"),
+                                       tthVstHDNNfile = cms.FileInPath("flashgg/Taggers/data/Leptonic_ttHLeptonic_ttH_vs_tH_legacy_v1.0_ttH_vs_tH_26Nov2020_weights.pb"),
                                        tthVstHDNN_global_mean = ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme["global_mean"],
                                        tthVstHDNN_global_stddev = ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme["global_stddev"],
                                        tthVstHDNN_object_mean = ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme["object_mean"],
                                        tthVstHDNN_object_stddev = ttHLeptonic_ttH_vs_tH_DNN_preprocess_scheme["object_stddev"],
-                                       tthMVA_RunII_weightfile = cms.FileInPath("flashgg/Taggers/data/Leptonic__v3.10_8Oct2019_RunII_MVA_Presel_addDNNs__bdt.xml"),
+                                       tthMVA_RunII_weightfile = cms.FileInPath("flashgg/Taggers/data/Leptonic_legacy_v1.1_27Nov2020_bdt.xml"),
                                        leadPhoOverMassThreshold = cms.double(0.33),
                                        subleadPhoOverMassThreshold = cms.double(0.25),
                                        tthVstHThreshold = cms.double(0.13699667), # 97% ttH eff
 
                                        #MVAThreshold = cms.vdouble(0.8435, 0.9346, 0.9625, 0.9890),
                                        MVAThreshold = cms.vdouble(0.8997816, 0.95635754, 0.9725133, 0.9870608),
-                                       MVAThreshold_pt1 = cms.vdouble(0.8972818, 0.9608462, 0.9770001, 0.9826471),
-                                       MVAThreshold_pt2 = cms.vdouble(0.872559, 0.94131196),
-                                       MVAThreshold_pt3 = cms.vdouble(0.8220656, 0.94593006),
-                                       MVAThreshold_pt4 = cms.vdouble(0.8541606, 0.94937336),
+                                       MVAThreshold_pt1 = cms.vdouble(0.768557, 0.9240),
+                                       MVAThreshold_pt2 = cms.vdouble(0.801946, 0.9492),
+                                       MVAThreshold_pt3 = cms.vdouble(0.913632, 0.9435),
+                                       MVAThreshold_pt4 = cms.vdouble(0.9104),
+                                       MVAThreshold_pt5 = cms.vdouble(0.7709),
                                        STXSPtBoundaries_pt1 = cms.vdouble(0,60),
                                        STXSPtBoundaries_pt2 = cms.vdouble(60,120),
                                        STXSPtBoundaries_pt3 = cms.vdouble(120,200),
-                                       STXSPtBoundaries_pt4 = cms.vdouble(200,13001),
+                                       STXSPtBoundaries_pt4 = cms.vdouble(200,300),
+                                       STXSPtBoundaries_pt5 = cms.vdouble(200,13001),
                                        PhoMVAThreshold = cms.double(-0.7), 
                                        jetsNumberThreshold = cms.double(1.),
                                        bjetsNumberThreshold = cms.double(0.),
