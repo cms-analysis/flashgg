@@ -304,7 +304,10 @@ modifyTagSequenceForSystematics(process,jetSystematicsInputTags) # normally unco
 print "Printing options"
 print 'acceptance '+str(customize.acceptance)
 print 'tthTagsOnly '+str(customize.tthTagsOnly)
-
+print 'doHHWWggFHptOrdered = ',customize.doHHWWggFHptOrdered
+print 'doHHWWggFHminWHJets = ',customize.doHHWWggFHminWHJets
+print 'doHHWWggFHminWHLead2Jet = ',customize.doHHWWggFHminWHLead2Jet
+print 'doHHWWggFHminHiggsMassOnly = ',customize.doHHWWggFHminHiggsMassOnly
 # process.load("flashgg/Taggers/flashggTagSequence_cfi")
 # process.flashggTagSequence = flashggPrepareTagSequence(customize.metaConditions)
 
@@ -465,7 +468,7 @@ useEGMTools(process)
 
 # Only run systematics for signal events
 # convention: ggh vbf wzh (wh zh) tth
-signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh","WWgg","GluGluToHHTo2G2Qlnu"]
+signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh","WWgg","GluGluToHH"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 print"is_signal:",is_signal
 applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
@@ -748,7 +751,9 @@ for tag in tagList:
                            nScaleWeights=nScaleWeights,
                            splitPdfByStage0Bin=customize.doHTXS,
                            splitPdfByStage1Bin=customize.doStageOne,
-                           dumpGenWeight=customize.dumpGenWeight
+                           dumpGenWeight=customize.dumpGenWeight,
+                           #unbinnedSystematics=True
+                           unbinnedSystematics=(not isBinnedOnly)
                            )
 
 

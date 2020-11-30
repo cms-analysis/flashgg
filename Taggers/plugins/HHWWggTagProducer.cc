@@ -70,6 +70,7 @@ namespace flashgg {
     bool checkPassMVAs(const flashgg::Photon*& leading_photon, const flashgg::Photon*& subleading_photon, edm::Ptr<reco::Vertex>& diphoton_vertex, double EB_Photon_MVA_Threshold, double EE_Photon_MVA_Threshold);
     std::vector<double> GetMuonVars(const std::vector<edm::Ptr<flashgg::Muon> > &muonPointers, const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers);
     std::vector<double> GetJetVars(const std::vector<edm::Ptr<flashgg::Jet> > &jetPointers, const edm::Ptr<flashgg::DiPhotonCandidate> dipho);
+    vector<Ptr<flashgg::Jet>> GetFHPtOrderedJets(bool doHHWWggDebug_, std::vector<edm::Ptr<Jet> > tagJets_);
     vector<Ptr<flashgg::Jet>> GetFHminWHJets(bool doHHWWggDebug_, std::vector<edm::Ptr<Jet> > tagJets_);
     vector<Ptr<flashgg::Jet>> GetFHminWHLead2Jet(bool doHHWWggDebug_, std::vector<edm::Ptr<Jet> > tagJets_);
     vector<Ptr<flashgg::Jet>> GetFHminHiggsMassOnly(bool doHHWWggDebug_, std::vector<edm::Ptr<Jet> > tagJets_);
@@ -194,7 +195,7 @@ namespace flashgg {
     double dipho_MVA;
     edm::InputTag genInfo_;
     edm::EDGetTokenT<GenEventInfoProduct> genInfoToken_;
-    TH1F* nEvents;
+    // TH1F* nEvents;
 
     bool HHWWgguseZeroVtx_; 
   };
@@ -258,7 +259,7 @@ namespace flashgg {
 
       genInfo_ = pSet.getUntrackedParameter<edm::InputTag>( "genInfo", edm::InputTag("generator") );
       genInfoToken_ = consumes<GenEventInfoProduct>( genInfo_ );
-      nEvents = fs->make<TH1F> ("nEvents", "nEvents", 2,0,2);
+      // nEvents = fs->make<TH1F> ("nEvents", "nEvents", 2,0,2);
       // diphopt = fs->make<TH1F> ("diphopt", "diphopt", 500,0,500);
       // phoptsum = fs->make<TH1F> ("phoptsum", "phoptsum", 500,0,500);
 
@@ -746,6 +747,71 @@ namespace flashgg {
       {
         for (int j = i+1; i < 4; ++i)
         {
+          jet11 = tagJets_[TempJet[i]];
+          jet12 = tagJets_[TempJet[j]];
+          double deltaMass = abs( (jet11->p4() + jet12->p4()).M() - 80.0);
+          if (deltaMass < TempMinWMass)
+          {
+            OnShellW_LeadingJetIndex = TempJet[i];
+            OnShellW_SubLeadingJetIndex = TempJet[j];
+            TempMinWMass = deltaMass;
+          }
+        }
+      }
+
+      int TempJetCounter = 0;
+      for (int i = 0; i < 4; ++i)
+      {
+        if (i == OnShellW_LeadingJetIndex || i == OnShellW_SubLeadingJetIndex) continue;
+        TempJetCounter +=1;
+        if (TempJetCounter == 1) OffShellW_LeadingJetIndex = i;
+        if (TempJetCounter == 2) OffShellW_SubLeadingJetIndex = i;
+      }
+
+      jet1 = tagJets_[OnShellW_LeadingJetIndex];
+      jet2 = tagJets_[OnShellW_SubLeadingJetIndex];
+      jet3 = tagJets_[OffShellW_LeadingJetIndex];
+      jet4 = tagJets_[OffShellW_SubLeadingJetIndex];
+
+      if (DEBUG) std::cout << "[INFO] Print pt of 4 selected jets: " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
+      if (DEBUG) std::cout << "[INFO] jet1 pT = " << jet1->p4().pt() << std::endl;
+      if (DEBUG) std::cout << "[INFO] jet2 pT = " << jet2->p4().pt() << std::endl;
+      if (DEBUG) std::cout << "[INFO] jet3 pT = " << jet3->p4().pt() << std::endl;
+      if (DEBUG) std::cout << "[INFO] jet4 pT = " << jet4->p4().pt() << std::endl;
+
+      FHJets_.push_back(jet1);
+      FHJets_.push_back(jet2);
+      FHJets_.push_back(jet3);
+      FHJets_.push_back(jet4);
+
+      return FHJets_;
+    }
+
+
+    vector<Ptr<flashgg::Jet> > HHWWggTagProducer::GetFHPtOrderedJets(bool doHHWWggDebug, std::vector<edm::Ptr<Jet> > tagJets_)
+    {
+      // get 4 jets for FH final state with minWH vals
+      std::vector<edm::Ptr<flashgg::Jet> > FHJets_;
+      bool DEBUG = doHHWWggDebug;
+      double TempMinWMass = 999999.0;
+
+      int OnShellW_LeadingJetIndex = -1;
+      int OnShellW_SubLeadingJetIndex = -1;
+      int OffShellW_LeadingJetIndex = -1;
+      int OffShellW_SubLeadingJetIndex = -1;
+
+      Ptr<flashgg::Jet> jet11;
+      Ptr<flashgg::Jet> jet12;
+      Ptr<flashgg::Jet> jet1;
+      Ptr<flashgg::Jet> jet2;
+      Ptr<flashgg::Jet> jet3;
+      Ptr<flashgg::Jet> jet4;
+
+      TempMinWMass = 9999.0;
+      for (int i = 0; i < 3; ++i)
+      {
+        for (int j = i+1; i < 4; ++i)
+        {
           jet11 = tagJets_[i];
           jet12 = tagJets_[j];
           double deltaMass = abs( (jet11->p4() + jet12->p4()).M() - 80.0);
@@ -757,6 +823,7 @@ namespace flashgg {
           }
         }
       }
+      if (DEBUG) std::cout << "[INFO] Print pt of 2 selected jets: " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
 
       int TempJetCounter = 0;
       for (int i = 0; i < 4; ++i)
@@ -797,7 +864,6 @@ namespace flashgg {
     // int Event_num = 1;
     void HHWWggTagProducer::produce( Event &event, const EventSetup & )
     {
-      cout << "[INFO][HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce:: " << endl;
       if (doHHWWggDebug_) cout << "[INFO][HHWWggTagProducer.cc] - Beginning of HHWWggTagProducer::produce" << endl;
       if (doHHWWggDebug_) cout << "[HHWWggTagProducer.cc] - systLabel: " << systLabel_ << endl;  
 
@@ -811,7 +877,7 @@ namespace flashgg {
       double pass_leadPhoOverMassThreshold = 0, pass_subleadPhoOverMassThreshold = 0;
 
       if(doHHWWggTagCutFlowAnalysis_) Cut_Variables[19] = 1.0; // Count number of events
-      nEvents->Fill(1.0);
+      // nEvents->Fill(1.0);
 
       //read reweighting
       vector<float> reweight_values;
@@ -1469,7 +1535,7 @@ namespace flashgg {
                 jet3 = FHJets[2];
                 jet4 = FHJets[3];
               }
-              else if (doHHWWggFHminHiggsMassOnly_)
+              else if (doHHWWggFHminHiggsMassOnly_) // kept doHHWWggFHminHiggsMassOnly_ to true in Taggers/python/flashggHHWWggTag_cfi.py; this ensures that this won't eneter in the last else
               {
                 if (doHHWWggDebug_) std::cout << "\n\n=============> doHHWWggFHminHiggsMassOnly_ ==================\n\n" << std::endl;
                 FHJets = GetFHminHiggsMassOnly(doHHWWggDebug_, tagJets);

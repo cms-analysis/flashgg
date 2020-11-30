@@ -55,9 +55,12 @@ year=""
 doNonResAnalysis="" # do non resonant analysis
 HHWWggAnalysisChannel="SL"
 doHHWWggFHptOrdered="false" # fully hadronic jets selection; if pt ordered selection it should be true
+doHHWWggFHminWHJets="false" # fully hadronic jets selection; if pt ordered selection it should be true
+doHHWWggFHminWHLead2Jet="false" # fully hadronic jets selection; if pt ordered selection it should be true
+doHHWWggFHminHiggsMassOnly="false" # fully hadronic jets selection; if pt ordered selection it should be true
 
 ## Get user specified argumenets
-options=$(getopt -o gcvstwrnf --long channel: --long nEvents: --long output: --long labelName: --long json: --long condorQueue: --long year: -- "$@") # end name with colon ':' to specify argument string
+options=$(getopt -o gcvstwrnfpqz --long channel: --long nEvents: --long output: --long labelName: --long json: --long condorQueue: --long year: -- "$@") # end name with colon ':' to specify argument string
 
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
@@ -75,6 +78,9 @@ while true; do
       -r) dryRun="true" ;;
       -n) doNonResAnalysis="true" ;;
       -f) doHHWWggFHptOrdered="true" ;;
+      -p) doHHWWggFHminWHJets="true" ;;
+      -q) doHHWWggFHminWHLead2Jet="true" ;;
+      -z) doHHWWggFHminHiggsMassOnly="true" ;;
       --channel) shift; HHWWggAnalysisChannel=$1 ;;
       --output) shift; ntupleDirec=$1 ;;
       --nEvents) shift; numEvents=$1 ;;
@@ -235,9 +241,23 @@ then
       if [ $doHHWWggFHptOrdered == 'true' ]
       then
         command+=' doHHWWggFHptOrdered=True '
-        #statements
       fi
 
+      if [ $doHHWWggFHminWHJets == 'true' ]
+      then
+        command+=' doHHWWggFHminWHJets=True '
+      fi
+
+      if [ $doHHWWggFHminWHLead2Jet == 'true' ]
+      then
+        command+=' doHHWWggFHminWHLead2Jet=True '
+      fi
+
+      if [ $doHHWWggFHminHiggsMassOnly == 'true' ]
+      then
+        command+=' doHHWWggFHminHiggsMassOnly=True '
+      fi
+                  
       command+=' HHWWggAnalysisChannel='${HHWWggAnalysisChannel}
 fi
 

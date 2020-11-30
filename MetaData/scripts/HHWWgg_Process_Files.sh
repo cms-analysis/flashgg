@@ -171,15 +171,15 @@ do
                  # Input root file should be named such that its fourth '_' delimited
                  # element should be "qqqq" or "lnuqq" or "lnulnu" (channel name) and
                  # fifth '_' delimited element should be like "nodeX".
-                 node="$(cut -d'_' -f5 <<<$file_i)" # get fifth '_' delimited element. nodeX.root
+                 node="$(cut -d'_' -f4 <<<$file_i)" # get fifth '_' delimited element. nodeX.root
                  node=${node//'.root'/} # remove ".root"
-                 FinalState="$(cut -d'_' -f4 <<<$file_i)" # get fourth '_' delimited element. qqqq_nodeX.root
+                 FinalState="$(cut -d'_' -f2 <<<$file_i)" # get fourth '_' delimited element. qqqq_nodeX.root
                  channel="$(cut -d'_' -f3 <<<$file_i)" # get third '_' delimited element. qqqq_nodeX.root
                  echo "node: ${node}"
                  echo "FinalState: ${FinalState}"
                  echo "channel: ${channel}"
                  infilePath="${nTupleDirec}/${inputFolder}/${file_i}"
-                 outfilePath="${nTupleDirec}/${outputFolder}/${node}_HH${channel}_${FinalState}.root" ##-- I think it's helpful to have the production mode in the name
+                 outfilePath="${nTupleDirec}/${outputFolder}/node${node}_${FinalState}.root" ##-- I think it's helpful to have the production mode in the name
                  # EXAMPLE: outfilePath="${nTupleDirec}/${outputFolder}/node11_HHWWgg_lnuqq.root"
            elif [[ ${signalType} == "NMSSM" ]]; then
                  #ex: output_NMSSM_XYHWWggqqlnu_MX2000_MY1800_15.root
