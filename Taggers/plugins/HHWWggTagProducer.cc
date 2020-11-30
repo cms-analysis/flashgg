@@ -926,9 +926,6 @@ namespace flashgg {
       // update global variables
       // globalVariablesComputer_.update(event);
 
-      // Get particle objects
-      // event.getByToken( genParticleToken_, genParticle );
-
       //---output collection
       // std::unique_ptr<vector<HHWWggTag> > tags( new vector<HHWWggTag> );
       int n_good_electrons = 0;
@@ -939,7 +936,7 @@ namespace flashgg {
       float btagVal = 0;
       // double leadPho_pt = 0;
       // double subleadPho_pt = 0;
-      // double sumpT = 0;
+      double sumpT = 0;
       double diPho_pT = 0;
 
       // Vertex 
@@ -951,7 +948,7 @@ namespace flashgg {
       double num_FL_dr = 0;
       float dr_ll = 0;
 
-      bool passMVAs = 0; // True if leading and subleading photons pass MVA selections
+      // bool passMVAs = 0; // True if leading and subleading photons pass MVA selections
 
       int catnum = 4; // category number. default to untagged
 
@@ -992,7 +989,6 @@ namespace flashgg {
       if (vertices->size() > 0){
         zero_vertex = vertices->ptrAt( 0 );
         ZeroVtx_z = zero_vertex->z();
-        // cout << "ZeroVtx_z : " << ZeroVtx_z << endl; 
       }
 
       //-- MC truth
@@ -1013,16 +1009,6 @@ namespace flashgg {
                   higgsVtx = genParticles->ptrAt( genLoop )->vertex(); // for dZ calculation
                   GenVtx_z = higgsVtx.z();
               } 
-
-              // int pdgid = genParticles->ptrAt( genLoop )->pdgId();
-              // pdgId->Fill(pdgid);
-
-              // if( pdgid == 25 || pdgid == 22 ) { // not so sure if this is correct for HHWWgg because of potential photons from hadronization
-              // if( pdgid == 25 ) {
-              //     higgsVtx = genParticles->ptrAt( genLoop )->vertex();
-              //     // gen_vertex_z = higgsVtx.z();
-              //     break;
-              // }
           }
           if (selHiggses.size()==2){
               TLorentzVector H1,H2;
@@ -1037,7 +1023,7 @@ namespace flashgg {
 
       // METfilters
       // bool passMETfilters=1;
-      //Get trigger results relevant to MET filters
+      // Get trigger results relevant to MET filters
 
       edm::Handle<edm::TriggerResults> triggerBits;
       if(! event.isRealData() )
@@ -1080,89 +1066,36 @@ namespace flashgg {
       }
 
       if(doHHWWggTagCutFlowAnalysis_) Cut_Variables[0] = 1.0; // passed diphoton preselection
-      // read diphotons
-      // for (unsigned int diphoton_idx = 0; diphoton_idx < diPhotonTokens_.size(); diphoton_idx++) { //looping over all diphoton systematics
-        // cout << "diphoton_idx = " << diphoton_idx << endl;
-        // diphoton_idx_h->Fill(diphoton_idx);
-        // Handle<View<flashgg::DiPhotonCandidate> > diPhotons;
 
-        //---
-        // event.getByToken( diPhotonTokens_[diphoton_idx], diPhotons ); // for each diphoton systematic
-        // event.getByToken( diphotonToken_, diphotons ); // without looping over diphoton systematics
-        //---
-
-        // unsigned int loopOverJets = 1;
-        // if (inputDiPhotonSuffixes_[diphoton_idx].empty()) loopOverJets = inputJetsSuffixes_.size();
-
-        // for (unsigned int jet_col_idx = 0; jet_col_idx < loopOverJets; jet_col_idx++) {//looping over all jet systematics, only for nominal diphotons
-          // cout << "jet_col_idx = " << jet_col_idx << endl;
         std::unique_ptr<vector<HHWWggTag> > HHWWggtags( new vector<HHWWggTag> );
 
-        // if (diPhotons->size() > 0){ // for each systematic
-
-      // if(doHHWWggDebug_){
-    
-      //   for( unsigned int diphoIndex = 0; diphoIndex < diphotons->size(); diphoIndex++ ){
-      //     edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex );
-      //     const flashgg::Photon* leadPho = dipho->leadingPhoton();
-      //     const flashgg::Photon* subleadPho = dipho->subLeadingPhoton();     
-      //     diPho_pT = dipho->pt();
-      //     // cout << "dipho " << diphoIndex << " pT: " << diPho_pT << endl;
-      //     leadPho_pt = leadPho->pt();
-      //     subleadPho_pt = subleadPho->pt();
-      //     sumpT = leadPho_pt + subleadPho_pt; 
-      //     // cout << "dipho " << diphoIndex << " sum pT: " << sumpT << endl;     
-      //     // diphopTs->Fill(diPho_pT,sumpT);  
-      //   }
-
-      // }
-
-        if (diphotons->size() > 0){
-        for( unsigned int diphoIndex = 0; diphoIndex < 1; diphoIndex++ )
-        { // only look at highest sumpt dipho
-          // edm::Ptr<flashgg::DiPhotonCandidate> dipho = Corrdiphoton;
-          // edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( diphoIndex ); // systematic loop
+        // Loop through preselected diphotons. If more than one, it's possible the 2nd preselected diphoton will be tagged but not the 1st.
+        for( unsigned int diphoIndex = 0; diphoIndex < diphotons->size(); diphoIndex++ )
+        { 
           edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex ); // without systematic look (?)
           edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );
-          // cout << "dipho pt = " << dipho->genP4().pt() << endl;
-
-          // indexes->Fill(diphoton_vertex_index); // running
 
           //-- Get Photons
           const flashgg::Photon* leadPho = dipho->leadingPhoton();
           const flashgg::Photon* subleadPho = dipho->subLeadingPhoton();
-          // sumpT = leadPho->pt() + subleadPho->pt();
+          sumpT = leadPho->pt() + subleadPho->pt();
           diPho_pT = dipho->pt();
 
           // diPhoton pT cut
-          // if (HHWWggAnalysisChannel_ == "FH" && diPho_pT < 160.0)  continue;
-          // if (HHWWggAnalysisChannel_ == "FL" && diPho_pT < 54.0)  continue;
-          // if (HHWWggAnalysisChannel_ == "SL" && sumpT < 100.0)  continue;
-
           if(doHHWWggNonResAnalysis_){
-            // leadPho_pt = leadPho->pt();
-            // subleadPho_pt = subleadPho->pt();
-            // sumpT = leadPho_pt + subleadPho_pt;
-            if(!doHHWWggTagCutFlowAnalysis_ && diPho_pT < 100.)
-            {
-              std::cout<<"Photon pt > 100 cut applied" << std::endl;
-              //if (Event_num==1) std::cout<<"Photon pt > 100 cut applied" << std::endl;
-              continue; // if not doing cut flow analysis to save events, remove event
-            }
+            if(!doHHWWggTagCutFlowAnalysis_ && HHWWggAnalysisChannel_ == "SL" && sumpT < 100.) continue; // if not doing cut flow analysis to save events, remove event
+            if(!doHHWWggTagCutFlowAnalysis_ && HHWWggAnalysisChannel_ == "FL" && diPho_pT < 54.) continue; // if not doing cut flow analysis to save events, remove event
+            if(!doHHWWggTagCutFlowAnalysis_ && HHWWggAnalysisChannel_ == "FH" && diPho_pT < 200.) continue; // if not doing cut flow analysis to save events, remove event
           }
 
           //-- MVA selections
           diphoton_vertex = dipho->vtx();
-          // diphoton_vertex_index = dipho->vertexIndex();
-          // cout << "diphoton vertex index = " << diphoton_vertex_index << endl;
-          // cout << "diphoton vertex x = " << diphoton_vertex->x() << endl;
-          // cout << "diphoton vertex y = " << diphoton_vertex->y() << endl;
-          // cout << "diphoton vertex z = " << diphoton_vertex->z() << endl;
           if(HHWWgguseZeroVtx_) HggVtx_z = -999; 
           else HggVtx_z = diphoton_vertex->z();
           
-          passMVAs = 0;
-          passMVAs = checkPassMVAs(leadPho, subleadPho, diphoton_vertex, EB_Photon_MVA_Threshold_, EE_Photon_MVA_Threshold_);
+          // Removing MVA selection as we don't have the custom SFs 
+          // passMVAs = 0;
+          // passMVAs = checkPassMVAs(leadPho, subleadPho, diphoton_vertex, EB_Photon_MVA_Threshold_, EE_Photon_MVA_Threshold_);
 
           // leading/subleading photon pt
           if( dipho->leadingPhoton()->pt() > ( dipho->mass() )*leadPhoOverMassThreshold_ ){
@@ -1172,15 +1105,15 @@ namespace flashgg {
               pass_subleadPhoOverMassThreshold = 1;
             }
 
-          // Doing cut flow analysis: Don't skip event, but check if photon selections are passed
+          // // Doing cut flow analysis: Don't skip event, but check if photon selections are passed
           if(doHHWWggTagCutFlowAnalysis_){
-            if(!passMVAs || !pass_leadPhoOverMassThreshold || !pass_subleadPhoOverMassThreshold) Cut_Variables[1] = 0.0; // failed photon selections
+            if( !pass_leadPhoOverMassThreshold || !pass_subleadPhoOverMassThreshold ) Cut_Variables[1] = 0.0; // failed photon selections
             else Cut_Variables[1] = 1.0; // passed photon selections
           }
 
-          // Not doing cut flow analysis: Skip event if photon selections are not passed
+          // // Not doing cut flow analysis: Skip event if photon selections are not passed
           else{
-            if(!passMVAs || !pass_leadPhoOverMassThreshold || !pass_subleadPhoOverMassThreshold) continue; // Do not save event if leading and subleading photons don't pass MVA cuts or pt/mgg cuts
+            if( !pass_leadPhoOverMassThreshold || !pass_subleadPhoOverMassThreshold ) continue; // Do not save event if leading and subleading photons don't pass pt/mgg cuts
           }
 
           // Check MET Filters
@@ -1191,8 +1124,8 @@ namespace flashgg {
           hasGoodElec = false;
           hasGoodMuons = false;
           dipho_MVA = mvares->result;
+
           // Electrons
-          // std::vector<edm::Ptr<Electron> > goodElectrons;
           std::vector<edm::Ptr<Electron> > goodElectrons = selectStdElectrons( electrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
                                                                               useElectronMVARecipe_,useElectronLooseID_,
                                                                               deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_,
@@ -1226,6 +1159,8 @@ namespace flashgg {
 
           // FL: Require at dr(l,l) > 0.4
           // For which pairs of the >=2 good leptons should dr be greater than 4?
+
+          // Should define as a function and move to the FL section 
           if (hasGoodElec && hasGoodMuons){
             for (unsigned int ei = 0; ei < goodElectrons.size(); ei++){
               Ptr<flashgg::Electron> electron = goodElectrons[ei];
@@ -1319,6 +1254,7 @@ namespace flashgg {
               }
 
           // If jet collection has a jet suspected to be a bjet, don't save the event
+          // Need to use working point 
           hasHighbTag = 0;
           Savejet = 1;
           for (unsigned int j = 0; j < tagJets.size(); j++){
@@ -1341,16 +1277,6 @@ namespace flashgg {
           // MET
           if( METs->size() != 1 ) { std::cout << "WARNING - #MET is not 1" << std::endl;}
           Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
-
-          // how to go from pointer 'jet' to object '*thisJetPointer'
-          //flashgg::Jet * thisJetPointer = const_cast<flashgg::Jet *>(jet.get());
-          //JetVector.push_back(*thisJetPointer);
-
-          // for (unsigned int i = 0; i < tagJets.size(); i++){
-            // auto tag_jet = tagJets[i];
-            // flashgg::Jet * thisJetPointer = const_cast<flashgg::Jet *>(tag_jet.get());
-            // tagJets_.push_back(*thisJetPointer);
-          // }
 
           if (doHHWWggTagCutFlowAnalysis_){
             if (n_good_leptons == 1) Cut_Variables[3] = 1.0; // exactly one good lepton
@@ -1864,8 +1790,7 @@ namespace flashgg {
                 }
               }
             } // Untagged category
-        } // Diphoton loop 
-      } // if at least 1 PS diphoton
+        } // Preselected Diphoton loop 
       event.put( std::move( HHWWggtags ) );
       event.put( std::move( truths ) );
     } // HHWWggTagProducer::produce

@@ -265,9 +265,9 @@ customize.options.register('applyNNLOPSweight',
                            )
 
 
-print "Printing defaults"
-print 'acceptance '+str(customize.acceptance)
-print 'tthTagsOnly '+str(customize.tthTagsOnly)
+# print "Printing defaults"
+# print 'acceptance '+str(customize.acceptance)
+# print 'tthTagsOnly '+str(customize.tthTagsOnly)
 
 # import flashgg customization to check if we have signal or background
 from flashgg.MetaData.JobConfig import customize
@@ -297,13 +297,9 @@ modifyTagSequenceForSystematics(process,jetSystematicsInputTags) # normally unco
 # process.systematicsTagSequences = cms.Sequence()
 # process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
 
-print "Printing options"
-print 'acceptance '+str(customize.acceptance)
-print 'tthTagsOnly '+str(customize.tthTagsOnly)
-print 'doHHWWggFHptOrdered = ',customize.doHHWWggFHptOrdered
-print 'doHHWWggFHminWHJets = ',customize.doHHWWggFHminWHJets
-print 'doHHWWggFHminWHLead2Jet = ',customize.doHHWWggFHminWHLead2Jet
-print 'doHHWWggFHminHiggsMassOnly = ',customize.doHHWWggFHminHiggsMassOnly
+# print "Printing options"
+# print 'acceptance '+str(customize.acceptance)
+# print 'tthTagsOnly '+str(customize.tthTagsOnly)
 # process.load("flashgg/Taggers/flashggTagSequence_cfi")
 # process.flashggTagSequence = flashggPrepareTagSequence(customize.metaConditions)
 
@@ -415,8 +411,18 @@ useEGMTools(process)
 signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh","WWgg","GluGluToHH"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 print"is_signal:",is_signal
-applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
-print("applyL1Prefiring: ",applyL1Prefiring)
+
+##-- Run without L1 + jet syst. for faster local testing 
+# applyL1Prefiring = 0 
+# if(customize.doHHWWggDebug): 
+    # applyL1Prefiring = 0 
+    # process.flashggTagSequence.remove(process.flashggPrefireDiPhotons)
+# 
+# else:
+    # applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)    
+     
+applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)   
+print("applyL1Prefiring:",applyL1Prefiring)
 #if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance") or customize.processId.count("hh_"): 
 if is_signal:
     print "Signal MC, so adding systematics and dZ"
@@ -516,9 +522,9 @@ if customize.HHWWggTagsOnly:
 print "--- Systematics  with independent collections ---"
 print systlabels
 print "-------------------------------------------------"
-print "--- Variables to be dumped, including systematic weights ---"
-print variablesToUse
-print "------------------------------------------------------------"
+# print "--- Variables to be dumped, including systematic weights ---"
+# print variablesToUse
+# print "------------------------------------------------------------"
 
 #from flashgg.Taggers.globalVariables_cff import globalVariables
 #globalVariables.extraFloats.rho = cms.InputTag("rhoFixedGridAll")
@@ -776,7 +782,8 @@ if customize.tthTagsOnly or customize.HHWWggTagsOnly:
                             process.flashggDiPhotonSystematics*
                             process.flashggMetSystematics*
                             process.flashggMuonSystematics*process.flashggElectronSystematics*
-                            (process.flashggUnpackedJets*process.jetSystematicsSequence)*
+                            # (process.flashggUnpackedJets)*
+                            (process.flashggUnpackedJets*process.jetSystematicsSequence)* # jetSystematicsSequence takes a while? --> required for flashggPrefireDiPhotons 
                             #  process.content* ##-- nice for printing out info 
                             (process.flashggTagSequence*process.systematicsTagSequences)*
                             process.flashggSystTagMerger*
@@ -938,13 +945,13 @@ if customize.verboseTagDump:
 ## Additional details on tag sorter steps ##
 ############################################
 
-if customize.verboseTagDump:
-    process.flashggTagSorter.Debug = True
-    customize.maxEvents = 10
+# if customize.verboseTagDump:
+#     process.flashggTagSorter.Debug = True
+#     customize.maxEvents = 10
                            
-if customize.verboseSystDump:
-    turnOnAllSystematicsDebug(process)
-    customize.maxEVents = 10
+# if customize.verboseSystDump:
+#     turnOnAllSystematicsDebug(process)
+#     customize.maxEVents = 10
 
 ##############
 ## Dump EDM ##
