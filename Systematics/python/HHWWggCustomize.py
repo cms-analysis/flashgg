@@ -481,6 +481,7 @@ class HHWWggCustomize():
             self.process.flashggTagSequence.remove(self.process.flashggUntagged)
             self.process.flashggTagSequence.remove(self.process.flashggUntagged)
             self.process.flashggTagSequence.remove(self.process.flashggTHQLeptonicTag)
+            self.process.flashggTagSequence.remove(self.process.flashggVHhadMVA)
 
         self.process.flashggTagSequence.replace(self.process.flashggTagSorter,self.process.flashggHHWWggTagSequence*self.process.flashggTagSorter)
         self.process.flashggTagSorter.TagPriorityRanges = cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggHHWWggTag')) )
