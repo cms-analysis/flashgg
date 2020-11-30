@@ -939,7 +939,8 @@ namespace flashgg {
       float btagVal = 0;
       // double leadPho_pt = 0;
       // double subleadPho_pt = 0;
-      double sumpT = 0;
+      // double sumpT = 0;
+      double diPho_pT = 0;
 
       // Vertex 
       double GenVtx_z = -999; 
@@ -1130,19 +1131,19 @@ namespace flashgg {
           //-- Get Photons
           const flashgg::Photon* leadPho = dipho->leadingPhoton();
           const flashgg::Photon* subleadPho = dipho->subLeadingPhoton();
-          sumpT = dipho->pt();
+          // sumpT = leadPho->pt() + subleadPho->pt();
+          diPho_pT = dipho->pt();
 
           // diPhoton pT cut
-          // if (HHWWggAnalysisChannel_ == "FH" && sumpT < 160.0)  continue;
-          // if (HHWWggAnalysisChannel_ == "FL" && sumpT < 54.0)  continue;
+          // if (HHWWggAnalysisChannel_ == "FH" && diPho_pT < 160.0)  continue;
+          // if (HHWWggAnalysisChannel_ == "FL" && diPho_pT < 54.0)  continue;
           // if (HHWWggAnalysisChannel_ == "SL" && sumpT < 100.0)  continue;
 
           if(doHHWWggNonResAnalysis_){
             // leadPho_pt = leadPho->pt();
             // subleadPho_pt = subleadPho->pt();
             // sumpT = leadPho_pt + subleadPho_pt;
-            sumpT = dipho->pt();
-            if(!doHHWWggTagCutFlowAnalysis_ && sumpT < 100.)
+            if(!doHHWWggTagCutFlowAnalysis_ && diPho_pT < 100.)
             {
               std::cout<<"Photon pt > 100 cut applied" << std::endl;
               //if (Event_num==1) std::cout<<"Photon pt > 100 cut applied" << std::endl;
@@ -1336,8 +1337,6 @@ namespace flashgg {
           }
           else if(hasHighbTag) continue; // Skip event if it has at least one jet with a btag above threshold, and you're not doing a cut flow analysis
           n_good_jets = tagJets.size();
-          // if(hasHighbTag) continue;
-          // std::cout << "hasHighbTag: " << hasHighbTag << std::endl;
 
           // MET
           if( METs->size() != 1 ) { std::cout << "WARNING - #MET is not 1" << std::endl;}
@@ -1508,10 +1507,11 @@ namespace flashgg {
               // Define four jets with WH min method, or just take four leading pT
               if(doHHWWggFHptOrdered_){
                 if (doHHWWggDebug_) std::cout << "\n\n=============> doHHWWggFHptOrdered_ ==================\n\n" << std::endl;
-                jet1 = tagJets[0];
-                jet2 = tagJets[1];
-                jet3 = tagJets[2];
-                jet4 = tagJets[3];
+                FHJets = GetFHPtOrderedJets(doHHWWggDebug_, tagJets);
+                jet1 = FHJets[0];
+                jet2 = FHJets[1];
+                jet3 = FHJets[2];
+                jet4 = FHJets[3];
               }
               else if (doHHWWggFHminWHJets_)
               {

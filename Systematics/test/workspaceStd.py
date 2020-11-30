@@ -292,7 +292,6 @@ jetSystematicsInputTags = createStandardSystematicsProducers(process , customize
 if dropVBFInNonGold:
     process.flashggVBFTag.SetArbitraryNonGoldMC = True
     process.flashggVBFTag.DropNonGoldData = True
-
 modifyTagSequenceForSystematics(process,jetSystematicsInputTags) # normally uncommented 
 # HHWWgg testing: 
 # process.systematicsTagSequences = cms.Sequence()
@@ -393,7 +392,6 @@ if customize.tthTagsOnly:
     
     process.flashggDiPhotonSystematics.SystMethods = newvpset
 
-
 # if customize.HHWWggTagsOnly:    
 #     print "Removing FracRVNvtxWeight from syst and adding  PixelSeed"
     
@@ -418,7 +416,7 @@ signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_"
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 print"is_signal:",is_signal
 applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
-print("applyL1Prefiring:",applyL1Prefiring)
+print("applyL1Prefiring: ",applyL1Prefiring)
 #if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance") or customize.processId.count("hh_"): 
 if is_signal:
     print "Signal MC, so adding systematics and dZ"
@@ -485,9 +483,6 @@ if is_signal:
                     phosystlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
                     for var in ["Rho","Phi"]:
                         phosystlabels.append("MCSmear%s%s%s%s01sigma" % (r9,region,var,direction))
-       
-#############################################################
-        
         systlabels += phosystlabels
         systlabels += jetsystlabels
         systlabels += metsystlabels
