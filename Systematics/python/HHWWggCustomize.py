@@ -440,6 +440,7 @@ class HHWWggCustomize():
         self.process.flashggHHWWggTag.HHWWggAnalysisChannel = self.customize.HHWWggAnalysisChannel
         if self.customize.HHWWggAnalysisChannel == "FL": 
            self.process.flashggHHWWggTag.deltaMassElectronZThreshold = 5 # 5 instead of default 10  
+           self.process.flashggHHWWggTag.jetPtThreshold = 20
         
         # if self.customize.saveHHWWggGenVars:
             # self.process.flashggHHWWggTag.saveHHWWggGenVars = cms.bool(True)
