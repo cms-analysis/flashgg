@@ -7,20 +7,11 @@ from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections, flashggDeepCSV
 import flashgg.Taggers.flashggDoubleHReweight_cfi as reweight_settings
 from flashgg.Taggers.flashggDoubleHReweight_cfi import flashggDoubleHReweight
 
-# # to not run jets systematics
-# UnpackedJetCollectionVInputTag =  cms.VInputTag(
-#     cms.InputTag("flashggUnpackedJets","0"), cms.InputTag("flashggUnpackedJets","1"), cms.InputTag("flashggUnpackedJets","2"), cms.InputTag("flashggUnpackedJets","3"), cms.InputTag("flashggUnpackedJets","4"),
-#     cms.InputTag("flashggUnpackedJets","5"), cms.InputTag("flashggUnpackedJets","6"), cms.InputTag("flashggUnpackedJets","7"), cms.InputTag("flashggUnpackedJets","8"), cms.InputTag("flashggUnpackedJets","9"),
-#     cms.InputTag("flashggUnpackedJets","10"), cms.InputTag("flashggUnpackedJets","11")
-# )
-
-
 # cfi = configuration fragment include
 # Clone these params into _cfg
 flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     globalVariables=globalVariables,
                                     PhotonTag = cms.InputTag('flashggRandomizedPhotons'),
-                                    # DiPhotonTag = cms.InputTag('flashggDiPhotonSystematics'),
                                     DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons'),
                                     SystLabel = cms.string(""),
                                     JetsName = cms.string("bRegProducer"), #
@@ -29,13 +20,11 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     DiPhotonName = cms.string('flashggPreselectedDiPhotons'), #
                                     VertexTag = cms.InputTag('offlineSlimmedPrimaryVertices'),
                                     GenParticleTag         = cms.InputTag('flashggPrunedGenParticles'),
-                                    ElectronTag            = cms.InputTag('flashggSelectedElectrons'),
-                                    MuonTag                = cms.InputTag('flashggSelectedMuons'),
-                                    METTag                 = cms.InputTag('flashggMets'),
-                                    # METTag                 = cms.InputTag('flashggMetsCorr'), # RunIIFall17-3-2-0 contains these and NOT flashggMets
+                                    ElectronTag            = cms.InputTag('flashggElectronSystematics'),
+                                    MuonTag                = cms.InputTag('flashggMuonSystematics'),
+                                    METTag                 = cms.InputTag('flashggMetSystematics'),
                                     JetTags                = UnpackedJetCollectionVInputTag,
                                     DiPhotonSuffixes = cms.vstring(''), #nominal and systematic variations
-                                    useVertex0only=cms.bool(False),
                                     MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
                                     leptonPtThreshold = cms.double(10.),
                                     muonEtaThreshold = cms.double(2.4),
@@ -58,7 +47,6 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     LongitudinalImpactParam = cms.double(0.2),
                                     deltaRPhoElectronThreshold = cms.double(0.4), # was 1
                                     deltaMassElectronZThreshold = cms.double(10.),
-                                    # deltaMassElectronZ_FL_Threshold = cms.double(5.), # set in hhwwgg customize instead 
                                     electronEtaThresholds=cms.vdouble(1.4442,1.566,2.5),
                                     nonTrigMVAThresholds = cms.vdouble(0.913286,0.805013,0.358969),
                                     nonTrigMVAEtaCuts = cms.vdouble(0.8,1.479,2.5),
@@ -70,8 +58,6 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     RECOfilters = cms.InputTag('TriggerResults::RECO'),
                                     PATfilters = cms.InputTag('TriggerResults::PAT'),
                                     FLASHfilters = cms.InputTag('TriggerResults::FLASHggMicroAOD'),
-                                    # bTag = cms.string(flashggDeepCSV),
-                                    # btagThresh = cms.double(100)     # no btag (Save all btags < 100)
                                     btagThresh = cms.double(0.45),
                                     doHHWWggTagCutFlowAnalysis = cms.bool(False), # save events for cut flow analysis
                                     doHHWWggNonResAnalysis = cms.bool(False),
@@ -81,7 +67,6 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     doHHWWggFHminHiggsMassOnly = cms.bool(True), # for FH final state, choose 4 jets using H mass
                                     doHHWWggDebug = cms.bool(False), # False by default to avoid extra print statements, set true with flag 
                                     HHWWggAnalysisChannel = cms.string("SL"), # final state analysis to run. SL by default. Can be SL, FL, or FH
-                                    # saveHHWWggFinalStateVars = cms.bool(False)
                                     deltaRLeps = cms.double(0.4),
                                     MetPtThreshold = cms.double(20.),
                                     
@@ -106,4 +91,3 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     # vertex
                                     HHWWgguseZeroVtx = cms.bool(False)                             
                                     )
-# flashggHHWWggTagSequence = cms.Sequence( flashggHHWWggTag ) # not used
