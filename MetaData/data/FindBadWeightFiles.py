@@ -57,7 +57,7 @@ def GetJsons(campaign_, dataset_):
   return jsons_
 
 def GetBadFiles(json_, dataset_):
-  BadWeightFiles_ = []
+  BadWeightFiles_, weightEventRatios_ = [], [] 
   df = pd.read_json(json_)
   info = df.loc[:,dataset_]
   for f in info["files"]:
@@ -67,10 +67,12 @@ def GetBadFiles(json_, dataset_):
     if(ratio > 1):
       print f['name']    
       BadWeightFiles_.append(str(f['name']))
+      weightEventRatios_.append(ratio)
     if dataset_ == "/GluGluToHHTo2G2Qlnu_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/alesauva-2017_1-10_6_4-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-1c4bfc6d0b8215cc31448570160b99fd/USER":
       if ratio < 0.015:
         BadWeightFiles_.append(str(f['name']))
-  return BadWeightFiles_ 
+        weightEventRatios_.append(ratio)
+  return BadWeightFiles_, weightEventRatios_
 
 def GetCampaignsAndDatasets(DatasetsToCheck_):
   campaigns_ = [campaign_ for campaign_ in DatasetsToCheck_]
@@ -103,8 +105,10 @@ for CampDsetPair in CampDsetPairs:
     BadMicroAODsOutfile.write("Dataset: %s\n"%(dataset))
     jsons = GetJsons(campaign,dataset)
     for json in jsons:
-      BadFiles = GetBadFiles(json,dataset)
+      BadFiles, weightEventRatios = GetBadFiles(json,dataset)
       print "BadFiles:",BadFiles
-      for BadFile in BadFiles: BadMicroAODsOutfile.write("File: %s\n"%(BadFile))
+      for i,BadFile in enumerate(BadFiles): 
+        weightEventRatio = weightEventRatios[i]
+        BadMicroAODsOutfile.write("File: %s %s\n"%(BadFile,weightEventRatio))
 
 BadMicroAODsOutfile.close()
