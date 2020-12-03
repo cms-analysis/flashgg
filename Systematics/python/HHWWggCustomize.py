@@ -327,11 +327,30 @@ class HHWWggCustomize():
         finalStateVars.append("Leading_Photon_genMatchType:=Leading_Photon.genMatchType()")
         finalStateVars.append("Subleading_Photon_genMatchType:=Subleading_Photon.genMatchType()")
 
+
+        ##-- Save Scale Factors for ntuple flexibility and studies 
+        PhotonScaleFactors = ["LooseMvaSF", "PreselSF", "TriggerWeight", "electronVetoSF"]
+        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonIDWeight", "MuonIsoWeight"]
+        JetScaleFactors = ["JetBTagCutWeight","JetBTagReshapeWeight"]
+        ScaleFactorLabels = []
+
+        for PSF in PhotonScaleFactors: ScaleFactorLabels.append(PSF)
+        for LSF in LeptonScaleFactors: ScaleFactorLabels.append(LSF)
+        for JSF in JetScaleFactors: ScaleFactorLabels.append(JSF)
+
+        ScaleFactorVariables = []
+        for SF in ScaleFactorLabels:
+            variableLabel = "%sCentral := weight(\"%sCentral\")"%(SF,SF)
+            print"variableLabel:",variableLabel
+            ScaleFactorVariables.append(variableLabel)
+        ScaleFactorVariables.append("prefireWeightCentral := weight(\"prefireWeightCentral\")")
+
         print"len(finalStateVars):",len(finalStateVars)
-        print"len(muon_vars):",len(muon_vars)
-        print"len(jet_vars):",len(jet_vars)
+        # print"len(muon_vars):",len(muon_vars)
+        # print"len(jet_vars):",len(jet_vars)
 
         if self.customize.saveHHWWggFinalStateVars:
+            variables += ScaleFactorVariables
             variables += vertex_variables
             variables += gen_vars            
             variables += doubleHReweight_vars
