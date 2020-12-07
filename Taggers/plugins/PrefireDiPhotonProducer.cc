@@ -165,7 +165,7 @@ namespace flashgg {
                 updatedDipho->includeWeights(prefireObject);
             }
             else {
-                prefireObject.setWeight("prefireWeight", (1. - prefireProbability) );
+                prefireObject.setWeight("prefireWeightCentral", (1. - prefireProbability) ); // Changing name 'prefireWeight' --> 'prefireWeightCentral'
                 prefireObject.setWeight("prefireWeightUp01sigma",   std::min(1.,  1. - prefireProbability + prefireProbabilityUnc));
                 prefireObject.setWeight("prefireWeightDown01sigma", std::max(0.,  1. - prefireProbability - prefireProbabilityUnc));
                 updatedDipho->includeWeights(prefireObject);
