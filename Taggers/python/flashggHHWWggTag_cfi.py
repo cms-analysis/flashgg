@@ -66,6 +66,7 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     HHWWggAnalysisChannel = cms.string("SL"), # final state analysis to run. SL by default. Can be SL, FL, or FH
                                     deltaRLeps = cms.double(0.4),
                                     MetPtThreshold = cms.double(20.),
+                                    JetIDLevel = cms.string(''), # Tight, Tight2017 or Tight2018 as set in 
                                     
                                     ##-- Non-Resonant Reweighting 
                                     doReweight = flashggDoubleHReweight.doReweight,

@@ -327,11 +327,31 @@ class HHWWggCustomize():
         finalStateVars.append("Leading_Photon_genMatchType:=Leading_Photon.genMatchType()")
         finalStateVars.append("Subleading_Photon_genMatchType:=Subleading_Photon.genMatchType()")
 
+
+        ##-- Save Scale Factors for ntuple flexibility and studies 
+        PhotonScaleFactors = ["LooseMvaSF", "PreselSF", "TriggerWeight", "electronVetoSF"]
+        # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonIDWeight", "MuonIsoWeight"]
+        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonTightIDWeight", "MuonTightRelISOWeight"]
+        JetScaleFactors = ["JetBTagCutWeight","JetBTagReshapeWeight"]
+        ScaleFactorLabels = []
+
+        for PSF in PhotonScaleFactors: ScaleFactorLabels.append(PSF)
+        for LSF in LeptonScaleFactors: ScaleFactorLabels.append(LSF)
+        for JSF in JetScaleFactors: ScaleFactorLabels.append(JSF)
+
+        ScaleFactorVariables = []
+        for SF in ScaleFactorLabels:
+            variableLabel = "%sCentral := weight(\"%sCentral\")"%(SF,SF)
+            print"variableLabel:",variableLabel
+            ScaleFactorVariables.append(variableLabel)
+        ScaleFactorVariables.append("prefireWeightCentral := weight(\"prefireWeightCentral\")")
+
         print"len(finalStateVars):",len(finalStateVars)
-        print"len(muon_vars):",len(muon_vars)
-        print"len(jet_vars):",len(jet_vars)
+        # print"len(muon_vars):",len(muon_vars)
+        # print"len(jet_vars):",len(jet_vars)
 
         if self.customize.saveHHWWggFinalStateVars:
+            variables += ScaleFactorVariables
             variables += vertex_variables
             variables += gen_vars            
             variables += doubleHReweight_vars
@@ -442,23 +462,8 @@ class HHWWggCustomize():
            self.process.flashggHHWWggTag.deltaMassElectronZThreshold = 5 # 5 instead of default 10  
            self.process.flashggHHWWggTag.jetPtThreshold = 20
         
-        # if self.customize.saveHHWWggGenVars:
-            # self.process.flashggHHWWggTag.saveHHWWggGenVars = cms.bool(True)
-
-        # if self.customize.saveHHWWggFinalStateVars:
-            # self.process.flashggHHWWggTag.saveHHWWggFinalStateVars = cms.bool(True)
-
         ## customize meta conditions
-        # self.process.flashggHHWWggTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
-        # self.process.flashggHHWWggTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["doubleHTag"]["weightsFile"]))
-        # self.process.flashggHHWWggTag.MVAscaling = cms.double(self.metaConditions["doubleHTag"]["MVAscalingValue"])
-        # self.process.flashggHHWWggTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["MVAFlatteningFileName"]))
-        # self.process.flashggHHWWggTag.dottHTagger = cms.bool(self.customize.doHHWWggttHKiller)
-        # self.process.flashggHHWWggTag.ttHWeightfile = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["ttHWeightfile"]))
-        # self.process.flashggHHWWggTag.ttHKiller_mean = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_mean"])
-        # self.process.flashggHHWWggTag.ttHKiller_std = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_std"])
-        # self.process.flashggHHWWggTag.ttHKiller_listmean = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_listmean"])
-        # self.process.flashggHHWWggTag.ttHKiller_liststd = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_liststd"])
+        self.process.flashggHHWWggTag.JetIDLevel=cms.string(str(self.metaConditions["HHWWggTag"]["jetID"]))
 
         ## remove single Higgs tags
 
@@ -482,6 +487,7 @@ class HHWWggCustomize():
             self.process.flashggTagSequence.remove(self.process.flashggUntagged)
             self.process.flashggTagSequence.remove(self.process.flashggUntagged)
             self.process.flashggTagSequence.remove(self.process.flashggTHQLeptonicTag)
+            self.process.flashggTagSequence.remove(self.process.flashggVHhadMVA)
 
         self.process.flashggTagSequence.replace(self.process.flashggTagSorter,self.process.flashggHHWWggTagSequence*self.process.flashggTagSorter)
         self.process.flashggTagSorter.TagPriorityRanges = cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggHHWWggTag')) )

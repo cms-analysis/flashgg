@@ -1,3 +1,5 @@
+# fggRunJobs.py --load Taggers/test/HHWWgg_NLO/SL_SM2017.json -D -P -n 500 -d HHWWgg-SM-NLO-SF-Checks --stage-to="/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/HHWWgg-SM-NLO-SF-Checks" -x cmsRun Systematics/test/workspaceStd.py maxEvents=100000 -q longlunch --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json doHHWWggTag=1 HHWWggTagsOnly=1 doSystematics=0 dumpTrees=1 dumpWorkspace=0 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1
+
 ############################################################################################################################################################################################
 # Abraham Tishelman-Charny 
 # 23 October 2020

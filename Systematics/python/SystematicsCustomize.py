@@ -84,6 +84,7 @@ def createStandardSystematicsProducers(process, options):
     #scale factors for electron ID
     from   flashgg.Systematics.flashggElectronSystematics_cfi import EleSF_JSONReader
     binInfoEle = EleSF_JSONReader(options.metaConditions["Ele_ID_SF_FileName"],options.metaConditions["Ele_ID_version"]).getBinInfo()
+    # if(options.HHWWggTagsOnly) binInfoEle = EleSF_JSONReader(options.metaConditions["Ele_ID_SF_FileName"],options.metaConditions["HHWWggTag"]["Ele_ID_version"]).getBinInfo()
     process.flashggElectronSystematics.SystMethods[0].BinList = binInfoEle
 
     #scale factors for electron reconstruction

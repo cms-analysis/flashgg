@@ -247,9 +247,9 @@ customize.options.register('applyNNLOPSweight',
                            )
 
 
-print "Printing defaults"
-print 'acceptance '+str(customize.acceptance)
-print 'tthTagsOnly '+str(customize.tthTagsOnly)
+# print "Printing defaults"
+# print 'acceptance '+str(customize.acceptance)
+# print 'tthTagsOnly '+str(customize.tthTagsOnly)
 
 # import flashgg customization to check if we have signal or background
 from flashgg.MetaData.JobConfig import customize
@@ -280,9 +280,9 @@ modifyTagSequenceForSystematics(process,jetSystematicsInputTags) # normally unco
 # process.systematicsTagSequences = cms.Sequence()
 # process.flashggSystTagMerger = cms.EDProducer("TagMerger",src=cms.VInputTag("flashggTagSorter"))
 
-print "Printing options"
-print 'acceptance '+str(customize.acceptance)
-print 'tthTagsOnly '+str(customize.tthTagsOnly)
+# print "Printing options"
+# print 'acceptance '+str(customize.acceptance)
+# print 'tthTagsOnly '+str(customize.tthTagsOnly)
 
 # process.load("flashgg/Taggers/flashggTagSequence_cfi")
 # process.flashggTagSequence = flashggPrepareTagSequence(customize.metaConditions)
@@ -393,10 +393,20 @@ useEGMTools(process)
 
 # Only run systematics for signal events
 # convention: ggh vbf wzh (wh zh) tth
-signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh","WWgg","GluGluToHHTo2G2Qlnu","GluGluToHHTo2G"]
+signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh","WWgg","GluGluToHHTo2G2Qlnu","GluGluToHHTo2G2l2nu"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 print"is_signal:",is_signal
-applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
+
+##-- Run without L1 + jet syst. for faster local testing 
+# applyL1Prefiring = 0 
+# if(customize.doHHWWggDebug): 
+    # applyL1Prefiring = 0 
+    # process.flashggTagSequence.remove(process.flashggPrefireDiPhotons)
+# 
+# else:
+    # applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)    
+     
+applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)   
 print("applyL1Prefiring:",applyL1Prefiring)
 #if customize.processId.count("h_") or customize.processId.count("vbf_") or customize.processId.count("Acceptance") or customize.processId.count("hh_"): 
 if is_signal:
@@ -410,8 +420,6 @@ if is_signal:
         for direction in ["Up","Down"]:
         # for direction in ["Up"]:
             phosystlabels.append("MvaShift%s01sigma" % direction)
-#            phosystlabels.append("MvaLinearSyst%s01sigma" % direction)
-
             phosystlabels.append("SigmaEOverEShift%s01sigma" % direction)
             phosystlabels.append("MaterialCentralBarrel%s01sigma" % direction)
             phosystlabels.append("MaterialOuterBarrel%s01sigma" % direction)
@@ -437,7 +445,6 @@ if is_signal:
             variablesToUse.append("electronVetoSF%s01sigma[1,-999999.,999999.] := weight(\"electronVetoSF%s01sigma\")" % (direction,direction))
             variablesToUse.append("TriggerWeight%s01sigma[1,-999999.,999999.] := weight(\"TriggerWeight%s01sigma\")" % (direction,direction))
             variablesToUse.append("FracRVWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
-
             variablesToUse.append("MuonIDWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sIDWeight%s01sigma\")" % (direction,str(customize.metaConditions["MUON_ID"]),direction))
             variablesToUse.append("ElectronIDWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"ElectronIDWeight%s01sigma\")" % (direction,direction))
             variablesToUse.append("ElectronRecoWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"ElectronRecoWeight%s01sigma\")" % (direction,direction))
@@ -446,7 +453,7 @@ if is_signal:
             variablesToUse.append("JetBTagReshapeWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"JetBTagReshapeWeight%s01sigma\")" % (direction,direction))
             if applyL1Prefiring:
                 variablesToUse.append("prefireWeight%s01sigma[1,-999999.,999999.] := weight(\"prefireWeight%s01sigma\")" % (direction,direction))
-                variablesToUse.append("prefireWeight[1,-999999.,999999.] := weight(\"prefireWeight\")")
+                # variablesToUse.append("prefireWeightCentral[1,-999999.,999999.] := weight(\"prefireWeight\")")
             variablesToUse.append("THU_ggH_Mu%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Mu%s01sigma\")" % (direction,direction))
             variablesToUse.append("THU_ggH_Res%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Res%s01sigma\")" % (direction,direction))
             variablesToUse.append("THU_ggH_Mig01%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Mig01%s01sigma\")" % (direction,direction))
@@ -500,9 +507,9 @@ if customize.HHWWggTagsOnly:
 print "--- Systematics  with independent collections ---"
 print systlabels
 print "-------------------------------------------------"
-print "--- Variables to be dumped, including systematic weights ---"
-print variablesToUse
-print "------------------------------------------------------------"
+# print "--- Variables to be dumped, including systematic weights ---"
+# print variablesToUse
+# print "------------------------------------------------------------"
 
 #from flashgg.Taggers.globalVariables_cff import globalVariables
 #globalVariables.extraFloats.rho = cms.InputTag("rhoFixedGridAll")
@@ -759,7 +766,8 @@ if customize.tthTagsOnly or customize.HHWWggTagsOnly:
                             process.flashggDiPhotonSystematics*
                             process.flashggMetSystematics*
                             process.flashggMuonSystematics*process.flashggElectronSystematics*
-                            (process.flashggUnpackedJets*process.jetSystematicsSequence)*
+                            # (process.flashggUnpackedJets)*
+                            (process.flashggUnpackedJets*process.jetSystematicsSequence)* # jetSystematicsSequence takes a while? --> required for flashggPrefireDiPhotons 
                             #  process.content* ##-- nice for printing out info 
                             (process.flashggTagSequence*process.systematicsTagSequences)*
                             process.flashggSystTagMerger*
@@ -921,13 +929,13 @@ if customize.verboseTagDump:
 ## Additional details on tag sorter steps ##
 ############################################
 
-if customize.verboseTagDump:
-    process.flashggTagSorter.Debug = True
-    customize.maxEvents = 10
+# if customize.verboseTagDump:
+#     process.flashggTagSorter.Debug = True
+#     customize.maxEvents = 10
                            
-if customize.verboseSystDump:
-    turnOnAllSystematicsDebug(process)
-    customize.maxEVents = 10
+# if customize.verboseSystDump:
+#     turnOnAllSystematicsDebug(process)
+#     customize.maxEVents = 10
 
 ##############
 ## Dump EDM ##
