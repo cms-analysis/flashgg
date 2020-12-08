@@ -1,0 +1,689 @@
+{
+    "/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/alesauva-UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1-3f96409841a3cc85b911eb441562baae/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 24692, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_84.root", 
+                "nevents": 24692, 
+                "totEvents": 24692, 
+                "weights": 2757998.75
+            }, 
+            {
+                "bad": false, 
+                "events": 25003, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 25003, 
+                "totEvents": 25003, 
+                "weights": 2729661.5
+            }, 
+            {
+                "bad": false, 
+                "events": 25121, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_83.root", 
+                "nevents": 25121, 
+                "totEvents": 25121, 
+                "weights": 2751250.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24946, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_44.root", 
+                "nevents": 24946, 
+                "totEvents": 24946, 
+                "weights": 2718675.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24893, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_62.root", 
+                "nevents": 24893, 
+                "totEvents": 24893, 
+                "weights": 2769755.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24895, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_42.root", 
+                "nevents": 24895, 
+                "totEvents": 24895, 
+                "weights": 2745081.75
+            }, 
+            {
+                "bad": false, 
+                "events": 3782, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_85.root", 
+                "nevents": 3782, 
+                "totEvents": 3782, 
+                "weights": 417516.28125
+            }, 
+            {
+                "bad": false, 
+                "events": 24937, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_33.root", 
+                "nevents": 24937, 
+                "totEvents": 24937, 
+                "weights": 2735830.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24929, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_60.root", 
+                "nevents": 24929, 
+                "totEvents": 24929, 
+                "weights": 2763971.75
+            }, 
+            {
+                "bad": false, 
+                "events": 25105, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_52.root", 
+                "nevents": 25105, 
+                "totEvents": 25105, 
+                "weights": 2773225.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24948, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24948, 
+                "totEvents": 24948, 
+                "weights": 2755298.5
+            }, 
+            {
+                "bad": false, 
+                "events": 25016, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 25016, 
+                "totEvents": 25016, 
+                "weights": 2789224.75
+            }, 
+            {
+                "bad": false, 
+                "events": 24922, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_30.root", 
+                "nevents": 24922, 
+                "totEvents": 24922, 
+                "weights": 2709422.5
+            }, 
+            {
+                "bad": false, 
+                "events": 25060, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_38.root", 
+                "nevents": 25060, 
+                "totEvents": 25060, 
+                "weights": 2707880.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25112, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_46.root", 
+                "nevents": 25112, 
+                "totEvents": 25112, 
+                "weights": 2764165.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24758, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_36.root", 
+                "nevents": 24758, 
+                "totEvents": 24758, 
+                "weights": 2630775.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25016, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_64.root", 
+                "nevents": 25016, 
+                "totEvents": 25016, 
+                "weights": 2790381.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24972, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_35.root", 
+                "nevents": 24972, 
+                "totEvents": 24972, 
+                "weights": 2731396.75
+            }, 
+            {
+                "bad": false, 
+                "events": 25144, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25144, 
+                "totEvents": 25144, 
+                "weights": 2768020.75
+            }, 
+            {
+                "bad": false, 
+                "events": 24894, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_75.root", 
+                "nevents": 24894, 
+                "totEvents": 24894, 
+                "weights": 2709038.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10707, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_82.root", 
+                "nevents": 10707, 
+                "totEvents": 10707, 
+                "weights": 1184504.875
+            }, 
+            {
+                "bad": false, 
+                "events": 24975, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_66.root", 
+                "nevents": 24975, 
+                "totEvents": 24975, 
+                "weights": 2756263.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24950, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24950, 
+                "totEvents": 24950, 
+                "weights": 2743347.25
+            }, 
+            {
+                "bad": false, 
+                "events": 25011, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_31.root", 
+                "nevents": 25011, 
+                "totEvents": 25011, 
+                "weights": 2748168.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24838, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24838, 
+                "totEvents": 24838, 
+                "weights": 2725614.25
+            }, 
+            {
+                "bad": false, 
+                "events": 25048, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 25048, 
+                "totEvents": 25048, 
+                "weights": 2745662.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24792, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 24792, 
+                "totEvents": 24792, 
+                "weights": 2704409.75
+            }, 
+            {
+                "bad": false, 
+                "events": 25153, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_80.root", 
+                "nevents": 25153, 
+                "totEvents": 25153, 
+                "weights": 2783634.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24936, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_67.root", 
+                "nevents": 24936, 
+                "totEvents": 24936, 
+                "weights": 2731011.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24836, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_43.root", 
+                "nevents": 24836, 
+                "totEvents": 24836, 
+                "weights": 2759924.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24975, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_32.root", 
+                "nevents": 24975, 
+                "totEvents": 24975, 
+                "weights": 2739685.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24706, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_58.root", 
+                "nevents": 24706, 
+                "totEvents": 24706, 
+                "weights": 2704024.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24933, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_56.root", 
+                "nevents": 24933, 
+                "totEvents": 24933, 
+                "weights": 2699977.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25152, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 25152, 
+                "totEvents": 25152, 
+                "weights": 2795392.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25073, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 25073, 
+                "totEvents": 25073, 
+                "weights": 2737372.5
+            }, 
+            {
+                "bad": false, 
+                "events": 25040, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_49.root", 
+                "nevents": 25040, 
+                "totEvents": 25040, 
+                "weights": 2758382.75
+            }, 
+            {
+                "bad": false, 
+                "events": 25043, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 25043, 
+                "totEvents": 25043, 
+                "weights": 2786717.75
+            }, 
+            {
+                "bad": false, 
+                "events": 25094, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_76.root", 
+                "nevents": 25094, 
+                "totEvents": 25094, 
+                "weights": 2770335.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25006, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_78.root", 
+                "nevents": 25006, 
+                "totEvents": 25006, 
+                "weights": 2736794.25
+            }, 
+            {
+                "bad": false, 
+                "events": 25037, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25037, 
+                "totEvents": 25037, 
+                "weights": 2762817.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24901, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_45.root", 
+                "nevents": 24901, 
+                "totEvents": 24901, 
+                "weights": 2740457.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24931, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_41.root", 
+                "nevents": 24931, 
+                "totEvents": 24931, 
+                "weights": 2767057.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24930, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24930, 
+                "totEvents": 24930, 
+                "weights": 2734095.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24714, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_77.root", 
+                "nevents": 24714, 
+                "totEvents": 24714, 
+                "weights": 2685519.75
+            }, 
+            {
+                "bad": false, 
+                "events": 24858, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 24858, 
+                "totEvents": 24858, 
+                "weights": 2729855.75
+            }, 
+            {
+                "bad": false, 
+                "events": 24888, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24888, 
+                "totEvents": 24888, 
+                "weights": 2702483.25
+            }, 
+            {
+                "bad": false, 
+                "events": 25023, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_50.root", 
+                "nevents": 25023, 
+                "totEvents": 25023, 
+                "weights": 2736987.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25074, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_72.root", 
+                "nevents": 25074, 
+                "totEvents": 25074, 
+                "weights": 2747974.25
+            }, 
+            {
+                "bad": false, 
+                "events": 25030, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_59.root", 
+                "nevents": 25030, 
+                "totEvents": 25030, 
+                "weights": 2768791.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24999, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24999, 
+                "totEvents": 24999, 
+                "weights": 2794043.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24948, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24948, 
+                "totEvents": 24948, 
+                "weights": 2743348.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25129, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 25129, 
+                "totEvents": 25129, 
+                "weights": 2731590.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24929, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_71.root", 
+                "nevents": 24929, 
+                "totEvents": 24929, 
+                "weights": 2760888.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24988, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_37.root", 
+                "nevents": 24988, 
+                "totEvents": 24988, 
+                "weights": 2766092.5
+            }, 
+            {
+                "bad": false, 
+                "events": 25098, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_74.root", 
+                "nevents": 25098, 
+                "totEvents": 25098, 
+                "weights": 2781899.75
+            }, 
+            {
+                "bad": false, 
+                "events": 24780, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_48.root", 
+                "nevents": 24780, 
+                "totEvents": 24780, 
+                "weights": 2757612.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24795, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_73.root", 
+                "nevents": 24795, 
+                "totEvents": 24795, 
+                "weights": 2738915.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25106, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 25106, 
+                "totEvents": 25106, 
+                "weights": 2757613.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25182, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 25182, 
+                "totEvents": 25182, 
+                "weights": 2800404.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24923, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24923, 
+                "totEvents": 24923, 
+                "weights": 2717712.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24930, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_39.root", 
+                "nevents": 24930, 
+                "totEvents": 24930, 
+                "weights": 2704025.75
+            }, 
+            {
+                "bad": false, 
+                "events": 24975, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 24975, 
+                "totEvents": 24975, 
+                "weights": 2716940.25
+            }, 
+            {
+                "bad": false, 
+                "events": 25001, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_68.root", 
+                "nevents": 25001, 
+                "totEvents": 25001, 
+                "weights": 2696122.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24902, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_34.root", 
+                "nevents": 24902, 
+                "totEvents": 24902, 
+                "weights": 2738335.25
+            }, 
+            {
+                "bad": false, 
+                "events": 25031, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 25031, 
+                "totEvents": 25031, 
+                "weights": 2789802.75
+            }, 
+            {
+                "bad": false, 
+                "events": 25098, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_40.root", 
+                "nevents": 25098, 
+                "totEvents": 25098, 
+                "weights": 2748744.75
+            }, 
+            {
+                "bad": false, 
+                "events": 25020, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_63.root", 
+                "nevents": 25020, 
+                "totEvents": 25020, 
+                "weights": 2773418.75
+            }, 
+            {
+                "bad": false, 
+                "events": 24836, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_54.root", 
+                "nevents": 24836, 
+                "totEvents": 24836, 
+                "weights": 2743348.25
+            }, 
+            {
+                "bad": false, 
+                "events": 25028, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_70.root", 
+                "nevents": 25028, 
+                "totEvents": 25028, 
+                "weights": 2748745.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24865, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_79.root", 
+                "nevents": 24865, 
+                "totEvents": 24865, 
+                "weights": 2738914.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24771, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_69.root", 
+                "nevents": 24771, 
+                "totEvents": 24771, 
+                "weights": 2694580.5
+            }, 
+            {
+                "bad": false, 
+                "events": 25075, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25075, 
+                "totEvents": 25075, 
+                "weights": 2751637.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25169, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_47.root", 
+                "nevents": 25169, 
+                "totEvents": 25169, 
+                "weights": 2772068.75
+            }, 
+            {
+                "bad": false, 
+                "events": 25105, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_65.root", 
+                "nevents": 25105, 
+                "totEvents": 25105, 
+                "weights": 2780551.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24926, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_51.root", 
+                "nevents": 24926, 
+                "totEvents": 24926, 
+                "weights": 2739107.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24892, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_81.root", 
+                "nevents": 24892, 
+                "totEvents": 24892, 
+                "weights": 2727927.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25031, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_61.root", 
+                "nevents": 25031, 
+                "totEvents": 25031, 
+                "weights": 2755106.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25048, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 25048, 
+                "totEvents": 25048, 
+                "weights": 2745662.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24975, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_32.root", 
+                "nevents": 24975, 
+                "totEvents": 24975, 
+                "weights": 2739685.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24991, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_57.root", 
+                "nevents": 24991, 
+                "totEvents": 24991, 
+                "weights": 2735445.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24996, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 24996, 
+                "totEvents": 24996, 
+                "weights": 2753371.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24958, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24958, 
+                "totEvents": 24958, 
+                "weights": 2739106.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24852, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 24852, 
+                "totEvents": 24852, 
+                "weights": 2703638.25
+            }, 
+            {
+                "bad": false, 
+                "events": 25063, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 25063, 
+                "totEvents": 25063, 
+                "weights": 2760889.75
+            }, 
+            {
+                "bad": false, 
+                "events": 25023, 
+                "name": "/store/user/alesauva/flashgg/UL2018_0/10_6_4/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8_storeWeights/UL2018_0-10_6_4-v0-RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/201019_092045/0000/myMicroAODOutputFile_50.root", 
+                "nevents": 25023, 
+                "totEvents": 25023, 
+                "weights": 2736987.0
+            }
+        ], 
+        "parent_n_units": 2086998, 
+        "vetted": true
+    }
+}
