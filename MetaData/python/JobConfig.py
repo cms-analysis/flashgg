@@ -192,6 +192,12 @@ class JobConfig(object):
             self.pu_distribs["Autumn18"] = mix_Autumn18.input.nbPileupEvents
         except Exception:
             print "Failed to load Autumn18 mixing"
+        try:
+            from SimGeneral.MixingModule.mix_2018_25ns_UltraLegacy_PoissonOOTPU_cfi import mix as mix_legacy18
+            self.pu_distribs["RunIISummer19UL"] = mix_legacy18.input.nbPileupEvents
+        except Exception:
+            print "Failed to load RunIISummer19UL18 mixing"
+
             
         #self.pu_distribs_hack_2017 = {  }
 
