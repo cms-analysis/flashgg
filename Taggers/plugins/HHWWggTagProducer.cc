@@ -736,7 +736,7 @@ namespace flashgg {
 
       // bool passMVAs = 0; // True if leading and subleading photons pass MVA selections
 
-      int catnum = 4; // category number. default to untagged
+      int catnum = 3; // category number. default to untagged
 
       // Scale Factors
       double TagObjCentralWeight = 1; // Central weight of HH->WWgg tag object 
@@ -1063,121 +1063,89 @@ namespace flashgg {
           /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
           //-- Categorize Events
-          if (doHHWWggDebug_) std::cout << "[INFO] n_good_leptons = " << n_good_leptons << ",\t n_good_jets = " << n_good_jets << std::endl;
+          // In the semi-leptonic final state, because the categorization is done with MVAs, will just save all events orthogonal to the other two final states 
+          if (doHHWWggDebug_) std::cout << "[HHWWggTagProducer] n_good_leptons = " << n_good_leptons << ",\t n_good_jets = " << n_good_jets << std::endl;
 
           //-- Semi-Leptonic Final state tags
           if(HHWWggAnalysisChannel_ == "SL")
           {
-
-            if ( (n_good_leptons == 1) && (n_good_jets >= 2)) {
-
-              // HHWWggTag_0 - Semileptonic Electron 
+            if ( n_good_leptons == 1 ) {
+              catnum = 0;
               HHWWggTag tag_obj;
+              if(doHHWWggTagCutFlowAnalysis_){
+                HHWWggTag tag_obj_(dipho, allElectrons, goodElectrons, allMuons, goodMuons, theMET, allJets, tagJets, Cut_Variables, MuonVars, JetVars);
+                tag_obj.setGenVtx_z(GenVtx_z);
+                tag_obj.setHggVtx_z(HggVtx_z);
+                tag_obj.setZeroVtx_z(ZeroVtx_z);  
+                tag_obj = tag_obj_;                
+              }
 
-              if(doHHWWggDebug_){
-                cout << "**************************************************" << endl; 
-                cout << " Tag Object weights before any includeweights statements: " << endl;
-                PrintScaleFactorsObj(tag_obj);
-              }                
+              // If not doing cutflow analysis, save the minimum which is just the dipho information for the final fit, to keep process and output lightweight 
+              else{
+                HHWWggTag tag_obj_(dipho); // diphoton
+                tag_obj = tag_obj_;
+              } 
 
-              if (n_good_electrons == 1){
-                catnum = 0;
-                Ptr<flashgg::Electron> tag_electron = goodElectrons[0];
-  
-                // If doing cutflow analysis, save all final state object variables 
-                if(doHHWWggTagCutFlowAnalysis_){
-                  jet1 = tagJets[0];
-                  jet2 = tagJets[1];
-                  HHWWggTag tag_obj_(dipho, tag_electron, allElectrons, goodElectrons, allMuons, theMET, jet1, jet2, allJets, tagJets, Cut_Variables, MuonVars, JetVars);
-                  tag_obj = tag_obj_;
-                  tag_obj.setGenVtx_z(GenVtx_z);
-                  tag_obj.setHggVtx_z(HggVtx_z);
-                  tag_obj.setZeroVtx_z(ZeroVtx_z);                  
+              // Set tag object attributes 
+              tag_obj.setSystLabel( systLabel_);
+              tag_obj.setDiPhotonIndex( diphoIndex );
+              tag_obj.setCategoryNumber( catnum );
+              tag_obj.setGenMhh( genMhh );
+              tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS ); 
+
+              //-- Include Scale Factors 
+              
+              // Diphoton 
+              tag_obj.includeWeights( *dipho );
+
+              // Electrons  
+              for (unsigned int elec_i = 0; elec_i < goodElectrons.size(); elec_i++){
+                tag_obj.includeWeights(*goodElectrons.at(elec_i));               
+              }
+
+              // Muons 
+              for (unsigned int muon_i = 0; muon_i < goodMuons.size(); muon_i++){
+                tag_obj.includeWeights(*goodMuons.at(muon_i));
+              }           
+
+              // Jets 
+              for (unsigned int TagJet_i = 0; TagJet_i < tagJets.size(); TagJet_i++){
+                tag_obj.includeWeights(*tagJets.at(TagJet_i));
+              }  
+
+              //-- Set Scale Factor Central Values 
+              // Electrons 
+              for (unsigned int elec_i = 0; elec_i < goodElectrons.size(); elec_i++){
+                  ElectronIDWeight = ElectronIDWeight * goodElectrons.at(elec_i)->weight("ElectronIDWeightCentral");
+                  ElectronRecoWeight = ElectronRecoWeight * goodElectrons.at(elec_i)->weight("ElectronRecoWeightCentral");                  
                 }
+              tag_obj.setWeight("ElectronIDWeightCentral",ElectronIDWeight);
+              tag_obj.setWeight("ElectronRecoWeightCentral",ElectronRecoWeight);                  
+              // TagObjCentralWeight =  TagObjCentralWeight * ElectronIDWeight;
+              // TagObjCentralWeight =  TagObjCentralWeight * ElectronRecoWeight; 
 
-                // If not doing cutflow analysis, save the minimum which is just the dipho information for the final fit, to keep process and output lightweight 
-                else{
-                  HHWWggTag tag_obj_(dipho); // diphoton
-                  tag_obj = tag_obj_;
-                } 
-
-                // Include Electron SFs 
-                ElectronIDWeight = tag_electron->weight("ElectronIDWeightCentral");
-                ElectronRecoWeight = tag_electron->weight("ElectronRecoWeightCentral");
-                tag_obj.setWeight("ElectronIDWeightCentral",ElectronIDWeight);
-                tag_obj.setWeight("ElectronRecoWeightCentral",ElectronRecoWeight);
-                TagObjCentralWeight =  TagObjCentralWeight * ElectronIDWeight;
-                TagObjCentralWeight =  TagObjCentralWeight * ElectronRecoWeight;
-
-                if(doHHWWggDebug_){
-                  cout << "**************************************************" << endl; 
-                  cout << " Tag Object weights after including ELECTRON weights: " << endl;
-                  PrintScaleFactorsObj(tag_obj);
-                }                 
-
-              } // n_good_electrons == 1 
-
-              // HHWWggTag_1 - Semileptonic Muon 
-              if (n_good_muons == 1){
-                catnum = 1;
-                Ptr<flashgg::Muon> tag_muon = goodMuons[0];
-
-                // If doing cutflow analysis, save all final state object variables 
-                if (doHHWWggTagCutFlowAnalysis_){
-                  jet1 = tagJets[0];
-                  jet2 = tagJets[1];             
-                  HHWWggTag tag_obj_(dipho, allElectrons, tag_muon, allMuons, goodMuons, theMET, jet1, jet2, allJets, tagJets, Cut_Variables, MuonVars, JetVars);
-                  tag_obj = tag_obj_;
-                  tag_obj.setGenVtx_z(GenVtx_z);
-                  tag_obj.setHggVtx_z(HggVtx_z);
-                  tag_obj.setZeroVtx_z(ZeroVtx_z);                    
+              // Muons 
+              for (unsigned int muon_i = 0; muon_i < goodMuons.size(); muon_i++){
+                  MuonIDWeight = MuonIDWeight * goodMuons.at(muon_i)->weight("MuonTightIDWeightCentral");
+                  MuonRelISOWeight = MuonRelISOWeight * goodMuons.at(muon_i)->weight("MuonTightRelISOWeightCentral");                 
                 }
-                // If not doing cutflow analysis, save the minimum which is just the dipho information for the final fit, to keep process and output lightweight 
-                else{
-                  HHWWggTag tag_obj_(dipho); // diphoton, muon, MET, jet1, jet2
-                  tag_obj = tag_obj_;
-                } 
+              tag_obj.setWeight("MuonTightIDWeightCentral",MuonIDWeight);
+              tag_obj.setWeight("MuonTightRelISOWeightCentral",MuonRelISOWeight); 
+              // TagObjCentralWeight =  TagObjCentralWeight * MuonIDWeight;
+              // TagObjCentralWeight =  TagObjCentralWeight * MuonRelISOWeight;                    
 
-                // Include Muon SFs
-                MuonIDWeight = tag_muon->weight("MuonTightIDWeightCentral");
-                MuonRelISOWeight = tag_muon->weight("MuonTightRelISOWeightCentral");
-                tag_obj.setWeight("MuonTightIDWeightCentral",MuonIDWeight);
-                tag_obj.setWeight("MuonTightRelISOWeightCentral",MuonRelISOWeight);
-                TagObjCentralWeight =  TagObjCentralWeight * MuonIDWeight;
-                TagObjCentralWeight =  TagObjCentralWeight * MuonRelISOWeight;
-
-                if(doHHWWggDebug_){
-                  cout << "**************************************************" << endl; 
-                  cout << " Tag Object weights after including MUON weights: " << endl;
-                  PrintScaleFactorsObj(tag_obj);
-                }                 
-
-              } // n_good_muons == 1 
-
-              // Add Jet SFs
+              // Jets
               for (unsigned int TagJet_i = 0; TagJet_i < tagJets.size(); TagJet_i++){
                   // tag_obj.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagCutWeightCentral");
                   JetBTagReshapeWeight = JetBTagReshapeWeight * tagJets.at(TagJet_i)->weight("JetBTagReshapeWeightCentral");
                   UnmatchedPUWeight = UnmatchedPUWeight * tagJets.at(TagJet_i)->weight("UnmatchedPUWeightCentral");
                 }  
               tag_obj.setWeight("JetBTagReshapeWeightCentral",JetBTagReshapeWeight);
-              tag_obj.setWeight("UnmatchedPUWeightCentral",UnmatchedPUWeight);
-              TagObjCentralWeight =  TagObjCentralWeight * JetBTagReshapeWeight;
-              TagObjCentralWeight =  TagObjCentralWeight * UnmatchedPUWeight;
+              tag_obj.setWeight("UnmatchedPUWeightCentral",UnmatchedPUWeight);                  
+              // TagObjCentralWeight = TagObjCentralWeight * JetBTagReshapeWeight;
+              // TagObjCentralWeight = TagObjCentralWeight * UnmatchedPUWeight;
 
-              // Save tag object attributes in any case  
-              if(doHHWWggDebug_){
-                cout << " DiPhoton Scale Factors : " << endl; 
-                PrintScaleFactorsPtr(dipho);
-              }
-
-              tag_obj.setSystLabel( systLabel_);
-              tag_obj.setDiPhotonIndex( diphoIndex );
-              tag_obj.setCategoryNumber( catnum );
-              tag_obj.setGenMhh( genMhh );
-              tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );    
-
-              // Include Diphoton SFs 
+              // Diphoton 
               LooseMvaSF = dipho->weight("LooseMvaSFCentral");
               PreselSF = dipho->weight("PreselSFCentral");
               TriggerWeight = dipho->weight("TriggerWeightCentral");
@@ -1190,13 +1158,15 @@ namespace flashgg {
               tag_obj.setWeight("TriggerWeightCentral",TriggerWeight);
               tag_obj.setWeight("electronVetoSFCentral",electronVetoSF);
               tag_obj.setWeight("prefireWeightCentral",prefireWeight);
-              TagObjCentralWeight = TagObjCentralWeight * LooseMvaSF;
-              TagObjCentralWeight = TagObjCentralWeight * PreselSF;
-              TagObjCentralWeight = TagObjCentralWeight * TriggerWeight;
-              TagObjCentralWeight = TagObjCentralWeight * electronVetoSF;
-              TagObjCentralWeight = TagObjCentralWeight * prefireWeight;
+              // TagObjCentralWeight = TagObjCentralWeight * LooseMvaSF;
+              // TagObjCentralWeight = TagObjCentralWeight * PreselSF;
+              // TagObjCentralWeight = TagObjCentralWeight * TriggerWeight;
+              // TagObjCentralWeight = TagObjCentralWeight * electronVetoSF;
+              // TagObjCentralWeight = TagObjCentralWeight * prefireWeight;
 
-              tag_obj.setCentralWeight(TagObjCentralWeight);
+              // Set central object weight as produce of all SFs 
+              // tag_obj.setCentralWeight(TagObjCentralWeight);
+
 
               if(doHHWWggDebug_){
                 cout << "**************************************************" << endl; 
@@ -1204,15 +1174,111 @@ namespace flashgg {
                 PrintScaleFactorsObj(tag_obj);
               }
 
+              // If doing reweight
               if (doReweight_>0){ 
                 tag_obj.setBenchmarkReweight( reweight_values ); 
               }
+
+              // Push back tag object 
               HHWWggtags->push_back( tag_obj );
               FilledTag = 1; 
               if( ! event.isRealData() ) {
                 HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
               }
-            } // if ( (n_good_leptons == 1) && (n_good_jets >= 2) )
+
+                // // Include Electron SFs 
+                // ElectronIDWeight = tag_electron->weight("ElectronIDWeightCentral");
+                // ElectronRecoWeight = tag_electron->weight("ElectronRecoWeightCentral");
+                // tag_obj.setWeight("ElectronIDWeightCentral",ElectronIDWeight);
+                // tag_obj.setWeight("ElectronRecoWeightCentral",ElectronRecoWeight);
+                // TagObjCentralWeight =  TagObjCentralWeight * ElectronIDWeight;
+                // TagObjCentralWeight =  TagObjCentralWeight * ElectronRecoWeight;
+
+                // if(doHHWWggDebug_){
+                //   cout << "**************************************************" << endl; 
+                //   cout << " Tag Object weights after including ELECTRON weights: " << endl;
+                //   PrintScaleFactorsObj(tag_obj);
+                // }                 
+
+              // } // n_good_electrons == 1 
+
+              // // HHWWggTag_1 - Semileptonic Muon 
+              // if (n_good_muons == 1){
+              //   catnum = 1;
+              //   Ptr<flashgg::Muon> tag_muon = goodMuons[0];
+
+              //   // If doing cutflow analysis, save all final state object variables 
+              //   if (doHHWWggTagCutFlowAnalysis_){
+              //     jet1 = tagJets[0];
+              //     jet2 = tagJets[1];             
+              //     HHWWggTag tag_obj_(dipho, allElectrons, tag_muon, allMuons, goodMuons, theMET, jet1, jet2, allJets, tagJets, Cut_Variables, MuonVars, JetVars);
+              //     tag_obj = tag_obj_;
+              //     tag_obj.setGenVtx_z(GenVtx_z);
+              //     tag_obj.setHggVtx_z(HggVtx_z);
+              //     tag_obj.setZeroVtx_z(ZeroVtx_z);                    
+              //   }
+              //   // If not doing cutflow analysis, save the minimum which is just the dipho information for the final fit, to keep process and output lightweight 
+              //   else{
+              //     HHWWggTag tag_obj_(dipho); // diphoton, muon, MET, jet1, jet2
+              //     tag_obj = tag_obj_;
+              //   } 
+
+              //   // Include Muon SFs
+              //   MuonIDWeight = tag_muon->weight("MuonTightIDWeightCentral");
+              //   MuonRelISOWeight = tag_muon->weight("MuonTightRelISOWeightCentral");
+              //   tag_obj.setWeight("MuonTightIDWeightCentral",MuonIDWeight);
+              //   tag_obj.setWeight("MuonTightRelISOWeightCentral",MuonRelISOWeight);
+              //   TagObjCentralWeight =  TagObjCentralWeight * MuonIDWeight;
+              //   TagObjCentralWeight =  TagObjCentralWeight * MuonRelISOWeight;
+
+              //   if(doHHWWggDebug_){
+              //     cout << "**************************************************" << endl; 
+              //     cout << " Tag Object weights after including MUON weights: " << endl;
+              //     PrintScaleFactorsObj(tag_obj);
+              //   }                 
+
+              // } // n_good_muons == 1 
+
+              // // Add Jet SFs
+              // for (unsigned int TagJet_i = 0; TagJet_i < tagJets.size(); TagJet_i++){
+              //     // tag_obj.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagCutWeightCentral");
+              //     JetBTagReshapeWeight = JetBTagReshapeWeight * tagJets.at(TagJet_i)->weight("JetBTagReshapeWeightCentral");
+              //     UnmatchedPUWeight = UnmatchedPUWeight * tagJets.at(TagJet_i)->weight("UnmatchedPUWeightCentral");
+              //   }  
+              // tag_obj.setWeight("JetBTagReshapeWeightCentral",JetBTagReshapeWeight);
+              // tag_obj.setWeight("UnmatchedPUWeightCentral",UnmatchedPUWeight);
+              // TagObjCentralWeight =  TagObjCentralWeight * JetBTagReshapeWeight;
+              // TagObjCentralWeight =  TagObjCentralWeight * UnmatchedPUWeight;
+
+              // Save tag object attributes in any case  
+              // if(doHHWWggDebug_){
+              //   cout << " DiPhoton Scale Factors : " << endl; 
+              //   PrintScaleFactorsPtr(dipho);
+              // }
+
+              // // Include Diphoton SFs 
+              // LooseMvaSF = dipho->weight("LooseMvaSFCentral");
+              // PreselSF = dipho->weight("PreselSFCentral");
+              // TriggerWeight = dipho->weight("TriggerWeightCentral");
+              // electronVetoSF = dipho->weight("electronVetoSFCentral");
+              // prefireWeight = dipho->weight("prefireWeightCentral");
+              // diPhoCentralWeight = dipho->centralWeight();
+              // if(prefireWeight == diPhoCentralWeight) prefireWeight = 1; 
+              // tag_obj.setWeight("LooseMvaSFCentral",LooseMvaSF);
+              // tag_obj.setWeight("PreselSFCentral",PreselSF);
+              // tag_obj.setWeight("TriggerWeightCentral",TriggerWeight);
+              // tag_obj.setWeight("electronVetoSFCentral",electronVetoSF);
+              // tag_obj.setWeight("prefireWeightCentral",prefireWeight);
+              // TagObjCentralWeight = TagObjCentralWeight * LooseMvaSF;
+              // TagObjCentralWeight = TagObjCentralWeight * PreselSF;
+              // TagObjCentralWeight = TagObjCentralWeight * TriggerWeight;
+              // TagObjCentralWeight = TagObjCentralWeight * electronVetoSF;
+              // TagObjCentralWeight = TagObjCentralWeight * prefireWeight;
+
+              // tag_obj.setCentralWeight(TagObjCentralWeight);
+
+
+            } // if (n_good_leptons == 1)
           } // Semileptonic cateogries
 
           //-- Fully Hadronic Final State Tags
@@ -1220,7 +1286,7 @@ namespace flashgg {
           {
             if (n_good_leptons==0 && n_good_jets>=4)
             {
-              catnum = 2;
+              catnum = 1;
               // Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
 
               // Define four jets with WH min method, or just take four leading pT
@@ -1284,7 +1350,7 @@ namespace flashgg {
               std::cout << "num_FL_dr: " << num_FL_dr << std::endl; 
             } 
             if ( (n_good_leptons >=2 ) && (theMET->getCorPt() >= MetPtThreshold_) && num_FL_dr>=1 && (leadPho->p4().pt()+subleadPho->p4().pt())>0){
-              catnum = 3; 
+              catnum = 2; 
               double Save=0.;
               double MassT;
               double MassT_l2;
@@ -1529,82 +1595,82 @@ namespace flashgg {
 
           // Untagged category
           // Only push tag into this category if catnum has not changed (not tagged by other categories)
-            if(FilledTag == 0){
-              if(doHHWWggTagCutFlowAnalysis_){
-                if(doHHWWggDebug_) cout << "Filling untagged category..." << endl;
-                catnum = 4;
-                HHWWggTag tag_obj(dipho, allElectrons, goodElectrons, allMuons, goodMuons, theMET, allJets, tagJets, Cut_Variables, MuonVars, JetVars);
-                tag_obj.setSystLabel(systLabel_);
-                tag_obj.setDiPhotonIndex( diphoIndex );
-                tag_obj.setCategoryNumber( catnum ); // Untagged category. Does not meet any selection criteria but want to save event
-                tag_obj.setGenMhh( genMhh );
-                tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS ); 
-                tag_obj.setGenVtx_z(GenVtx_z);
-                tag_obj.setHggVtx_z(HggVtx_z);
-                tag_obj.setZeroVtx_z(ZeroVtx_z);                           
-                if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
+          if(FilledTag == 0){
+            if(doHHWWggTagCutFlowAnalysis_){
+              if(doHHWWggDebug_) cout << "Filling untagged category..." << endl;
+              catnum = 3;
+              HHWWggTag tag_obj(dipho, allElectrons, goodElectrons, allMuons, goodMuons, theMET, allJets, tagJets, Cut_Variables, MuonVars, JetVars);
+              tag_obj.setSystLabel(systLabel_);
+              tag_obj.setDiPhotonIndex( diphoIndex );
+              tag_obj.setCategoryNumber( catnum ); // Untagged category. Does not meet any selection criteria but want to save event
+              tag_obj.setGenMhh( genMhh );
+              tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS ); 
+              tag_obj.setGenVtx_z(GenVtx_z);
+              tag_obj.setHggVtx_z(HggVtx_z);
+              tag_obj.setZeroVtx_z(ZeroVtx_z);                           
+              if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
 
-                //-- Include Scale Factors
-                // Include Electron SFs 
-                for (unsigned int elec_i = 0; elec_i < goodElectrons.size(); elec_i++){
-                    ElectronIDWeight = ElectronIDWeight * goodElectrons.at(elec_i)->weight("ElectronIDWeightCentral");
-                    ElectronRecoWeight = ElectronRecoWeight * goodElectrons.at(elec_i)->weight("ElectronRecoWeightCentral");                  
-                  }
-                tag_obj.setWeight("ElectronIDWeightCentral",ElectronIDWeight);
-                tag_obj.setWeight("ElectronRecoWeightCentral",ElectronRecoWeight);                  
-                TagObjCentralWeight =  TagObjCentralWeight * ElectronIDWeight;
-                TagObjCentralWeight =  TagObjCentralWeight * ElectronRecoWeight; 
-
-                // Include Muon SFs 
-                for (unsigned int muon_i = 0; muon_i < goodMuons.size(); muon_i++){
-                    MuonIDWeight = MuonIDWeight * goodMuons.at(muon_i)->weight("MuonTightIDWeightCentral");
-                    MuonRelISOWeight = MuonRelISOWeight * goodMuons.at(muon_i)->weight("MuonTightRelISOWeightCentral");                 
-                  }
-                tag_obj.setWeight("MuonTightIDWeightCentral",MuonIDWeight);
-                tag_obj.setWeight("MuonTightRelISOWeightCentral",MuonRelISOWeight); 
-                TagObjCentralWeight =  TagObjCentralWeight * MuonIDWeight;
-                TagObjCentralWeight =  TagObjCentralWeight * MuonRelISOWeight;                    
-
-                // Add Jet SFs
-                for (unsigned int TagJet_i = 0; TagJet_i < tagJets.size(); TagJet_i++){
-                    // tag_obj.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagCutWeightCentral");
-                    JetBTagReshapeWeight = JetBTagReshapeWeight * tagJets.at(TagJet_i)->weight("JetBTagReshapeWeightCentral");
-                    UnmatchedPUWeight = UnmatchedPUWeight * tagJets.at(TagJet_i)->weight("UnmatchedPUWeightCentral");
-                  }  
-                tag_obj.setWeight("JetBTagReshapeWeightCentral",JetBTagReshapeWeight);
-                tag_obj.setWeight("UnmatchedPUWeightCentral",UnmatchedPUWeight);                  
-                TagObjCentralWeight = TagObjCentralWeight * JetBTagReshapeWeight;
-                TagObjCentralWeight = TagObjCentralWeight * UnmatchedPUWeight;
-
-                // Include Diphoton SFs 
-                LooseMvaSF = dipho->weight("LooseMvaSFCentral");
-                PreselSF = dipho->weight("PreselSFCentral");
-                TriggerWeight = dipho->weight("TriggerWeightCentral");
-                electronVetoSF = dipho->weight("electronVetoSFCentral");
-                prefireWeight = dipho->weight("prefireWeightCentral");
-                diPhoCentralWeight = dipho->centralWeight();
-                if(prefireWeight == diPhoCentralWeight) prefireWeight = 1; 
-                tag_obj.setWeight("LooseMvaSFCentral",LooseMvaSF);
-                tag_obj.setWeight("PreselSFCentral",PreselSF);
-                tag_obj.setWeight("TriggerWeightCentral",TriggerWeight);
-                tag_obj.setWeight("electronVetoSFCentral",electronVetoSF);
-                tag_obj.setWeight("prefireWeightCentral",prefireWeight);
-                TagObjCentralWeight = TagObjCentralWeight * LooseMvaSF;
-                TagObjCentralWeight = TagObjCentralWeight * PreselSF;
-                TagObjCentralWeight = TagObjCentralWeight * TriggerWeight;
-                TagObjCentralWeight = TagObjCentralWeight * electronVetoSF;
-                TagObjCentralWeight = TagObjCentralWeight * prefireWeight;
-
-                // Set central object weight as produce of all SFs 
-                tag_obj.setCentralWeight(TagObjCentralWeight);
-
-                HHWWggtags->push_back( tag_obj );
-
-                if( ! event.isRealData() ) {
-                  HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
+              //-- Include Scale Factors
+              // Include Electron SFs 
+              for (unsigned int elec_i = 0; elec_i < goodElectrons.size(); elec_i++){
+                  ElectronIDWeight = ElectronIDWeight * goodElectrons.at(elec_i)->weight("ElectronIDWeightCentral");
+                  ElectronRecoWeight = ElectronRecoWeight * goodElectrons.at(elec_i)->weight("ElectronRecoWeightCentral");                  
                 }
+              tag_obj.setWeight("ElectronIDWeightCentral",ElectronIDWeight);
+              tag_obj.setWeight("ElectronRecoWeightCentral",ElectronRecoWeight);                  
+              TagObjCentralWeight =  TagObjCentralWeight * ElectronIDWeight;
+              TagObjCentralWeight =  TagObjCentralWeight * ElectronRecoWeight; 
+
+              // Include Muon SFs 
+              for (unsigned int muon_i = 0; muon_i < goodMuons.size(); muon_i++){
+                  MuonIDWeight = MuonIDWeight * goodMuons.at(muon_i)->weight("MuonTightIDWeightCentral");
+                  MuonRelISOWeight = MuonRelISOWeight * goodMuons.at(muon_i)->weight("MuonTightRelISOWeightCentral");                 
+                }
+              tag_obj.setWeight("MuonTightIDWeightCentral",MuonIDWeight);
+              tag_obj.setWeight("MuonTightRelISOWeightCentral",MuonRelISOWeight); 
+              TagObjCentralWeight =  TagObjCentralWeight * MuonIDWeight;
+              TagObjCentralWeight =  TagObjCentralWeight * MuonRelISOWeight;                    
+
+              // Add Jet SFs
+              for (unsigned int TagJet_i = 0; TagJet_i < tagJets.size(); TagJet_i++){
+                  // tag_obj.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagCutWeightCentral");
+                  JetBTagReshapeWeight = JetBTagReshapeWeight * tagJets.at(TagJet_i)->weight("JetBTagReshapeWeightCentral");
+                  UnmatchedPUWeight = UnmatchedPUWeight * tagJets.at(TagJet_i)->weight("UnmatchedPUWeightCentral");
+                }  
+              tag_obj.setWeight("JetBTagReshapeWeightCentral",JetBTagReshapeWeight);
+              tag_obj.setWeight("UnmatchedPUWeightCentral",UnmatchedPUWeight);                  
+              TagObjCentralWeight = TagObjCentralWeight * JetBTagReshapeWeight;
+              TagObjCentralWeight = TagObjCentralWeight * UnmatchedPUWeight;
+
+              // Include Diphoton SFs 
+              LooseMvaSF = dipho->weight("LooseMvaSFCentral");
+              PreselSF = dipho->weight("PreselSFCentral");
+              TriggerWeight = dipho->weight("TriggerWeightCentral");
+              electronVetoSF = dipho->weight("electronVetoSFCentral");
+              prefireWeight = dipho->weight("prefireWeightCentral");
+              diPhoCentralWeight = dipho->centralWeight();
+              if(prefireWeight == diPhoCentralWeight) prefireWeight = 1; 
+              tag_obj.setWeight("LooseMvaSFCentral",LooseMvaSF);
+              tag_obj.setWeight("PreselSFCentral",PreselSF);
+              tag_obj.setWeight("TriggerWeightCentral",TriggerWeight);
+              tag_obj.setWeight("electronVetoSFCentral",electronVetoSF);
+              tag_obj.setWeight("prefireWeightCentral",prefireWeight);
+              TagObjCentralWeight = TagObjCentralWeight * LooseMvaSF;
+              TagObjCentralWeight = TagObjCentralWeight * PreselSF;
+              TagObjCentralWeight = TagObjCentralWeight * TriggerWeight;
+              TagObjCentralWeight = TagObjCentralWeight * electronVetoSF;
+              TagObjCentralWeight = TagObjCentralWeight * prefireWeight;
+
+              // Set central object weight as produce of all SFs 
+              tag_obj.setCentralWeight(TagObjCentralWeight);
+
+              HHWWggtags->push_back( tag_obj );
+
+              if( ! event.isRealData() ) {
+                HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
               }
-            } // Untagged category
+            }
+          } // Untagged category
         } // Preselected Diphoton loop 
       event.put( std::move( HHWWggtags ) );
       event.put( std::move( truths ) );

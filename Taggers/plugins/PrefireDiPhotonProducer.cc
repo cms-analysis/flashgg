@@ -158,7 +158,7 @@ namespace flashgg {
                 // for (auto it = prefireObject.weightListBegin() ; it != prefireObject.weightListEnd(); it++) {
                         // std::cout << " Scale Factor: " << *it << " " << prefireObject.weight(*it) << std::endl;
                     // }                 
-                // prefireObject.setCentralWeight( (1. - prefireProbability) ); // Adjusting to make central weight accesible by prefireWeightCentral label 
+                prefireObject.setCentralWeight( (1. - prefireProbability) ); // Adjusting to make central weight accesible by prefireWeightCentral label 
                 prefireObject.setWeight("prefireWeightCentral", (1. - prefireProbability) ); // Adjusting to make central weight accesible by prefireWeightCentral label 
                 prefireObject.setWeight("prefireWeightUp01sigma",   std::min(1.,  1. - prefireProbability + prefireProbabilityUnc));
                 prefireObject.setWeight("prefireWeightDown01sigma", std::max(0.,  1. - prefireProbability - prefireProbabilityUnc));
