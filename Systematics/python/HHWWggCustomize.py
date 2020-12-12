@@ -260,6 +260,8 @@ class HHWWggCustomize():
 
             # var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "
             if("Jets" in objV):
+                NtoCheck = 5 
+                if(objV == "goodJets"): NtoCheck = 10 # want to save more good jet information for checking btags per event 
                 bscores = ["bDiscriminator('mini_pfDeepFlavourJetTags:probb')","bDiscriminator('pfDeepCSVJetTags:probb')",
                            "bDiscriminator('mini_pfDeepFlavourJetTags:probbb')","bDiscriminator('pfDeepCSVJetTags:probbb')",
                            "bDiscriminator('mini_pfDeepFlavourJetTags:problepb')"
@@ -273,7 +275,7 @@ class HHWWggCustomize():
                           ]
                 for ib,bscore in enumerate(bscores):
                     btitle = btitles[ib]
-                    for i in range(checkN):
+                    for i in range(NtoCheck):
                         vtitle = "%s_%s_%s"%(objV,i,btitle)
                         vname = "? %s.size() >= %s ? %s[%s].%s : -999"%(objV,i+1,objV,i,bscore)
                         entry = "%s:=%s"%(vtitle,vname)
@@ -361,14 +363,16 @@ class HHWWggCustomize():
             variables += finalStateVars
             variables += HHVariables
             variables += cutFlowVars
-            if self.customize.HHWWggAnalysisChannel == "FL": 
+            if self.customize.HHWWggAnalysisChannel == "FL" or self.customize.HHWWggAnalysisChannel == "all": 
                 variables += FL_vars
-            if self.customize.HHWWggAnalysisChannel == "SL": 
+            if self.customize.HHWWggAnalysisChannel == "SL" or self.customize.HHWWggAnalysisChannel == "all": 
                 variables += muon_vars
                 variables += jet_vars 
 
         if self.customize.doHHWWggDebug:
             variables += debugVars
+
+        print"variables to dump:",variables 
 
         return variables
 
@@ -462,7 +466,7 @@ class HHWWggCustomize():
         print "HHWWggAnalysisChannel:",self.customize.HHWWggAnalysisChannel
         self.process.flashggHHWWggTag.HHWWggAnalysisChannel = self.customize.HHWWggAnalysisChannel
         if self.customize.HHWWggAnalysisChannel == "FL": 
-           self.process.flashggHHWWggTag.deltaMassElectronZThreshold = 5 # 5 instead of default 10  
+           self.process.flashggHHWWggTag.deltaMassElectronZThreshold = 5 # 5 instead of default 10  ##-- need to configure with 'all' option...
         
         ## customize meta conditions
         self.process.flashggHHWWggTag.JetIDLevel=cms.string(str(self.metaConditions["HHWWggTag"]["jetID"]))
