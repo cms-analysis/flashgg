@@ -59,6 +59,7 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     PATfilters = cms.InputTag('TriggerResults::PAT'),
                                     FLASHfilters = cms.InputTag('TriggerResults::FLASHggMicroAOD'),
                                     btagThresh = cms.double(0.45),
+                                    BTagTypes = cms.vstring('mini_pfDeepFlavourJetTags:probb','mini_pfDeepFlavourJetTags:probbb','mini_pfDeepFlavourJetTags:problepb'),
                                     doHHWWggTagCutFlowAnalysis = cms.bool(False), # save events for cut flow analysis
                                     doHHWWggNonResAnalysis = cms.bool(False),
                                     doHHWWggFHptOrdered = cms.bool(False), # for FH final state, choose four leading pT jets as four jets

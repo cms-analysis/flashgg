@@ -261,10 +261,15 @@ class HHWWggCustomize():
             # var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "
             if("Jets" in objV):
                 bscores = ["bDiscriminator('mini_pfDeepFlavourJetTags:probb')","bDiscriminator('pfDeepCSVJetTags:probb')",
-                           "bDiscriminator('mini_pfDeepFlavourJetTags:probbb')","bDiscriminator('pfDeepCSVJetTags:probbb')"]
+                           "bDiscriminator('mini_pfDeepFlavourJetTags:probbb')","bDiscriminator('pfDeepCSVJetTags:probbb')",
+                           "bDiscriminator('mini_pfDeepFlavourJetTags:problepb')"
+                        #    "bDiscriminator('mini_pfDeepFlavourJetTags:probb') + bDiscriminator('mini_pfDeepFlavourJetTags:probbb') + bDiscriminator('mini_pfDeepFlavourJetTags:problepb')"
+                           ]
 
                 btitles = ["bDiscriminator_mini_pfDeepFlavourJetTags_probb","bDiscriminator_pfDeepCSVJetTags_probb",
-                           "bDiscriminator_mini_pfDeepFlavourJetTags_probbb","bDiscriminator_pfDeepCSVJetTags_probbb"
+                           "bDiscriminator_mini_pfDeepFlavourJetTags_probbb","bDiscriminator_pfDeepCSVJetTags_probbb",
+                           "bDiscriminator_mini_pfDeepFlavourJetTags_problepb"
+                        #    "DeepFlavourScore"
                           ]
                 for ib,bscore in enumerate(bscores):
                     btitle = btitles[ib]
@@ -344,7 +349,6 @@ class HHWWggCustomize():
             print"variableLabel:",variableLabel
             ScaleFactorVariables.append(variableLabel)
         ScaleFactorVariables.append("prefireWeightCentral := weight(\"prefireWeightCentral\")")
-
         print"len(finalStateVars):",len(finalStateVars)
         # print"len(muon_vars):",len(muon_vars)
         # print"len(jet_vars):",len(jet_vars)
