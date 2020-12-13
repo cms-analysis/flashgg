@@ -146,8 +146,8 @@ namespace flashgg {
     const reco::Candidate::LorentzVector& Subleading_lepton() const { return Subleading_lepton_; };
     const float dipho_MVA() const {return dipho_MVA_;};
 
-    void setBenchmarkReweight(std::vector<float> x) { benchmark_reweights_ = x; }
-    float getBenchmarkReweight(int targetNode) const { return benchmark_reweights_[targetNode]; }
+    // void setBenchmarkReweight(std::vector<float> x) { benchmark_reweights_ = x; }
+    // float getBenchmarkReweight(int targetNode) const { return benchmark_reweights_[targetNode]; }
 
     void setGenMhh(double x) { genMhh_ = x; }
     double genMhh() const { return genMhh_; }
@@ -171,8 +171,8 @@ namespace flashgg {
     float lp_pt_;
     float slp_pt_;
     std::vector<double> Cut_Variables_;
-    std::vector<double> MuonVars_;
-    std::vector<double> JetVars_;
+    std::vector<double> MuonVars_ = {-999}; // Give initial value to avoid void vectors when obtaining final state variables  
+    std::vector<double> JetVars_ = {-999}; // Give initial value to avoid void vectors when obtaining final state variables 
     flashgg::Electron Electron_;
     flashgg::Muon Muon_;
     flashgg::Jet Leading_Jet_;
@@ -196,7 +196,7 @@ namespace flashgg {
     reco::Candidate::LorentzVector Leading_lepton_;
     reco::Candidate::LorentzVector Subleading_lepton_;
     float dipho_MVA_;
-    vector<float> benchmark_reweights_;    
+    // vector<float> benchmark_reweights_;    
 
     double genMhh_;
     double genCosThetaStar_CS_;

@@ -23,28 +23,6 @@ HHWWggTag::HHWWggTag() : DiPhotonTagBase::DiPhotonTagBase(), mva_(-2.), Cut_Vari
 //---dtor---
 HHWWggTag::~HHWWggTag() {}
 
-// //-- Utilities
-// void SetVtxVals(double GenVtx_z, double HggVtx_z, double ZeroVtx_z){
-//   GenVtx_z_ = GenVtx_z;  
-//   HggVtx_z_ = HggVtx_z;  
-//   ZeroVtx_z_ = ZeroVtx_z;  
-// }
-
-// double HHWWggTag::genCosThetaStar_CS() {
-
-//     LorentzVector hh_lor = diPhoton()->p4();
-//     TLorentzVector hh;
-//     hh.SetPxPyPzE(hh_lor.Px(),hh_lor.Py(),hh_lor.Pz(),hh_lor.E()) ;
-
-//     LorentzVector h1_lor = diPhoton()->p4();
-//     TLorentzVector h_1;
-//     h_1.SetPxPyPzE(h1_lor.Px(),h1_lor.Py(),h1_lor.Pz(),h1_lor.E()) ; 
-
-//     h_1.Boost(-hh.BoostVector());   
-
-//     return h_1.CosTheta();
-// }
-
 void HHWWggTag::GetPhoAtt(edm::Ptr<DiPhotonCandidate> dipho)
 {
   Leading_Photon_ = dipho->leadingPhoton();

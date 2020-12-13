@@ -1,8 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
-from flashgg.Taggers.globalVariables_cff import globalVariables
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag # should include jet systematics
-from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections, flashggDeepCSV
+from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections
 
 import flashgg.Taggers.flashggDoubleHReweight_cfi as reweight_settings
 from flashgg.Taggers.flashggDoubleHReweight_cfi import flashggDoubleHReweight
@@ -10,13 +9,12 @@ from flashgg.Taggers.flashggDoubleHReweight_cfi import flashggDoubleHReweight
 # cfi = configuration fragment include
 # Clone these params into _cfg
 flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
-                                    globalVariables=globalVariables,
-                                    PhotonTag = cms.InputTag('flashggRandomizedPhotons'),
+
+                                    # PhotonTag = cms.InputTag('flashggRandomizedPhotons'), ##-- Photons not used 
                                     DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons'),
                                     SystLabel = cms.string(""),
-                                    JetsName = cms.string("bRegProducer"), #
-                                    JetsCollSize = cms.uint32(maxJetCollections), #
-                                    JetsSuffixes = cms.vstring(''), #nominal and systematic variations
+                                    JetsCollSize = cms.uint32(maxJetCollections), 
+                                    JetsSuffixes = cms.vstring(''), # Nominal and systematic variations
                                     DiPhotonName = cms.string('flashggPreselectedDiPhotons'), #
                                     VertexTag = cms.InputTag('offlineSlimmedPrimaryVertices'),
                                     GenParticleTag         = cms.InputTag('flashggPrunedGenParticles'),
@@ -26,6 +24,8 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     JetTags                = UnpackedJetCollectionVInputTag,
                                     DiPhotonSuffixes = cms.vstring(''), #nominal and systematic variations
                                     MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
+
+                                    ##-- Common Object Selections among Three Final States 
                                     leptonPtThreshold = cms.double(10.),
                                     muonEtaThreshold = cms.double(2.4),
                                     leadPhoOverMassThreshold = cms.double(0.35), # was 0.375
@@ -54,6 +54,8 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     electronNumOfHitsThreshold = cms.double(1),
                                     useElectronMVARecipe = cms.bool(False),
                                     useElectronLooseID = cms.bool(True),
+
+                                    ##-- Misc 
                                     rhoTag = cms.InputTag('fixedGridRhoFastjetAll'),
                                     RECOfilters = cms.InputTag('TriggerResults::RECO'),
                                     PATfilters = cms.InputTag('TriggerResults::PAT'),
@@ -64,20 +66,12 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     doHHWWggNonResAnalysis = cms.bool(False),
                                     doHHWWggFHptOrdered = cms.bool(False), # for FH final state, choose four leading pT jets as four jets
                                     doHHWWggDebug = cms.bool(False), # False by default to avoid extra print statements, set true with flag 
-                                    HHWWggAnalysisChannel = cms.string("SL"), # final state analysis to run. SL by default. Can be SL, FL, or FH
+                                    HHWWggAnalysisChannel = cms.string("SL"), # final state analysis to run. SL by default. Can be SL, FH, FL, or all 
                                     deltaRLeps = cms.double(0.4),
                                     MetPtThreshold = cms.double(20.),
                                     JetIDLevel = cms.string(''), # Tight, Tight2017 or Tight2018 as set in 
-                                    
-                                    ##-- Non-Resonant Reweighting 
-                                    doReweight = flashggDoubleHReweight.doReweight,
-                                    reweight_producer = cms.string(reweight_settings.reweight_producer),
-                                    reweight_names = cms.vstring(reweight_settings.reweight_names),  
 
-                                    EB_Photon_MVA_Threshold = cms.double(0.07),
-                                    EE_Photon_MVA_Threshold = cms.double(-0.03),
-                                    #bTag = cms.string(flashggDeepCSV),
-                                    # btagThresh = cms.double(100)     # no btag (Save all btags < 100)
+                                    ##-- Fully Leptonic Final State Parameters 
                                     lep1ptThre = cms.double(20.),
                                     lep2ptThre = cms.double(10.),
                                     lep3ptThre = cms.double(10.),
@@ -87,6 +81,6 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     MassT_l2Thre = cms.double(0.),
                                     SaveOthers = cms.bool(True),
 
-                                    # vertex
+                                    # Vertex choice 
                                     HHWWgguseZeroVtx = cms.bool(False)                             
                                     )

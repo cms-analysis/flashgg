@@ -59,9 +59,6 @@ namespace flashgg {
     //---Outtree
     edm::Service<TFileService> fs;
 
-    // TH1F* indexes;
-    // TH2F* diphopTs;
-
   private:
     bool checkPassMVAs(const flashgg::Photon*& leading_photon, const flashgg::Photon*& subleading_photon, edm::Ptr<reco::Vertex>& diphoton_vertex, double EB_Photon_MVA_Threshold, double EE_Photon_MVA_Threshold);
     std::vector<double> GetMuonVars(const std::vector<edm::Ptr<flashgg::Muon> > &muonPointers, const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers);
@@ -78,15 +75,9 @@ namespace flashgg {
     std::vector<edm::EDGetTokenT<edm::View<DiPhotonCandidate> > > diPhotonTokens_;
     std::string inputDiPhotonName_;
 
-    std::string inputJetsName_;
     std::vector<std::string> inputJetsSuffixes_;
-    unsigned int inputJetsCollSize_;
 
-    // Adding Jets
     std::vector<edm::EDGetTokenT<edm::View<flashgg::Jet> > > jetTokens_;
-
-    EDGetTokenT<View<Photon> > photonToken_;
-    Handle<View<flashgg::Photon> > photons;
 
     EDGetTokenT<View<DiPhotonCandidate> > diphotonToken_;
     Handle<View<flashgg::DiPhotonCandidate> > diphotons;
@@ -127,10 +118,6 @@ namespace flashgg {
     ConsumesCollector cc_;
 
     //----output collection
-    // auto_ptr<vector<HHWWggCandidate> > HHWWggColl_;
-    vector< edm::EDGetTokenT<float> > reweights_;
-    int doReweight_; // non resonant reweighting 
-
     double EB_Photon_MVA_Threshold_;
     double EE_Photon_MVA_Threshold_;
     double MetPtThreshold_;
@@ -194,7 +181,6 @@ namespace flashgg {
 
     //---standard
     HHWWggTagProducer::HHWWggTagProducer( const ParameterSet & pSet):
-    photonToken_( consumes<View<Photon> >( pSet.getParameter<InputTag> ( "PhotonTag" ) ) ),
     diphotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( pSet.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
     vertexToken_( consumes<View<reco::Vertex> >( pSet.getParameter<InputTag> ( "VertexTag" ) ) ),
     genParticleToken_( consumes<View<reco::GenParticle> >( pSet.getParameter<InputTag> ( "GenParticleTag" ) ) ),
@@ -223,47 +209,14 @@ namespace flashgg {
       }
       for ( auto & tag : diPhotonTags ) { diPhotonTokens_.push_back( consumes<edm::View<flashgg::DiPhotonCandidate> >( tag ) ); }
 
-      bool breg = 0;
-
-      inputJetsName_= pSet.getParameter<std::string> ( "JetsName" );
-      inputJetsCollSize_= pSet.getParameter<unsigned int> ( "JetsCollSize" );
       inputJetsSuffixes_= pSet.getParameter<std::vector<std::string> > ( "JetsSuffixes" );
-      // cout << "inputJetsCollSize_ = " << inputJetsCollSize_ << endl;
-      if (breg){
-        std::vector<edm::InputTag>  jetTags; // With bregression on
-        for (auto & suffix : inputJetsSuffixes_) {
-            if (!suffix.empty()) systematicsLabels.push_back(suffix);  //nominal is already put in the diphoton loop
-            for (unsigned int i = 0; i < inputJetsCollSize_ ; i++) {
-                  std::string bregtag = suffix;
-                  bregtag.append(std::to_string(i));
-                  if (breg) jetTags.push_back(edm::InputTag(inputJetsName_,bregtag)); // With bregression on
-            }
-        }
 
-        for( auto & tag : jetTags ) { jetTokens_.push_back( consumes<edm::View<flashgg::Jet> >( tag ) ); } // With bregression on
-      }
-
-      // Jets without bregression
-      if (!breg){
-        auto jetTags = pSet.getParameter<std::vector<edm::InputTag> > ( "JetTags" );
-        for( auto & tag : jetTags ) { jetTokens_.push_back( consumes<edm::View<flashgg::Jet> >( tag ) ); }
-      }
+      auto jetTags = pSet.getParameter<std::vector<edm::InputTag> > ( "JetTags" );
+      for( auto & tag : jetTags ) { jetTokens_.push_back( consumes<edm::View<flashgg::Jet> >( tag ) ); }
 
       genInfo_ = pSet.getUntrackedParameter<edm::InputTag>( "genInfo", edm::InputTag("generator") );
       genInfoToken_ = consumes<GenEventInfoProduct>( genInfo_ );
-      // diphopt = fs->make<TH1F> ("diphopt", "diphopt", 500,0,500);
-      // phoptsum = fs->make<TH1F> ("phoptsum", "phoptsum", 500,0,500);
 
-      doReweight_ = (pSet.getParameter<int>("doReweight")); 
-      auto names = pSet.getParameter<vector<string>>("reweight_names");
-      for (auto & name : names ) {
-          reweights_.push_back(consumes<float>(edm::InputTag(pSet.getParameter<string>("reweight_producer") , name))) ;
-      }
-
-      // diphopTs = fs->make<TH2F> ("diphopTs","diphoton pTs", 50,0,500,50,0,500); // for looking at dipho pT and sum of dipho photon pTs
-      // WTags = fs->make<TH1F> ("WTags","W Tags",3,0,3);
-      EB_Photon_MVA_Threshold_ =pSet.getParameter<double>( "EB_Photon_MVA_Threshold");
-      EE_Photon_MVA_Threshold_ =pSet.getParameter<double>( "EE_Photon_MVA_Threshold");
       MetPtThreshold_ =pSet.getParameter<double>( "MetPtThreshold");
       deltaRLeps_ =pSet.getParameter<double>( "deltaRLeps");
       leptonPtThreshold_ = pSet.getParameter<double>( "leptonPtThreshold");
@@ -311,9 +264,6 @@ namespace flashgg {
       MassT_l2Thre_ = pSet.getParameter<double>("MassT_l2Thre");
       HHWWgguseZeroVtx_ = pSet.getParameter<bool>("HHWWgguseZeroVtx");
       produces<vector<HHWWggTag>>();
-      // for (auto & systname : systematicsLabels) { // to deal with systematics in producer
-      //     produces<vector<HHWWggTag>>(systname);
-      // }
       produces<vector<TagTruthBase>>();
     }
 
@@ -673,30 +623,8 @@ namespace flashgg {
       // Tag Variable
       bool FilledTag = 0; 
 
-      // Read reweighting if it's there 
-      vector<float> reweight_values;
-      if (doReweight_>0) 
-      {
-          for (auto & reweight_token : reweights_)
-          {
-              edm::Handle<float> reweight_hadle;
-              event.getByToken(reweight_token, reweight_hadle);
-              reweight_values.push_back(*reweight_hadle);
-          }
-      }
-
-      // Reweighting Debug 
-      // if(doHHWWggDebug_){
-      //   cout << "[HHWWggDebug]" << endl;
-      //   cout << "doReweight_: " << doReweight_ << endl;
-      //   cout << "reweight_values.size(): " << reweight_values.size() << endl;
-      //   for(unsigned int i = 0; i < reweight_values.size(); i++){
-      //     cout << "reweight_values[" << i << "] = " << reweight_values[i] << endl;
-      //   }
-      // }
-
       // Get particle objects
-      event.getByToken( photonToken_, photons );
+      // event.getByToken( photonToken_, photons );
       event.getByToken( diphotonToken_, diphotons );
       event.getByToken( electronToken_, electrons );
       event.getByToken( muonToken_, muons );
@@ -726,10 +654,6 @@ namespace flashgg {
       int n_good_jets = 0;
       bool hasHighbTag = 0;
       float btagVal = 0;
-      // double leadPho_pt = 0;
-      // double subleadPho_pt = 0;
-      // double sumpT = 0;
-      // double diPho_pT = 0;
 
       // Vertex 
       double GenVtx_z = -999; 
@@ -738,8 +662,6 @@ namespace flashgg {
 
       int num_FL_dr = 0;
       double deltaMassElectronZThreshold_FL = 5; // make sure this is correct if there are further optimizations 
-
-      // bool passMVAs = 0; // True if leading and subleading photons pass MVA selections
 
       int catnum = 3; // category number. default to untagged
 
@@ -763,19 +685,10 @@ namespace flashgg {
       Ptr<flashgg::Jet> jet3;
       Ptr<flashgg::Jet> jet4;
       bool keepJet = true;
-      bool keepJetFL = true;
-
-      // int n_METs = METs->size(); // Should be 1, but using as a way to obtain met four vector
-      // double diphoMVA = -99;
-      // double lead_pho_Hgg_MVA = -99, sublead_pho_Hgg_MVA = -99;
 
       // Saved Objects after selections
       std::vector<edm::Ptr<flashgg::Electron> > goodElectrons;
       std::vector<edm::Ptr<flashgg::Muon> > goodMuons; 
-
-      // FL final state has a different dZ selection and therefore different good electrons and good jets vectors 
-      std::vector<edm::Ptr<flashgg::Electron> > goodElectrons_FL;
-
 
       std::unique_ptr<vector<TagTruthBase> > truths( new vector<TagTruthBase> );
       edm::RefProd<vector<TagTruthBase> > rTagTruth = event.getRefBeforePut<vector<TagTruthBase> >();
@@ -893,24 +806,11 @@ namespace flashgg {
           const flashgg::Photon* leadPho = dipho->leadingPhoton();
           const flashgg::Photon* subleadPho = dipho->subLeadingPhoton();
 
-          //-- Diphoton pT Selection 
-          //-- Should optimize a working point 
-          // if(doHHWWggNonResAnalysis_){
-          //   leadPho_pt = leadPho->pt();
-          //   subleadPho_pt = subleadPho->pt();
-          //   sumpT = leadPho_pt + subleadPho_pt;
-          //   if(!doHHWWggTagCutFlowAnalysis_ && HHWWggAnalysisChannel_ == "SL" && sumpT < 100.) continue; // if not doing cut flow analysis to save events, remove event
-          // }
-
           //-- Vertex Info 
           diphoton_vertex = dipho->vtx();
           if(HHWWgguseZeroVtx_) HggVtx_z = -999; 
           else HggVtx_z = diphoton_vertex->z();
           
-          //-- Removing MVA selection as we don't have the custom SFs 
-          // passMVAs = 0;
-          // passMVAs = checkPassMVAs(leadPho, subleadPho, diphoton_vertex, EB_Photon_MVA_Threshold_, EE_Photon_MVA_Threshold_);
-
           // leading/subleading photon pt
           if( dipho->leadingPhoton()->pt() > ( dipho->mass() )*leadPhoOverMassThreshold_ ){
               pass_leadPhoOverMassThreshold = 1;
@@ -931,6 +831,7 @@ namespace flashgg {
           }
 
           // Check MET Filters
+          //-- Is this done in a separate module? 
           // if(passMETfilters){
           //   pass_METfilters = 1;
           // }
@@ -944,17 +845,6 @@ namespace flashgg {
                                                                               useElectronMVARecipe_,useElectronLooseID_,
                                                                               deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_,
                                                                               rho_, event.isRealData() );
-
-          //--- When running in "all" state, is there a better way to deal with deltaMassElectronZThreshold_ of 5 for FL final states than just reproducing the goodElectrons vector
-          //--- which then requires a recomputation of the goodJets vector? 
-          //--- For now will just implement the method that is least memory efficient 
-
-          if((HHWWggAnalysisChannel_ == "FL" || HHWWggAnalysisChannel_ == "all")){
-            goodElectrons_FL = selectStdElectrons( electrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
-                                                                                useElectronMVARecipe_,useElectronLooseID_,
-                                                                                deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_FL,
-                                                                                rho_, event.isRealData() );
-          }
 
           if(doHHWWggTagCutFlowAnalysis_){
             for( unsigned int ei = 0; ei <  electrons->size() ; ei++ ){
@@ -979,17 +869,11 @@ namespace flashgg {
           hasGoodElec = ( goodElectrons.size() > 0 );
           hasGoodMuons = ( goodMuons.size() > 0 );
 
-          // Different FL electron collections due to different dZ selection 
-          n_good_electrons_FL = goodElectrons_FL.size();
-          n_good_leptons_FL = n_good_electrons_FL + n_good_muons; 
-          hasGoodElec_FL = ( goodElectrons_FL.size() > 0 );
-
           // Jets
           unsigned int jetCollectionIndex = diphotons->at( diphoIndex ).jetCollectionIndex(); // not looping over systematics
           edm::Handle<edm::View<flashgg::Jet> > Jets_;
           event.getByToken( jetTokens_[jetCollectionIndex], Jets_); 
           std::vector<edm::Ptr<Jet> > tagJets;
-          std::vector<edm::Ptr<Jet> > tagJets_FL; // Due to different dZ for FL 
 
           // If doing cut flow analysis, save Jet IDs
           if(doHHWWggTagCutFlowAnalysis_) JetVars = GetJetVars(Jets_->ptrs(), dipho);
@@ -998,7 +882,6 @@ namespace flashgg {
           for( unsigned int candIndex_outer = 0; candIndex_outer <  Jets_->size() ; candIndex_outer++ )
               {
                   keepJet = true;
-                  keepJetFL = true; 
                   edm::Ptr<flashgg::Jet> thejet = Jets_->ptrAt( candIndex_outer );
                   allJets.push_back(thejet);
 
@@ -1027,16 +910,9 @@ namespace flashgg {
                           {
                               Ptr<flashgg::Electron> electron = goodElectrons[electronIndex];
                               float dRJetElectron = deltaR( thejet->eta(), thejet->phi(), electron->eta(), electron->phi() ) ;
-                              if( dRJetElectron < deltaRJetMuonThreshold_ ){ keepJet=false; }
+                              if( dRJetElectron < deltaRJetMuonThreshold_ ){ continue; }
                           }
 
-                  if ( hasGoodElec_FL ) 
-                      for( unsigned int electronIndex = 0; electronIndex < goodElectrons_FL.size(); electronIndex++ )
-                          {
-                              Ptr<flashgg::Electron> electron = goodElectrons[electronIndex];
-                              float dRJetElectron = deltaR( thejet->eta(), thejet->phi(), electron->eta(), electron->phi() ) ;
-                              if( dRJetElectron < deltaRJetMuonThreshold_ ) { keepJetFL=false; }
-                          }
                   if( hasGoodMuons )
                       for( unsigned int muonIndex = 0; muonIndex < goodMuons.size(); muonIndex++ )
                           {
@@ -1047,8 +923,6 @@ namespace flashgg {
 
                   if(keepJet)
                       tagJets.push_back( thejet );
-                  if(keepJetFL)
-                      tagJets_FL.push_back( thejet );
 
               }
 
@@ -1066,18 +940,6 @@ namespace flashgg {
             if (  jet_->pt() >20 && (btagVal > btagThresh_)) Savejet = 0;
           }
 
-          if((HHWWggAnalysisChannel_ == "FL" || HHWWggAnalysisChannel_ == "all")){
-            for (unsigned int j = 0; j < tagJets_FL.size(); j++){
-              Ptr<flashgg::Jet> jet_ = tagJets_FL[j];
-              btagVal = 0; 
-              for(unsigned int BTagTypes_i = 0; BTagTypes_i < BTagTypes_.size(); BTagTypes_i ++){
-                btagVal += jet_->bDiscriminator(BTagTypes_[BTagTypes_i]);
-              }
-              if (btagVal > btagThresh_) hasHighbTag = 1;
-              if (  jet_->pt() >20 && (btagVal > btagThresh_)) Savejet = 0;            
-            
-          }
-
           // If doing cut flow analysis, don't skip event
           if(doHHWWggTagCutFlowAnalysis_){
             if(hasHighbTag)
@@ -1085,11 +947,7 @@ namespace flashgg {
             else
               Cut_Variables[2] = 1.0; // passes bveto
           }
-          // else if(hasHighbTag) continue; // Skip event if it has at least one jet with a btag above threshold, and you're not doing a cut flow analysis
           n_good_jets = tagJets.size(); 
-          //--- This is actually a problem. Cannot have different dZ thresholds and guarantee orthogonality between three final states
-          //--- Since we are currently using number of good leptons for this. 
-          //--- One option is using same dZ. Can also require number of good jets values for final states as long as same collections are used. 
 
           // MET
           if( METs->size() != 1 ) { std::cout << "WARNING - #MET is not 1" << std::endl;}
@@ -1132,6 +990,7 @@ namespace flashgg {
           {
             if ( n_good_leptons == 1 ) {
               catnum = 0;
+              if(doHHWWggDebug_) cout << "Filling Semi-Leptonic category..." << endl;
               HHWWggTag tag_obj;
               if(doHHWWggTagCutFlowAnalysis_){
                 HHWWggTag tag_obj_(dipho, allElectrons, goodElectrons, allMuons, goodMuons, theMET, allJets, tagJets, Cut_Variables, MuonVars, JetVars);
@@ -1240,16 +1099,11 @@ namespace flashgg {
               tag_obj.setCentralWeight(TagObjCentralWeight);
 
 
-              if(doHHWWggDebug_){
-                cout << "**************************************************" << endl; 
-                cout << " Tag Object weights after including ALL weights: " << endl; 
-                PrintScaleFactorsObj(tag_obj);
-              }
-
-              // If doing reweight
-              if (doReweight_>0){ 
-                tag_obj.setBenchmarkReweight( reweight_values ); 
-              }
+              // if(doHHWWggDebug_){
+              //   cout << "**************************************************" << endl; 
+              //   cout << " Tag Object weights after including ALL weights: " << endl; 
+              //   PrintScaleFactorsObj(tag_obj);
+              // }
 
               // Push back tag object 
               HHWWggtags->push_back( tag_obj );
@@ -1375,7 +1229,7 @@ namespace flashgg {
                 jet3 = FHJets[2];
                 jet4 = FHJets[3];
               }
-
+              if(doHHWWggDebug_) cout << "Filling Fully Hadronic category..." << endl;
               HHWWggTag tag_obj;
 
               if (doHHWWggTagCutFlowAnalysis_){
@@ -1403,7 +1257,6 @@ namespace flashgg {
               tag_obj.includeWeights( *dipho );
               tag_obj.setGenMhh( genMhh );
               tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );              
-              if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
               HHWWggtags->push_back( tag_obj );
               FilledTag = 1;
               if( ! event.isRealData() ) {
@@ -1412,16 +1265,28 @@ namespace flashgg {
             }  // if (n_good_leptons==0 && n_good_jets>=4)
           } // Fully Hadronic Categories
 
-          // Fully Leptonic Final State Tags 
+          //-- Fully-Leptonic Final State 
 
           if( (HHWWggAnalysisChannel_ == "FL" || HHWWggAnalysisChannel_ == "all") && FilledTag == 0)
           {  
+            if(n_good_leptons >= 2){
+              // If falls into FL cat, succesfully orthogonal from other final state cats. Now can further check selected leptons 
+              // for tighter deltaZmass, and will stay orthogonal 
 
-            num_FL_dr = GetNumFLDR(goodElectrons, goodMuons, deltaRLeps_);
-            if(doHHWWggDebug_){
-              std::cout << "num_FL_dr: " << num_FL_dr << std::endl; 
-            } 
-            if ( (n_good_leptons >=2 ) && (theMET->getCorPt() >= MetPtThreshold_) && num_FL_dr>=1 && (leadPho->p4().pt()+subleadPho->p4().pt())>0){
+              std::vector<edm::Ptr<flashgg::Electron> > goodElectrons_FL;
+              for( unsigned int ElectronIndex = 0; ElectronIndex < goodElectrons.size(); ElectronIndex++ ) {
+                  
+                  Ptr<flashgg::Electron> electron = goodElectrons[ElectronIndex];            
+                  bool photon_veto = phoVeto(electron, dipho,  deltaRPhoElectronThreshold_,  DeltaRTrkElec_, deltaMassElectronZThreshold_FL);   
+                  if(!photon_veto) goodElectrons_FL.push_back( electron );                     
+              }
+
+            num_FL_dr = GetNumFLDR(goodElectrons_FL, goodMuons, deltaRLeps_);
+            n_good_electrons_FL = goodElectrons_FL.size();
+            n_good_leptons_FL = n_good_electrons_FL + n_good_muons;             
+
+            if ( (n_good_leptons_FL >=2 ) && (theMET->getCorPt() >= MetPtThreshold_) && num_FL_dr>=1 && (leadPho->p4().pt()+subleadPho->p4().pt())>0){
+              if(doHHWWggDebug_) cout << "Filling Fully-Leptonic category..." << endl;
               catnum = 2; 
               double Save=0.;
               double MassT;
@@ -1433,43 +1298,43 @@ namespace flashgg {
               Ptr<flashgg::Muon> tag_muon1;
               Ptr<flashgg::Muon> tag_muon3;
               Ptr<flashgg::Muon> tag_muon2;
-              sort(goodElectrons.begin(),goodElectrons.end(),compEle);
+              sort(goodElectrons_FL.begin(),goodElectrons_FL.end(),compEle);
               sort(goodMuons.begin(),goodMuons.end(),compMu);
-              if (n_good_electrons >= 2){
-                //std::cout<<"ele1:"<<goodElectrons[0]->pt()<<"ele2:"<<goodElectrons[1]->pt()<<"ele3:"<<goodElectrons[2]->pt()<<std::endl;
-                if(n_good_electrons == 2 && n_good_muons < 1){
-                tag_electron1 = goodElectrons[0];
-                tag_electron2 = goodElectrons[1];
+              if (n_good_electrons_FL >= 2){
+                //std::cout<<"ele1:"<<goodElectrons_FL[0]->pt()<<"ele2:"<<goodElectrons_FL[1]->pt()<<"ele3:"<<goodElectrons_FL[2]->pt()<<std::endl;
+                if(n_good_electrons_FL == 2 && n_good_muons < 1){
+                tag_electron1 = goodElectrons_FL[0];
+                tag_electron2 = goodElectrons_FL[1];
                 Save = 1.;
                 }
-                else if(n_good_electrons > 2 && n_good_muons < 1){
-                tag_electron1 = goodElectrons[0];
-                tag_electron2 = goodElectrons[1];
-                tag_electron3 = goodElectrons[2];
+                else if(n_good_electrons_FL > 2 && n_good_muons < 1){
+                tag_electron1 = goodElectrons_FL[0];
+                tag_electron2 = goodElectrons_FL[1];
+                tag_electron3 = goodElectrons_FL[2];
                 Save = 1.;
                 }
-                else if(n_good_electrons ==2 && n_good_muons >=1){
+                else if(n_good_electrons_FL ==2 && n_good_muons >=1){
                 if(goodMuons[0]->pt()<lep3ptThre_){
-                tag_electron1 = goodElectrons[0];
-                tag_electron2 = goodElectrons[1];
+                tag_electron1 = goodElectrons_FL[0];
+                tag_electron2 = goodElectrons_FL[1];
                 Save=1.;
                 }
                 else {
-                  tag_electron1 = goodElectrons[0];
-                  tag_electron2 = goodElectrons[1];
+                  tag_electron1 = goodElectrons_FL[0];
+                  tag_electron2 = goodElectrons_FL[1];
                   Save=0.;}
                 }
-                else if(n_good_electrons >2 && n_good_muons >=1){
+                else if(n_good_electrons_FL >2 && n_good_muons >=1){
                 if(goodMuons[0]->pt()<lep3ptThre_){
-                tag_electron1 = goodElectrons[0];
-                tag_electron2 = goodElectrons[1];
-                tag_electron3 = goodElectrons[2];
+                tag_electron1 = goodElectrons_FL[0];
+                tag_electron2 = goodElectrons_FL[1];
+                tag_electron3 = goodElectrons_FL[2];
                 Save = 1.;
                 }
                 else{
-                tag_electron1 = goodElectrons[0];
-                tag_electron2 = goodElectrons[1];
-                tag_electron3 = goodElectrons[2];
+                tag_electron1 = goodElectrons_FL[0];
+                tag_electron2 = goodElectrons_FL[1];
+                tag_electron3 = goodElectrons_FL[2];
                 Save = 0.;
                 }
                 }
@@ -1483,7 +1348,7 @@ namespace flashgg {
 
                     if(doHHWWggTagCutFlowAnalysis_){
                       Cut_Variables[18]=0.;
-                      HHWWggTag tag_obj_(dipho, tag_electron1, tag_electron2, theMET,Cut_Variables,dipho_MVA); 
+                      HHWWggTag tag_obj_(dipho, tag_electron1, tag_electron2, theMET, Cut_Variables, dipho_MVA); 
                       tag_obj = tag_obj_;    
                       tag_obj.setGenVtx_z(GenVtx_z);
                       tag_obj.setHggVtx_z(HggVtx_z);
@@ -1502,7 +1367,6 @@ namespace flashgg {
                   tag_obj.includeWeights( *dipho );
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
-                  if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
                   HHWWggtags->push_back( tag_obj );
                   FilledTag = 1;
                   if( ! event.isRealData() ) {
@@ -1513,19 +1377,19 @@ namespace flashgg {
               }
 
               if (n_good_muons >= 2  ){
-                if (n_good_muons == 2 && n_good_electrons <1){
+                if (n_good_muons == 2 && n_good_electrons_FL <1){
                   tag_muon1 = goodMuons[0];
                   tag_muon2 = goodMuons[1];
                   Save =1.;
                 }
-                else if(n_good_muons >2 && n_good_electrons <1 ){
+                else if(n_good_muons >2 && n_good_electrons_FL <1 ){
                 tag_muon1 = goodMuons[0];
                 tag_muon2 = goodMuons[1];
                 tag_muon3 = goodMuons[2];
                 Save = 1.;
                 }
-                else if(n_good_muons ==2 && n_good_electrons >=1){
-                  if(goodElectrons[0]->pt()<lep3ptThre_){
+                else if(n_good_muons ==2 && n_good_electrons_FL >=1){
+                  if(goodElectrons_FL[0]->pt()<lep3ptThre_){
                   tag_muon1 = goodMuons[0];
                   tag_muon2 = goodMuons[1];
                   Save = 1.;
@@ -1536,8 +1400,8 @@ namespace flashgg {
                   Save = 0.;}
                 }
 
-                else if(n_good_muons >2 && n_good_electrons >=1){
-                if(goodElectrons[0]->pt()<lep3ptThre_){
+                else if(n_good_muons >2 && n_good_electrons_FL >=1){
+                if(goodElectrons_FL[0]->pt()<lep3ptThre_){
                 tag_muon1 = goodMuons[0];
                 tag_muon2 = goodMuons[1];
                 tag_muon3 = goodMuons[2];
@@ -1560,7 +1424,7 @@ namespace flashgg {
 
                   if(doHHWWggTagCutFlowAnalysis_){
                     Cut_Variables[18]=1.;
-                    HHWWggTag tag_obj_(dipho, tag_muon1, tag_muon2, theMET,Cut_Variables,dipho_MVA);
+                    HHWWggTag tag_obj_(dipho, tag_muon1, tag_muon2, theMET, Cut_Variables, dipho_MVA);
                     tag_obj = tag_obj_;
                     tag_obj.setGenVtx_z(GenVtx_z);
                     tag_obj.setHggVtx_z(HggVtx_z);
@@ -1577,7 +1441,6 @@ namespace flashgg {
                   tag_obj.includeWeights( *dipho );
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
-                  if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
                   HHWWggtags->push_back( tag_obj );
                   FilledTag = 1;
                   if( ! event.isRealData() ) {
@@ -1588,42 +1451,42 @@ namespace flashgg {
 
 
 
-              if (n_good_muons >=1 && n_good_electrons >= 1){
-              if (n_good_electrons == 1 && n_good_muons == 1){
-                tag_electron1 = goodElectrons[0];
+              if (n_good_muons >=1 && n_good_electrons_FL >= 1){
+              if (n_good_electrons_FL == 1 && n_good_muons == 1){
+                tag_electron1 = goodElectrons_FL[0];
                 tag_muon1 = goodMuons[0];
                 Save=1.;
                 }
-              else if (n_good_electrons>1 && n_good_muons ==1){
-              if(goodElectrons[1]->pt()<lep3ptThre_){
-                tag_electron1 = goodElectrons[0];
+              else if (n_good_electrons_FL>1 && n_good_muons ==1){
+              if(goodElectrons_FL[1]->pt()<lep3ptThre_){
+                tag_electron1 = goodElectrons_FL[0];
                 tag_muon1 = goodMuons[0];
                 Save=1.;
               }
               else{
-              tag_electron1 = goodElectrons[0];
+              tag_electron1 = goodElectrons_FL[0];
               tag_muon1 = goodMuons[0];
               Save=0.;
               }
               }
-              else if(n_good_electrons == 1 && n_good_muons > 1){
+              else if(n_good_electrons_FL == 1 && n_good_muons > 1){
               if(goodMuons[1]->pt()<lep3ptThre_){
-              tag_electron1 = goodElectrons[0];
+              tag_electron1 = goodElectrons_FL[0];
               tag_muon1 = goodMuons[0];
               Save=1.;
               }
               else{
-              tag_electron1 = goodElectrons[0];
+              tag_electron1 = goodElectrons_FL[0];
               tag_muon1 = goodMuons[0];
               Save=0.;}
               }
-              else if(n_good_electrons > 1 && n_good_muons > 1){
-              if(goodMuons[1]->pt()<lep3ptThre_ && goodElectrons[1]->pt()<lep3ptThre_){
-              tag_electron1 = goodElectrons[0];
+              else if(n_good_electrons_FL > 1 && n_good_muons > 1){
+              if(goodMuons[1]->pt()<lep3ptThre_ && goodElectrons_FL[1]->pt()<lep3ptThre_){
+              tag_electron1 = goodElectrons_FL[0];
               tag_muon1 = goodMuons[0];
               Save=1.;
               }
-              else{tag_electron1 = goodElectrons[0];
+              else{tag_electron1 = goodElectrons_FL[0];
                 tag_muon1 = goodMuons[0];
                 Save=0.;}
               }
@@ -1637,7 +1500,7 @@ namespace flashgg {
                   if(doHHWWggTagCutFlowAnalysis_){
                     if(tag_electron1->pt()>tag_muon1->pt()) Cut_Variables[18]=2.;//e mu
                     else Cut_Variables[18]=3.; //mu e
-                    HHWWggTag tag_obj_(dipho, tag_electron1, tag_muon1, theMET,Cut_Variables,dipho_MVA);
+                    HHWWggTag tag_obj_(dipho, tag_electron1, tag_muon1, theMET, Cut_Variables, dipho_MVA);
                     tag_obj = tag_obj_; 
                     tag_obj.setGenVtx_z(GenVtx_z);
                     tag_obj.setHggVtx_z(HggVtx_z);
@@ -1654,16 +1517,16 @@ namespace flashgg {
                   tag_obj.includeWeights( *dipho );
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
-                  if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
                   HHWWggtags->push_back( tag_obj );
                   FilledTag = 1;
                   if( ! event.isRealData() ) {
                     HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
                   }
               }
-            }
-          } // If falls into FL cat
-        }//FL selection
+              }
+              } // if n_good_leptons_FL >= 2 and other FL cat selections met
+            } // if n_good_leptons >= 2
+          } // FL selection
 
           // Untagged category
           // Only push tag into this category if catnum has not changed (not tagged by other categories)
@@ -1680,8 +1543,6 @@ namespace flashgg {
               tag_obj.setGenVtx_z(GenVtx_z);
               tag_obj.setHggVtx_z(HggVtx_z);
               tag_obj.setZeroVtx_z(ZeroVtx_z);                           
-              if (doReweight_>0) tag_obj.setBenchmarkReweight( reweight_values ); 
-
 
               //-- Include Scale Factors 
               
@@ -1768,16 +1629,11 @@ namespace flashgg {
               TagObjCentralWeight = TagObjCentralWeight * prefireWeight;
               tag_obj.setCentralWeight(TagObjCentralWeight);
 
-              if(doHHWWggDebug_){
-                cout << "**************************************************" << endl; 
-                cout << " Tag Object weights after including ALL weights: " << endl; 
-                PrintScaleFactorsObj(tag_obj);
-              }
-
-              // If doing reweight
-              if (doReweight_>0){ 
-                tag_obj.setBenchmarkReweight( reweight_values ); 
-              }
+              // if(doHHWWggDebug_){
+                // cout << "**************************************************" << endl; 
+                // cout << " Tag Object weights after including ALL weights: " << endl; 
+                // PrintScaleFactorsObj(tag_obj);
+              // }
 
               // Push back tag object 
               HHWWggtags->push_back( tag_obj );

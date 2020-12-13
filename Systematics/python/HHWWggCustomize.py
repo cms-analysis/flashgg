@@ -359,10 +359,10 @@ class HHWWggCustomize():
             variables += ScaleFactorVariables
             variables += vertex_variables
             variables += gen_vars            
-            variables += doubleHReweight_vars
+            # variables += doubleHReweight_vars
             variables += finalStateVars
             variables += HHVariables
-            variables += cutFlowVars
+            # variables += cutFlowVars
             if self.customize.HHWWggAnalysisChannel == "FL" or self.customize.HHWWggAnalysisChannel == "all": 
                 variables += FL_vars
             if self.customize.HHWWggAnalysisChannel == "SL" or self.customize.HHWWggAnalysisChannel == "all": 
@@ -465,8 +465,8 @@ class HHWWggCustomize():
 
         print "HHWWggAnalysisChannel:",self.customize.HHWWggAnalysisChannel
         self.process.flashggHHWWggTag.HHWWggAnalysisChannel = self.customize.HHWWggAnalysisChannel
-        if self.customize.HHWWggAnalysisChannel == "FL": 
-           self.process.flashggHHWWggTag.deltaMassElectronZThreshold = 5 # 5 instead of default 10  ##-- need to configure with 'all' option...
+        # if self.customize.HHWWggAnalysisChannel == "FL": 
+        #    self.process.flashggHHWWggTag.deltaMassElectronZThreshold = 5 # 5 instead of default 10  ##-- need to configure with 'all' option...
         
         ## customize meta conditions
         self.process.flashggHHWWggTag.JetIDLevel=cms.string(str(self.metaConditions["HHWWggTag"]["jetID"]))
