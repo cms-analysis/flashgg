@@ -348,7 +348,16 @@ class HHWWggCustomize():
         ScaleFactorVariables = []
         for SF in ScaleFactorLabels:
             variableLabel = "%sCentral := weight(\"%sCentral\")"%(SF,SF)
-            print"variableLabel:",variableLabel
+
+            ##-- By default, running with systematics on saves up/down values. If not running with syst, set saving of up/down SFs here 
+            if(not self.customize.doSystematics):
+                variableLabelUp = "%sUp01sigma := weight(\"%sUp01sigma\")"%(SF,SF)
+                variableLabelDown = "%sDown01sigma := weight(\"%sDown01sigma\")"%(SF,SF)
+                ScaleFactorVariables.append(variableLabelUp)
+                ScaleFactorVariables.append(variableLabelDown)
+                ScaleFactorVariables.append("prefireWeightUp01sigma := weight(\"prefireWeightUp01sigma\")")
+                ScaleFactorVariables.append("prefireWeightDown01sigma := weight(\"prefireWeightDown01sigma\")")
+            # print"variableLabel:",variableLabel
             ScaleFactorVariables.append(variableLabel)
         ScaleFactorVariables.append("prefireWeightCentral := weight(\"prefireWeightCentral\")")
         print"len(finalStateVars):",len(finalStateVars)
