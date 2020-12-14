@@ -50,6 +50,11 @@ namespace flashgg {
     std::vector<flashgg::Electron> GetElectrons(std::vector<edm::Ptr<flashgg::Electron>>);
     std::vector<flashgg::Muon> GetMuons(std::vector<edm::Ptr<flashgg::Muon>>);
     std::vector<flashgg::Jet> GetJets(std::vector<edm::Ptr<flashgg::Jet>>);
+    void SetGoodJets(std::vector<edm::Ptr<flashgg::Jet>>);
+    void SetAllJets(std::vector<edm::Ptr<flashgg::Jet>>);
+
+    // Jet Vars 
+    void SetJetVars(std::vector<double>); 
 
     //-- Fully Leptonic Leptons 
     void GetFLElectrons(edm::Ptr<flashgg::Electron> Ele1,edm::Ptr<flashgg::Electron> Ele2);

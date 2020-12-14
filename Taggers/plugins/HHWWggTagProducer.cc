@@ -1224,6 +1224,8 @@ namespace flashgg {
                       Cut_Variables[18]=0.;
                       HHWWggTag tag_obj_(dipho, tag_electron1, tag_electron2, theMET, Cut_Variables, dipho_MVA); 
                       tag_obj = tag_obj_;    
+                      tag_obj.SetGoodJets(tagJets); 
+                      tag_obj.SetAllJets(allJets); 
                       tag_obj.setGenVtx_z(GenVtx_z);
                       tag_obj.setHggVtx_z(HggVtx_z);
                       tag_obj.setZeroVtx_z(ZeroVtx_z);          
@@ -1300,6 +1302,8 @@ namespace flashgg {
                     Cut_Variables[18]=1.;
                     HHWWggTag tag_obj_(dipho, tag_muon1, tag_muon2, theMET, Cut_Variables, dipho_MVA);
                     tag_obj = tag_obj_;
+                    tag_obj.SetGoodJets(tagJets); 
+                    tag_obj.SetAllJets(allJets);    
                     tag_obj.setGenVtx_z(GenVtx_z);
                     tag_obj.setHggVtx_z(HggVtx_z);
                     tag_obj.setZeroVtx_z(ZeroVtx_z);        
@@ -1376,6 +1380,8 @@ namespace flashgg {
                     else Cut_Variables[18]=3.; //mu e
                     HHWWggTag tag_obj_(dipho, tag_electron1, tag_muon1, theMET, Cut_Variables, dipho_MVA);
                     tag_obj = tag_obj_; 
+                    tag_obj.SetGoodJets(tagJets); 
+                    tag_obj.SetAllJets(allJets);                     
                     tag_obj.setGenVtx_z(GenVtx_z);
                     tag_obj.setHggVtx_z(HggVtx_z);
                     tag_obj.setZeroVtx_z(ZeroVtx_z);             

@@ -129,6 +129,16 @@ std::vector<flashgg::Jet> HHWWggTag::GetJets(std::vector<edm::Ptr<flashgg::Jet>>
   return savedJets;
 }
 
+// To call in tag producer without constructor 
+
+void HHWWggTag::SetGoodJets(std::vector<edm::Ptr<flashgg::Jet>> jets){
+  goodJets_ = GetJets(jets);
+}
+
+void HHWWggTag::SetAllJets(std::vector<edm::Ptr<flashgg::Jet>> jets){
+  allJets_ = GetJets(jets);
+}
+
 //-- Fully Leptonic Leptons 
 
 void HHWWggTag::GetFLElectrons(edm::Ptr<flashgg::Electron> Ele1,edm::Ptr<flashgg::Electron> Ele2)
@@ -210,34 +220,7 @@ HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, std::vector<edm::Ptr<fla
   goodJets_ = GetJets(goodJets);
 }
 
-//-- 0 and 1 with just HH objects. Saving just in case  
-// // HHWWggTag_0 - Semileptonic Electron, no extra variables or cutFlowAnalysis
-// HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Met> MET,
-//                       edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2)
-// {
-//   dipho_ = dipho;
-//   GetObjects(dipho);
-// }
-
-// // HHWWggTag_1 - Semileptonic Muon, no extra variables or cutFlowAnalysis
-// HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon,
-//                      edm::Ptr<flashgg::Met> MET,
-//                      edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2)
-// {
-//   dipho_ = dipho;
-//   GetObjects(dipho);
-// }
-
-// // HHWWggTag_2 - Fully Hadronic, no extra variables or cutFlowAnalysis
-// HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Met> MET,
-//                       edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2,
-//                       edm::Ptr<flashgg::Jet> jet3, edm::Ptr<flashgg::Jet> jet4)
-// {
-//   dipho_ = dipho;
-//   GetObjects(dipho);
-// }
-
-// HHWWggTag_2 - Fully Hadronic with cutFlowAnalysis
+// HHWWggTag_1 - Fully Hadronic with cutFlowAnalysis
 HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho,
               edm::Ptr<flashgg::Met> MET,
               edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2,
@@ -252,8 +235,8 @@ HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho,
   goodJets_ = GetJets(goodJets);
 }
 
-// HHWWggTag_3 - Fully Leptonic, ee
-HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron1, edm::Ptr<flashgg::Electron> electron2, edm::Ptr<flashgg::Met> MET,std::vector<double> Cut_Variables,double dipho_MVA):Cut_Variables_(Cut_Variables),dipho_MVA_(dipho_MVA)
+// HHWWggTag_2 - Fully Leptonic, ee
+HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron1, edm::Ptr<flashgg::Electron> electron2, edm::Ptr<flashgg::Met> MET,std::vector<double> Cut_Variables, double dipho_MVA):Cut_Variables_(Cut_Variables),dipho_MVA_(dipho_MVA)
 {
    dipho_ = dipho;
    GetPhoAtt(dipho);
@@ -262,8 +245,8 @@ HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electr
    //std::cout<<Cut_Variables[0]<<std::endl;
 }
 
-// HHWWggTag_3 - Fully Leptonic, mumu
-HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon1, edm::Ptr<flashgg::Muon> muon2, edm::Ptr<flashgg::Met> MET,std::vector<double> Cut_Variables,double dipho_MVA):Cut_Variables_(Cut_Variables),dipho_MVA_(dipho_MVA)
+// HHWWggTag_2 - Fully Leptonic, mumu
+HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> muon1, edm::Ptr<flashgg::Muon> muon2, edm::Ptr<flashgg::Met> MET,std::vector<double> Cut_Variables, double dipho_MVA ):Cut_Variables_(Cut_Variables),dipho_MVA_(dipho_MVA)
 {
    dipho_ = dipho;
    GetPhoAtt(dipho);
@@ -271,8 +254,8 @@ HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Muon> 
    GetMET(MET);
 }
 
-// HHWWggTag_3 - Fully Leptonic, emu 
-HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Muon> muon, edm::Ptr<flashgg::Met> MET,std::vector<double> Cut_Variables,double dipho_MVA):Cut_Variables_(Cut_Variables),dipho_MVA_(dipho_MVA)
+// HHWWggTag_2 - Fully Leptonic, emu 
+HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electron> electron, edm::Ptr<flashgg::Muon> muon, edm::Ptr<flashgg::Met> MET,std::vector<double> Cut_Variables, double dipho_MVA ):Cut_Variables_(Cut_Variables), dipho_MVA_(dipho_MVA)
 {
    dipho_ = dipho;
    GetPhoAtt(dipho);
@@ -280,7 +263,7 @@ HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho, edm::Ptr<flashgg::Electr
    GetMET(MET);
 }
 
-//-- HHWWggTag_4 - Untagged with cutFlowAnalysis
+//-- HHWWggTag_3 - Untagged with cutFlowAnalysis
 HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho,
                      std::vector<edm::Ptr<flashgg::Electron>> allElectrons, std::vector<edm::Ptr<flashgg::Electron>> goodElectrons,
                      std::vector<edm::Ptr<flashgg::Muon>> allMuons, std::vector<edm::Ptr<flashgg::Muon>> goodMuons,
