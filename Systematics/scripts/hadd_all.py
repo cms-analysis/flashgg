@@ -50,6 +50,8 @@ for fn in listdir("."):
 for fnr in filelist.keys():
     result = sorted(filelist[fnr])
     print fnr,result
+    # assert(result[-1]+1 == len(result))
+    ##-- If num files shouldn't follow ordered naming convention like USER_1, USER_2, ... then remove assertion 
     assert(result[-1]+1 == len(result)) #FIXME
     bigfile = fnr.replace("_%i","")
     bigfiles.append(bigfile)

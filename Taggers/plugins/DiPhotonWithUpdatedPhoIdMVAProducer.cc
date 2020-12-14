@@ -60,6 +60,8 @@ namespace flashgg {
         bool keepInitialEnergy_;
         bool _doIsoCorrection;
         unique_ptr<IsolationCorrection> _isoCorrector;
+        // edm::EDGetTokenT<edm::View<vector<reco::SuperCluster>> > SCtoken_;
+        // vector<reco::SuperCluster> _SuperClusters; 
     };
 
     DiPhotonWithUpdatedPhoIdMVAProducer::DiPhotonWithUpdatedPhoIdMVAProducer( const edm::ParameterSet &ps ) :
@@ -74,6 +76,9 @@ namespace flashgg {
         _phoIsoCutoff(ps.getParameter<double>("phoIsoCutoff")),
         keepInitialEnergy_(ps.getParameter<bool>("keepInitialEnergy")),
         _doIsoCorrection(ps.getParameter<bool>("doIsoCorrection"))
+        // SCtoken_(ps.getParameter<vector<reco::SuperCluster>>("SuperClusterTag"))
+        // _SuperClusters(ps.getParameter<vector<reco::SuperCluster>>("SuperClusterTag")) // need absence of comma for last entry 
+        
     {
         if (_doIsoCorrection) {
             _isoCorrector = make_unique<IsolationCorrection>(ps.getParameter<edm::FileInPath>("isoCorrectionFile").fullPath().c_str());
@@ -208,6 +213,14 @@ namespace flashgg {
         edm::Handle<double> rhoHandle;
         evt.getByToken( rhoToken_, rhoHandle );
         const double rhoFixedGrd = *( rhoHandle.product() );
+
+        // For updated photon MVA study 
+        // Trying to add supercluster information 
+        // particleFlowSuperClusterECAL
+        // vector<reco::SuperCluster> 
+        
+        // edm::Handle<edm::View<vector<reco::SuperCluster>> > SuperClusters;
+        // evt.getByToken( SCtoken_, SuperClusters );        
 
         if( reRunRegression_ ) {
             if( reRunRegressionOnData_ || ! evt.isRealData() ) {

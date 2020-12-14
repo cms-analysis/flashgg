@@ -369,7 +369,8 @@ namespace flashgg {
 
     template<class F, class O>
     void CategoryDumper<F, O>::bookTree( TFileDirectory &fs, const char *weightName, const std::map<std::string, std::string> &replacements )
-    {
+    {   
+        // cout << "[in Taggers/interface/CategoryDumper.h - bookTree] - Tree is getting booked" << endl;
         tree_ = fs.make<TTree>( formatString( name_, replacements ).c_str(), formatString( name_, replacements ).c_str() );
         tree_->Branch( "candidate_id", &n_cand_, "candidate_id/I" );
         tree_->Branch( weightName, &weight_ );
@@ -608,6 +609,7 @@ bool CategoryDumper<F, O>::isBinnedOnly( )
     template<class F, class O>
     void CategoryDumper<F, O>::fill( const object_type &obj, double weight, vector<double> pdfWeights, int n_cand, int htxsBin, double genweight)
 {  
+    // cout << "[in Taggers/interface/CategoryDumper.h - CategoryDumper<F, O>::fill]" << endl;
     n_cand_ = n_cand;
     weight_ = weight;
     genweight_ = genweight;
@@ -659,7 +661,12 @@ bool CategoryDumper<F, O>::isBinnedOnly( )
             }
         }
     }
-    if( tree_ ) { tree_->Fill(); }
+    if( tree_ ) tree_->Fill(); 
+        // Debugging HHWWgg 
+        // cout << "[in Taggers/interface/CategoryDumper.h] - Filling tree " << endl;
+        // cout << "[in Taggers/interface/CategoryDumper.h] - tree_ = " << tree_ << endl;
+        
+        
     if( dataset_ ) {
         dataset_->add( rooVars_, weight_ );
         if (dumpPdfWeights_ && dataset_pdfWeights_) {

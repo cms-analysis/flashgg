@@ -84,6 +84,7 @@ def createStandardSystematicsProducers(process, options):
     #scale factors for electron ID
     from   flashgg.Systematics.flashggElectronSystematics_cfi import EleSF_JSONReader
     binInfoEle = EleSF_JSONReader(options.metaConditions["Ele_ID_SF_FileName"],options.metaConditions["Ele_ID_version"]).getBinInfo()
+    # if(options.HHWWggTagsOnly) binInfoEle = EleSF_JSONReader(options.metaConditions["Ele_ID_SF_FileName"],options.metaConditions["HHWWggTag"]["Ele_ID_version"]).getBinInfo()
     process.flashggElectronSystematics.SystMethods[0].BinList = binInfoEle
 
     #scale factors for electron reconstruction
@@ -174,6 +175,8 @@ def cloneTagSequenceForEachSystematic(process,systlabels=[],phosystlabels=[],met
             process.flashggSystTagMerger.src.append(cms.InputTag("flashggZPlusJetTag" + systlabel))
         else:
             process.flashggSystTagMerger.src.append(cms.InputTag("flashggTagSorter" + systlabel))
+            # print'systlabel = ',systlabel 
+    # exit(0)
 
 # ttH tags use large BDTs and DNNs that take up lots of memory and cause crashes with normal workflow
 # This function modifies the workflow so that systematic variations are evaluated in a single instance of the tagger, rather than individual instances for each variation
@@ -293,7 +296,8 @@ def customizeJetSystematicsForData(process):
     process.jetCorrectorChain = cms.Sequence(process.ak4PFCHSL1FastL2L3ResidualCorrectorChain)
 
 def useEGMTools(process):
-    # remove old scales
+
+    # remove old scales 
     for isyst in [ process.MCScaleHighR9EB, process.MCScaleLowR9EB, process.MCScaleHighR9EE, process.MCScaleLowR9EE ]:
             process.flashggDiPhotonSystematics.SystMethods.remove(isyst)
 
@@ -313,7 +317,7 @@ def useEGMTools(process):
             process.MCSmearLowR9EB_EGM,
             ])
     
-    # add sigmaE/E correction and systematics
+    # # add sigmaE/E correction and systematics
     process.flashggDiPhotonSystematics.SystMethods.extend( [process.SigmaEOverESmearing_EGM, process.SigmaEOverEShift] )
 
 def runRivetSequence(process, options, processId):

@@ -8,6 +8,7 @@ flashggDiPhotonSystematics = cms.EDProducer('FlashggDiPhotonSystematicProducer',
 )
 
 def setupDiPhotonSystematics( process, options ):
+   print'[setupDiPhotonSystematics] - Choosing diphoton systematics'
    process.load("flashgg.Systematics."+options.metaConditions["flashggDiPhotonSystematics"])
    sysmodule = importlib.import_module("flashgg.Systematics."+options.metaConditions["flashggDiPhotonSystematics"])
    flashggDiPhotonSystematics.SystMethods.append(sysmodule.MCScaleHighR9EB)

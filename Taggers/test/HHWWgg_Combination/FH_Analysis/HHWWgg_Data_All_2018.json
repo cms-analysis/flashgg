@@ -1,0 +1,13 @@
+{
+    "processes" : {
+        "Data" : [
+            "/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018A-17Sep2018-v2-dc8e5fb301bfbf2559680ca888829f0c/USER",
+            "/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018A-17Sep2018-v2-e35808f23b4776d10c777cb2c9d2f07a/USER",
+            "/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1-dc8e5fb301bfbf2559680ca888829f0c/USER",
+            "/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1-e35808f23b4776d10c777cb2c9d2f07a/USER",
+            "/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018C-17Sep2018-v1-e35808f23b4776d10c777cb2c9d2f07a/USER",
+            "/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018D-22Jan2019-v2-dc8e5fb301bfbf2559680ca888829f0c/USER"
+        ]
+    },
+    "cmdLine"  : "campaign=Era2018_RR-17Sep2018_v2 HHWWggAnalysisChannel=FH doHHWWggNonResAnalysis=1 useAAA=True processId=Data processType=Data metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json "
+}

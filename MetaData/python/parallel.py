@@ -251,6 +251,8 @@ class WorkNodeJob(object):
         script += '    for file in $(find -name %s); do\n' % " -or -name ".join(self.stage_patterns)
         script += '        echo "%s ${file} %s"\n' % ( self.stage_cmd, self.stage_dest )
         script += '        %s $file %s\n' % ( self.stage_cmd, self.stage_dest )
+        # filesOutPath = '/eos/user/a/atishelm/ntuples/Event_Dumper/HHWWgg_2017'
+        # script += '        %s $file %s\n' % ( self.stage_cmd, filesOutPath )
         script += '        if [[ $? != 0 ]]; then\n'
         script += '            errors="$errors $file($?)"\n'
         script += '        fi\n'

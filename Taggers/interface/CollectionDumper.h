@@ -193,6 +193,7 @@ namespace flashgg {
         globalVarsDumper_(0)
     {
         if( dumpGlobalVariables_ ) {
+            // cout << "[in Taggers/interface/CollectionDumper.h 1st collectiondumper] - dumpGlobalVariables_ = True" << endl;
             globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ) );
         }
         _init(cfg, fs);
@@ -224,6 +225,7 @@ namespace flashgg {
         globalVarsDumper_(0)
     {
         if( dumpGlobalVariables_ ) {
+            // cout << "[in Taggers/interface/CollectionDumper.h 2nd collectiondumper] - dumpGlobalVariables_ = True" << endl;
             globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ), std::forward<edm::ConsumesCollector>(cc) );
         }
         _init(cfg, fs);
@@ -249,6 +251,7 @@ namespace flashgg {
         dumpHistos_          = cfg.getUntrackedParameter<bool>( "dumpHistos", false );
         classifier_          = cfg.getParameter<edm::ParameterSet>( "classifierCfg" );
         throwOnUnclassified_ = cfg.exists("throwOnUnclassified") ? cfg.getParameter<bool>("throwOnUnclassified") : false;
+
         splitPdfByStage0Bin_ = cfg.getUntrackedParameter<bool>( "splitPdfByStage0Bin", false);
         splitPdfByStage1Bin_ = cfg.getUntrackedParameter<bool>( "splitPdfByStage1Bin", false);
 
@@ -365,12 +368,19 @@ namespace flashgg {
             ws_ = 0;
         }
         for( auto &dumpers : dumpers_ ) {
+            // cout << "[in Taggers/interface/CollectionDumper.h] - &dumpers = " << &dumpers << endl;
+            // cout << "[in Taggers/interface/CollectionDumper.h] - on &dumpers " << endl;
             for( auto &dumper : dumpers.second ) {
+                // cout << "[in Taggers/interface/CollectionDumper.h] - &dumper = " << &dumper << endl;
+                // cout << "[in Taggers/interface/CollectionDumper.h] - on &dumper " << endl;
                 if( dumpWorkspace_ ) {
                     dumper.bookRooDataset( *ws_, "weight", replacements);
                 }
                 if( dumpTrees_ ) {
+                    // debugging HHWWgg
+                    // cout << "[in Taggers/interface/CollectionDumper.h] - dumpTrees_ = True " << endl;
                     TFileDirectory dir = fs.mkdir( "trees" );
+                    // cout << "[in Taggers/interface/CollectionDumper.h] - dir = " << dir << endl;
                     dumper.bookTree( dir, "weight", replacements );
                 }
                 if( dumpHistos_ ) {

@@ -1,3 +1,8 @@
+# Example Usage:
+#
+# cd flashgg
+# python Systematics/scripts/resubmit_jobs.py --dir HHWWgg_2018_Data_Workspaces -s /eos/user/a/atishelm/ntuples/HHWWgg/HHWWgg_2018_Data_Workspaces/
+
 import os
 import subprocess
 from optparse import OptionParser
@@ -152,6 +157,8 @@ def main():
   print(not_finished)
   print 'Number of missing files : ',len(not_finished)
   #print 'Missing the following files : ' not_finished
+  
+  ##-- Comment below for dry run 
   runJobs_dict = find_runJobs(not_finished,dir)
   print 'runJobs to be resubmitted : ',runJobs_dict
   prepare_runJobs_missing(runJobs_dict,dir,options.parentDataset, options.filterNegR9)

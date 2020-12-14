@@ -45,6 +45,7 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                                    rhoCollection = cms.InputTag("fixedGridRhoFastjetAll"),
                                                    vertexCollection = cms.InputTag("offlineSlimmedPrimaryVertices"),
                                                    autoDetectBunchSpacing = cms.bool(False),                                                                                          
+                                                     
                                                                                           ),
                                               ## regressionConfig = cms.PSet(
                                               ##      ## ugly copy/paste from RecoEgamma/EgammaTools/python/regressionModifier_cfi.py
@@ -75,4 +76,8 @@ flashggUpdatedIdMVADiPhotons = cms.EDProducer("FlashggDiPhotonWithUpdatedPhoIdMV
                                               
                                               doIsoCorrection = cms.bool(False), ## Turned off for Rereco2017. Turn this on for Legacy2016.
                                               #isoCorrectionFile = cms.FileInPath("flashgg/Taggers/data/pho_iso_corrections_hybrid_Legacy2016_v1.root") ## for Legacy2016
+                                              
+                                              # For Updated photon MVA study 
+                                              SuperClusterTag                 = cms.InputTag("particleFlowSuperClusterECAL"),
+
                                               )

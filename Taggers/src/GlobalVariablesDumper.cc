@@ -192,6 +192,8 @@ namespace flashgg {
 
     void GlobalVariablesDumper::fill( const EventBase &evt )
     {
+        // std::cout << "[in Taggers/src/GlobalVariablesDumper.cc: void GlobalVariablesDumper::fill] " << std::endl;
+        // cout << "[in Taggers/src/GlobalVariablesDumper.cc: void GlobalVariablesDumper::fill] " << endl;
         update( evt );
         const edm::Event * fullEvent = dynamic_cast<const edm::Event *>(&evt);
         if( ! bits_.empty() ) {
@@ -256,6 +258,8 @@ namespace flashgg {
                 }
             }
         }
+        // std::cout << "[in Taggers/src/GlobalVariablesDumper.cc] - VERY END OF void GlobalVariablesDumper::fill " << std::endl;
+
     }
 
 

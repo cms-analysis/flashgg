@@ -673,7 +673,7 @@ namespace flashgg {
     bool phoVeto(  const Ptr<flashgg::Electron> electron , const Ptr<flashgg::DiPhotonCandidate> diphoton , float deltaRPhoElectronThreshold, float DeltaRTrkElec, float deltaMassElectronZThreshold ){
     
         
-        double Zmass_ = 91.9;
+        double Zmass_ = 91.187; // Was previously 91.9. Typo?
         
         std::vector<const flashgg::Photon *> photons;        
         photons.push_back( diphoton->leadingPhoton() );
