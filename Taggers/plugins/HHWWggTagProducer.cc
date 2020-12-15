@@ -1082,6 +1082,14 @@ namespace flashgg {
             if (  jet_->pt() >20 && (btagVal > btagThresh_)) Savejet = 0;
           }
 
+          if(doHHWWggDebug_){
+            if(Savejet == 0){
+              cout << "*****************************************************************************************************" << endl;
+              cout << "HHWWgg DEBUG - SaveJet = 0. This only makes sense if bthreshold is between 0-1 " << endl; 
+              cout << "*****************************************************************************************************" << endl;
+            }
+          }
+
           // If doing cut flow analysis, don't skip event
           if(doHHWWggTagCutFlowAnalysis_){
             if(hasHighbTag)
@@ -1137,11 +1145,11 @@ namespace flashgg {
               // Set CentralWeight values for each SF to access in trees 
               tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);   
 
-              if(doHHWWggDebug_){
-                cout << "**************************************************" << endl; 
-                cout << " Tag Object weights: " << endl; 
-                PrintScaleFactorsObj(tag_obj);
-              }
+              // if(doHHWWggDebug_){
+              //   cout << "**************************************************" << endl; 
+              //   cout << " Tag Object weights: " << endl; 
+              //   PrintScaleFactorsObj(tag_obj);
+              // }
 
               // Push back tag object 
               HHWWggtags->push_back( tag_obj );
@@ -1534,11 +1542,11 @@ namespace flashgg {
               // Set CentralWeight values for each SF to access in trees 
               tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);   
 
-              if(doHHWWggDebug_){
-                cout << "**************************************************" << endl; 
-                cout << " Tag Object weights: " << endl; 
-                PrintScaleFactorsObj(tag_obj);
-              }
+              // if(doHHWWggDebug_){
+              //   cout << "**************************************************" << endl; 
+              //   cout << " Tag Object weights: " << endl; 
+              //   PrintScaleFactorsObj(tag_obj);
+              // }
 
               // Push back tag object 
               HHWWggtags->push_back( tag_obj );
