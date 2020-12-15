@@ -338,7 +338,10 @@ if customize.doHHWWggTag:
     import flashgg.Systematics.HHWWggCustomize 
     hhwwggc = flashgg.Systematics.HHWWggCustomize.HHWWggCustomize(process, customize, customize.metaConditions)
     minimalVariables += hhwwggc.variablesToDump()
-    # systematicVariables = hhwwggc.systematicVariables()
+    systematicVariables_hhwwgg = hhwwggc.systematicVariables() # add scale factors to systematic variables for checks 
+    for HHWWggsystVar in systematicVariables_hhwwgg:
+        systematicVariables.append(HHWWggsystVar)
+    # print"systematicVariables:",systematicVariables
 
 if customize.doStageOne:
     assert (not customize.doHTXS)
@@ -418,7 +421,6 @@ if is_signal:
 
     if customize.doSystematics:
         for direction in ["Up","Down"]:
-        # for direction in ["Up"]:
             phosystlabels.append("MvaShift%s01sigma" % direction)
             phosystlabels.append("SigmaEOverEShift%s01sigma" % direction)
             phosystlabels.append("MaterialCentralBarrel%s01sigma" % direction)

@@ -355,14 +355,16 @@ class HHWWggCustomize():
                 variableLabelDown = "%sDown01sigma := weight(\"%sDown01sigma\")"%(SF,SF)
                 ScaleFactorVariables.append(variableLabelUp)
                 ScaleFactorVariables.append(variableLabelDown)
-                ScaleFactorVariables.append("prefireWeightUp01sigma := weight(\"prefireWeightUp01sigma\")")
-                ScaleFactorVariables.append("prefireWeightDown01sigma := weight(\"prefireWeightDown01sigma\")")
+
             # print"variableLabel:",variableLabel
             ScaleFactorVariables.append(variableLabel)
         ScaleFactorVariables.append("prefireWeightCentral := weight(\"prefireWeightCentral\")")
+        if(not self.customize.doSystematics):
+            ScaleFactorVariables.append("prefireWeightUp01sigma := weight(\"prefireWeightUp01sigma\")")
+            ScaleFactorVariables.append("prefireWeightDown01sigma := weight(\"prefireWeightDown01sigma\")")  
+        ScaleFactorVariables.append("DiphoCentralWeight := DiphoCentralWeight()")
+
         print"len(finalStateVars):",len(finalStateVars)
-        # print"len(muon_vars):",len(muon_vars)
-        # print"len(jet_vars):",len(jet_vars)
 
         if self.customize.saveHHWWggFinalStateVars:
             variables += ScaleFactorVariables
@@ -381,7 +383,7 @@ class HHWWggCustomize():
         if self.customize.doHHWWggDebug:
             variables += debugVars
 
-        print"variables to dump:",variables 
+        # print"variables to dump:",variables 
 
         return variables
 
@@ -391,32 +393,38 @@ class HHWWggCustomize():
         #     return var_workspace
 
     def systematicVariables(self):
-    #   systematicVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass","Mjj[120,70,190]:=dijet().M()","HHbbggMVA[100,0,1.]:=MVA()","MX[300,250,5000]:=MX()"]
-      systematicVariables=[
-        #   "dZ",
-          "CMS_hgg_mass[160,100,180]:=diPhoton().mass"
-        #   "lp_E[100,0,100] := Leading_Photon.p4().E()",
-        #   "slp_E[100,0,100] := Subleading_Photon.p4().E()",
-        #   "lp_initE[100,0,100] := Leading_Photon.energyAtStep('initial')",
-        #   "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", # also want final energies
-      ]
+        ##-- Save Scale Factor values for ntuple flexibility and studies 
+        PhotonScaleFactors = ["LooseMvaSF", "PreselSF", "TriggerWeight", "electronVetoSF"]
+        # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonIDWeight", "MuonIsoWeight"]
+        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonTightIDWeight", "MuonTightRelISOWeight"]
+        JetScaleFactors = ["JetBTagCutWeight","JetBTagReshapeWeight"]
+        ScaleFactorLabels = []
 
+        for PSF in PhotonScaleFactors: ScaleFactorLabels.append(PSF)
+        for LSF in LeptonScaleFactors: ScaleFactorLabels.append(LSF)
+        for JSF in JetScaleFactors: ScaleFactorLabels.append(JSF)
 
-    #   if self.customize.doubleHReweight > 0: 
-    #     for num in range(0,12):  #12 benchmarks
-    #         systematicVariables += ["benchmark_reweight_%d[100,0,200] := getBenchmarkReweight(%d)"%(num,num)]
-    #     systematicVariables+= ["benchmark_reweight_SM[100,0,200] := getBenchmarkReweight(12)"]
-    #     systematicVariables+= ["benchmark_reweight_box[100,0,200] := getBenchmarkReweight(13)"]      
+        ScaleFactorVariables = []
+        for SF in ScaleFactorLabels:
+            variableLabel = "%sCentral := weight(\"%sCentral\")"%(SF,SF)
+            variableLabelUp = "%sUp01sigma := weight(\"%sUp01sigma\")"%(SF,SF)
+            variableLabelDown = "%sDown01sigma := weight(\"%sDown01sigma\")"%(SF,SF)
+            ScaleFactorVariables.append(variableLabel)
+            ScaleFactorVariables.append(variableLabelUp)
+            ScaleFactorVariables.append(variableLabelDown)
+        ScaleFactorVariables.append("prefireWeightCentral := weight(\"prefireWeightCentral\")")
+        ScaleFactorVariables.append("prefireWeightUp01sigma := weight(\"prefireWeightUp01sigma\")")
+        ScaleFactorVariables.append("prefireWeightDown01sigma := weight(\"prefireWeightDown01sigma\")")  
+        ScaleFactorVariables.append("DiphoCentralWeight := DiphoCentralWeight()")
 
-    #   debugVars=[
-    #       "leadPhoMVA[2,0,2]:=lp_Hgg_MVA",
-    #       "subleadPhoMVA[2,0,2]:=slp_Hgg_MVA"
-    #   ]
+        systematicVariables=[
+            "CMS_hgg_mass[160,100,180]:=diPhoton().mass"
+        ]
 
-    #   if self.customize.doHHWWggDebug:
-    #     systematicVariables += debugVars
+        for ScaleFactorVar in ScaleFactorVariables:
+            systematicVariables.append(ScaleFactorVar)
 
-      return systematicVariables
+        return systematicVariables
 
 
     def variablesToDumpData():

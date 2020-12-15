@@ -150,9 +150,7 @@ namespace flashgg {
 
             flashgg::DiPhotonCandidate *updatedDipho = dipho->clone();
             WeightedObject prefireObject;
-            // cout << "[PrefireDiPhotonProducer.cc DEBUG] - prefireProbability = " << prefireProbability << endl; 
-            // cout << "[PrefireDiPhotonProducer.cc DEBUG] - prefireProbabilityUnc = " << prefireProbabilityUnc << endl; 
-            // cout << "[PrefireDiPhotonProducer.cc DEBUG] - applyToCentral_ = " << applyToCentral_ << endl;
+
             if (applyToCentral_) {
                 // prefireObject.setCentralWeight( (1. - prefireProbability) ); // Adjusting to make central weight accesible by prefireWeightCentral label 
                 prefireObject.setWeight("prefireWeightCentral", (1. - prefireProbability) ); // Adjusting to make central weight accesible by prefireWeightCentral label 

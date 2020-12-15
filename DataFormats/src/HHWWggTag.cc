@@ -139,6 +139,10 @@ void HHWWggTag::SetAllJets(std::vector<edm::Ptr<flashgg::Jet>> jets){
   allJets_ = GetJets(jets);
 }
 
+void HHWWggTag::SetDiphoCentralWeight(double DiphoCentralWeight){
+  DiphoCentralWeight_ = DiphoCentralWeight;
+}
+
 //-- Fully Leptonic Leptons 
 
 void HHWWggTag::GetFLElectrons(edm::Ptr<flashgg::Electron> Ele1,edm::Ptr<flashgg::Electron> Ele2)
