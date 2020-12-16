@@ -1,5 +1,5 @@
 import FWCore.ParameterSet.Config as cms
-from flashgg.MicroAOD.flashggJets_cfi import flashggBTag, flashggDeepCSV, UnpackedJetCollectionVInputTag, maxJetCollections
+from flashgg.MicroAOD.flashggJets_cfi import flashggBTag, flashggDeepCSV, flashggDeepJet, UnpackedJetCollectionVInputTag, maxJetCollections
 
 bDiscriminator74X = cms.vdouble(0.605,0.890)
 bDiscriminator76X = cms.vdouble(0.460,0.800,0.935)
@@ -85,7 +85,7 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
 #                                       bDiscriminator = bDiscriminator80XReReco, #bDiscriminator76X
 #                                       bTag = cms.string(flashggBTag),
                                        bDiscriminator = bDiscriminator94X,
-                                       bTag = cms.string(flashggDeepCSV),
+                                       bTag = cms.string(flashggDeepJet),
                                        jetsNumberThreshold = cms.int32(5),
                                        bjetsNumberThreshold = cms.int32(1),
                                        bjetsLooseNumberThreshold = cms.int32(0),
@@ -120,7 +120,7 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        ElePhotonDrCut = cms.double(0.),
                                        ElePhotonZMassCut = cms.double(5),
                                        DeltaRTrkEle = cms.double(0.),
-                                       debug = cms.bool(False)
+                                       debug = cms.bool(True)
                                        )
 
 
@@ -245,7 +245,7 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        deltaRJetLepton = cms.double(0.4),
                                        leadingJetPtThreshold = cms.double(0),
                                        bDiscriminator = bDiscriminator94X, #bDiscriminator76X,
-                                       bTag = cms.string(flashggDeepCSV),
+                                       bTag = cms.string(flashggDeepJet),
                                        MinNLep = cms.int32(1),
                                        MaxNLep = cms.int32(10),
                                        MuonEtaCut = cms.double(2.4),
@@ -263,7 +263,7 @@ flashggTTHLeptonicTag = cms.EDProducer("FlashggTTHLeptonicTagProducer",
                                        DeltaRTrkEle = cms.double(0.35),
                                        UseCutBasedDiphoId = cms.bool(False),
                                        SplitDiLeptEv = cms.bool(True),
-                                       debug = cms.bool(False),
+                                       debug = cms.bool(True),
                                        CutBasedDiphoId = cms.vdouble(0.4,0.3,0.0,-0.5,2.0,2.5)    # pT/m lead, pT/m sublead, leadIdMVA, subleadIdMVA, DeltaEta, DeltaPhi
 )
 
