@@ -35,6 +35,7 @@
 fggDirec="$PWD/" # flashgg directory (It should be ${PWD})
 echo "fggDirec = ${fggDirec}"
 ntupleDirec="$PWD/" # condor output directory
+echo "PWD = ${fggDirec}"
 echo "ntupleDirec = ${ntupleDirec}"
 
 ## Other script parameters
@@ -58,9 +59,10 @@ doHHWWggFHptOrdered="false" # fully hadronic jets selection; if pt ordered selec
 doHHWWggFHminWHJets="false" # fully hadronic jets selection; if pt ordered selection it should be true
 doHHWWggFHminWHLead2Jet="false" # fully hadronic jets selection; if pt ordered selection it should be true
 doHHWWggFHminHiggsMassOnly="false" # fully hadronic jets selection; if pt ordered selection it should be true
+calcPdfWeights="false"
 
 ## Get user specified argumenets
-options=$(getopt -o gcvstwrnfpqz --long channel: --long nEvents: --long output: --long labelName: --long json: --long condorQueue: --long year: -- "$@") # end name with colon ':' to specify argument string
+options=$(getopt -o gcvstwrnfpqz --long channel: --long nEvents: --long output: --long labelName: --long json: --long condorQueue: --long year: --long calcPdfWeights: -- "$@") # end name with colon ':' to specify argument string
 
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
@@ -88,6 +90,7 @@ while true; do
       --json) shift; jsonpath=$1 ;;
       --condorQueue) shift; condorQueue=$1 ;;
       --year) shift; year=$1 ;;
+      --calcPdfWeights) shift; calcPdfWeights=$1 ;;
       --)
             shift
             break
@@ -106,6 +109,7 @@ echo "calcSystematics = $calcSystematics"
 echo "dumpTrees = $dumpTrees"
 echo "dumpWorkspaces = $dumpWorkspaces"
 echo "year = $year"
+echo "calcPdfWeights = $calcPdfWeights"
 
 ## Make sure numEvents and label arguments are specified. These are compulsory
 
@@ -220,6 +224,13 @@ then
       if [ $dryRun == 'true' ]
       then
            command+=' dryRun=1 '
+      fi
+
+      echo "calcPdfWeights: $calcPdfWeights"
+
+      if [ $calcPdfWeights == 'true' ]
+      then
+           command+='useParentDataset=True recalculatePDFWeights=True'
       fi
 
       if [ $doCutFlow == 'true' ]

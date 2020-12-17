@@ -503,8 +503,8 @@ class HHWWggCustomize():
 
         print "HHWWggAnalysisChannel:",self.customize.HHWWggAnalysisChannel
         self.process.flashggHHWWggTag.HHWWggAnalysisChannel = self.customize.HHWWggAnalysisChannel
-        # if self.customize.HHWWggAnalysisChannel == "FL": 
-        #    self.process.flashggHHWWggTag.deltaMassElectronZThreshold = 5 # 5 instead of default 10  ##-- need to configure with 'all' option...
+           #  self.process.flashggHHWWggTag.deltaMassElectronZThreshold = 5 # 5 instead of default 10
+           #  self.process.flashggHHWWggTag.jetPtThreshold = 20
         
         ## customize meta conditions
         self.process.flashggHHWWggTag.JetIDLevel=cms.string(str(self.metaConditions["HHWWggTag"]["jetID"]))

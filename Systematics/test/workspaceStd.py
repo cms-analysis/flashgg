@@ -700,7 +700,7 @@ for tag in tagList:
                            splitPdfByStage1Bin=customize.doStageOne,
                            dumpGenWeight=customize.dumpGenWeight,
                            #unbinnedSystematics=True
-                           unbinnedSystematics=(not isBinnedOnly)
+                           unbinnedSystematics=(not isBinnedOnly)       # Without this we won't get the systematics info
                            )
 
 
