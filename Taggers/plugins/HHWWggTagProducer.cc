@@ -1410,12 +1410,6 @@ namespace flashgg {
               // Set CentralWeight values for each SF to access in trees 
               tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);   
 
-              // if(doHHWWggDebug_){
-              //   cout << "**************************************************" << endl; 
-              //   cout << " Tag Object weights: " << endl; 
-              //   PrintScaleFactorsObj(tag_obj);
-              // }
-
               // Push back tag object 
               HHWWggtags->push_back( tag_obj );
               FilledTag = 1; 
@@ -1835,12 +1829,6 @@ namespace flashgg {
               //-- Include Scale Factors 
               // Set CentralWeight values for each SF to access in trees 
               tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);   
-
-              // if(doHHWWggDebug_){
-              //   cout << "**************************************************" << endl; 
-              //   cout << " Tag Object weights: " << endl; 
-              //   PrintScaleFactorsObj(tag_obj);
-              // }
 
               // Push back tag object 
               HHWWggtags->push_back( tag_obj );
