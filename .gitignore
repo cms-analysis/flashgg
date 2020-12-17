@@ -1,8 +1,15 @@
 # Editors temp files
 HHWWgg_v2_6_*/
 HHWWgg_v2-6*/
+DiPhoPt*/
+TEST_*/
+rasharma.cc
+.__*
 *.swp
 *~
+
+# Other big files
+QGL_AK4chs_94X.db
 
 # SCRAM business
 __init__.py

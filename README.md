@@ -24,10 +24,13 @@ Table of Contents
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 # General Info
+
 Contacts:
 - Petr Mandrik - petr.mandrik@cern.ch 
 - Abraham Tishelman-Charny - abraham.tishelman.charny@cern.ch
 - Jin Wang - Jin.Wang@cern.ch
+- Ram Krishna Sharma - ram.krishna.sharma@cern.ch
+- Chu Wang - chuw@cern.ch
 
 Presentations:
 - [8 September 2020 Non-Res Plans](https://indico.cern.ch/event/944262/contributions/4000298/attachments/2098804/3528297/8_September_2020_HH_WWgg_NonResUpdate.pdf)

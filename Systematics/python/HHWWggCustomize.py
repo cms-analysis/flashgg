@@ -17,16 +17,15 @@ class HHWWggCustomize():
             process --
             customize --
             metaConditions --
-            tagList -- Categories:  0 : SemiLeptonic electron channel
-                                    1 : SemiLeptonic muon channel
-                                    2 : Fully Hadronic channel (jets selection based on min W and H mass OR pT depending on input flag. min WH by default)
-                                    3 : Fully-leptonic channel
-                                    4 : Untagged --> Meets no criteria but want to save event to output
+            tagList -- Categories:  0 : Semi-Leptonic  channel
+                                    1 : Fully Hadronic channel (jets selection based on min W and H mass OR pT depending on input flag. min WH by default)
+                                    2 : Fully-leptonic channel
+                                    3 : Untagged --> Meets no criteria but want to save event to output
         """
         self.process = process
         self.customize = customize
         self.metaConditions = metaConditions
-        self.tagList = [ ["HHWWggTag",5] ] # definitions above
+        self.tagList = [ ["HHWWggTag",4] ] # definitions above
         self.customizeTagSequence()
 
     def variablesToDump(self):
@@ -72,13 +71,6 @@ class HHWWggCustomize():
             "passMetPt:= Cut_Variables[17]",
 	        "FL_Lep_Flavor :=Cut_Variables[18]"
         ]
-
-        # JetIndexVars = [
-        #     "FullyHadSelectedJetIndex0[4,0,4] := JetIndex[0]",
-        #     "FullyHadSelectedJetIndex1[4,0,4] := JetIndex[1]",
-        #     "FullyHadSelectedJetIndex2[4,0,4] := JetIndex[2]",
-        #     "FullyHadSelectedJetIndex3[4,0,4] := JetIndex[3]"
-        # ]
 
         #-- b scores
         bScores = []
@@ -283,15 +275,22 @@ class HHWWggCustomize():
 
             # var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "
             if("Jets" in objV):
+                NtoCheck = 5 
+                if(objV == "goodJets"): NtoCheck = 10 # want to save more good jet information for checking btags per event 
                 bscores = ["bDiscriminator('mini_pfDeepFlavourJetTags:probb')","bDiscriminator('pfDeepCSVJetTags:probb')",
-                           "bDiscriminator('mini_pfDeepFlavourJetTags:probbb')","bDiscriminator('pfDeepCSVJetTags:probbb')"]
+                           "bDiscriminator('mini_pfDeepFlavourJetTags:probbb')","bDiscriminator('pfDeepCSVJetTags:probbb')",
+                           "bDiscriminator('mini_pfDeepFlavourJetTags:problepb')"
+                        #    "bDiscriminator('mini_pfDeepFlavourJetTags:probb') + bDiscriminator('mini_pfDeepFlavourJetTags:probbb') + bDiscriminator('mini_pfDeepFlavourJetTags:problepb')"
+                           ]
 
                 btitles = ["bDiscriminator_mini_pfDeepFlavourJetTags_probb","bDiscriminator_pfDeepCSVJetTags_probb",
-                           "bDiscriminator_mini_pfDeepFlavourJetTags_probbb","bDiscriminator_pfDeepCSVJetTags_probbb"
+                           "bDiscriminator_mini_pfDeepFlavourJetTags_probbb","bDiscriminator_pfDeepCSVJetTags_probbb",
+                           "bDiscriminator_mini_pfDeepFlavourJetTags_problepb"
+                        #    "DeepFlavourScore"
                           ]
                 for ib,bscore in enumerate(bscores):
                     btitle = btitles[ib]
-                    for i in range(checkN):
+                    for i in range(NtoCheck):
                         vtitle = "%s_%s_%s"%(objV,i,btitle)
                         vname = "? %s.size() >= %s ? %s[%s].%s : -999"%(objV,i+1,objV,i,bscore)
                         entry = "%s:=%s"%(vtitle,vname)
@@ -349,25 +348,57 @@ class HHWWggCustomize():
         finalStateVars.append("Leading_Photon_genMatchType:=Leading_Photon.genMatchType()")
         finalStateVars.append("Subleading_Photon_genMatchType:=Subleading_Photon.genMatchType()")
 
+
+        ##-- Save Central Scale Factor values for ntuple flexibility and studies 
+        PhotonScaleFactors = ["LooseMvaSF", "PreselSF", "TriggerWeight", "electronVetoSF"]
+        # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonIDWeight", "MuonIsoWeight"]
+        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonTightIDWeight", "MuonTightRelISOWeight"]
+        JetScaleFactors = ["JetBTagCutWeight","JetBTagReshapeWeight"]
+        ScaleFactorLabels = []
+
+        for PSF in PhotonScaleFactors: ScaleFactorLabels.append(PSF)
+        for LSF in LeptonScaleFactors: ScaleFactorLabels.append(LSF)
+        for JSF in JetScaleFactors: ScaleFactorLabels.append(JSF)
+
+        ScaleFactorVariables = []
+        for SF in ScaleFactorLabels:
+            variableLabel = "%sCentral := weight(\"%sCentral\")"%(SF,SF)
+
+            ##-- By default, running with systematics on saves up/down values. If not running with syst, set saving of up/down SFs here 
+            if(not self.customize.doSystematics):
+                variableLabelUp = "%sUp01sigma := weight(\"%sUp01sigma\")"%(SF,SF)
+                variableLabelDown = "%sDown01sigma := weight(\"%sDown01sigma\")"%(SF,SF)
+                ScaleFactorVariables.append(variableLabelUp)
+                ScaleFactorVariables.append(variableLabelDown)
+
+            # print"variableLabel:",variableLabel
+            ScaleFactorVariables.append(variableLabel)
+        ScaleFactorVariables.append("prefireWeightCentral := weight(\"prefireWeightCentral\")")
+        if(not self.customize.doSystematics):
+            ScaleFactorVariables.append("prefireWeightUp01sigma := weight(\"prefireWeightUp01sigma\")")
+            ScaleFactorVariables.append("prefireWeightDown01sigma := weight(\"prefireWeightDown01sigma\")")  
+        ScaleFactorVariables.append("DiphoCentralWeight := DiphoCentralWeight()")
+
         print"len(finalStateVars):",len(finalStateVars)
-        print"len(muon_vars):",len(muon_vars)
-        print"len(jet_vars):",len(jet_vars)
 
         if self.customize.saveHHWWggFinalStateVars:
+            variables += ScaleFactorVariables
             variables += vertex_variables
             variables += gen_vars            
-            variables += doubleHReweight_vars
+            # variables += doubleHReweight_vars
             variables += finalStateVars
             variables += HHVariables
-            variables += cutFlowVars
-            if self.customize.HHWWggAnalysisChannel == "FL": 
+            # variables += cutFlowVars
+            if self.customize.HHWWggAnalysisChannel == "FL" or self.customize.HHWWggAnalysisChannel == "all": 
                 variables += FL_vars
-            if self.customize.HHWWggAnalysisChannel == "SL": 
+            if self.customize.HHWWggAnalysisChannel == "SL" or self.customize.HHWWggAnalysisChannel == "all": 
                 variables += muon_vars
                 variables += jet_vars 
 
         if self.customize.doHHWWggDebug:
             variables += debugVars
+
+        # print"variables to dump:",variables 
 
         return variables
 
@@ -377,32 +408,38 @@ class HHWWggCustomize():
         #     return var_workspace
 
     def systematicVariables(self):
-    #   systematicVariables=["CMS_hgg_mass[160,100,180]:=diPhoton().mass","Mjj[120,70,190]:=dijet().M()","HHbbggMVA[100,0,1.]:=MVA()","MX[300,250,5000]:=MX()"]
-      systematicVariables=[
-        #   "dZ",
-          "CMS_hgg_mass[160,100,180]:=diPhoton().mass"
-        #   "lp_E[100,0,100] := Leading_Photon.p4().E()",
-        #   "slp_E[100,0,100] := Subleading_Photon.p4().E()",
-        #   "lp_initE[100,0,100] := Leading_Photon.energyAtStep('initial')",
-        #   "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", # also want final energies
-      ]
+        ##-- Save Scale Factor values for ntuple flexibility and studies 
+        PhotonScaleFactors = ["LooseMvaSF", "PreselSF", "TriggerWeight", "electronVetoSF"]
+        # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonIDWeight", "MuonIsoWeight"]
+        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonTightIDWeight", "MuonTightRelISOWeight"]
+        JetScaleFactors = ["JetBTagCutWeight","JetBTagReshapeWeight"]
+        ScaleFactorLabels = []
 
+        for PSF in PhotonScaleFactors: ScaleFactorLabels.append(PSF)
+        for LSF in LeptonScaleFactors: ScaleFactorLabels.append(LSF)
+        for JSF in JetScaleFactors: ScaleFactorLabels.append(JSF)
 
-    #   if self.customize.doubleHReweight > 0: 
-    #     for num in range(0,12):  #12 benchmarks
-    #         systematicVariables += ["benchmark_reweight_%d[100,0,200] := getBenchmarkReweight(%d)"%(num,num)]
-    #     systematicVariables+= ["benchmark_reweight_SM[100,0,200] := getBenchmarkReweight(12)"]
-    #     systematicVariables+= ["benchmark_reweight_box[100,0,200] := getBenchmarkReweight(13)"]      
+        ScaleFactorVariables = []
+        for SF in ScaleFactorLabels:
+            variableLabel = "%sCentral := weight(\"%sCentral\")"%(SF,SF)
+            variableLabelUp = "%sUp01sigma := weight(\"%sUp01sigma\")"%(SF,SF)
+            variableLabelDown = "%sDown01sigma := weight(\"%sDown01sigma\")"%(SF,SF)
+            ScaleFactorVariables.append(variableLabel)
+            ScaleFactorVariables.append(variableLabelUp)
+            ScaleFactorVariables.append(variableLabelDown)
+        ScaleFactorVariables.append("prefireWeightCentral := weight(\"prefireWeightCentral\")")
+        ScaleFactorVariables.append("prefireWeightUp01sigma := weight(\"prefireWeightUp01sigma\")")
+        ScaleFactorVariables.append("prefireWeightDown01sigma := weight(\"prefireWeightDown01sigma\")")  
+        ScaleFactorVariables.append("DiphoCentralWeight := DiphoCentralWeight()")
 
-    #   debugVars=[
-    #       "leadPhoMVA[2,0,2]:=lp_Hgg_MVA",
-    #       "subleadPhoMVA[2,0,2]:=slp_Hgg_MVA"
-    #   ]
+        systematicVariables=[
+            "CMS_hgg_mass[160,100,180]:=diPhoton().mass"
+        ]
 
-    #   if self.customize.doHHWWggDebug:
-    #     systematicVariables += debugVars
+        for ScaleFactorVar in ScaleFactorVariables:
+            systematicVariables.append(ScaleFactorVar)
 
-      return systematicVariables
+        return systematicVariables
 
 
     def variablesToDumpData():
@@ -466,26 +503,11 @@ class HHWWggCustomize():
 
         print "HHWWggAnalysisChannel:",self.customize.HHWWggAnalysisChannel
         self.process.flashggHHWWggTag.HHWWggAnalysisChannel = self.customize.HHWWggAnalysisChannel
-        if self.customize.HHWWggAnalysisChannel == "FL": 
-           self.process.flashggHHWWggTag.deltaMassElectronZThreshold = 5 # 5 instead of default 10  
+        # if self.customize.HHWWggAnalysisChannel == "FL": 
+        #    self.process.flashggHHWWggTag.deltaMassElectronZThreshold = 5 # 5 instead of default 10  ##-- need to configure with 'all' option...
         
-        # if self.customize.saveHHWWggGenVars:
-            # self.process.flashggHHWWggTag.saveHHWWggGenVars = cms.bool(True)
-
-        # if self.customize.saveHHWWggFinalStateVars:
-            # self.process.flashggHHWWggTag.saveHHWWggFinalStateVars = cms.bool(True)
-
         ## customize meta conditions
-        # self.process.flashggHHWWggTag.JetIDLevel=cms.string(str(self.metaConditions["doubleHTag"]["jetID"]))
-        # self.process.flashggHHWWggTag.MVAConfig.weights=cms.FileInPath(str(self.metaConditions["doubleHTag"]["weightsFile"]))
-        # self.process.flashggHHWWggTag.MVAscaling = cms.double(self.metaConditions["doubleHTag"]["MVAscalingValue"])
-        # self.process.flashggHHWWggTag.MVAFlatteningFileName = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["MVAFlatteningFileName"]))
-        # self.process.flashggHHWWggTag.dottHTagger = cms.bool(self.customize.doHHWWggttHKiller)
-        # self.process.flashggHHWWggTag.ttHWeightfile = cms.untracked.FileInPath(str(self.metaConditions["doubleHTag"]["ttHWeightfile"]))
-        # self.process.flashggHHWWggTag.ttHKiller_mean = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_mean"])
-        # self.process.flashggHHWWggTag.ttHKiller_std = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_std"])
-        # self.process.flashggHHWWggTag.ttHKiller_listmean = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_listmean"])
-        # self.process.flashggHHWWggTag.ttHKiller_liststd = cms.vdouble(self.metaConditions["doubleHTag"]["ttHKiller_liststd"])
+        self.process.flashggHHWWggTag.JetIDLevel=cms.string(str(self.metaConditions["HHWWggTag"]["jetID"]))
 
         ## remove single Higgs tags
 
