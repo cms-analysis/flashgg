@@ -16,7 +16,9 @@
 ## User specific variables. Customize to your own working area(s)
 # nTupleDirec="/eos/user/r/rasharma/post_doc_ihep/double-higgs/ntuples/HHWWgg_5July_v3/"
 # nTupleDirec="$PWD/" # condor output directory
-nTupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg/"
+#nTupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg/"
+#nTupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/TaggerOutput/${inFolder}"
+nTupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/TaggerOutput/"
 echo "nTupleDirec = ${nTupleDirec}"
 fggDirec="$PWD/" # flashgg directory (It should be ${PWD}, if now please change this)
 
@@ -88,22 +90,22 @@ then
       return
 fi
 
-if [ "$haddTrees" == "true" ] && [ "haddWorkspace" == "true" ]
-then
-      echo "The two flags -w and -t can't be specified together."
-      echo "exiting"
-      return
-fi
+#if [ "$haddTrees" == "true" ] && [ "haddWorkspace" == "true" ]
+#then
+#      echo "The two flags -w and -t can't be specified together."
+#      echo "exiting"
+#      return
+#fi
 
-if [ "$haddTrees" == "true" ]
-then
-    haddVar=1
-fi
+#if [ "$haddTrees" == "true" ]
+#then
+#    haddVar=1
+#fi
 
-if [ "$haddWorkspace" == "true" ]
-then
-    haddVar=2
-fi
+#if [ "$haddWorkspace" == "true" ]
+#then
+#    haddVar=2
+#fi
 
 ## Output read arguments to user
 echo "nTupleDirec = ${nTupleDirec}"
@@ -119,11 +121,12 @@ mkdir -p $outputFolder
 cd $outputFolder
 scriptLoc=$fggDirec
 scriptLoc+="Systematics/scripts/hadd_all.py"
-scriptLoc+=" $haddVar"
+#scriptLoc+=" $haddVar"
 
 cd $fggDirec
 cmsenv
 cd $nTupleDirec
+echo "PWD : $PWD"
 cd $inputFolder
 
 ls > filesBefore.txt
