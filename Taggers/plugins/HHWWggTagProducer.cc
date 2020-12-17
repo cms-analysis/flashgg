@@ -148,6 +148,7 @@ namespace flashgg {
     double DiLepMassHigThre_;
     double DiLepMassLowThre_;
     double Dipho_pT_Thre_;
+    double FH_Dipho_pT_Thre_;
     bool hasGoodElec = false;
     bool hasGoodMuons = false;
 
@@ -264,6 +265,7 @@ namespace flashgg {
       DiLepMassHigThre_ = pSet.getParameter<double>("DiLepMassHigThre");
       DiLepMassLowThre_ = pSet.getParameter<double>("DiLepMassLowThre");
       Dipho_pT_Thre_ = pSet.getParameter<double>("Dipho_pT_Thre");
+      FH_Dipho_pT_Thre_ = pSet.getParameter<double>("FH_Dipho_pT_Thre");
       MassTThre_ = pSet.getParameter<double>("MassTThre");
       MassT_l2Thre_ = pSet.getParameter<double>("MassT_l2Thre");
       HHWWgguseZeroVtx_ = pSet.getParameter<bool>("HHWWgguseZeroVtx");
@@ -1167,7 +1169,8 @@ namespace flashgg {
           //-- Fully Hadronic Final State Tags
           if( (HHWWggAnalysisChannel_ == "FH" || HHWWggAnalysisChannel_ == "all") && (FilledTag == 0))
           {
-            if (n_good_leptons==0 && n_good_jets>=4)
+            sumpT=dipho->pt();
+            if (n_good_leptons==0 && n_good_jets>=4 && sumpT > FH_Dipho_pT_Thre_)
             {
               catnum = 1;
               // Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
@@ -1236,9 +1239,10 @@ namespace flashgg {
 
           if( (HHWWggAnalysisChannel_ == "FL" || HHWWggAnalysisChannel_ == "all") && FilledTag == 0)
           {  
-            if(n_good_leptons >= 2){
+            sumpT=dipho->pt();
+            if(n_good_leptons >= 2 && sumpT > Dipho_pT_Thre_ ){
 
-            num_FL_dr = GetNumFLDR(goodElectrons, goodMuons, deltaRLeps_);
+            num_FL_dr = GetNumFLDR
 
             if ( (n_good_leptons >=2 ) && (theMET->getCorPt() >= MetPtThreshold_) && num_FL_dr>=1 && (leadPho->p4().pt()+subleadPho->p4().pt())>0){
               if(doHHWWggDebug_) cout << "Filling Fully-Leptonic category..." << endl;
