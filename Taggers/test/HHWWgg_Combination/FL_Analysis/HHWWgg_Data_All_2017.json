@@ -9,5 +9,5 @@
                                 "/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017F-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER"
                            ]
                 },
-        "cmdLine" : "campaign=Era2017_RR-31Mar2018_v2 HHWWggAnalysisChannel=FL doHHWWggNonResAnalysis=1 targetLumi=41.5e+3 useAAA=True processId=Data processType=Data"
+        "cmdLine" : "campaign=Era2017_RR-31Mar2018_v2 HHWWgguseZeroVtx=1 HHWWggAnalysisChannel=FL doHHWWggNonResAnalysis=1 targetLumi=41.5e+3 useAAA=True processId=Data processType=Data"
 }
