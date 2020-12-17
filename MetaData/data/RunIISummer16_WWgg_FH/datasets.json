@@ -1,0 +1,2550 @@
+{
+    "/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25042
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 25036
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 24953
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25057
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 25037
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25065
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 14172
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24945
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25042
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 24953
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24945
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24942
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25057
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 25037
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25146
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25037
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25057
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24945
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 2679
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24945
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25057
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 25042
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24882
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 3055
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24882
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 3055
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24864
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 25036
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25065
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24864
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25146
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24942
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 2679
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060307/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 25042
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25037
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_065731/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 14172
+            }
+        ], 
+        "parent_n_units": 394956
+    }, 
+    "/GluGluToHHTo2G4Q_node_11_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_11_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_060659/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 7504
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_11_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070141/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 7504
+            }
+        ], 
+        "parent_n_units": 395211
+    }, 
+    "/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 6926
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 4757
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 14845
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24970
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 19801
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 17817
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 24970
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 24940
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 14845
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 3750
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 6922
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24968
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 9919
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 23739
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 24942
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_30.root", 
+                "nevents": 5942
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24970
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 8907
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 7902
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24971
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24968
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 24940
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 19801
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24971
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 17817
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 2979
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 10872
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 8907
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 10905
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 1978
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 6926
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 3959
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 5935
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 9919
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 989
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 7710
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 24937
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 24937
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 4757
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 24991
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 23739
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 5935
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 4956
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 7710
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 989
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 6922
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 4956
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 3959
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 1978
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 3750
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 7902
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 10905
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 2979
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_070556/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 24942
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061051/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 10872
+            }
+        ], 
+        "parent_n_units": 387143
+    }, 
+    "/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201028_150750/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 887
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201028_150750/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 1780
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 7233
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 891
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 887
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 2672
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 21398
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 24870
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 7139
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 7118
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201028_150750/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 7118
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 1785
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 7113
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 2672
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 17808
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 9792
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 7113
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 4460
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 25161
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 24961
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 19606
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 7233
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 8022
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 2679
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 4460
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 15154
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 5343
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 24671
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 1780
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 7322
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 1780
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 891
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 4444
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 17808
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24961
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 4444
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 14245
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 887
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201028_150750/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 2679
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201028_150750/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 2672
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 14245
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 2679
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201028_150750/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 891
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 1785
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 8022
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 15154
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 21398
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 7118
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 25144
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 24961
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 19606
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201028_150750/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 5343
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201028_150750/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 4460
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 7139
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 25144
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 9792
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201028_150750/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 1785
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071012/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 5343
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 7322
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24961
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 24671
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 24870
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061446/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 25161
+            }
+        ], 
+        "parent_n_units": 316659
+    }, 
+    "/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24935
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24950
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 11498
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24963
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 24965
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24945
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24928
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24952
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24940
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24957
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24951
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24950
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24960
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24928
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24922
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24960
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24967
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24967
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24957
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24960
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24951
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24940
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24960
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24963
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 8703
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24922
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24952
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 24965
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24935
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 11498
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24945
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24929
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071426/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24929
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_061840/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 8703
+            }
+        ], 
+        "parent_n_units": 394425
+    }, 
+    "/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 4455
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 3563
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 4457
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 2675
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 8917
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24961
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24745
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25239
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 10689
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 21394
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25049
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24673
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 10689
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 17825
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25239
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 16907
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24743
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 4457
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 17825
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 19587
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24745
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 19587
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 21394
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 14242
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25049
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 889
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 886
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 16934
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 20487
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 3556
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 13356
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 4454
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 4454
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24853
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 20487
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 7121
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 2675
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24961
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 6627
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 8917
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 3563
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24743
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 6627
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 2185
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24853
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 14242
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 6243
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 2185
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 13356
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 6243
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 889
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 4455
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 16907
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 16934
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 7121
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_071837/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 886
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062245/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 3556
+            }
+        ], 
+        "parent_n_units": 381712
+    }, 
+    "/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 24973
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 24936
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 24976
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 5939
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 12858
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 13865
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 7917
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 19617
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 992
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 5723
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 4947
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 11687
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 5939
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 23741
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 24962
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 24976
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 12858
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 7917
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 18213
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 19617
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24949
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 24960
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 14650
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 23752
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 24936
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 987
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 14650
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24949
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 18213
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 23752
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 24962
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 987
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 11687
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 987
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 987
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 1987
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 987
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24941
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 5723
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24939
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 24960
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 10891
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 10891
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24939
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 992
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 985
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 23741
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 4947
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 13865
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 987
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 2762
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 1987
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24941
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_062643/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 11879
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 985
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 2762
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072249/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 11879
+            }
+        ], 
+        "parent_n_units": 395002
+    }, 
+    "/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 13475
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 24925
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24941
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24935
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24941
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24961
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24937
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24926
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24944
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24980
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 13475
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 24925
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24934
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24947
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24916
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24934
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24944
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24937
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24970
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24961
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24926
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24932
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 17436
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24980
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24937
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24937
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24947
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24932
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24970
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24916
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_072657/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24935
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063046/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 17436
+            }
+        ], 
+        "parent_n_units": 380096
+    }, 
+    "/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24736
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24934
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 17390
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24969
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24853
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24872
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25032
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25134
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24852
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24736
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24941
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24939
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 17390
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24852
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 16942
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24939
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 11588
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 25064
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 25072
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 24838
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 16942
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24872
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24941
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073107/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24929
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 11588
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25032
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 25064
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24934
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24969
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24853
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 25072
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24929
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 24838
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063513/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25134
+            }
+        ], 
+        "parent_n_units": 395085
+    }, 
+    "/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 3564
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 3560
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 3564
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 8807
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 10689
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 8901
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 25081
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 25145
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 24937
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 8913
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 8913
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 2670
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 8911
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 4440
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 6245
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 2670
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 25145
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 25044
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 24778
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 9823
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 11982
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 10689
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 9808
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 19605
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 18505
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 22283
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 25081
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 11982
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 16030
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 13353
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 25044
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 3560
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 22283
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 25053
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 890
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 19605
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 13369
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 12455
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 9793
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 890
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 9808
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 5349
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 5349
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 6245
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 4440
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 8901
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 12455
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 13369
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 18505
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 24937
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 25053
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 13353
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 24778
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 9793
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 16030
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 8807
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_063917/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 8911
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073525/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 9823
+            }
+        ], 
+        "parent_n_units": 379983
+    }, 
+    "/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 1780
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 1289
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 4452
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 1782
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 9595
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 8007
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 17813
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 7917
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 7123
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 14233
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 7917
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 24928
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 14233
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25032
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 19609
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 2677
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 7115
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25032
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24854
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24850
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24854
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 6133
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 9595
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 7123
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24546
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 1778
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 1778
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25011
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 1782
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24773
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 6133
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 4464
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 8007
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25011
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 19609
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 1780
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 4464
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 1780
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24850
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 17813
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 24928
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 1289
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 2677
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 4452
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 7115
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 1780
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24546
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25253
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_064317/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24773
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_073939/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25253
+            }
+        ], 
+        "parent_n_units": 316794
+    }, 
+    "/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 796
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 24954
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 24939
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 4759
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 5551
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 5935
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 24971
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 8716
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 6332
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 22992
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 3167
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 2379
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 2376
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 1584
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 24959
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 13467
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 17431
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 17439
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 12669
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 24947
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 12661
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 19800
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 24951
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 18245
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 3167
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 3954
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 7146
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 22150
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_30.root", 
+                "nevents": 2377
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074359/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 24960
+            }
+        ], 
+        "parent_n_units": 389774
+    }, 
+    "/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24958
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24953
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24954
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24935
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24954
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 24930
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24940
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24952
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24954
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24958
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24956
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24937
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24940
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 14866
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 5947
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24969
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_074833/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24960
+            }
+        ], 
+        "parent_n_units": 395063
+    }, 
+    "/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25053
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24949
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 1382
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25148
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 24974
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25253
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24756
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 1387
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 694
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 25142
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24849
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 22943
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 2081
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 25063
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 4859
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 4164
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 6925
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 24823
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 6930
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 24834
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24532
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 2078
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 4157
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_31.root", 
+                "nevents": 696
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24853
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 2779
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 2078
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 1384
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_30.root", 
+                "nevents": 2080
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 1382
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075307/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 298
+            }
+        ], 
+        "parent_n_units": 392526
+    }, 
+    "/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 24946
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 2466
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 1588
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 13882
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24523
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 25137
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 2970
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_31.root", 
+                "nevents": 2477
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 1481
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 9993
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 8919
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 7324
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 24748
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 23748
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 8123
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 24851
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 24665
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24974
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 3472
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 1481
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 2369
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 3949
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 3958
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 14381
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 25047
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 15649
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 10414
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_30.root", 
+                "nevents": 1490
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201104_123923/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 1787
+            }
+        ], 
+        "parent_n_units": 391108
+    }, 
+    "/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/lipe-H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-edb6514578032218c5f12aad0f0cb7dd/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 25163
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 5451
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 1485
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 5944
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 13882
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 24981
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 24651
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 16155
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 6429
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 497
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 987
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 990
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 2470
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 1488
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 24553
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 25065
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 24858
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24650
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 24949
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 2484
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 3957
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 24858
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24907
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 24679
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 25154
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 24823
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 1480
+            }, 
+            {
+                "name": "/eos/user/l/lipe/flashgg/H6/P/GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/H6-P-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/201029_075742/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 1485
+            }
+        ], 
+        "parent_n_units": 388475
+    }
+}

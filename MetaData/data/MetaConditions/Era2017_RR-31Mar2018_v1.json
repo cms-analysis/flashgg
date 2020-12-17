@@ -337,7 +337,7 @@
     "L1Prefiring" :
     {
         "isRelevant" : true,
-        "applyToCentral" : false,
+        "applyToCentral" : true,
         "photonFileName" : "flashgg/Taggers/data/L1prefiring_photonpt_2017BtoF.root",
         "photonHistName" : "L1prefiring_photonpt_2017BtoF",
         "jetFileName"    : "flashgg/Taggers/data/L1prefiring_jetpt_2017BtoF.root",
