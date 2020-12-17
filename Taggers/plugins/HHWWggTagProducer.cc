@@ -150,7 +150,7 @@ namespace flashgg {
     double deltaMassElectronZThreshold_;
     double DiLepMassHigThre_;
     double DiLepMassLowThre_;
-    double Dipho_pT_Thre_;
+    double FL_Dipho_pT_Thre_;
     double FH_Dipho_pT_Thre_;
     bool hasGoodElec = false;
     bool hasGoodMuons = false;
@@ -276,7 +276,7 @@ namespace flashgg {
       DiLepPtThre_ = pSet.getParameter<double>("DiLepPtThre");
       DiLepMassHigThre_ = pSet.getParameter<double>("DiLepMassHigThre");
       DiLepMassLowThre_ = pSet.getParameter<double>("DiLepMassLowThre");
-      Dipho_pT_Thre_ = pSet.getParameter<double>("Dipho_pT_Thre");
+      FL_Dipho_pT_Thre_ = pSet.getParameter<double>("FL_Dipho_pT_Thre");
       FH_Dipho_pT_Thre_ = pSet.getParameter<double>("FH_Dipho_pT_Thre");
       MassTThre_ = pSet.getParameter<double>("MassTThre");
       MassT_l2Thre_ = pSet.getParameter<double>("MassT_l2Thre");
@@ -1212,25 +1212,8 @@ namespace flashgg {
           //-- Get Photons
           const flashgg::Photon* leadPho = dipho->leadingPhoton();
           const flashgg::Photon* subleadPho = dipho->subLeadingPhoton();
-          // sumpT = leadPho->pt() + subleadPho->pt();
-          // diPho_pT = dipho->pt();
 
-          // diPhoton pT cut
-          //if(doHHWWggNonResAnalysis_){
-          //  if(!doHHWWggTagCutFlowAnalysis_ && HHWWggAnalysisChannel_ == "SL" && sumpT < 100.) continue; // if not doing cut flow analysis to save events, remove event
-          //  if(!doHHWWggTagCutFlowAnalysis_ && HHWWggAnalysisChannel_ == "FL" && diPho_pT < 54.) continue; // if not doing cut flow analysis to save events, remove event
-          //  if(!doHHWWggTagCutFlowAnalysis_ && HHWWggAnalysisChannel_ == "FH" && diPho_pT < 200.) continue; // if not doing cut flow analysis to save events, remove event
-          //}
-          //-- Diphoton pT Selection 
-          //-- Should optimize a working point 
-          // if(doHHWWggNonResAnalysis_){
-          //   leadPho_pt = leadPho->pt();
-          //   subleadPho_pt = subleadPho->pt();
-          //   sumpT = leadPho_pt + subleadPho_pt;
-          //   if(!doHHWWggTagCutFlowAnalysis_ && HHWWggAnalysisChannel_ == "SL" && sumpT < 100.) continue; // if not doing cut flow analysis to save events, remove event
-          // }
-
-          //-- Vertex Info 
+           //-- Vertex Info 
           diphoton_vertex = dipho->vtx();
           if(HHWWgguseZeroVtx_) HggVtx_z = -999; 
           else HggVtx_z = diphoton_vertex->z();
@@ -1446,8 +1429,8 @@ namespace flashgg {
           //-- Fully Hadronic Final State Tags
           if( (HHWWggAnalysisChannel_ == "FH" || HHWWggAnalysisChannel_ == "all") && (FilledTag == 0))
           {
-            sumpT=dipho->pt();
-            if (n_good_leptons==0 && n_good_jets>=4 && sumpT > FH_Dipho_pT_Thre_)
+            double diPho_pT=dipho->pt();
+            if (n_good_leptons==0 && n_good_jets>=4 && diPho_pT > FH_Dipho_pT_Thre_)
             {
               catnum = 1;
               // Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
@@ -1547,8 +1530,8 @@ namespace flashgg {
 
           if( (HHWWggAnalysisChannel_ == "FL" || HHWWggAnalysisChannel_ == "all") && FilledTag == 0)
           {  
-            sumpT=dipho->pt();
-            if(n_good_leptons >= 2 && sumpT > Dipho_pT_Thre_ ){
+            double diPho_pT=dipho->pt();
+            if(n_good_leptons >= 2 && diPho_pT > FL_Dipho_pT_Thre_ ){
 
             num_FL_dr = GetNumFLDR(goodElectrons, goodMuons, deltaRLeps_);
 

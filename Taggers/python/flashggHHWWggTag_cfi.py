@@ -85,7 +85,7 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     MassT_l2Thre = cms.double(0.),
                                     DiLepMassHigThre = cms.double(100.),
                                     DiLepMassLowThre = cms.double(80.),
-                                    Dipho_pT_Thre = cms.double(54.),
+                                    FL_Dipho_pT_Thre = cms.double(54.),
                                     FH_Dipho_pT_Thre = cms.double(160.),
                                     # vertex
 
