@@ -370,10 +370,7 @@ class HHWWggCustomize():
             variables += ScaleFactorVariables
             variables += vertex_variables
             variables += gen_vars            
-            # variables += doubleHReweight_vars
             variables += finalStateVars
-            variables += HHVariables
-            # variables += cutFlowVars
             if self.customize.HHWWggAnalysisChannel == "FL" or self.customize.HHWWggAnalysisChannel == "all": 
                 variables += FL_vars
             if self.customize.HHWWggAnalysisChannel == "SL" or self.customize.HHWWggAnalysisChannel == "all": 
