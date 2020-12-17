@@ -1,4 +1,26 @@
-# fggRunJobs.py --load Taggers/test/HHWWgg_NLO/SL_SM2017.json -D -P -n 500 -d HHWWgg-SM-NLO-SF-Checks --stage-to="/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/HHWWgg-SM-NLO-SF-Checks" -x cmsRun Systematics/test/workspaceStd.py maxEvents=100000 -q longlunch --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json doHHWWggTag=1 HHWWggTagsOnly=1 doSystematics=0 dumpTrees=1 dumpWorkspace=0 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1
+##-- Run Locally 
+
+##-- Fully Leptonic 
+# cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json campaign=Era2017_RR-31Mar2018_v2 dataset=GluGluToHHTo2G2l2nu_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8 doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=all HHWWgguseZeroVtx=1 doHHWWggDebug=1
+
+
+##-- Signal
+##-- Semi-Leptonic
+# fggRunJobs.py --load Taggers/test/HHWWgg/SL_SM2017.json -D -P -n 500 -d SL_SM2017 --stage-to=/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/TaggerOutput/SL_SM2017/ -x cmsRun Systematics/test/workspaceStd.py maxEvents=100000 -q longlunch --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json doHHWWggTag=1 HHWWggTagsOnly=1 doSystematics=0 dumpTrees=1 dumpWorkspace=0 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 copyInputMicroAOD=1
+
+##-- Fully-Hadronic 
+# fggRunJobs.py --load Taggers/test/HHWWgg/FH_SM2017.json -D -P -n 500 -d FH_SM2017 --stage-to=/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/TaggerOutput/FH_SM2017/ -x cmsRun Systematics/test/workspaceStd.py maxEvents=100000 -q longlunch --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json doHHWWggTag=1 HHWWggTagsOnly=1 doSystematics=0 dumpTrees=1 dumpWorkspace=0 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 copyInputMicroAOD=True
+
+##-- Fully-Leptonic 
+# fggRunJobs.py --load Taggers/test/HHWWgg/FL_SM2017.json -D -P -n 500 -d FL_SM2017 --stage-to=/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/TaggerOutput/FL_SM2017/ -x cmsRun Systematics/test/workspaceStd.py maxEvents=100000 -q longlunch --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json doHHWWggTag=1 HHWWggTagsOnly=1 doSystematics=0 dumpTrees=1 dumpWorkspace=0 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 copyInputMicroAOD=True
+
+##-- ttH 
+# fggRunJobs.py --load Taggers/test/HHWWgg/ttHJetToGG_2017.json -D -P -n 500 -d ttHJetToGG_2017 --stage-to=/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/TaggerOutput/ttHJetToGG_2017/ -x cmsRun Systematics/test/workspaceStd.py maxEvents=-1 -q workday --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json doHHWWggTag=1 HHWWggTagsOnly=1 doSystematics=0 dumpTrees=1 dumpWorkspace=0 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 copyInputMicroAOD=1
+# fggRunJobs.py --load Taggers/test/HHWWgg/ttHJetToGG_2017.json -D -P -n 500 -d ttHJetToGG_2017 --stage-to=/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/TaggerOutput/ttHJetToGG_2017/ -x cmsRun Systematics/test/workspaceStd.py maxEvents=100000 -q workday --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json doHHWWggTag=1 HHWWggTagsOnly=1 doSystematics=0 dumpTrees=1 dumpWorkspace=0 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 copyInputMicroAOD=1
+
+
+# fggRunJobs.py --load Taggers/test/HHWWgg/SL_SM2017.json -D -P -n 500 -d SL_SM2017 --stage-to="/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/TaggerOutput/SL_SM2017/" -x cmsRun Systematics/test/workspaceStd.py maxEvents=100000 -q longlunch --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json doHHWWggTag=1 HHWWggTagsOnly=1 doSystematics=0 dumpTrees=1 dumpWorkspace=0 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 copyInputMicroAOD=1
+# fggRunJobs.py --load Taggers/test/HHWWgg_NLO/SL_SM2017.json -D -P -n 500 -d HHWWgg-SM-NLO-SF-Checks --stage-to="/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/HHWWgg-SM-NLO-SF-Checks/" -x cmsRun Systematics/test/workspaceStd.py maxEvents=100000 -q longlunch --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json doHHWWggTag=1 HHWWggTagsOnly=1 doSystematics=0 dumpTrees=1 dumpWorkspace=0 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 copyInputMicroAOD=1
 
 ############################################################################################################################################################################################
 # Abraham Tishelman-Charny 

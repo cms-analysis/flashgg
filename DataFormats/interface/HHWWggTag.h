@@ -50,6 +50,12 @@ namespace flashgg {
     std::vector<flashgg::Electron> GetElectrons(std::vector<edm::Ptr<flashgg::Electron>>);
     std::vector<flashgg::Muon> GetMuons(std::vector<edm::Ptr<flashgg::Muon>>);
     std::vector<flashgg::Jet> GetJets(std::vector<edm::Ptr<flashgg::Jet>>);
+    void SetGoodJets(std::vector<edm::Ptr<flashgg::Jet>>);
+    void SetAllJets(std::vector<edm::Ptr<flashgg::Jet>>);
+    void SetDiphoCentralWeight(double);
+
+    // Jet Vars 
+    void SetJetVars(std::vector<double>); 
 
     //-- Fully Leptonic Leptons 
     void GetFLElectrons(edm::Ptr<flashgg::Electron> Ele1,edm::Ptr<flashgg::Electron> Ele2);
@@ -135,6 +141,7 @@ namespace flashgg {
     const std::vector<flashgg::Muon> goodMuons() const {return goodMuons_;}
     const std::vector<flashgg::Jet> allJets() const {return allJets_;}
     const std::vector<flashgg::Jet> goodJets() const {return goodJets_;}
+    const float DiphoCentralWeight() const {return DiphoCentralWeight_;}
 
     const LorentzVector & dijet() const { return dijet_; }
     const LorentzVector & dijet2() const { return dijet2_; }
@@ -146,8 +153,8 @@ namespace flashgg {
     const reco::Candidate::LorentzVector& Subleading_lepton() const { return Subleading_lepton_; };
     const float dipho_MVA() const {return dipho_MVA_;};
 
-    void setBenchmarkReweight(std::vector<float> x) { benchmark_reweights_ = x; }
-    float getBenchmarkReweight(int targetNode) const { return benchmark_reweights_[targetNode]; }
+    // void setBenchmarkReweight(std::vector<float> x) { benchmark_reweights_ = x; }
+    // float getBenchmarkReweight(int targetNode) const { return benchmark_reweights_[targetNode]; }
 
     void setGenMhh(double x) { genMhh_ = x; }
     double genMhh() const { return genMhh_; }
@@ -171,8 +178,8 @@ namespace flashgg {
     float lp_pt_;
     float slp_pt_;
     std::vector<double> Cut_Variables_;
-    std::vector<double> MuonVars_;
-    std::vector<double> JetVars_;
+    std::vector<double> MuonVars_ = {-999}; // Give initial value to avoid void vectors when obtaining final state variables  
+    std::vector<double> JetVars_ = {-999}; // Give initial value to avoid void vectors when obtaining final state variables 
     flashgg::Electron Electron_;
     flashgg::Muon Muon_;
     flashgg::Jet Leading_Jet_;
@@ -196,7 +203,7 @@ namespace flashgg {
     reco::Candidate::LorentzVector Leading_lepton_;
     reco::Candidate::LorentzVector Subleading_lepton_;
     float dipho_MVA_;
-    vector<float> benchmark_reweights_;    
+    // vector<float> benchmark_reweights_;    
 
     double genMhh_;
     double genCosThetaStar_CS_;
@@ -205,6 +212,8 @@ namespace flashgg {
     double GenVtx_z_; 
     double HggVtx_z_; 
     double ZeroVtx_z_; 
+
+    double DiphoCentralWeight_;
   };
 
 }
