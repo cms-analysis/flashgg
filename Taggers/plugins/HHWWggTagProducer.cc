@@ -1242,7 +1242,7 @@ namespace flashgg {
             sumpT=dipho->pt();
             if(n_good_leptons >= 2 && sumpT > Dipho_pT_Thre_ ){
 
-            num_FL_dr = GetNumFLDR
+            num_FL_dr = GetNumFLDR(goodElectrons, goodMuons, deltaRLeps_);
 
             if ( (n_good_leptons >=2 ) && (theMET->getCorPt() >= MetPtThreshold_) && num_FL_dr>=1 && (leadPho->p4().pt()+subleadPho->p4().pt())>0){
               if(doHHWWggDebug_) cout << "Filling Fully-Leptonic category..." << endl;
