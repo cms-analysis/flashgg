@@ -1167,9 +1167,17 @@
                 "nevents": 999, 
                 "totEvents": 999, 
                 "weights": 998.6002197265625
+            }, 
+            {
+                "bad": false, 
+                "events": 999, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/HHWWggFullyHad/94X_mc2017-RunIIFall18/ggF_X1300_HHWWgg_qqqq/94X_mc2017-RunIIFall18_Radion_wPU_MINIAOD/200714_000548/0000/myMicroAODOutputFile_45.root", 
+                "nevents": 999, 
+                "totEvents": 999, 
+                "weights": 998.60009765625
             }
         ], 
-        "parent_n_units": 47906, 
+        "parent_n_units": 48905, 
         "vetted": true
     }, 
     "/ggF_X1500_HHWWgg_qqqq/rasharma-94X_mc2017-RunIIFall18_Radion_wPU_MINIAOD-894aca5f1702fc00de4ca2fc3fbcfe4c/USER": {
@@ -1949,9 +1957,25 @@
                 "nevents": 994, 
                 "totEvents": 994, 
                 "weights": 987.60009765625
+            }, 
+            {
+                "bad": false, 
+                "events": 998, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/HHWWggFullyHad/94X_mc2017-RunIIFall18/ggF_X2000_HHWWgg_qqqq/94X_mc2017-RunIIFall18_Radion_wPU_MINIAOD/200714_001415/0000/myMicroAODOutputFile_31.root", 
+                "nevents": 998, 
+                "totEvents": 998, 
+                "weights": 994.6500244140625
+            }, 
+            {
+                "bad": false, 
+                "events": 997, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/HHWWggFullyHad/94X_mc2017-RunIIFall18/ggF_X2000_HHWWgg_qqqq/94X_mc2017-RunIIFall18_Radion_wPU_MINIAOD/200714_001415/0000/myMicroAODOutputFile_37.root", 
+                "nevents": 997, 
+                "totEvents": 997, 
+                "weights": 996.5900268554688
             }
         ], 
-        "parent_n_units": 45884, 
+        "parent_n_units": 47879, 
         "vetted": true
     }, 
     "/ggF_X260_HHWWgg_qqqq/rasharma-94X_mc2017-RunIIFall18_Radion_wPU_MINIAOD-894aca5f1702fc00de4ca2fc3fbcfe4c/USER": {

@@ -141,7 +141,22 @@ class HHWWggCustomize():
             "HHCandidate_py := HH.py()",
             "HHCandidate_pz := HH.pz()",
             "HHCandidate_eta := HH.eta()",
-            "HHCandidate_phi := HH.phi()"
+            "HHCandidate_phi := HH.phi()",
+
+            # Delta eta between two higgs
+            "DeltaEta_HH := HWW.eta() - HGG.eta()",
+            # Delta phi between two higgs
+            "DeltaPhi_HH := HWW.phi() - HGG.phi()",
+            # Delta R between two higgs
+            "DeltaR_HH := sqrt((HWW.phi() - HGG.phi())*(HWW.phi() - HGG.phi()) + (HWW.eta() - HGG.eta())*(HWW.eta() - HGG.eta()))",
+            # cos (HWW, HGG): cos(theta) between Higgs decaying to W's and Higgs decaying to two photons
+            "cosThetaHH := cos(HWW.theta() - HGG.theta())",
+            # cos (W1, W2): cos(theta) between two w-boson system
+            "cosThetaWW := cos(dijet.theta() - dijet2.theta())",
+            # Delta Phi between Higgs decaying to two photons and the selected leading jet for the w-candidate
+            # "DeltaPhi_HGG_SelectedLeadJet := HGG.phi() - goodJets[JetIndex[0]].p4().phi()",
+            # Detta R between Higgs decaying to two photons and the selected leading jet for the w-candidate
+            # "DeltaR_HGG_SelectedLeadJet := sqrt( (HGG.phi() - goodJets[JetIndex[0]].p4().phi())*(HGG.phi() - goodJets[JetIndex[0]].p4().phi()) +  (HGG.eta() - goodJets[JetIndex[0]].p4().eta())*(HGG.eta() - goodJets[JetIndex[0]].p4().eta()) ) "
         ]
 
         FL_vars =[
@@ -474,6 +489,12 @@ class HHWWggCustomize():
             self.process.flashggHHWWggTag.doHHWWggNonResAnalysis = cms.bool(True)
         if self.customize.doHHWWggFHptOrdered:
             self.process.flashggHHWWggTag.doHHWWggFHptOrdered = cms.bool(True)
+        if self.customize.doHHWWggFHminWHJets:
+            self.process.flashggHHWWggTag.doHHWWggFHminWHJets = cms.bool(True)
+        if self.customize.doHHWWggFHminWHLead2Jet:
+            self.process.flashggHHWWggTag.doHHWWggFHminWHLead2Jet = cms.bool(True)
+        if self.customize.doHHWWggFHminHiggsMassOnly:
+            self.process.flashggHHWWggTag.doHHWWggFHminHiggsMassOnly = cms.bool(True)
         if self.customize.doHHWWggDebug:
             self.process.flashggHHWWggTag.doHHWWggDebug = cms.bool(True)
 

@@ -1,28 +1,20 @@
 {
-  "GluGluToHHTo2G2l2nu_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8":{
+"GluGluToHHTo_WWgg_qqlnu_nodeSM":{
+"xs": 0.001,
+"kf": 1.06
+},
+"GluGluToHHTo_WWgg_lnulnu_nodeSM":{
+"xs": 0.001,
+"kf": 1.06
+},
+"GluGluToHHTo_WWgg_qqqq_nodeSM":{
+"xs": 0.001,
+"kf": 1.06
+},      
+"GluGluToHHTo2G2l2nu_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8":{
     "xs": 0.001,
     "kf": 1.06
  },
-
-  "GluGluToHHTo2G4Q_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8":{
-    "xs": 0.001,
-    "kf": 1.06
-},
-
-
-   "GluGluToHHTo_WWgg_qqlnu_nodeSM":{
-      "xs": 0.001,
-      "kf": 1.06
-   },
-   "GluGluToHHTo_WWgg_lnulnu_nodeSM":{
-      "xs": 0.001,
-      "kf": 1.06
-   },
-   "GluGluToHHTo_WWgg_qqqq_nodeSM":{
-      "xs": 0.001,
-      "kf": 1.06
-   },      
-
 "GluGluToHHTo_WWgg_lnulnugg_nodeSM":{
 "xs": 0.001,
 "kf": 1.06
@@ -239,6 +231,300 @@
 "xs": 0.001,
 "kf": 1.06
 },
+"GluGluToHHTo_WWgg_qqqq_node01": {
+"xs": 0.001
+},
+"GluGluToHHTo_WWgg_qqqq_node02": {
+"xs": 0.001
+},
+"GluGluToHHTo_WWgg_qqqq_node03": {
+"xs": 0.001
+},
+"GluGluToHHTo_WWgg_qqqq_node04": {
+"xs": 0.001
+},
+"GluGluToHHTo_WWgg_qqqq_node05": {
+"xs": 0.001
+},
+"GluGluToHHTo_WWgg_qqqq_node06": {
+"xs": 0.001
+},
+"GluGluToHHTo_WWgg_qqqq_node07": {
+"xs": 0.001
+},
+"GluGluToHHTo_WWgg_qqqq_node08": {
+"xs": 0.001
+},
+"GluGluToHHTo_WWgg_qqqq_node09": {
+"xs": 0.001
+},
+"GluGluToHHTo_WWgg_qqqq_node10": {
+"xs": 0.001
+},
+"GluGluToHHTo_WWgg_qqqq_node11": {
+"xs": 0.001
+},
+"GluGluToHHTo_WWgg_qqqq_node12": {
+"xs": 0.001
+},
+"ggF_X260_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X270_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X300_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X350_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X400_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X450_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X500_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X550_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X600_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X650_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X700_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X900_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X1000_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X1100_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X1200_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X1300_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X1500_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"ggF_X2000_HHWWgg_qqqq": {
+"xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_10_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_11_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_12_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_2_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_3_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_4_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_5_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_6_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_7_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_8_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_9_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_SM_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_cHHH2p45_TuneCP5_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_10_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_11_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_12_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_1_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_2_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_3_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_4_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_5_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_6_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_7_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_8_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_9_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_SM_TuneCP5_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_cHHH0_TuneCP5_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_cHHH2p45_TuneCP5_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_11_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G2ZTo2G4Q_node_cHHH5_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_11_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
+"GluGluToHHTo2G4Q_node_cHHH5_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8": {
+    "xs": 0.001
+},
 "GluGluToHHTo2G2Qlnu_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8":{
 "xs": 0.001,
 "kf": 1.06
@@ -265,22 +551,21 @@
 "GluGluToHHTo2G2l2nu_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
 "GluGluToHHTo2G2l2nu_node_cHHH2p45_TuneCP5_PSWeights_13TeV-powheg-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
 "GluGluToHHTo2G2l2nu_node_cHHH5_TuneCP5_PSWeights_13TeV-powheg-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_11_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
-    "GluGluToHHTo2G2l2nu_node_cHHH5_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              }
-
+"GluGluToHHTo2G2l2nu_node_10_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_11_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_12_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_1_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_2_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_3_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_4_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_5_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_6_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_7_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_8_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_9_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_cHHH0_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_cHHH1_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              },
+"GluGluToHHTo2G2l2nu_node_cHHH5_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8"    : { "xs" : 0.001, "kf" : 1.06                              }
 }

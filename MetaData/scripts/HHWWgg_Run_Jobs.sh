@@ -30,11 +30,12 @@
 ## User specific variables. Customize to your own working area(s)
 
 #fggDirec="/afs/cern.ch/work/a/atishelm/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/" # flashgg directory
-fggDirec="/afs/cern.ch/user/c/chuw/chuw/HHWWgg/CMSSW_10_6_8/src/flashgg/"
-ntupleDirec="/afs/cern.ch/user/c/chuw/chuw/HHWWgg/CMSSW_10_6_8/src/flashgg/" # condor output directory
-#fggDirec="$PWD/" # flashgg directory (It should be ${PWD})
+# fggDirec="/afs/cern.ch/work/a/atishelm/private/HHWWgg_flashgg/21JuneFlashgg/CMSSW_10_5_0/src/flashgg/"
+# ntupleDirec="/eos/user/a/atishelm/ntuples/HHWWgg/" # condor output directory
+fggDirec="$PWD/" # flashgg directory (It should be ${PWD})
+echo "fggDirec = ${fggDirec}"
+ntupleDirec="$PWD/" # condor output directory
 echo "PWD = ${fggDirec}"
-#ntupleDirec="$PWD/" # condor output directory
 echo "ntupleDirec = ${ntupleDirec}"
 
 ## Other script parameters
@@ -52,14 +53,16 @@ dryRun="false" # do not submit jobs
 jsonpath="" # optional local json file to use for fggrunjobs arguments such as dataset and campaign
 condorQueue="microcentury" # condor job flavour. Determines max running time for each job
 year=""
+doNonResAnalysis="" # do non resonant analysis
+HHWWggAnalysisChannel="SL"
+doHHWWggFHptOrdered="false" # fully hadronic jets selection; if pt ordered selection it should be true
+doHHWWggFHminWHJets="false" # fully hadronic jets selection; if pt ordered selection it should be true
+doHHWWggFHminWHLead2Jet="false" # fully hadronic jets selection; if pt ordered selection it should be true
+doHHWWggFHminHiggsMassOnly="false" # fully hadronic jets selection; if pt ordered selection it should be true
 calcPdfWeights="false"
-doNonResAnalysis="" # do non resonant analysis 
 
 ## Get user specified argumenets
-
-##-- what is the purpose of "output" ?
-#options=$(getopt -o gcvstwr --long nEvents: --long output: --long labelName: --long json: --long condorQueue: --long year: -- "$@") # end name with colon ':' to specify argument string
-options=$(getopt -o gcvstwrn --long nEvents: --long labelName: --long json: --long condorQueue: --long year: --long calcPdfWeights: -- "$@") # end name with colon ':' to specify argument string 
+options=$(getopt -o gcvstwrnfpqz --long channel: --long nEvents: --long output: --long labelName: --long json: --long condorQueue: --long year: --long calcPdfWeights: -- "$@") # end name with colon ':' to specify argument string
 
 [ $? -eq 0 ] || {
       echo "Incorrect option provided"
@@ -75,8 +78,13 @@ while true; do
       -t) dumpTrees="true" ;;
       -w) dumpWorkspaces="true" ;;
       -r) dryRun="true" ;;
-      #--output) shift; ntupleDirec=$1 ;; ##-- What's the purpose of this flag?
       -n) doNonResAnalysis="true" ;;
+      -f) doHHWWggFHptOrdered="true" ;;
+      -p) doHHWWggFHminWHJets="true" ;;
+      -q) doHHWWggFHminWHLead2Jet="true" ;;
+      -z) doHHWWggFHminHiggsMassOnly="true" ;;
+      --channel) shift; HHWWggAnalysisChannel=$1 ;;
+      --output) shift; ntupleDirec=$1 ;;
       --nEvents) shift; numEvents=$1 ;;
       --labelName) shift; label=$1 ;;
       --json) shift; jsonpath=$1 ;;
@@ -234,12 +242,34 @@ then
       then
             command+=' saveHHWWggFinalStateVars=1'
 
-      fi 
+      fi
 
       if [[ $doNonResAnalysis == 'true' ]]
       then 
             command+=' doHHWWggNonResAnalysis=1'
-      fi 
+      fi
+
+      if [ $doHHWWggFHptOrdered == 'true' ]
+      then
+        command+=' doHHWWggFHptOrdered=True '
+      fi
+
+      if [ $doHHWWggFHminWHJets == 'true' ]
+      then
+        command+=' doHHWWggFHminWHJets=True '
+      fi
+
+      if [ $doHHWWggFHminWHLead2Jet == 'true' ]
+      then
+        command+=' doHHWWggFHminWHLead2Jet=True '
+      fi
+
+      if [ $doHHWWggFHminHiggsMassOnly == 'true' ]
+      then
+        command+=' doHHWWggFHminHiggsMassOnly=True '
+      fi
+                  
+      command+=' HHWWggAnalysisChannel='${HHWWggAnalysisChannel}
 fi
 
 echo "Evaluating command: $command"

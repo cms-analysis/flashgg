@@ -142,7 +142,25 @@ customize.options.register('doHHWWggFHptOrdered', # For HHWWgg analysis fully ha
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doHHWWggFHptOrdered'
-                           )     
+                           )
+customize.options.register('doHHWWggFHminWHJets', # For HHWWgg analysis fully hardonic state, select jets based on pT order and not min WH difference
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doHHWWggFHminWHJets'
+                           )
+customize.options.register('doHHWWggFHminWHLead2Jet', # For HHWWgg analysis fully hardonic state, select jets based on pT order and not min WH difference
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doHHWWggFHminWHLead2Jet'
+                           )
+customize.options.register('doHHWWggFHminHiggsMassOnly', # For HHWWgg analysis fully hardonic state, select jets based on pT order and not min WH difference
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'doHHWWggFHminHiggsMassOnly'
+                           )
 customize.options.register('HHWWggAnalysisChannel', # SL, FL or FH 
                            "SL", ## run semileptonic by default if nothing specified 
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -274,7 +292,6 @@ jetSystematicsInputTags = createStandardSystematicsProducers(process , customize
 if dropVBFInNonGold:
     process.flashggVBFTag.SetArbitraryNonGoldMC = True
     process.flashggVBFTag.DropNonGoldData = True
-
 modifyTagSequenceForSystematics(process,jetSystematicsInputTags) # normally uncommented 
 # HHWWgg testing: 
 # process.systematicsTagSequences = cms.Sequence()
@@ -283,7 +300,6 @@ modifyTagSequenceForSystematics(process,jetSystematicsInputTags) # normally unco
 # print "Printing options"
 # print 'acceptance '+str(customize.acceptance)
 # print 'tthTagsOnly '+str(customize.tthTagsOnly)
-
 # process.load("flashgg/Taggers/flashggTagSequence_cfi")
 # process.flashggTagSequence = flashggPrepareTagSequence(customize.metaConditions)
 
@@ -375,7 +391,6 @@ if customize.tthTagsOnly:
     
     process.flashggDiPhotonSystematics.SystMethods = newvpset
 
-
 # if customize.HHWWggTagsOnly:    
 #     print "Removing FracRVNvtxWeight from syst and adding  PixelSeed"
     
@@ -396,7 +411,7 @@ useEGMTools(process)
 
 # Only run systematics for signal events
 # convention: ggh vbf wzh (wh zh) tth
-signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh","WWgg","GluGluToHHTo2G2Qlnu","GluGluToHHTo2G2l2nu"]
+signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh","WWgg","GluGluToHH"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 print"is_signal:",is_signal
 
@@ -475,9 +490,6 @@ if is_signal:
                     phosystlabels.append("MCScale%s%s%s01sigma" % (r9,region,direction))
                     for var in ["Rho","Phi"]:
                         phosystlabels.append("MCSmear%s%s%s%s01sigma" % (r9,region,var,direction))
-       
-#############################################################
-        
         systlabels += phosystlabels
         systlabels += jetsystlabels
         systlabels += metsystlabels
@@ -687,7 +699,8 @@ for tag in tagList:
                            splitPdfByStage0Bin=customize.doHTXS,
                            splitPdfByStage1Bin=customize.doStageOne,
                            dumpGenWeight=customize.dumpGenWeight,
-                           unbinnedSystematics=True
+                           #unbinnedSystematics=True
+                           unbinnedSystematics=(not isBinnedOnly)       # Without this we won't get the systematics info
                            )
 
 

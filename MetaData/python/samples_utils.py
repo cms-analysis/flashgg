@@ -588,7 +588,7 @@ class SamplesManager(object):
             return None
         parent_dset = das_query("parent dataset=%s instance=prod/phys03" % dsetName)['data'][0]['parent'][0]['name']
         parent_info = das_query("dataset dataset=%s instance=prod/phys03" % parent_dset)
-        
+
         ##-- The below lines seem to cause problems for HH->WWgg...
         #print'parent_info 1 = ',parent_info
         try:
@@ -596,8 +596,7 @@ class SamplesManager(object):
         #    print'parent_info 2 = ',parent_info
         except KeyError:
             try:
-                parent_info = das_query("dataset dataset=%s instance=prod/phys03" % parent_dset) # hardcoding instance=prod/phys03 for HHWWgg private samples 
-                #parent_info = das_query("dataset dataset=%s instance=prod/global" % parent_dset) # hardcoding instance=prod/phys03 for HHWWgg private samples 
+                parent_info = das_query("dataset dataset=%s instance=prod/phys03" % parent_dset) # hardcoding instance=prod/phys03 for HHWWgg private samples
                 parent_info = parent_info['data'][-1]['dataset'][0][parent_n_info]
             except KeyError:
                 parent_info = None
@@ -981,6 +980,8 @@ class SamplesManager(object):
                 found = dataset
                 if prim in self.cross_sections_:
                     xsec = self.cross_sections_[prim]
+                else:
+                    raise Exception("No cross-section info found for dataset : /%s" % ( prim))
                 if "weights" in xsec and weightName:
                     if weightName not in xsec["weights"].split(","):
                         print weightName, " is not available in ", primary

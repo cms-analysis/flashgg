@@ -1,0 +1,45 @@
+diff --git a/Systematics/python/flashggMetSystematics_cfi.py b/Systematics/python/flashggMetSystematics_cfi.py
+index 848d29cc..ae4877d9 100644
+--- a/Systematics/python/flashggMetSystematics_cfi.py
++++ b/Systematics/python/flashggMetSystematics_cfi.py
+@@ -36,8 +36,8 @@ metUncSmear = cms.PSet( MethodName = cms.string("FlashggMetUncSmear"),
+                      )
+ 
+ flashggMetSystematics = cms.EDProducer('FlashggMetSmearSystematicProducer',
+-                                          src = cms.InputTag("flashggMets"),
+-                                          # src = cms.InputTag("flashggMetsCorr"),
++                                          # src = cms.InputTag("flashggMets"),
++                                          src = cms.InputTag("flashggMetsCorr"),
+                                           SystMethods2D = cms.VPSet(),
+                                           SystMethods = cms.VPSet(metJecSmear,
+                                                                   metJerSmear,
+diff --git a/Taggers/python/flashggHHWWggCandidate_cfi.py b/Taggers/python/flashggHHWWggCandidate_cfi.py
+index 28ae14c0..dc57bca6 100644
+--- a/Taggers/python/flashggHHWWggCandidate_cfi.py
++++ b/Taggers/python/flashggHHWWggCandidate_cfi.py
+@@ -16,8 +16,8 @@ FlashggHHWWggCandidate = cms.EDProducer("FlashggHHWWggCandidateProducer",
+                                     GenParticleTag         = cms.InputTag('flashggPrunedGenParticles'),
+                                     ElectronTag            = cms.InputTag('flashggSelectedElectrons'),
+                                     MuonTag                = cms.InputTag('flashggSelectedMuons'),
+-                                    METTag                 = cms.InputTag('flashggMets'),
+-                                    # METTag                 = cms.InputTag('flashggMetsCorr'), # RunIIFall17-3-2-0 contains these and NOT flashggMets
++                                    # METTag                 = cms.InputTag('flashggMets'),
++                                    METTag                 = cms.InputTag('flashggMetsCorr'), # RunIIFall17-3-2-0 contains these and NOT flashggMets
+                                     JetTags                = UnpackedJetCollectionVInputTag,
+                                     useVertex0only=cms.bool(False),
+                                     MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
+diff --git a/Taggers/python/flashggHHWWggTag_cfi.py b/Taggers/python/flashggHHWWggTag_cfi.py
+index 60f3ea50..cca4cc4f 100644
+--- a/Taggers/python/flashggHHWWggTag_cfi.py
++++ b/Taggers/python/flashggHHWWggTag_cfi.py
+@@ -29,8 +29,8 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
+                                     GenParticleTag         = cms.InputTag('flashggPrunedGenParticles'),
+                                     ElectronTag            = cms.InputTag('flashggSelectedElectrons'),
+                                     MuonTag                = cms.InputTag('flashggSelectedMuons'),
+-                                    METTag                 = cms.InputTag('flashggMets'),
+-                                    # METTag                 = cms.InputTag('flashggMetsCorr'), # RunIIFall17-3-2-0 contains these and NOT flashggMets
++                                    # METTag                 = cms.InputTag('flashggMets'),
++                                    METTag                 = cms.InputTag('flashggMetsCorr'), # RunIIFall17-3-2-0 contains these and NOT flashggMets
+                                     JetTags                = UnpackedJetCollectionVInputTag,
+                                     DiPhotonSuffixes = cms.vstring(''), #nominal and systematic variations
+                                     useVertex0only=cms.bool(False),

@@ -66,6 +66,9 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     doHHWWggTagCutFlowAnalysis = cms.bool(False), # save events for cut flow analysis
                                     doHHWWggNonResAnalysis = cms.bool(False),
                                     doHHWWggFHptOrdered = cms.bool(False), # for FH final state, choose four leading pT jets as four jets
+                                    doHHWWggFHminWHJets = cms.bool(False), # for FH final state, choose 2jet using W another 2 using H
+                                    doHHWWggFHminWHLead2Jet = cms.bool(False), # for FH final state, choose 2jet using W another 2 highest pT
+                                    doHHWWggFHminHiggsMassOnly = cms.bool(True), # for FH final state, choose 4 jets using H mass
                                     doHHWWggDebug = cms.bool(False), # False by default to avoid extra print statements, set true with flag 
                                     HHWWggAnalysisChannel = cms.string("all"), # final state analysis to run. All by default. Can be SL, FH, FL, or all 
                                     deltaRLeps = cms.double(0.4),
@@ -82,7 +85,7 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     MassT_l2Thre = cms.double(0.),
                                     DiLepMassHigThre = cms.double(100.),
                                     DiLepMassLowThre = cms.double(80.),
-                                    Dipho_pT_Thre = cms.double(54.),
+                                    FL_Dipho_pT_Thre = cms.double(54.),
                                     FH_Dipho_pT_Thre = cms.double(160.),
                                     # vertex
 
