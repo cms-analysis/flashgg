@@ -1417,7 +1417,6 @@ namespace flashgg {
 
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
->>>>>>> 59c5970434aa8f3c9d37b0e336041f501ae285c0
                   HHWWggtags->push_back( tag_obj );
                   FilledTag = 1;
                   if( ! event.isRealData() ) {
@@ -1505,7 +1504,6 @@ namespace flashgg {
 
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
->>>>>>> 59c5970434aa8f3c9d37b0e336041f501ae285c0
                   HHWWggtags->push_back( tag_obj );
                   FilledTag = 1;
                   if( ! event.isRealData() ) {
