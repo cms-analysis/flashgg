@@ -577,7 +577,7 @@ namespace flashgg {
     rooVars_pdfWeights_.add(*ws.var( weightVar ),true);
     
     std::string dsetName = formatString( name_, replacements );
-    if( ! binnedOnly_ || unbinnedSystematics_) {
+    if( ! binnedOnly_ && unbinnedSystematics_) {
         RooDataSet dset( dsetName.c_str(), dsetName.c_str(), rooVars_, weightVar );
         ws.import( dset );
     } else {
