@@ -389,7 +389,7 @@ class JobsManager(object):
                         output = []
                         for ijob in range(maxJobs):
                             output.append(hadd.replace(".root","_%d.root" % ijob))
-                            outfiles.append( output )
+                            outfiles.append( output[-1] ) ##-- fix to avoid extremely large output config jsons 
                             doutfiles[dsetName][1].append( outfiles[-1] )
                             poutfiles[name][1].append( outfiles[-1] )
                         jobs.append( (job,iargs,output,0,-1,batchId) )
