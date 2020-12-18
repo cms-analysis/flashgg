@@ -48,10 +48,16 @@ namespace flashgg {
     
     // Get Leptons and Jets
     std::vector<flashgg::Electron> GetElectrons(std::vector<edm::Ptr<flashgg::Electron>>);
+    void SetAllElectrons(std::vector<edm::Ptr<flashgg::Electron>>);
+    void SetGoodElectrons(std::vector<edm::Ptr<flashgg::Electron>>);
+    void SetAllMuons(std::vector<edm::Ptr<flashgg::Muon>>);
+    void SetGoodMuons(std::vector<edm::Ptr<flashgg::Muon>>);
+
     std::vector<flashgg::Muon> GetMuons(std::vector<edm::Ptr<flashgg::Muon>>);
     std::vector<flashgg::Jet> GetJets(std::vector<edm::Ptr<flashgg::Jet>>);
     void SetGoodJets(std::vector<edm::Ptr<flashgg::Jet>>);
     void SetAllJets(std::vector<edm::Ptr<flashgg::Jet>>);
+    void SetDiPhoMVA(double);
     void SetDiphoCentralWeight(double);
 
     // Jet Vars 
@@ -81,11 +87,6 @@ namespace flashgg {
               edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>,
               std::vector<edm::Ptr<flashgg::Jet>>, std::vector<edm::Ptr<flashgg::Jet>>,
               std::vector<double>, std::vector<double>, std::vector<double>);
-
-    //-- 0 and 1 with just HH objects. Saving just in case 
-    // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Electron>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>); // HHWWggTag_0
-    // HHWWggTag(edm::Ptr<DiPhotonCandidate>, edm::Ptr<flashgg::Muon>, edm::Ptr<flashgg::Met>, edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>); // HHWWggTag_1
-
 
     // HHWWggTag_2 - Fully Hadronic 
     HHWWggTag(edm::Ptr<DiPhotonCandidate>,
@@ -153,9 +154,6 @@ namespace flashgg {
     const reco::Candidate::LorentzVector& Subleading_lepton() const { return Subleading_lepton_; };
     const float dipho_MVA() const {return dipho_MVA_;};
 
-    // void setBenchmarkReweight(std::vector<float> x) { benchmark_reweights_ = x; }
-    // float getBenchmarkReweight(int targetNode) const { return benchmark_reweights_[targetNode]; }
-
     void setGenMhh(double x) { genMhh_ = x; }
     double genMhh() const { return genMhh_; }
     void setGenCosThetaStar_CS(double x) { genCosThetaStar_CS_ = x; }
@@ -202,8 +200,7 @@ namespace flashgg {
     LorentzVector HH_;
     reco::Candidate::LorentzVector Leading_lepton_;
     reco::Candidate::LorentzVector Subleading_lepton_;
-    float dipho_MVA_;
-    // vector<float> benchmark_reweights_;    
+    float dipho_MVA_ = -999;
 
     double genMhh_;
     double genCosThetaStar_CS_;

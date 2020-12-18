@@ -347,6 +347,7 @@ class HHWWggCustomize():
         # for removal of prompt-prompt events from QCD and GJet samples
         finalStateVars.append("Leading_Photon_genMatchType:=Leading_Photon.genMatchType()")
         finalStateVars.append("Subleading_Photon_genMatchType:=Subleading_Photon.genMatchType()")
+        finalStateVars.append("dipho_MVA                           := dipho_MVA()")
 
 
         ##-- Save Central Scale Factor values for ntuple flexibility and studies 
@@ -379,13 +380,14 @@ class HHWWggCustomize():
             ScaleFactorVariables.append("prefireWeightDown01sigma := weight(\"prefireWeightDown01sigma\")")  
         ScaleFactorVariables.append("DiphoCentralWeight := DiphoCentralWeight()")
 
-        print"len(finalStateVars):",len(finalStateVars)
-
+        # diphoVars = "dipho_MVA                           := dipho_MVA()"
+        
         if self.customize.saveHHWWggFinalStateVars:
             variables += ScaleFactorVariables
             variables += vertex_variables
             variables += gen_vars            
             variables += finalStateVars
+            # variables += diphoVars
             if self.customize.HHWWggAnalysisChannel == "FL" or self.customize.HHWWggAnalysisChannel == "all": 
                 variables += FL_vars
             if self.customize.HHWWggAnalysisChannel == "SL" or self.customize.HHWWggAnalysisChannel == "all": 
@@ -394,8 +396,6 @@ class HHWWggCustomize():
 
         if self.customize.doHHWWggDebug:
             variables += debugVars
-
-        # print"variables to dump:",variables 
 
         return variables
 

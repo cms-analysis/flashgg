@@ -336,7 +336,6 @@ namespace flashgg {
               }
 
           // If jet collection has a jet suspected to be a bjet, don't save the event
-          // Need to use working point 
           hasHighbTag = 0; // collection has jet with high b score 
           Savejet = 1;
           for (unsigned int j = 0; j < tagJets.size(); j++){
@@ -346,8 +345,8 @@ namespace flashgg {
               btagVal += jet_->bDiscriminator(BTagTypes_[BTagTypes_i]);
             }
             if (btagVal > btagThresh_) hasHighbTag = 1;
-            if (  jet_->pt() >20 && (btagVal > btagThresh_)) Savejet = 0;
-          }
+            if ( (btagVal > btagThresh_) ) Savejet = 0;
+          } 
 
           if(doHHWWggDebug_){
             if(Savejet == 0){
@@ -407,6 +406,7 @@ namespace flashgg {
               prefireWeight = dipho->weight("prefireWeightCentral"); // if setting pre fire weight by hand 
               DiphoCentralWeight = DiphoCentralWeight * prefireWeight; 
               tag_obj.SetDiphoCentralWeight(DiphoCentralWeight);
+              tag_obj.SetDiPhoMVA(dipho_MVA);
 
               //-- Include Scale Factors 
               // Set CentralWeight values for each SF to access in trees 
@@ -509,6 +509,7 @@ namespace flashgg {
               prefireWeight = dipho->weight("prefireWeightCentral"); // if setting pre fire weight by hand 
               DiphoCentralWeight = DiphoCentralWeight * prefireWeight; 
               tag_obj.SetDiphoCentralWeight(DiphoCentralWeight);
+              tag_obj.SetDiPhoMVA(dipho_MVA);
                  
               //-- Include Scale Factors 
               // Set CentralWeight values for each SF to access in trees 
@@ -597,7 +598,11 @@ namespace flashgg {
                       HHWWggTag tag_obj_(dipho, tag_electron1, tag_electron2, theMET, Cut_Variables, dipho_MVA); 
                       tag_obj = tag_obj_;    
                       tag_obj.SetGoodJets(tagJets); 
-                      tag_obj.SetAllJets(allJets); 
+                      tag_obj.SetAllJets(allJets);
+                      tag_obj.SetGoodElectrons(goodElectrons); 
+                      tag_obj.SetAllElectrons(allElectrons);
+                      tag_obj.SetGoodMuons(goodMuons); 
+                      tag_obj.SetAllMuons(allMuons);                                             
                       tag_obj.setGenVtx_z(GenVtx_z);
                       tag_obj.setHggVtx_z(HggVtx_z);
                       tag_obj.setZeroVtx_z(ZeroVtx_z);          
@@ -683,7 +688,11 @@ namespace flashgg {
                     HHWWggTag tag_obj_(dipho, tag_muon1, tag_muon2, theMET, Cut_Variables, dipho_MVA);
                     tag_obj = tag_obj_;
                     tag_obj.SetGoodJets(tagJets); 
-                    tag_obj.SetAllJets(allJets);    
+                    tag_obj.SetAllJets(allJets);   
+                    tag_obj.SetGoodElectrons(goodElectrons); 
+                    tag_obj.SetAllElectrons(allElectrons);
+                    tag_obj.SetGoodMuons(goodMuons); 
+                    tag_obj.SetAllMuons(allMuons);                     
                     tag_obj.setGenVtx_z(GenVtx_z);
                     tag_obj.setHggVtx_z(HggVtx_z);
                     tag_obj.setZeroVtx_z(ZeroVtx_z);        
@@ -770,7 +779,11 @@ namespace flashgg {
                     HHWWggTag tag_obj_(dipho, tag_electron1, tag_muon1, theMET, Cut_Variables, dipho_MVA);
                     tag_obj = tag_obj_; 
                     tag_obj.SetGoodJets(tagJets); 
-                    tag_obj.SetAllJets(allJets);                     
+                    tag_obj.SetAllJets(allJets);   
+                    tag_obj.SetGoodElectrons(goodElectrons); 
+                    tag_obj.SetAllElectrons(allElectrons);
+                    tag_obj.SetGoodMuons(goodMuons); 
+                    tag_obj.SetAllMuons(allMuons);                                      
                     tag_obj.setGenVtx_z(GenVtx_z);
                     tag_obj.setHggVtx_z(HggVtx_z);
                     tag_obj.setZeroVtx_z(ZeroVtx_z);             
@@ -792,6 +805,7 @@ namespace flashgg {
                   //-- Include Scale Factors 
                   // Set CentralWeight values for each SF to access in trees 
                   tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);    
+                  tag_obj.SetDiPhoMVA(dipho_MVA);
 
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
@@ -821,6 +835,7 @@ namespace flashgg {
               tag_obj.setGenVtx_z(GenVtx_z);
               tag_obj.setHggVtx_z(HggVtx_z);
               tag_obj.setZeroVtx_z(ZeroVtx_z);                
+              tag_obj.SetDiPhoMVA(dipho_MVA);
 
               //-- Include Scale Factors 
               DiphoCentralWeight = dipho->centralWeight();

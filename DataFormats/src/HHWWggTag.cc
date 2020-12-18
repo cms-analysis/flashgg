@@ -105,6 +105,22 @@ std::vector<flashgg::Electron> HHWWggTag::GetElectrons(std::vector<edm::Ptr<flas
   return savedElectrons;
 }
 
+void HHWWggTag::SetAllElectrons(std::vector<edm::Ptr<flashgg::Electron>> allElectrons){
+  allElectrons_ = GetElectrons(allElectrons);
+}
+
+void HHWWggTag::SetGoodElectrons(std::vector<edm::Ptr<flashgg::Electron>> goodElectrons){
+  goodElectrons_ = GetElectrons(goodElectrons);
+}
+
+void HHWWggTag::SetAllMuons(std::vector<edm::Ptr<flashgg::Muon>> allMuons){
+  allMuons_ = GetMuons(allMuons); 
+}
+
+void HHWWggTag::SetGoodMuons(std::vector<edm::Ptr<flashgg::Muon>> goodMuons){
+  goodMuons_ = GetMuons(goodMuons);
+}
+
 std::vector<flashgg::Muon> HHWWggTag::GetMuons(std::vector<edm::Ptr<flashgg::Muon>> muons)
 {
   std::vector<flashgg::Muon> savedMuons;
@@ -137,6 +153,10 @@ void HHWWggTag::SetGoodJets(std::vector<edm::Ptr<flashgg::Jet>> jets){
 
 void HHWWggTag::SetAllJets(std::vector<edm::Ptr<flashgg::Jet>> jets){
   allJets_ = GetJets(jets);
+}
+
+void HHWWggTag::SetDiPhoMVA(double dipho_MVA){
+  dipho_MVA_ = dipho_MVA;
 }
 
 void HHWWggTag::SetDiphoCentralWeight(double DiphoCentralWeight){
