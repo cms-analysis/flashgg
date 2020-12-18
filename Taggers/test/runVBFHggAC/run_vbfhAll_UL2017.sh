@@ -1,0 +1,1 @@
+fggRunJobs.py --load runVBFHggAC/example_VBFHsigAndBkg_UL2017.json -d TEST_VBFH_UL2017_ALL_11Dec2020 --stage-to /eos/cms/store/cmst3/group/wmass/mciprian/VBFHiggs_UL2017_11Dec2020/ -x cmsRun vbfhgg_ac_dumper.py maxEvents=-1 runOnZee=False -q tomorrow pujidWP=tight dumpJetSysTrees=False useParentDataset=True -n 40 --no-copy-proxy --no-use-tarball --hadd --hadd-dateset

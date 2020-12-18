@@ -1,0 +1,36 @@
+{
+    "cmdLine"  : "metaConditions=/afs/cern.ch/work/m/mciprian/higgsAna/VBFHgg/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2017_legacy_v1.json campaign=Era2017_legacy_v1 useAAA=True lumiMask=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt ",
+    "processes": {
+	"ggh_125"   : [
+	    "/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8",
+	    "/GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8"
+        ],
+	"vbf_125"   : [
+	    "/VBFHToGG_M-125_TuneCP5_13TeV-powheg-pythia8",
+	    "/VBFHToGG_M125_TuneCP5_13TeV-amcatnlo-pythia8",
+	    "VBFHiggs0L1ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
+	    "/VBFHiggs0L1Zgf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
+	    "/VBFHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
+	    "/VBFHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
+	    "/VBFHiggs0Mf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
+	    "/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
+	    "/VBFHiggs0PHf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "dipho"   : [
+            "/DiPhotonJetsBox_M40_80-sherpa",
+            "/DiPhotonJetsBox_MGG-80toInf_13TeV-sherpa"
+        ],
+        "gjet_anyfake"   : [
+            "/GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8",
+            "/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8",
+            "/GJet_Pt-20toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8"
+        ],
+        "Data"   : [
+            "/DoubleEG/alesauva-UL_test-10_6_4-v0-Run2017B-09Aug2019_UL2017-v1-53faf905fdb551f89c40f719673e864f/USER",
+	    "/DoubleEG/alesauva-UL_test-10_6_4-v0-Run2017C-09Aug2019_UL2017-v1-53faf905fdb551f89c40f719673e864f/USER",
+	    "/DoubleEG/alesauva-UL_test-10_6_4-v0-Run2017D-09Aug2019_UL2017-v1-53faf905fdb551f89c40f719673e864f/USER",
+	    "/DoubleEG/alesauva-UL_test-10_6_4-v0-Run2017E-09Aug2019_UL2017-v1-53faf905fdb551f89c40f719673e864f/USER",
+	    "/DoubleEG/alesauva-UL_test-10_6_4-v0-Run2017F-09Aug2019_UL2017-v1-53faf905fdb551f89c40f719673e864f/USER"
+        ]
+    }
+}
