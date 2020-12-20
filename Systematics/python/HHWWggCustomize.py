@@ -490,6 +490,7 @@ class HHWWggCustomize():
 
         print "HHWWggAnalysisChannel:",self.customize.HHWWggAnalysisChannel
         self.process.flashggHHWWggTag.HHWWggAnalysisChannel = self.customize.HHWWggAnalysisChannel
+        self.process.flashggHHWWggTag.FillUntagged = self.customize.FillUntagged
            #  self.process.flashggHHWWggTag.deltaMassElectronZThreshold = 5 # 5 instead of default 10
            #  self.process.flashggHHWWggTag.jetPtThreshold = 20
         

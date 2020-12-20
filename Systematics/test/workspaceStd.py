@@ -166,7 +166,13 @@ customize.options.register('HHWWggAnalysisChannel', # SL, FL or FH
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.string,
                            'HHWWggAnalysisChannel'
-                           )                                                                               
+                           )  
+customize.options.register('FillUntagged', # SL, FL or FH 
+                           False, ##-- Do not fill untagged by default 
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'FillUntagged'
+                           )                                    
 customize.options.register('doHHWWggDebug', # save more variables to perform checks 
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,

@@ -249,6 +249,9 @@ class WorkNodeJob(object):
         script += 'if [[ $retval == 0 ]]; then\n'
         script += '    errors=""\n'
         script += '    for file in $(find -name %s); do\n' % " -or -name ".join(self.stage_patterns)
+        script += '        if [[ "$file" == *"myMicro"*  ]]; then         \n'
+        script += '            continue                                       \n'  
+        script += '        fi                                                 \n'                    
         script += '        echo "%s ${file} %s"\n' % ( self.stage_cmd, self.stage_dest )
         script += '        %s $file %s\n' % ( self.stage_cmd, self.stage_dest )
         # filesOutPath = '/eos/user/a/atishelm/ntuples/Event_Dumper/HHWWgg_2017'

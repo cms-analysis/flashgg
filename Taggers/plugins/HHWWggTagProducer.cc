@@ -783,7 +783,9 @@ namespace flashgg {
 
           // Untagged category
           // Only push tag into this category if catnum has not changed (not tagged by other categories)
-          if(FilledTag == 0){
+          // If running on "*-Only", do not spend time filling untagged category. In this case make sure selections are loose enough for manipulation 
+          // if(FilledTag == 0 && (HHWWggAnalysisChannel_ != "SL-Only" && HHWWggAnalysisChannel_ != "FH-Only" && HHWWggAnalysisChannel_ != "FL-Only") ){ 
+          if(FilledTag == 0 && FillUntagged_){
             if(doHHWWggTagCutFlowAnalysis_){
               if(doHHWWggDebug_) cout << "Filling untagged category..." << endl;
               catnum = 3;

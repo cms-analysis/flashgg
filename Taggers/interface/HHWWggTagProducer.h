@@ -168,6 +168,7 @@ private:
     bool doHHWWggFHminHiggsMassOnly_;
     bool doHHWWggDebug_;
     string HHWWggAnalysisChannel_;
+    bool FillUntagged_; 
     
     //full-lep
     bool SaveOthers_;
@@ -260,6 +261,7 @@ cc_( consumesCollector() )
     doHHWWggFHminHiggsMassOnly_ = pSet.getParameter<bool>( "doHHWWggFHminHiggsMassOnly" );
     doHHWWggDebug_ = pSet.getParameter<bool>( "doHHWWggDebug" );
     HHWWggAnalysisChannel_ = pSet.getParameter<string>( "HHWWggAnalysisChannel" );
+    FillUntagged_ = pSet.getParameter<bool>( "FillUntagged" );
     lep1ptThre_ = pSet.getParameter<double>("lep1ptThre");//means > lep1pt
     lep2ptThre_ = pSet.getParameter<double>("lep2ptThre");//means > lep2pt
     lep3ptThre_ = pSet.getParameter<double>("lep3ptThre");//means < lep3pt
