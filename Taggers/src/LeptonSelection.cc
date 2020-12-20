@@ -136,7 +136,8 @@ namespace flashgg {
 
             Ptr<reco::Vertex> best_vtx = vertexPointers[vtxInd];            
 
-            if( !muon::isTightMuon( *muon, *best_vtx ) ) continue; 
+            // if( !muon::isTightMuon( *muon, *best_vtx ) ) continue; 
+            if( !muon::isMediumMuon( *muon ) ) continue;  // Hardcoding medium Muon ID here. Ideally should make configurable 
             
             double muPFIsoSumRel = ( muon->pfIsolationR04().sumChargedHadronPt 
                                      + max( 0.,muon->pfIsolationR04().sumNeutralHadronEt 

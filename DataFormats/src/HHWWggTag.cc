@@ -159,6 +159,10 @@ void HHWWggTag::SetDiPhoMVA(double dipho_MVA){
   dipho_MVA_ = dipho_MVA;
 }
 
+void HHWWggTag::SetDiPhoPt(double dipho_pt){
+  dipho_pt_ = dipho_pt;
+}
+
 void HHWWggTag::SetDiphoCentralWeight(double DiphoCentralWeight){
   DiphoCentralWeight_ = DiphoCentralWeight;
 }

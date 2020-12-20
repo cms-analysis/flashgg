@@ -58,6 +58,7 @@ namespace flashgg {
     void SetGoodJets(std::vector<edm::Ptr<flashgg::Jet>>);
     void SetAllJets(std::vector<edm::Ptr<flashgg::Jet>>);
     void SetDiPhoMVA(double);
+    void SetDiPhoPt(double);
     void SetDiphoCentralWeight(double);
 
     // Jet Vars 
@@ -153,6 +154,7 @@ namespace flashgg {
     const reco::Candidate::LorentzVector& Leading_lepton() const { return Leading_lepton_; };
     const reco::Candidate::LorentzVector& Subleading_lepton() const { return Subleading_lepton_; };
     const float dipho_MVA() const {return dipho_MVA_;};
+    const float dipho_pt() const {return dipho_pt_;};
 
     void setGenMhh(double x) { genMhh_ = x; }
     double genMhh() const { return genMhh_; }
@@ -201,7 +203,7 @@ namespace flashgg {
     reco::Candidate::LorentzVector Leading_lepton_;
     reco::Candidate::LorentzVector Subleading_lepton_;
     float dipho_MVA_ = -999;
-
+    float dipho_pt_ = -999; 
     double genMhh_;
     double genCosThetaStar_CS_;
 

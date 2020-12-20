@@ -40,35 +40,26 @@ class HHWWggCustomize():
             "genAbsCosThetaStar_CS := abs(getGenCosThetaStar_CS())"        
         ]
 
-        ##-- Weights for non-resonant reweighting 
-        doubleHReweight_vars = []
-        if self.customize.doubleHReweight > 0: 
-            for num in range(0,12):  #12 benchmarks + 1 SM
-                 doubleHReweight_vars.append("benchmark_reweight_%d := getBenchmarkReweight(%d)"%(num,num))
-            doubleHReweight_vars.append("benchmark_reweight_SM := getBenchmarkReweight(12)")
-            doubleHReweight_vars.append("benchmark_reweight_box := getBenchmarkReweight(13)")
-            doubleHReweight_vars.append("benchmark_reweight_2017fake := getBenchmarkReweight(14)")
-
         #-- Cut flow variables
         cutFlowVars = [
-            "passPS[2,0,2] := Cut_Variables[0]",
-            "passPhotonSels[2,0,2] := Cut_Variables[1]",
-            "passbVeto[2,0,2] := Cut_Variables[2]",
-            "ExOneLep[2,0,2] := Cut_Variables[3]",
-            "AtLeast2GoodJets[2,0,2] := Cut_Variables[4]",
-            "AtLeast4GoodJets[2,0,2] := Cut_Variables[5]",
-            "AtLeast4GoodJets0Lep[2,0,2] := Cut_Variables[6]",
+            "passPS[2,0,2] := Cut_Variables[0]", # 
+            "passPhotonSels[2,0,2] := Cut_Variables[1]", # 
+            # "passbVeto[2,0,2] := Cut_Variables[2]",
+            # "ExOneLep[2,0,2] := Cut_Variables[3]",
+            # "AtLeast2GoodJets[2,0,2] := Cut_Variables[4]",
+            # "AtLeast4GoodJets[2,0,2] := Cut_Variables[5]",
+            # "AtLeast4GoodJets0Lep[2,0,2] := Cut_Variables[6]",
             "mW1_40To160[2,0,2] := Cut_Variables[7]",
             "mW1_65To105[2,0,2] := Cut_Variables[8]",
             "mW2_0To160[2,0,2] := Cut_Variables[9]",
             "mH_105To160[2,0,2] := Cut_Variables[10]",
             "mH_40To210[2,0,2] := Cut_Variables[11]",
-            "AtLeastTwoLeps:= Cut_Variables[12]",
-            "TwoDiffLeps:= Cut_Variables[13]",
-            "TwoGoodMuons:= Cut_Variables[14]",
-            "TwoGoodEles:= Cut_Variables[15]",
-            "passLepDR:= Cut_Variables[16]",
-            "passMetPt:= Cut_Variables[17]",
+            # "AtLeastTwoLeps:= Cut_Variables[12]",
+            # "TwoDiffLeps:= Cut_Variables[13]",
+            # "TwoGoodMuons:= Cut_Variables[14]",
+            # "TwoGoodEles:= Cut_Variables[15]",
+            # "passLepDR:= Cut_Variables[16]",
+            # "passMetPt:= Cut_Variables[17]",
 	        "FL_Lep_Flavor :=Cut_Variables[18]"
         ]
 
@@ -348,12 +339,12 @@ class HHWWggCustomize():
         finalStateVars.append("Leading_Photon_genMatchType:=Leading_Photon.genMatchType()")
         finalStateVars.append("Subleading_Photon_genMatchType:=Subleading_Photon.genMatchType()")
         finalStateVars.append("dipho_MVA                           := dipho_MVA()")
-
+        finalStateVars.append("dipho_pt                           := dipho_pt()")
 
         ##-- Save Central Scale Factor values for ntuple flexibility and studies 
         PhotonScaleFactors = ["LooseMvaSF", "PreselSF", "TriggerWeight", "electronVetoSF"]
-        # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonIDWeight", "MuonIsoWeight"]
-        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonTightIDWeight", "MuonTightRelISOWeight"]
+        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonMediumIDWeight", "MuonLooseRelISOWeight"]
+        # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonTightIDWeight", "MuonTightRelISOWeight"]
         JetScaleFactors = ["JetBTagCutWeight","JetBTagReshapeWeight"]
         ScaleFactorLabels = []
 
@@ -380,14 +371,12 @@ class HHWWggCustomize():
             ScaleFactorVariables.append("prefireWeightDown01sigma := weight(\"prefireWeightDown01sigma\")")  
         ScaleFactorVariables.append("DiphoCentralWeight := DiphoCentralWeight()")
 
-        # diphoVars = "dipho_MVA                           := dipho_MVA()"
-        
         if self.customize.saveHHWWggFinalStateVars:
+            variables += cutFlowVars
             variables += ScaleFactorVariables
             variables += vertex_variables
             variables += gen_vars            
             variables += finalStateVars
-            # variables += diphoVars
             if self.customize.HHWWggAnalysisChannel == "FL" or self.customize.HHWWggAnalysisChannel == "all": 
                 variables += FL_vars
             if self.customize.HHWWggAnalysisChannel == "SL" or self.customize.HHWWggAnalysisChannel == "all": 
@@ -407,10 +396,11 @@ class HHWWggCustomize():
     def systematicVariables(self):
         ##-- Save Scale Factor values for ntuple flexibility and studies 
         PhotonScaleFactors = ["LooseMvaSF", "PreselSF", "TriggerWeight", "electronVetoSF"]
-        # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonIDWeight", "MuonIsoWeight"]
-        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonTightIDWeight", "MuonTightRelISOWeight"]
+        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonMediumIDWeight", "MuonLooseRelISOWeight"]
+        # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonTightIDWeight", "MuonTightRelISOWeight"]
         JetScaleFactors = ["JetBTagCutWeight","JetBTagReshapeWeight"]
         ScaleFactorLabels = []
+
 
         for PSF in PhotonScaleFactors: ScaleFactorLabels.append(PSF)
         for LSF in LeptonScaleFactors: ScaleFactorLabels.append(LSF)

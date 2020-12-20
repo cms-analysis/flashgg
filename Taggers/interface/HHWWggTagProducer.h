@@ -12,7 +12,6 @@
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 
-#include "FWCore/Common/interface/TriggerNames.h"
 #include "flashgg/DataFormats/interface/DiPhotonCandidate.h"
 #include "flashgg/DataFormats/interface/SinglePhotonView.h"
 #include "flashgg/DataFormats/interface/Photon.h"
@@ -108,9 +107,6 @@ private:
     Handle<View<reco::Vertex> > vertices;
     
     EDGetTokenT<double> rhoTag_;
-    edm::EDGetTokenT<edm::TriggerResults> triggerRECO_;
-    edm::EDGetTokenT<edm::TriggerResults> triggerPAT_;
-    edm::EDGetTokenT<edm::TriggerResults> triggerFLASHggMicroAOD_;
     string systLabel_;
     edm::Handle<double>  rho;
     
@@ -123,9 +119,9 @@ private:
     ConsumesCollector cc_;
     
     //----output collection
-    double EB_Photon_MVA_Threshold_;
-    double EE_Photon_MVA_Threshold_;
-    double MetPtThreshold_;
+    // double EB_Photon_MVA_Threshold_;
+    // double EE_Photon_MVA_Threshold_;
+    double FL_METThreshold_;
     double deltaRLeps_;
     double leptonPtThreshold_;
     double muonEtaThreshold_;
@@ -133,12 +129,10 @@ private:
     double subleadPhoOverMassThreshold_;
     double MVAThreshold_;
     double deltaRMuonPhoThreshold_;
-    double jetsNumberThreshold_;
     double jetPtThreshold_;
     double jetEtaThreshold_;
     double muPFIsoSumRelThreshold_;
     double PhoMVAThreshold_;
-    double METThreshold_;
     double deltaRJetMuonThreshold_;
     double deltaRPhoLeadJet_;
     double deltaRPhoSubLeadJet_;
@@ -155,6 +149,7 @@ private:
     double FH_Dipho_pT_Thre_;
     bool hasGoodElec = false;
     bool hasGoodMuons = false;
+    double diPho_pT = -999; 
     
     vector<double> nonTrigMVAThresholds_;
     vector<double> nonTrigMVAEtaCuts_;
@@ -166,7 +161,7 @@ private:
     double btagThresh_;
     vector<string> BTagTypes_;
     bool doHHWWggTagCutFlowAnalysis_;
-    bool doHHWWggNonResAnalysis_;
+    // bool doHHWWggNonResAnalysis_;
     bool doHHWWggFHptOrdered_;
     bool doHHWWggFHminWHJets_;
     bool doHHWWggFHminWHLead2Jet_;
@@ -202,9 +197,6 @@ muonToken_( consumes<View<flashgg::Muon> >( pSet.getParameter<InputTag> ( "MuonT
 METToken_( consumes<View<Met> >( pSet.getParameter<InputTag> ( "METTag" ) ) ),
 mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( pSet.getParameter<InputTag> ( "MVAResultTag" ) ) ),
 rhoTag_( consumes<double>( pSet.getParameter<InputTag>( "rhoTag" ) ) ),
-triggerRECO_( consumes<edm::TriggerResults>(pSet.getParameter<InputTag>("RECOfilters") ) ),
-triggerPAT_( consumes<edm::TriggerResults>(pSet.getParameter<InputTag>("PATfilters") ) ),
-triggerFLASHggMicroAOD_( consumes<edm::TriggerResults>( pSet.getParameter<InputTag>("FLASHfilters") ) ),
 systLabel_( pSet.getParameter<string> ( "SystLabel" ) ),
 JetIDLevel_( pSet.getParameter<string> ( "JetIDLevel" ) ),
 cc_( consumesCollector() )
@@ -230,9 +222,7 @@ cc_( consumesCollector() )
     genInfo_ = pSet.getUntrackedParameter<edm::InputTag>( "genInfo", edm::InputTag("generator") );
     genInfoToken_ = consumes<GenEventInfoProduct>( genInfo_ );
     
-    // nEvents = fs->make<TH1F> ("nEvents", "nEvents", 2,0,2);
-    
-    MetPtThreshold_ =pSet.getParameter<double>( "MetPtThreshold");
+    FL_METThreshold_ =pSet.getParameter<double>( "FL_METThreshold");
     deltaRLeps_ =pSet.getParameter<double>( "deltaRLeps");
     leptonPtThreshold_ = pSet.getParameter<double>( "leptonPtThreshold");
     muonEtaThreshold_ = pSet.getParameter<double>( "muonEtaThreshold");
@@ -240,12 +230,10 @@ cc_( consumesCollector() )
     subleadPhoOverMassThreshold_ = pSet.getParameter<double>( "subleadPhoOverMassThreshold");
     MVAThreshold_ = pSet.getParameter<double>( "MVAThreshold");
     deltaRMuonPhoThreshold_ = pSet.getParameter<double>( "deltaRMuonPhoThreshold");
-    jetsNumberThreshold_ = pSet.getParameter<double>( "jetsNumberThreshold");
     jetPtThreshold_ = pSet.getParameter<double>( "jetPtThreshold");
     jetEtaThreshold_ = pSet.getParameter<double>( "jetEtaThreshold");
     muPFIsoSumRelThreshold_ = pSet.getParameter<double>( "muPFIsoSumRelThreshold");
     PhoMVAThreshold_ = pSet.getParameter<double>( "PhoMVAThreshold");
-    METThreshold_ = pSet.getParameter<double>( "METThreshold");
     deltaRJetMuonThreshold_ = pSet.getParameter<double>( "deltaRJetMuonThreshold");
     deltaRPhoLeadJet_ = pSet.getParameter<double>( "deltaRPhoLeadJet");
     deltaRPhoSubLeadJet_ = pSet.getParameter<double>( "deltaRPhoSubLeadJet");
@@ -265,7 +253,7 @@ cc_( consumesCollector() )
     btagThresh_ = pSet.getParameter<double>( "btagThresh");
     BTagTypes_ = pSet.getParameter<vector<string>>( "BTagTypes" );
     doHHWWggTagCutFlowAnalysis_ = pSet.getParameter<bool>( "doHHWWggTagCutFlowAnalysis");
-    doHHWWggNonResAnalysis_ = pSet.getParameter<bool>( "doHHWWggNonResAnalysis" );
+    // doHHWWggNonResAnalysis_ = pSet.getParameter<bool>( "doHHWWggNonResAnalysis" );
     doHHWWggFHptOrdered_ = pSet.getParameter<bool>( "doHHWWggFHptOrdered" );
     doHHWWggFHminWHJets_ = pSet.getParameter<bool>( "doHHWWggFHminWHJets" );
     doHHWWggFHminWHLead2Jet_ = pSet.getParameter<bool>( "doHHWWggFHminWHLead2Jet" );
@@ -924,9 +912,9 @@ HHWWggTag HHWWggTagProducer::SetCentralUpDownWeights(HHWWggTag tag_obj_, std::ve
     double ElectronIDWeight_down = 1, ElectronRecoWeight_down = 1;
     
     // Muons
-    double MuonIDWeight = 1, MuonRelISOWeight = 1;
-    double MuonIDWeight_up = 1, MuonRelISOWeight_up = 1;
-    double MuonIDWeight_down = 1, MuonRelISOWeight_down = 1;
+    double MuonMediumIDWeight = 1, MuonLooseRelISOWeight = 1;
+    double MuonMediumIDWeight_up = 1, MuonLooseRelISOWeight_up = 1;
+    double MuonMediumIDWeight_down = 1, MuonLooseRelISOWeight_down = 1;
     
     // Jets
     double JetBTagReshapeWeight = 1, UnmatchedPUWeight = 1;
@@ -955,23 +943,23 @@ HHWWggTag HHWWggTagProducer::SetCentralUpDownWeights(HHWWggTag tag_obj_, std::ve
     
     // Muons
     for (unsigned int muon_i = 0; muon_i < goodMuons.size(); muon_i++){
-        MuonIDWeight = MuonIDWeight * goodMuons.at(muon_i)->weight("MuonTightIDWeightCentral");
-        MuonRelISOWeight = MuonRelISOWeight * goodMuons.at(muon_i)->weight("MuonTightRelISOWeightCentral");
+        MuonMediumIDWeight = MuonMediumIDWeight * goodMuons.at(muon_i)->weight("MuonMediumIDWeightCentral");
+        MuonLooseRelISOWeight = MuonLooseRelISOWeight * goodMuons.at(muon_i)->weight("MuonLooseRelISOWeightCentral");
         
-        MuonIDWeight_up = MuonIDWeight_up * goodMuons.at(muon_i)->weight("MuonTightIDWeightUp01sigma");
-        MuonRelISOWeight_up = MuonRelISOWeight_up * goodMuons.at(muon_i)->weight("MuonTightRelISOWeightUp01sigma");
+        MuonMediumIDWeight_up = MuonMediumIDWeight_up * goodMuons.at(muon_i)->weight("MuonMediumIDWeightUp01sigma");
+        MuonLooseRelISOWeight_up = MuonLooseRelISOWeight_up * goodMuons.at(muon_i)->weight("MuonLooseRelISOWeightUp01sigma");
         
-        MuonIDWeight_down = MuonIDWeight_down * goodMuons.at(muon_i)->weight("MuonTightIDWeightDown01sigma");
-        MuonRelISOWeight_down = MuonRelISOWeight_down * goodMuons.at(muon_i)->weight("MuonTightRelISOWeightDown01sigma");
+        MuonMediumIDWeight_down = MuonMediumIDWeight_down * goodMuons.at(muon_i)->weight("MuonMediumIDWeightDown01sigma");
+        MuonLooseRelISOWeight_down = MuonLooseRelISOWeight_down * goodMuons.at(muon_i)->weight("MuonLooseRelISOWeightDown01sigma");
     }
-    tag_obj_.setWeight("MuonTightIDWeightCentral",MuonIDWeight);
-    tag_obj_.setWeight("MuonTightRelISOWeightCentral",MuonRelISOWeight);
+    tag_obj_.setWeight("MuonMediumIDWeightCentral",MuonMediumIDWeight);
+    tag_obj_.setWeight("MuonLooseRelISOWeightCentral",MuonLooseRelISOWeight);
     
-    tag_obj_.setWeight("MuonTightIDWeightUp01sigma",MuonIDWeight_up);
-    tag_obj_.setWeight("MuonTightRelISOWeightUp01sigma",MuonRelISOWeight_up);
+    tag_obj_.setWeight("MuonMediumIDWeightUp01sigma",MuonMediumIDWeight_up);
+    tag_obj_.setWeight("MuonLooseRelISOWeightUp01sigma",MuonLooseRelISOWeight_up);
     
-    tag_obj_.setWeight("MuonTightIDWeightDown01sigma",MuonIDWeight_down);
-    tag_obj_.setWeight("MuonTightRelISOWeightDown01sigma",MuonRelISOWeight_down);
+    tag_obj_.setWeight("MuonMediumIDWeightDown01sigma",MuonMediumIDWeight_down);
+    tag_obj_.setWeight("MuonLooseRelISOWeightDown01sigma",MuonLooseRelISOWeight_down);
     
     // Jets
     for (unsigned int TagJet_i = 0; TagJet_i < tagJets.size(); TagJet_i++){
@@ -1046,9 +1034,6 @@ HHWWggTag HHWWggTagProducer::SetCentralUpDownWeights(HHWWggTag tag_obj_, std::ve
     
     return tag_obj_;
 }
-
-
-
 
 }
 

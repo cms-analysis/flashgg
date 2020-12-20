@@ -1,19 +1,15 @@
 import FWCore.ParameterSet.Config as cms
 
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag # should include jet systematics
-from flashgg.MicroAOD.flashggJets_cfi import  maxJetCollections
-
-import flashgg.Taggers.flashggDoubleHReweight_cfi as reweight_settings
-from flashgg.Taggers.flashggDoubleHReweight_cfi import flashggDoubleHReweight
 
 # cfi = configuration fragment include
 # Clone these params into _cfg
 flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
 
-                                    # PhotonTag = cms.InputTag('flashggRandomizedPhotons'), ##-- Photons not used 
+                                    ##-- Collections 
+                                    # PhotonTag = cms.InputTag('flashggRandomizedPhotons'), ##-- Photon collection not used 
                                     DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons'),
                                     SystLabel = cms.string(""),
-                                    JetsCollSize = cms.uint32(maxJetCollections), 
                                     JetsSuffixes = cms.vstring(''), # Nominal and systematic variations
                                     DiPhotonName = cms.string('flashggPreselectedDiPhotons'), #
                                     VertexTag = cms.InputTag('offlineSlimmedPrimaryVertices'),
@@ -32,47 +28,40 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     subleadPhoOverMassThreshold = cms.double(0.25),
                                     MVAThreshold = cms.double(0.0),
                                     deltaRMuonPhoThreshold = cms.double(0.4),
-                                    jetsNumberThreshold = cms.double(99.), # originially 3.
                                     jetPtThreshold = cms.double(25.),
                                     jetEtaThreshold=  cms.double(2.4),
                                     deltaRPhoLeadJet = cms.double(0.4),
                                     deltaRPhoSubLeadJet = cms.double(0.4),
-                                    muPFIsoSumRelThreshold = cms.double(0.15),
+                                    muPFIsoSumRelThreshold = cms.double(0.25), ##-- 0.15 --> 0.25 
                                     deltaRJetMuonThreshold = cms.double(0.4),
-                                    PuIDCutoffThreshold = cms.double(0.8),
                                     PhoMVAThreshold = cms.double(-0.9),
-                                    METThreshold = cms.double(0.),
                                     DeltaRTrkElec = cms.double(.4),
                                     TransverseImpactParam = cms.double(0.02),
                                     LongitudinalImpactParam = cms.double(0.2),
                                     deltaRPhoElectronThreshold = cms.double(0.4), 
-                                    # deltaMassElectronZThreshold = cms.double(10.),
                                     deltaMassElectronZThreshold = cms.double(5.), ##-- Keep at loosest, can select further by category after 
                                     electronEtaThresholds=cms.vdouble(1.4442,1.566,2.5),
                                     nonTrigMVAThresholds = cms.vdouble(0.913286,0.805013,0.358969),
                                     nonTrigMVAEtaCuts = cms.vdouble(0.8,1.479,2.5),
                                     electronIsoThreshold = cms.double(0.15),
                                     electronNumOfHitsThreshold = cms.double(1),
-                                    useElectronMVARecipe = cms.bool(False),
-                                    useElectronLooseID = cms.bool(True),
+                                    useElectronMVARecipe = cms.bool(True), ##-- Updating to ttHToGG
+                                    useElectronLooseID = cms.bool(False),
 
                                     ##-- Misc 
                                     rhoTag = cms.InputTag('fixedGridRhoFastjetAll'),
-                                    RECOfilters = cms.InputTag('TriggerResults::RECO'),
-                                    PATfilters = cms.InputTag('TriggerResults::PAT'),
-                                    FLASHfilters = cms.InputTag('TriggerResults::FLASHggMicroAOD'),
                                     btagThresh = cms.double(2), ##-- anything greater than 1 should save all events 
                                     BTagTypes = cms.vstring('mini_pfDeepFlavourJetTags:probb','mini_pfDeepFlavourJetTags:probbb','mini_pfDeepFlavourJetTags:problepb'),
                                     doHHWWggTagCutFlowAnalysis = cms.bool(False), # save events for cut flow analysis
                                     doHHWWggNonResAnalysis = cms.bool(False),
                                     doHHWWggFHptOrdered = cms.bool(False), # for FH final state, choose four leading pT jets as four jets
-                                    doHHWWggFHminWHJets = cms.bool(False), # for FH final state, choose 2jet using W another 2 using H
+                                    doHHWWggFHminWHJets = cms.bool(True), # for FH final state, choose 2jet using W another 2 using H
                                     doHHWWggFHminWHLead2Jet = cms.bool(False), # for FH final state, choose 2jet using W another 2 highest pT
-                                    doHHWWggFHminHiggsMassOnly = cms.bool(True), # for FH final state, choose 4 jets using H mass
+                                    doHHWWggFHminHiggsMassOnly = cms.bool(False), # for FH final state, choose 4 jets using H mass
                                     doHHWWggDebug = cms.bool(False), # False by default to avoid extra print statements, set true with flag 
-                                    HHWWggAnalysisChannel = cms.string("all"), # final state analysis to run. All by default. Can be SL, FH, FL, or all 
+                                    HHWWggAnalysisChannel = cms.string("all"), # final state analysis to run. Can be SL, FH, FL, or all. All by default. 
                                     deltaRLeps = cms.double(0.4),
-                                    MetPtThreshold = cms.double(20.),
+                                    FL_METThreshold = cms.double(20.), ##-- Only used for Fully-Leptonic Final State 
                                     JetIDLevel = cms.string(''), # Tight, Tight2017 or Tight2018 as set in 
 
                                     ##-- Fully Leptonic Final State Parameters 
@@ -87,8 +76,7 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     DiLepMassLowThre = cms.double(80.),
                                     FL_Dipho_pT_Thre = cms.double(54.),
                                     FH_Dipho_pT_Thre = cms.double(160.),
-                                    # vertex
 
                                     # Vertex choice 
-                                    HHWWgguseZeroVtx = cms.bool(False)                             
+                                    HHWWgguseZeroVtx = cms.bool(False) ##-- Set with cmssw config flag                         
                                     )

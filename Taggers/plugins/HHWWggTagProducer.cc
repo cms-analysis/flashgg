@@ -50,7 +50,6 @@ namespace flashgg {
     {
 
       if (doHHWWggDebug_) cout << "[HHWWggTagProducer.cc - HHWWggTagProducer::produce] - systLabel: " << systLabel_ << endl;  
-      // nEvents->Fill(1.0);
 
       // Set cut booleans
       std::vector<double> Cut_Variables(30,0.0); // Cut_Variables[i] = 1.0: Event Passed Cut i
@@ -64,7 +63,6 @@ namespace flashgg {
       bool FilledTag = 0; 
 
       // Get particle objects
-      // event.getByToken( photonToken_, photons );
       event.getByToken( diphotonToken_, diphotons );
       event.getByToken( electronToken_, electrons );
       event.getByToken( muonToken_, muons );
@@ -74,16 +72,13 @@ namespace flashgg {
       event.getByToken( rhoTag_, rho);
       double rho_    = *rho;
 
-      // For FL. Should this be in dipho loop? 
-      Savejet=1;
-
       //---output collection
       int n_good_electrons = 0;
       int n_good_muons = 0;
       int n_good_leptons = 0;
       int n_good_jets = 0;
-      bool hasHighbTag = 0;
-      float btagVal = 0;
+      // bool hasHighbTag = 0;
+      // float btagVal = 0;
 
       // Vertex 
       double GenVtx_z = -999; 
@@ -157,50 +152,6 @@ namespace flashgg {
           truths->push_back( truth_obj );
       }
 
-      // METfilters
-      // bool passMETfilters=1;
-      // Get trigger results relevant to MET filters
-
-      edm::Handle<edm::TriggerResults> triggerBits;
-      if(! event.isRealData() )
-          event.getByToken( triggerPAT_, triggerBits );
-      else
-          event.getByToken( triggerRECO_, triggerBits );
-
-      edm::Handle<edm::TriggerResults> triggerFLASHggMicroAOD;
-      event.getByToken( triggerFLASHggMicroAOD_, triggerFLASHggMicroAOD );
-      const edm::TriggerNames &triggerNames = event.triggerNames( *triggerBits );
-
-      //check if passMETfilters
-      std::vector<std::string> flagList {"Flag_HBHENoiseFilter","Flag_HBHENoiseIsoFilter","Flag_EcalDeadCellTriggerPrimitiveFilter","Flag_goodVertices","Flag_eeBadScFilter"};
-      for (unsigned int i = 0; i < triggerNames.triggerNames().size(); i++ )
-      {
-        if (!triggerBits->accept(i))
-        for (size_t j=0;j<flagList.size();j++)
-        {
-          if (flagList[j]==triggerNames.triggerName(i))
-          {
-            // passMETfilters=0;
-            break;
-          }
-        }
-      }
-
-      std::vector<std::string> flashggFlagList {"flag_BadChargedCandidateFilter","flag_BadPFMuonFilter","flag_globalTightHalo2016Filter"};
-      const edm::TriggerNames &flashggtriggerNames = event.triggerNames( *triggerFLASHggMicroAOD );
-      for( unsigned int i = 0; i < flashggtriggerNames.triggerNames().size(); i++ )
-      {
-        if(!triggerFLASHggMicroAOD->accept(i))
-        for(size_t j=0;j<flagList.size();j++)
-        {
-          if(flagList[j]==flashggtriggerNames.triggerName(i))
-          {
-            // passMETfilters=0;
-            break;
-          }
-        }
-      }
-
         std::unique_ptr<vector<HHWWggTag> > HHWWggtags( new vector<HHWWggTag> );
 
         //-- Loop through preselected diphotons. If more than one, it's possible the 2nd preselected diphoton will be tagged but not the 1st.
@@ -208,7 +159,7 @@ namespace flashgg {
         { 
 
           //-- Get Diphoton and Diphoton MVA 
-          edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex ); // without systematic look (?)
+          edm::Ptr<flashgg::DiPhotonCandidate> dipho = diphotons->ptrAt( diphoIndex ); 
           edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );
 
           //-- Get Photons
@@ -239,15 +190,10 @@ namespace flashgg {
             if( !pass_leadPhoOverMassThreshold || !pass_subleadPhoOverMassThreshold ) continue; // Do not save event if leading and subleading photons don't pass pt/mgg cuts
           }
 
-          // Check MET Filters
-          //-- Is this done in a separate module? 
-          // if(passMETfilters){
-          //   pass_METfilters = 1;
-          // }
-
           hasGoodElec = false;
           hasGoodMuons = false;
           dipho_MVA = mvares->result;
+          diPho_pT=dipho->pt();
 
           // Electrons
           goodElectrons = selectStdElectrons( electrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
@@ -336,33 +282,25 @@ namespace flashgg {
               }
 
           // If jet collection has a jet suspected to be a bjet, don't save the event
-          hasHighbTag = 0; // collection has jet with high b score 
-          Savejet = 1;
-          for (unsigned int j = 0; j < tagJets.size(); j++){
-            Ptr<flashgg::Jet> jet_ = tagJets[j];
-            btagVal = 0; 
-            for(unsigned int BTagTypes_i = 0; BTagTypes_i < BTagTypes_.size(); BTagTypes_i ++){
-              btagVal += jet_->bDiscriminator(BTagTypes_[BTagTypes_i]);
-            }
-            if (btagVal > btagThresh_) hasHighbTag = 1;
-            if ( (btagVal > btagThresh_) ) Savejet = 0;
-          } 
+          // hasHighbTag = 0; // collection has jet with high b score 
+          // for (unsigned int j = 0; j < tagJets.size(); j++){
+          //   Ptr<flashgg::Jet> jet_ = tagJets[j];
+          //   btagVal = 0; 
+          //   for(unsigned int BTagTypes_i = 0; BTagTypes_i < BTagTypes_.size(); BTagTypes_i ++){
+          //     btagVal += jet_->bDiscriminator(BTagTypes_[BTagTypes_i]);
+          //   }
+          //   if (btagVal > btagThresh_) hasHighbTag = 1;
+          //   if ( (btagVal > btagThresh_) ) Savejet = 0;
+          // } 
 
-          if(doHHWWggDebug_){
-            if(Savejet == 0){
-              cout << "*****************************************************************************************************" << endl;
-              cout << "HHWWgg DEBUG - SaveJet = 0. This only makes sense if bthreshold is between 0-1 " << endl; 
-              cout << "*****************************************************************************************************" << endl;
-            }
-          }
+          // if(doHHWWggDebug_){
+          //   if(Savejet == 0){
+          //     cout << "*****************************************************************************************************" << endl;
+          //     cout << "HHWWgg DEBUG - SaveJet = 0. This only makes sense if bthreshold is between 0-1 " << endl; 
+          //     cout << "*****************************************************************************************************" << endl;
+          //   }
+          // }
 
-          // If doing cut flow analysis, don't skip event
-          if(doHHWWggTagCutFlowAnalysis_){
-            if(hasHighbTag)
-              Cut_Variables[2] = 0.0; // does not pass bveto
-            else
-              Cut_Variables[2] = 1.0; // passes bveto
-          }
           n_good_jets = tagJets.size(); 
 
           // MET
@@ -404,13 +342,31 @@ namespace flashgg {
               tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS ); 
               DiphoCentralWeight = dipho->centralWeight();
               prefireWeight = dipho->weight("prefireWeightCentral"); // if setting pre fire weight by hand 
-              DiphoCentralWeight = DiphoCentralWeight * prefireWeight; 
+              DiphoCentralWeight = DiphoCentralWeight * prefireWeight; // just used here to set diphocentral weight. Done separately for tag_obj central weight in SetCentralUpDownWeights()
               tag_obj.SetDiphoCentralWeight(DiphoCentralWeight);
               tag_obj.SetDiPhoMVA(dipho_MVA);
+              tag_obj.SetDiPhoPt(diPho_pT);
 
               //-- Include Scale Factors 
               // Set CentralWeight values for each SF to access in trees 
               tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);   
+
+              // if(doHHWWggDebug_){
+              //   cout << "Electron scale factors:" << endl; 
+              //   if(goodElectrons.size() > 0){
+              //     PrintScaleFactorsPtr(goodElectrons[0]);
+              //   }
+              //   cout << "Muon scale factors:" << endl; 
+              //   if(goodMuons.size() > 0){
+              //     PrintScaleFactorsPtr(goodMuons[0]);
+              //   }
+              // }
+
+              // if(doHHWWggDebug_){
+              //   cout << "*********************************************************" << endl; 
+              //   cout << "HHWWgg Object Scale Factors:" << endl; 
+              //   PrintScaleFactorsObj(tag_obj);
+              // }
 
               // Push back tag object 
               HHWWggtags->push_back( tag_obj );
@@ -425,11 +381,11 @@ namespace flashgg {
           //-- Fully Hadronic Final State Tags
           if( (HHWWggAnalysisChannel_ == "FH" || HHWWggAnalysisChannel_ == "all") && (FilledTag == 0))
           {
-            double diPho_pT=dipho->pt();
-            if (n_good_leptons==0 && n_good_jets>=4 && diPho_pT > FH_Dipho_pT_Thre_)
+            // double diPho_pT=dipho->pt();
+            // if (n_good_leptons==0 && n_good_jets>=4 && diPho_pT > FH_Dipho_pT_Thre_)
+            if (n_good_leptons==0 && n_good_jets>=4)
             {
               catnum = 1;
-              // Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
 
               // Define four jets with WH min method, or just take four leading pT
               if(doHHWWggFHptOrdered_){
@@ -476,7 +432,8 @@ namespace flashgg {
                 std::cout << "==> Please you any one options while running "        << std::endl;
                 exit(0);
               }
-              if(doHHWWggDebug_) cout << "Filling Fully Hadronic category..." << endl;
+
+              if(doHHWWggDebug_) cout << "Filling Fully-Hadronic category..." << endl;
               HHWWggTag tag_obj;
 
               if (doHHWWggTagCutFlowAnalysis_){
@@ -510,6 +467,7 @@ namespace flashgg {
               DiphoCentralWeight = DiphoCentralWeight * prefireWeight; 
               tag_obj.SetDiphoCentralWeight(DiphoCentralWeight);
               tag_obj.SetDiPhoMVA(dipho_MVA);
+              tag_obj.SetDiPhoPt(diPho_pT);
                  
               //-- Include Scale Factors 
               // Set CentralWeight values for each SF to access in trees 
@@ -527,12 +485,13 @@ namespace flashgg {
 
           if( (HHWWggAnalysisChannel_ == "FL" || HHWWggAnalysisChannel_ == "all") && FilledTag == 0)
           {  
-            double diPho_pT=dipho->pt();
-            if(n_good_leptons >= 2 && diPho_pT > FL_Dipho_pT_Thre_ ){
+            // double diPho_pT=dipho->pt();
+            // if(n_good_leptons >= 2 && diPho_pT > FL_Dipho_pT_Thre_ ){
+            if(n_good_leptons >= 2 ){
 
             num_FL_dr = GetNumFLDR(goodElectrons, goodMuons, deltaRLeps_);
 
-            if ( (n_good_leptons >=2 ) && (theMET->getCorPt() >= MetPtThreshold_) && num_FL_dr>=1 && (leadPho->p4().pt()+subleadPho->p4().pt())>0){
+            if ( (n_good_leptons >=2 ) && (theMET->getCorPt() >= FL_METThreshold_) && num_FL_dr>=1 && (leadPho->p4().pt()+subleadPho->p4().pt())>0){
               if(doHHWWggDebug_) cout << "Filling Fully-Leptonic category..." << endl;
               catnum = 2; 
               double Save=0.;
@@ -590,7 +549,7 @@ namespace flashgg {
                 reco::Candidate::LorentzVector DiEleLV = Ele1LV +  Ele2LV;
                 MassT= sqrt(2*DiEleLV.Pt()*theMET->pt()*(1-cos(abs(DiEleLV.Phi()-theMET->phi()))));
                 MassT_l2 = sqrt(2*Ele2LV.Pt()*theMET->pt()*(1-cos(abs(Ele2LV.Phi()-theMET->phi()))));
-                  if((tag_electron1->charge()*tag_electron2->charge()==-1) && tag_electron1->pt()>=lep1ptThre_ && tag_electron2->pt()>=lep1ptThre_  && DiEleLV.Pt()>DiLepPtThre_ && (DiEleLV.M() > DiLepMassHigThre_ || DiEleLV.M() < DiLepMassLowThre_ )  && MassT>MassTThre_ && MassT_l2 >MassT_l2Thre_ && Save == 1. && Savejet==1){
+                  if((tag_electron1->charge()*tag_electron2->charge()==-1) && tag_electron1->pt()>=lep1ptThre_ && tag_electron2->pt()>=lep1ptThre_  && DiEleLV.Pt()>DiLepPtThre_ && (DiEleLV.M() > DiLepMassHigThre_ || DiEleLV.M() < DiLepMassLowThre_ )  && MassT>MassTThre_ && MassT_l2 >MassT_l2Thre_ && Save == 1.){
                     HHWWggTag tag_obj;
 
                     if(doHHWWggTagCutFlowAnalysis_){
@@ -621,7 +580,8 @@ namespace flashgg {
                   prefireWeight = dipho->weight("prefireWeightCentral"); // if setting pre fire weight by hand 
                   DiphoCentralWeight = DiphoCentralWeight * prefireWeight; 
                   tag_obj.SetDiphoCentralWeight(DiphoCentralWeight);
-                    
+                  tag_obj.SetDiPhoMVA(dipho_MVA);
+                  tag_obj.SetDiPhoPt(diPho_pT);
                   //-- Include Scale Factors 
                   // Set CentralWeight values for each SF to access in trees 
                   tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);    
@@ -680,7 +640,7 @@ namespace flashgg {
                 reco::Candidate::LorentzVector DiMuLV = Mu1LV +  Mu2LV;
                 MassT= sqrt(2*DiMuLV.Pt()*theMET->pt()*(1-cos(abs(DiMuLV.Phi()-theMET->phi()))));
                 MassT_l2 = sqrt(2*Mu2LV.Pt()*theMET->pt()*(1-cos(abs(Mu2LV.Phi()-theMET->phi()))));
-                if((tag_muon1->charge()*tag_muon2->charge() == -1) && tag_muon1->pt()>=lep1ptThre_ && tag_muon2->pt()>=lep2ptThre_  && DiMuLV.Pt()>DiLepPtThre_ && (DiMuLV.M() > DiLepMassHigThre_ || DiMuLV.M() < DiLepMassLowThre_ ) && MassT>MassTThre_ && MassT_l2>MassT_l2Thre_ && Save == 1. && Savejet==1){
+                if((tag_muon1->charge()*tag_muon2->charge() == -1) && tag_muon1->pt()>=lep1ptThre_ && tag_muon2->pt()>=lep2ptThre_  && DiMuLV.Pt()>DiLepPtThre_ && (DiMuLV.M() > DiLepMassHigThre_ || DiMuLV.M() < DiLepMassLowThre_ ) && MassT>MassTThre_ && MassT_l2>MassT_l2Thre_ && Save == 1.){
                   HHWWggTag tag_obj;
 
                   if(doHHWWggTagCutFlowAnalysis_){
@@ -710,7 +670,8 @@ namespace flashgg {
                   prefireWeight = dipho->weight("prefireWeightCentral"); // if setting pre fire weight by hand 
                   DiphoCentralWeight = DiphoCentralWeight * prefireWeight; 
                   tag_obj.SetDiphoCentralWeight(DiphoCentralWeight);
-                    
+                  tag_obj.SetDiPhoMVA(dipho_MVA);
+                  tag_obj.SetDiPhoPt(diPho_pT);
                   //-- Include Scale Factors 
                   // Set CentralWeight values for each SF to access in trees 
                   tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);    
@@ -771,7 +732,7 @@ namespace flashgg {
                 reco::Candidate::LorentzVector DiLepLV = EleLV +  MuLV;
                 MassT= sqrt(2*DiLepLV.Pt()*theMET->pt()*(1-cos(abs(DiLepLV.Phi()-theMET->phi()))));
                 MassT_l2= sqrt(2*MuLV.Pt()*theMET->pt()*(1-cos(abs(MuLV.Phi()-theMET->phi()))));
-                if((((tag_electron1->pt()>=lep1ptThre_) && (tag_muon1->pt()>=lep2ptThre_))||((tag_muon1->pt()>=lep1ptThre_) && (tag_electron1->pt()>=lep2ptThre_))) && (tag_muon1->charge()*tag_electron1->charge()==-1) && (DiLepLV.M() > DiLepMassHigThre_ || DiLepLV.M() < DiLepMassLowThre_ )  && (DiLepLV.Pt()>DiLepPtThre_) && (MassT_l2>MassTThre_) && (MassT>MassT_l2Thre_) && (Save==1.) &&(Savejet==1)){
+                if((((tag_electron1->pt()>=lep1ptThre_) && (tag_muon1->pt()>=lep2ptThre_))||((tag_muon1->pt()>=lep1ptThre_) && (tag_electron1->pt()>=lep2ptThre_))) && (tag_muon1->charge()*tag_electron1->charge()==-1) && (DiLepLV.M() > DiLepMassHigThre_ || DiLepLV.M() < DiLepMassLowThre_ )  && (DiLepLV.Pt()>DiLepPtThre_) && (MassT_l2>MassTThre_) && (MassT>MassT_l2Thre_) && (Save==1.)){
                   HHWWggTag tag_obj;
                   if(doHHWWggTagCutFlowAnalysis_){
                     if(tag_electron1->pt()>tag_muon1->pt()) Cut_Variables[18]=2.;//e mu
@@ -801,11 +762,11 @@ namespace flashgg {
                   prefireWeight = dipho->weight("prefireWeightCentral"); // if setting pre fire weight by hand 
                   DiphoCentralWeight = DiphoCentralWeight * prefireWeight; 
                   tag_obj.SetDiphoCentralWeight(DiphoCentralWeight);
-                    
+                  tag_obj.SetDiPhoMVA(dipho_MVA);
+                  tag_obj.SetDiPhoPt(diPho_pT);                    
                   //-- Include Scale Factors 
                   // Set CentralWeight values for each SF to access in trees 
                   tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);    
-                  tag_obj.SetDiPhoMVA(dipho_MVA);
 
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
@@ -835,17 +796,23 @@ namespace flashgg {
               tag_obj.setGenVtx_z(GenVtx_z);
               tag_obj.setHggVtx_z(HggVtx_z);
               tag_obj.setZeroVtx_z(ZeroVtx_z);                
-              tag_obj.SetDiPhoMVA(dipho_MVA);
 
               //-- Include Scale Factors 
               DiphoCentralWeight = dipho->centralWeight();
               prefireWeight = dipho->weight("prefireWeightCentral"); // if setting pre fire weight by hand 
               DiphoCentralWeight = DiphoCentralWeight * prefireWeight; 
               tag_obj.SetDiphoCentralWeight(DiphoCentralWeight);
-                 
+              tag_obj.SetDiPhoMVA(dipho_MVA);
+              tag_obj.SetDiPhoPt(diPho_pT);                 
               //-- Include Scale Factors 
               // Set CentralWeight values for each SF to access in trees 
               tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);   
+
+              // if(doHHWWggDebug_){
+                // cout << "*********************************************************" << endl; 
+                // cout << "HHWWgg Object Scale Factors:" << endl; 
+                // PrintScaleFactorsObj(tag_obj);
+              // }
 
               // Push back tag object 
               HHWWggtags->push_back( tag_obj );

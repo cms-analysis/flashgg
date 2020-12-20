@@ -86,11 +86,11 @@ def GetCampaignsAndDatasets(DatasetsToCheck_):
 
 DatasetsToCheck = {
   # Campaign : [dataset_1, dataset_2, ..., dataset_N]
-  "Era2016_RR-17Jul2018_v2" : ["/GluGluToHHTo2G2Qlnu_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/alesauva-2016_1-10_6_4-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-c3d8a5638586a0e8df7c55ce908b2878/USER",
-                               "/GluGluToHHTo2G2Qlnu_node_cHHH5_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/alesauva-2016_1-10_6_4-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-c3d8a5638586a0e8df7c55ce908b2878/USER"
+  #"Era2016_RR-17Jul2018_v2" : ["/GluGluToHHTo2G2Qlnu_node_cHHH2p45_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/alesauva-2016_1-10_6_4-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-c3d8a5638586a0e8df7c55ce908b2878/USER",
+                               #"/GluGluToHHTo2G2Qlnu_node_cHHH5_TuneCUETP8M1_PSWeights_13TeV-powheg-pythia8/alesauva-2016_1-10_6_4-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-c3d8a5638586a0e8df7c55ce908b2878/USER"
                               #  "/GluGluToHHTo2G2Qlnu_node_SM_TuneCUETP8M1_PSWeights_13TeV-madgraph-pythia8/alesauva-2016_1-10_6_4-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1-c3d8a5638586a0e8df7c55ce908b2878/USER"
-  ],
-  "Era2017_RR-31Mar2018_v2" : ["/GluGluToHHTo2G2Qlnu_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/alesauva-2017_1-10_6_4-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-1c4bfc6d0b8215cc31448570160b99fd/USER"]
+#  ],
+  "Era2017_RR-31Mar2018_v2" : ["/GluGluToHHTo2G2l2nu_node_cHHH1_TuneCP5_PSWeights_13TeV-powheg-pythia8/alesauva-2017_0-10_6_4-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1-1c4bfc6d0b8215cc31448570160b99fd/USER"]
 }
 
 CampDsetPairs = GetCampaignsAndDatasets(DatasetsToCheck)
