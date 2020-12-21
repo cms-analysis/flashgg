@@ -571,8 +571,8 @@ namespace flashgg {
         if (useLargeMVAs) {
             topTagger = new BDT_resolvedTopTagger(topTaggerXMLfile_.fullPath());
 
-            dnn_dipho = new TTH_DNN_Helper(tthVsDiphoDNNfile_.fullPath(), true);
-            dnn_ttGG  = new TTH_DNN_Helper(tthVsttGGDNNfile_.fullPath(), true);
+            dnn_dipho = new TTH_DNN_Helper(tthVsDiphoDNNfile_.fullPath());
+            dnn_ttGG  = new TTH_DNN_Helper(tthVsttGGDNNfile_.fullPath());
 
             dnn_dipho->SetInputShapes(18, 8, 8);
             dnn_ttGG->SetInputShapes(18, 8, 8);
