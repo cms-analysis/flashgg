@@ -48,8 +48,7 @@ customize.options.register('analysisType',
                            'mainAnalysis',
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.string,
-                           'analysisType'
-                           )
+                           'analysisType')
 
 customize.options.register('ignoreNegR9',
                            False,
