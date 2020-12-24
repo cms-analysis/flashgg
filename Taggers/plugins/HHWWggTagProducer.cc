@@ -260,6 +260,33 @@ namespace flashgg {
 
                   if( dRPhoLeadJet < deltaRPhoLeadJet_ || dRPhoSubLeadJet < deltaRPhoSubLeadJet_ ) { continue; }
 
+                  // // PUJet ID Selection 
+                  // // new PUJID for differents pt bins
+                  // std::vector<std::pair<double,double> > eta_cuts_(4);
+                  // eta_cuts_[0] = std::make_pair (0    ,2.50 );
+                  // eta_cuts_[1] = std::make_pair (2.50 ,2.75 );
+                  // eta_cuts_[2] = std::make_pair (2.75 ,3.00 );
+                  // eta_cuts_[3] = std::make_pair (3.00 ,10);
+                  
+                  // if ( (!pujid_wp_pt_bin_1_.empty())  &&
+                  //     (!pujid_wp_pt_bin_2_.empty())  ){
+                  //     bool pass=false;
+                  //     for (UInt_t eta_bin=0; eta_bin < pujid_wp_pt_bin_1_.size(); eta_bin++ ){
+                  //         if ( fabs( thejet->eta() ) >  eta_cuts_[eta_bin].first &&
+                  //             fabs( thejet->eta() ) <= eta_cuts_[eta_bin].second){
+                  //             if ( thejet->pt() >  20 &&
+                  //                 thejet->pt() <= 30 && thejet->puJetIdMVA() > pujid_wp_pt_bin_1_[eta_bin] )
+                  //                 pass=true;
+                  //             if ( thejet->pt() >  30 &&
+                  //                 thejet->pt() <= 50 && thejet->puJetIdMVA() > pujid_wp_pt_bin_2_[eta_bin] )
+                  //                 pass=true;
+                  //             if (thejet->pt() > 50) pass = true;
+                  //         }
+                  //     }
+                  //     // if(doHHWWggDebug_) std::cout <<  " pt="<< thejet->pt() << " :eta: "<< thejet->eta() << " :mva: "<< thejet->puJetIdMVA() << "  pass == " << pass << std::endl;
+                  //     if (!pass) continue; 
+                  // }
+
                   if( hasGoodElec )
                       for( unsigned int electronIndex = 0; electronIndex < goodElectrons.size(); electronIndex++ )
                           {

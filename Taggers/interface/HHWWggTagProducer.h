@@ -114,6 +114,8 @@ private:
     std::vector<std::string> inputDiPhotonSuffixes_;
     
     string JetIDLevel_;
+    std::vector<double> pujid_wp_pt_bin_1_;
+    std::vector<double> pujid_wp_pt_bin_2_;    
     
     //---ID selector
     ConsumesCollector cc_;
@@ -200,6 +202,8 @@ mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( pSet.getParameter<
 rhoTag_( consumes<double>( pSet.getParameter<InputTag>( "rhoTag" ) ) ),
 systLabel_( pSet.getParameter<string> ( "SystLabel" ) ),
 JetIDLevel_( pSet.getParameter<string> ( "JetIDLevel" ) ),
+pujid_wp_pt_bin_1_( pSet.getParameter<std::vector<double> > ( "pujidWpPtBin1" ) ),
+pujid_wp_pt_bin_2_( pSet.getParameter<std::vector<double> > ( "pujidWpPtBin2" ) ),
 cc_( consumesCollector() )
 
 {

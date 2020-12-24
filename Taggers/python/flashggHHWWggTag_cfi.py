@@ -2,6 +2,16 @@ import FWCore.ParameterSet.Config as cms
 
 from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag # should include jet systematics
 
+##-- PileupJetID 
+pujidPtBin1_loose  = [-0.97, -0.68, -0.53, -0.47]
+pujidPtBin2_loose  = [-0.89, -0.52, -0.38, -0.30]
+
+pujidPtBin1_medium = [0.18, -0.55, -0.42, -0.36]
+pujidPtBin2_medium = [0.61, -0.35, -0.23, -0.17]
+
+pujidPtBin1_tight  = [0.69, -0.35, -0.26, -0.21]
+pujidPtBin2_tight  = [0.86, -0.10, -0.05, -0.01]
+
 # cfi = configuration fragment include
 # Clone these params into _cfg
 flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
@@ -24,7 +34,7 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     ##-- Common Object Selections among Three Final States 
                                     leptonPtThreshold = cms.double(10.),
                                     muonEtaThreshold = cms.double(2.4),
-                                    leadPhoOverMassThreshold = cms.double(0.35), # was 0.375
+                                    leadPhoOverMassThreshold = cms.double(0.33), # was 0.375
                                     subleadPhoOverMassThreshold = cms.double(0.25),
                                     MVAThreshold = cms.double(0.0),
                                     deltaRMuonPhoThreshold = cms.double(0.4),
@@ -58,12 +68,15 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     doHHWWggFHminWHJets = cms.bool(True), # for FH final state, choose 2jet using W another 2 using H
                                     doHHWWggFHminWHLead2Jet = cms.bool(False), # for FH final state, choose 2jet using W another 2 highest pT
                                     doHHWWggFHminHiggsMassOnly = cms.bool(False), # for FH final state, choose 4 jets using H mass
-                                    doHHWWggDebug = cms.bool(False), # False by default to avoid extra print statements, set true with flag 
+                                    doHHWWggDebug = cms.bool(False), # False by default to avoid extra print statements, set true with flag, set in HHWWggCustomize 
                                     HHWWggAnalysisChannel = cms.string("all"), # final state analysis to run. Can be SL, FH, FL, all. all by default. 
                                     FillUntagged = cms.bool(False), # Fill untagged category if event does not fall into HHWWggAnalysisChannel
                                     deltaRLeps = cms.double(0.4),
                                     FL_METThreshold = cms.double(20.), ##-- Only used for Fully-Leptonic Final State 
-                                    JetIDLevel = cms.string(''), # Tight, Tight2017 or Tight2018 as set in 
+                                    JetIDLevel = cms.string(''), # Tight, Tight2017 or Tight2018 as set in HHWWggCustomize from MetaConditions 
+                                    ## define the pujid working point 
+                                    pujidWpPtBin1 = cms.vdouble(pujidPtBin1_medium), ## WP for 20 < pT < 30 
+                                    pujidWpPtBin2 = cms.vdouble(pujidPtBin2_medium), ## WP for 30 < pT < 50                                    
 
                                     ##-- Fully Leptonic Final State Parameters 
                                     lep1ptThre = cms.double(20.),
@@ -79,5 +92,5 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     FH_Dipho_pT_Thre = cms.double(160.),
 
                                     # Vertex choice 
-                                    HHWWgguseZeroVtx = cms.bool(False) ##-- Set with cmssw config flag                         
+                                    HHWWgguseZeroVtx = cms.bool(False) ##-- Set with cmssw config flag, done in HHWWggCustomize                          
                                     )
