@@ -79,16 +79,18 @@ def createStandardSystematicsProducers(process, options):
     diPhotons_syst.setupDiPhotonSystematics( process, options )
 
     import flashgg.Systematics.flashggMuonSystematics_cfi as muon_sf
-    muon_sf.SetupMuonScaleFactors( process ,  options.metaConditions["MUON_ID_JSON_FileName"],  options.metaConditions["MUON_ID_JSON_FileName_LowPt"], options.metaConditions["MUON_ISO_JSON_FileName"], options.metaConditions["MUON_ID"], options.metaConditions["MUON_ISO"], options.metaConditions["MUON_ID_RefTracks"],options.metaConditions["MUON_ID_RefTracks_LowPt"] )
+    if(options.HHWWggTagsOnly): muon_sf.SetupMuonScaleFactors( process ,  options.metaConditions["HHWWggTag"]["MUON_ID_JSON_FileName"],  options.metaConditions["HHWWggTag"]["MUON_ID_JSON_FileName_LowPt"], options.metaConditions["HHWWggTag"]["MUON_ISO_JSON_FileName"], options.metaConditions["HHWWggTag"]["MUON_ID"], options.metaConditions["HHWWggTag"]["MUON_ISO"], options.metaConditions["HHWWggTag"]["MUON_ID_RefTracks"],options.metaConditions["HHWWggTag"]["MUON_ID_RefTracks_LowPt"] )
+    else: muon_sf.SetupMuonScaleFactors( process ,  options.metaConditions["MUON_ID_JSON_FileName"],  options.metaConditions["MUON_ID_JSON_FileName_LowPt"], options.metaConditions["MUON_ISO_JSON_FileName"], options.metaConditions["MUON_ID"], options.metaConditions["MUON_ISO"], options.metaConditions["MUON_ID_RefTracks"],options.metaConditions["MUON_ID_RefTracks_LowPt"] )
    
     #scale factors for electron ID
     from   flashgg.Systematics.flashggElectronSystematics_cfi import EleSF_JSONReader
-    binInfoEle = EleSF_JSONReader(options.metaConditions["Ele_ID_SF_FileName"],options.metaConditions["Ele_ID_version"]).getBinInfo()
-    # if(options.HHWWggTagsOnly) binInfoEle = EleSF_JSONReader(options.metaConditions["Ele_ID_SF_FileName"],options.metaConditions["HHWWggTag"]["Ele_ID_version"]).getBinInfo()
+    if(options.HHWWggTagsOnly): binInfoEle = EleSF_JSONReader(options.metaConditions["HHWWggTag"]["Ele_ID_SF_FileName"],options.metaConditions["HHWWggTag"]["Ele_ID_version"]).getBinInfo()
+    else: binInfoEle = EleSF_JSONReader(options.metaConditions["Ele_ID_SF_FileName"],options.metaConditions["Ele_ID_version"]).getBinInfo()
     process.flashggElectronSystematics.SystMethods[0].BinList = binInfoEle
 
     #scale factors for electron reconstruction
-    binInfoEleReco =  EleSF_JSONReader(options.metaConditions["Ele_reco_SF_FileName"],"reco-eff").getBinInfo()
+    if(options.HHWWggTagsOnly): binInfoEleReco =  EleSF_JSONReader(options.metaConditions["HHWWggTag"]["Ele_reco_SF_FileName"],"reco-eff").getBinInfo()
+    else: binInfoEleReco =  EleSF_JSONReader(options.metaConditions["Ele_reco_SF_FileName"],"reco-eff").getBinInfo()
     process.flashggElectronSystematics.SystMethods[1].BinList = binInfoEleReco
 
     from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag

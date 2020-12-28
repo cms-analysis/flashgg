@@ -147,6 +147,10 @@ std::vector<flashgg::Jet> HHWWggTag::GetJets(std::vector<edm::Ptr<flashgg::Jet>>
 
 // To call in tag producer without constructor 
 
+// void HHWWggTag::setZeroVertex(edm::Ptr<reco::Vertex> ZeroVertex){
+  // ZeroVertex_ = ZeroVertex;
+// }
+
 void HHWWggTag::SetGoodJets(std::vector<edm::Ptr<flashgg::Jet>> jets){
   goodJets_ = GetJets(jets);
 }

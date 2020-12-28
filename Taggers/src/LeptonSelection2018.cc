@@ -10,21 +10,28 @@ namespace flashgg {
 
 
 
-    std::vector<edm::Ptr<flashgg::Electron> > selectElectrons( const std::vector<edm::Ptr<flashgg::Electron> > Ele, Ptr<flashgg::DiPhotonCandidate> dipho, double ElePtCut, std::vector<double> EleEtaCuts, double ElePhotonDrCut, double ElePhotonZMassCut, double DeltaRTrkEle, bool debug_, int id)
+    std::vector<edm::Ptr<flashgg::Electron> > selectElectrons( const std::vector<edm::Ptr<flashgg::Electron> > Ele, Ptr<flashgg::DiPhotonCandidate> dipho, double ElePtCut, std::vector<double> EleEtaCuts, double ElePhotonDrCut, double ElePhotonZMassCut, double DeltaRTrkEle, bool debug_, std::string ElectronID_)
 {
     assert(EleEtaCuts.size()==3);
     std::vector<edm::Ptr<flashgg::Electron> > output;
 
     for(unsigned int l1=0; l1<Ele.size(); ++l1)
     {
-        if (id == 1) {
+
+        if (ElectronID_ == "passMVALooseId"){
             if(!Ele[l1]->passMVALooseId()) continue;
         }
-        else if (id == 2) {
-          if(!Ele[l1]->passMVAMediumId()) continue;
+        
+        else if (ElectronID_ == "passMVAMediumId"){
+            if(!Ele[l1]->passMVAMediumId()) continue;
         }
-        else if (id == 3) {
-          if (!Ele[l1]->passMVATightId()) continue;
+
+        else if (ElectronID_ == "passMVATightId") {
+            if (!Ele[l1]->passMVATightId()) continue;
+        }
+
+        else if (ElectronID_ == "passLooseId"){
+            if (!Ele[l1]->passLooseId()) continue;
         }
 
         if( Ele[l1]->pt()<ElePtCut) continue;
@@ -62,7 +69,7 @@ namespace flashgg {
      return output;
 }
     
-    std::vector<edm::Ptr<flashgg::Muon    > > selectMuons( const std::vector<edm::Ptr<flashgg::Muon> > Muons, Ptr<flashgg::DiPhotonCandidate> dipho, const std::vector<edm::Ptr<reco::Vertex>> vtx, double MuonPtCut, double MuonEtaCut, double MuonMiniIsoCut, double MuonPhotonDrCut, bool debug_, int id)
+    std::vector<edm::Ptr<flashgg::Muon    > > selectMuons( const std::vector<edm::Ptr<flashgg::Muon> > Muons, Ptr<flashgg::DiPhotonCandidate> dipho, const std::vector<edm::Ptr<reco::Vertex>> vtx, double MuonPtCut, double MuonEtaCut, double MuonMiniIsoCut, double MuonPhotonDrCut, bool debug_, std::string MuonID_)
 {
      std::vector<edm::Ptr<flashgg::Muon> > output;
 
@@ -72,13 +79,15 @@ namespace flashgg {
         if(fabs(Muons[l1]->eta()) > MuonEtaCut) continue;
         if( !Muons[l1]->innerTrack() ) continue; 
 
-        if (id == 1) {
+        if (MuonID_ == "Loose"){
             if( !Muons[l1]->isLooseMuon() ) continue;
         }
-        else if (id == 2) {
-            if( !Muons[l1]->isMediumMuon() ) continue; 
+
+        else if (MuonID_ == "Medium"){
+            if( !Muons[l1]->isMediumMuon() ) continue;
         }
-        else if (id == 3) {
+
+        else if (MuonID_ == "Tight"){
             if( !Muons[l1]->isTightMuon(*vtx[0]) ) continue;
         }
 

@@ -1,6 +1,5 @@
 import FWCore.ParameterSet.Config as cms
-
-from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag # should include jet systematics
+from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag 
 
 ##-- PileupJetID 
 pujidPtBin1_loose  = [-0.97, -0.68, -0.53, -0.47]
@@ -17,24 +16,21 @@ pujidPtBin2_tight  = [0.86, -0.10, -0.05, -0.01]
 flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
 
                                     ##-- Collections 
-                                    # PhotonTag = cms.InputTag('flashggRandomizedPhotons'), ##-- Photon collection not used 
-                                    DiPhotonTag = cms.InputTag('flashggPreselectedDiPhotons'),
-                                    SystLabel = cms.string(""),
-                                    JetsSuffixes = cms.vstring(''), # Nominal and systematic variations
-                                    DiPhotonName = cms.string('flashggPreselectedDiPhotons'), #
-                                    VertexTag = cms.InputTag('offlineSlimmedPrimaryVertices'),
-                                    GenParticleTag         = cms.InputTag('flashggPrunedGenParticles'),
-                                    ElectronTag            = cms.InputTag('flashggElectronSystematics'),
-                                    MuonTag                = cms.InputTag('flashggMuonSystematics'),
-                                    METTag                 = cms.InputTag('flashggMetSystematics'),
-                                    JetTags                = UnpackedJetCollectionVInputTag,
-                                    DiPhotonSuffixes = cms.vstring(''), #nominal and systematic variations
-                                    MVAResultTag=cms.InputTag('flashggDiPhotonMVA'),
+                                    DiPhotonTag                      = cms.InputTag('flashggPreselectedDiPhotons'),
+                                    SystLabel                        = cms.string(""),
+                                    DiPhotonName                     = cms.string('flashggPreselectedDiPhotons'), 
+                                    VertexTag                        = cms.InputTag('offlineSlimmedPrimaryVertices'),
+                                    GenParticleTag                   = cms.InputTag('flashggPrunedGenParticles'),
+                                    ElectronTag                      = cms.InputTag('flashggElectronSystematics'),
+                                    MuonTag                          = cms.InputTag('flashggMuonSystematics'),
+                                    METTag                           = cms.InputTag('flashggMetSystematics'),
+                                    JetTags                          = UnpackedJetCollectionVInputTag,
+                                    MVAResultTag                     = cms.InputTag('flashggDiPhotonMVA'),
 
                                     ##-- Common Object Selections among Three Final States 
                                     leptonPtThreshold = cms.double(10.),
                                     muonEtaThreshold = cms.double(2.4),
-                                    leadPhoOverMassThreshold = cms.double(0.33), # was 0.375
+                                    leadPhoOverMassThreshold = cms.double(0.33), 
                                     subleadPhoOverMassThreshold = cms.double(0.25),
                                     MVAThreshold = cms.double(0.0),
                                     deltaRMuonPhoThreshold = cms.double(0.4),
@@ -42,24 +38,18 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     jetEtaThreshold=  cms.double(2.4),
                                     deltaRPhoLeadJet = cms.double(0.4),
                                     deltaRPhoSubLeadJet = cms.double(0.4),
-                                    muPFIsoSumRelThreshold = cms.double(0.25), ##-- 0.15 --> 0.25 
+                                    muPFIsoSumRelThreshold = cms.double(0.25), ##-- Set in HHWWggCustomize based on metaconditions. 0.25 is loose. 0.15 tight? 
                                     deltaRJetMuonThreshold = cms.double(0.4),
-                                    PhoMVAThreshold = cms.double(-0.9),
                                     DeltaRTrkElec = cms.double(.4),
-                                    TransverseImpactParam = cms.double(0.02),
-                                    LongitudinalImpactParam = cms.double(0.2),
                                     deltaRPhoElectronThreshold = cms.double(0.4), 
                                     deltaMassElectronZThreshold = cms.double(5.), ##-- Keep at loosest, can select further by category after 
                                     electronEtaThresholds=cms.vdouble(1.4442,1.566,2.5),
                                     nonTrigMVAThresholds = cms.vdouble(0.913286,0.805013,0.358969),
                                     nonTrigMVAEtaCuts = cms.vdouble(0.8,1.479,2.5),
-                                    electronIsoThreshold = cms.double(0.15),
-                                    electronNumOfHitsThreshold = cms.double(1),
-                                    useElectronMVARecipe = cms.bool(True), ##-- Updating to ttHToGG
-                                    useElectronLooseID = cms.bool(False),
+                                    ElectronID = cms.string("passMVAMediumId"), ##-- Set in metaconditions, pass through HHWWggCustomize 
+                                    MuonID = cms.string("isLooseMuon"), ##-- Set in metaconditions, pass through HHWWggCustomize 
 
                                     ##-- Misc 
-                                    rhoTag = cms.InputTag('fixedGridRhoFastjetAll'),
                                     btagThresh = cms.double(2), ##-- anything greater than 1 should save all events 
                                     BTagTypes = cms.vstring('mini_pfDeepFlavourJetTags:probb','mini_pfDeepFlavourJetTags:probbb','mini_pfDeepFlavourJetTags:problepb'),
                                     doHHWWggTagCutFlowAnalysis = cms.bool(False), # save events for cut flow analysis
@@ -75,8 +65,8 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     FL_METThreshold = cms.double(20.), ##-- Only used for Fully-Leptonic Final State 
                                     JetIDLevel = cms.string(''), # Tight, Tight2017 or Tight2018 as set in HHWWggCustomize from MetaConditions 
                                     ## define the pujid working point 
-                                    pujidWpPtBin1 = cms.vdouble(pujidPtBin1_medium), ## WP for 20 < pT < 30 
-                                    pujidWpPtBin2 = cms.vdouble(pujidPtBin2_medium), ## WP for 30 < pT < 50                                    
+                                    pujidWpPtBin1 = cms.vdouble(pujidPtBin1_tight), ## WP for 20 < pT < 30 
+                                    pujidWpPtBin2 = cms.vdouble(pujidPtBin2_tight), ## WP for 30 < pT < 50                                    
 
                                     ##-- Fully Leptonic Final State Parameters 
                                     lep1ptThre = cms.double(20.),
@@ -89,6 +79,8 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     DiLepMassHigThre = cms.double(100.),
                                     DiLepMassLowThre = cms.double(80.),
                                     FL_Dipho_pT_Thre = cms.double(54.),
+
+                                    ##-- Fully Hadronic Final State 
                                     FH_Dipho_pT_Thre = cms.double(160.),
 
                                     # Vertex choice 

@@ -252,6 +252,8 @@ class HHWWggCustomize():
                         entry = "%s:=%s"%(vtitle,vname)
                         finalStateVars.append(entry)
 
+
+
             # if("Muons" in objV):
             #     mVars = ["pfIsolationR04().sumChargedHadronPt","pfIsolationR04().sumNeutralHadronEt","pfIsolationR04().sumPhotonEt",
             #              "pfIsolationR04().sumPUPt"]
@@ -301,6 +303,20 @@ class HHWWggCustomize():
                 entry = "%s:=%s"%(vtitle,vname)
                 muon_vars.append(entry)
 
+        # # extraMuonVars_shorter = ["isLooseMuon","isMediumMuon","isTightMuon","isSoftMuon","isHighPtMuon"]
+        # extraMuonVars_shorter = ["isLooseMuon","isMediumMuon","isSoftMuon","isHighPtMuon"]
+
+        # # for var in extraMuonVars_shorter:
+        # for m in range(0,nMuons):
+        #     for n in range(0,len(extraMuonVars_shorter)):
+        #         muonVarTitle = extraMuonVars_shorter[n]
+        #         vtitle = "goodMuons_%s_%s"%(m,muonVarTitle)
+        #         # vtitle = "%s_%s_%s"%(objV,i,eV)
+        #         if(muonVarTitle == "isTightMuon"): vname = "? goodMuons.size() >= %s ? goodMuons[%s].%s(*ZeroVertex()) : -999"%(m+1,m,muonVarTitle)
+        #         else: vname = "? goodMuons.size() >= %s ? goodMuons[%s].%s() : -999"%(m+1,m,muonVarTitle)
+        #         entry = "%s:=%s"%(vtitle,vname)
+        #         finalStateVars.append(entry)     
+
         # Save extra Jet variables
         jet_vars = [] 
         nJets = 5 # highest 5 pT muons (no selections applied)
@@ -343,7 +359,8 @@ class HHWWggCustomize():
 
         ##-- Save Central Scale Factor values for ntuple flexibility and studies 
         PhotonScaleFactors = ["LooseMvaSF", "PreselSF", "TriggerWeight", "electronVetoSF"]
-        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonMediumIDWeight", "MuonLooseRelISOWeight"]
+        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonIDWeight", "MuonIsoWeight"]
+        # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonMediumIDWeight", "MuonLooseRelISOWeight"]
         # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonTightIDWeight", "MuonTightRelISOWeight"]
         JetScaleFactors = ["JetBTagCutWeight","JetBTagReshapeWeight"]
         ScaleFactorLabels = []
@@ -377,11 +394,9 @@ class HHWWggCustomize():
             variables += vertex_variables
             variables += gen_vars            
             variables += finalStateVars
-            if self.customize.HHWWggAnalysisChannel == "FL" or self.customize.HHWWggAnalysisChannel == "all": 
-                variables += FL_vars
-            if self.customize.HHWWggAnalysisChannel == "SL" or self.customize.HHWWggAnalysisChannel == "all": 
-                variables += muon_vars
-                variables += jet_vars 
+            variables += FL_vars
+            variables += muon_vars
+            variables += jet_vars 
 
         if self.customize.doHHWWggDebug:
             variables += debugVars
@@ -396,11 +411,11 @@ class HHWWggCustomize():
     def systematicVariables(self):
         ##-- Save Scale Factor values for ntuple flexibility and studies 
         PhotonScaleFactors = ["LooseMvaSF", "PreselSF", "TriggerWeight", "electronVetoSF"]
-        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonMediumIDWeight", "MuonLooseRelISOWeight"]
+        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonIDWeight", "MuonIsoWeight"]
+        # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonMediumIDWeight", "MuonLooseRelISOWeight"]
         # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonTightIDWeight", "MuonTightRelISOWeight"]
         JetScaleFactors = ["JetBTagCutWeight","JetBTagReshapeWeight"]
         ScaleFactorLabels = []
-
 
         for PSF in PhotonScaleFactors: ScaleFactorLabels.append(PSF)
         for LSF in LeptonScaleFactors: ScaleFactorLabels.append(LSF)
@@ -436,14 +451,15 @@ class HHWWggCustomize():
     def customizeTagSequence(self):
         self.process.load("flashgg.Taggers.flashggHHWWggTag_cff")
 
-        # if self.customize.doHHWWggTagCutFlow:
+        ##-- Customize HHWWggTaggProducer Parameters Based on MetaConditions and cmsRun Flags
+
+        ##-- Misc Parameters 
         if self.customize.HHWWgguseZeroVtx:
             self.process.flashggHHWWggTag.HHWWgguseZeroVtx = cms.bool(True)
         if self.customize.doHHWWggTagCutFlow or self.customize.saveHHWWggFinalStateVars:  ##-- set true for either case because finalstate vars only saved during cutflow
             self.process.flashggHHWWggTag.doHHWWggTagCutFlowAnalysis = cms.bool(True)
-
-        if self.customize.doHHWWggNonResAnalysis:
-            self.process.flashggHHWWggTag.doHHWWggNonResAnalysis = cms.bool(True)
+        # if self.customize.doHHWWggNonResAnalysis:
+            # self.process.flashggHHWWggTag.doHHWWggNonResAnalysis = cms.bool(True)
         if self.customize.doHHWWggFHptOrdered:
             self.process.flashggHHWWggTag.doHHWWggFHptOrdered = cms.bool(True)
         if self.customize.doHHWWggFHminWHJets:
@@ -454,17 +470,38 @@ class HHWWggCustomize():
             self.process.flashggHHWWggTag.doHHWWggFHminHiggsMassOnly = cms.bool(True)
         if self.customize.doHHWWggDebug:
             self.process.flashggHHWWggTag.doHHWWggDebug = cms.bool(True)
-
-        print "HHWWggAnalysisChannel:",self.customize.HHWWggAnalysisChannel
         self.process.flashggHHWWggTag.HHWWggAnalysisChannel = self.customize.HHWWggAnalysisChannel
         self.process.flashggHHWWggTag.FillUntagged = self.customize.FillUntagged
-        
-        ## customize meta conditions
+
+        ##-- Jets
         self.process.flashggHHWWggTag.JetIDLevel=cms.string(str(self.metaConditions["HHWWggTag"]["jetID"]))
 
-        ## remove single Higgs tags
-        print'Removing single Higgs tags'
+        ##-- Electrons 
+        Ele_ID_version = str(self.metaConditions["HHWWggTag"]["Ele_ID_version"])
 
+        # Match Ele_ID_version with ID 
+        ElectronID_Dict = {
+            "cutBasedElectronID-Fall17-94X-V2-loose" : "passLooseId",
+            "mvaEleID-Fall17-iso-V2-wp90" : "passMVAMediumId"
+        }
+
+        self.process.flashggHHWWggTag.ElectronID = cms.string(ElectronID_Dict[Ele_ID_version])
+
+        ##-- Muons 
+        MuonID = str(self.metaConditions["HHWWggTag"]["MUON_ID"])
+        MuonIso = str(self.metaConditions["HHWWggTag"]["MUON_ISO"])
+
+        # Match MUON_ISO in metaconditions with selection value 
+        MuonISO_Dict = {
+            "TightRel" : 0.15,
+            "LooseRel" : 0.25 
+        }        
+
+        self.process.flashggHHWWggTag.MuonID = cms.string(MuonID)
+        self.process.flashggHHWWggTag.muPFIsoSumRelThreshold = cms.double(MuonISO_Dict[MuonIso])     
+
+        ##-- Remove Single Higgs Tags 
+        print'Removing single Higgs tags'
         if self.customize.HHWWggTagsOnly:
             self.process.flashggTagSequence.remove(self.process.flashggVBFTag)
             self.process.flashggTagSequence.remove(self.process.flashggTTHLeptonicTag)

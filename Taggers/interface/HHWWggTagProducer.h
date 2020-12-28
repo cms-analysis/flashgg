@@ -58,7 +58,7 @@ public:
     edm::Service<TFileService> fs;
     
 private:
-    bool checkPassMVAs(const flashgg::Photon*& leading_photon, const flashgg::Photon*& subleading_photon, edm::Ptr<reco::Vertex>& diphoton_vertex, double EB_Photon_MVA_Threshold, double EE_Photon_MVA_Threshold);
+    // bool checkPassMVAs(const flashgg::Photon*& leading_photon, const flashgg::Photon*& subleading_photon, edm::Ptr<reco::Vertex>& diphoton_vertex, double EB_Photon_MVA_Threshold, double EE_Photon_MVA_Threshold);
     std::vector<double> GetMuonVars(const std::vector<edm::Ptr<flashgg::Muon> > &muonPointers, const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers);
     std::vector<double> GetJetVars(const std::vector<edm::Ptr<flashgg::Jet> > &jetPointers, const edm::Ptr<flashgg::DiPhotonCandidate> dipho);
     vector<Ptr<flashgg::Jet>> GetFHPtOrderedJets(bool doHHWWggDebug_, std::vector<edm::Ptr<Jet> > tagJets_);
@@ -73,13 +73,12 @@ private:
     void PrintScaleFactorsPtr(flashggPtr);
     template <class flashggObj>
     void PrintScaleFactorsObj(flashggObj);
-    HHWWggTag SetCentralUpDownWeights(HHWWggTag, std::vector<edm::Ptr<flashgg::Electron> >, std::vector<edm::Ptr<flashgg::Muon> >, std::vector<edm::Ptr<flashgg::Jet> >, edm::Ptr<flashgg::DiPhotonCandidate>, bool);
+    HHWWggTag SetCentralUpDownWeights(HHWWggTag, std::vector<edm::Ptr<flashgg::Electron> >, std::vector<edm::Ptr<flashgg::Muon> >, 
+                                      std::vector<edm::Ptr<flashgg::Jet> >, edm::Ptr<flashgg::DiPhotonCandidate>, bool, std::string, double );
     
     void produce( Event &, const EventSetup & ) override;
     std::vector<edm::EDGetTokenT<edm::View<DiPhotonCandidate> > > diPhotonTokens_;
     std::string inputDiPhotonName_;
-    
-    std::vector<std::string> inputJetsSuffixes_;
     
     std::vector<edm::EDGetTokenT<edm::View<flashgg::Jet> > > jetTokens_;
     
@@ -106,12 +105,9 @@ private:
     
     Handle<View<reco::Vertex> > vertices;
     
-    EDGetTokenT<double> rhoTag_;
     string systLabel_;
-    edm::Handle<double>  rho;
     
     std::vector< std::string > systematicsLabels;
-    std::vector<std::string> inputDiPhotonSuffixes_;
     
     string JetIDLevel_;
     std::vector<double> pujid_wp_pt_bin_1_;
@@ -121,8 +117,6 @@ private:
     ConsumesCollector cc_;
     
     //----output collection
-    // double EB_Photon_MVA_Threshold_;
-    // double EE_Photon_MVA_Threshold_;
     double FL_METThreshold_;
     double deltaRLeps_;
     double leptonPtThreshold_;
@@ -134,14 +128,11 @@ private:
     double jetPtThreshold_;
     double jetEtaThreshold_;
     double muPFIsoSumRelThreshold_;
-    double PhoMVAThreshold_;
     double deltaRJetMuonThreshold_;
     double deltaRPhoLeadJet_;
     double deltaRPhoSubLeadJet_;
     
     double DeltaRTrkElec_;
-    double TransverseImpactParam_;
-    double LongitudinalImpactParam_;
     
     double deltaRPhoElectronThreshold_;
     double deltaMassElectronZThreshold_;
@@ -156,14 +147,12 @@ private:
     vector<double> nonTrigMVAThresholds_;
     vector<double> nonTrigMVAEtaCuts_;
     
-    double electronIsoThreshold_;
     vector<double> electronEtaThresholds_;
-    bool useElectronMVARecipe_;
-    bool useElectronLooseID_;
+    string ElectronID_;
+    string MuonID_;
     double btagThresh_;
     vector<string> BTagTypes_;
     bool doHHWWggTagCutFlowAnalysis_;
-    // bool doHHWWggNonResAnalysis_;
     bool doHHWWggFHptOrdered_;
     bool doHHWWggFHminWHJets_;
     bool doHHWWggFHminWHLead2Jet_;
@@ -189,7 +178,6 @@ private:
     bool HHWWgguseZeroVtx_;
 };
 
-
 //---standard
 HHWWggTagProducer::HHWWggTagProducer( const ParameterSet & pSet):
 diphotonToken_( consumes<View<flashgg::DiPhotonCandidate> >( pSet.getParameter<InputTag> ( "DiPhotonTag" ) ) ),
@@ -199,7 +187,6 @@ electronToken_( consumes<View<flashgg::Electron> >( pSet.getParameter<InputTag> 
 muonToken_( consumes<View<flashgg::Muon> >( pSet.getParameter<InputTag> ( "MuonTag" ) ) ),
 METToken_( consumes<View<Met> >( pSet.getParameter<InputTag> ( "METTag" ) ) ),
 mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( pSet.getParameter<InputTag> ( "MVAResultTag" ) ) ),
-rhoTag_( consumes<double>( pSet.getParameter<InputTag>( "rhoTag" ) ) ),
 systLabel_( pSet.getParameter<string> ( "SystLabel" ) ),
 JetIDLevel_( pSet.getParameter<string> ( "JetIDLevel" ) ),
 pujid_wp_pt_bin_1_( pSet.getParameter<std::vector<double> > ( "pujidWpPtBin1" ) ),
@@ -208,18 +195,6 @@ cc_( consumesCollector() )
 
 {
     inputDiPhotonName_= pSet.getParameter<std::string > ( "DiPhotonName" );
-    inputDiPhotonSuffixes_= pSet.getParameter<std::vector<std::string> > ( "DiPhotonSuffixes" );
-    std::vector<edm::InputTag>  diPhotonTags;
-    for (auto & suffix : inputDiPhotonSuffixes_) {
-        systematicsLabels.push_back(suffix);
-        std::string inputName = inputDiPhotonName_;
-        inputName.append(suffix);
-        if (!suffix.empty()) diPhotonTags.push_back(edm::InputTag(inputName));
-        else  diPhotonTags.push_back(edm::InputTag(inputDiPhotonName_));
-    }
-    for ( auto & tag : diPhotonTags ) { diPhotonTokens_.push_back( consumes<edm::View<flashgg::DiPhotonCandidate> >( tag ) ); }
-    
-    inputJetsSuffixes_= pSet.getParameter<std::vector<std::string> > ( "JetsSuffixes" );
     
     auto jetTags = pSet.getParameter<std::vector<edm::InputTag> > ( "JetTags" );
     for( auto & tag : jetTags ) { jetTokens_.push_back( consumes<edm::View<flashgg::Jet> >( tag ) ); }
@@ -238,27 +213,22 @@ cc_( consumesCollector() )
     jetPtThreshold_ = pSet.getParameter<double>( "jetPtThreshold");
     jetEtaThreshold_ = pSet.getParameter<double>( "jetEtaThreshold");
     muPFIsoSumRelThreshold_ = pSet.getParameter<double>( "muPFIsoSumRelThreshold");
-    PhoMVAThreshold_ = pSet.getParameter<double>( "PhoMVAThreshold");
     deltaRJetMuonThreshold_ = pSet.getParameter<double>( "deltaRJetMuonThreshold");
     deltaRPhoLeadJet_ = pSet.getParameter<double>( "deltaRPhoLeadJet");
     deltaRPhoSubLeadJet_ = pSet.getParameter<double>( "deltaRPhoSubLeadJet");
     
     DeltaRTrkElec_ = pSet.getParameter<double>( "DeltaRTrkElec");
-    TransverseImpactParam_ = pSet.getParameter<double>( "TransverseImpactParam");
-    LongitudinalImpactParam_ = pSet.getParameter<double>( "LongitudinalImpactParam");
     
     deltaRPhoElectronThreshold_ = pSet.getParameter<double>( "deltaRPhoElectronThreshold");
     deltaMassElectronZThreshold_ = pSet.getParameter<double>( "deltaMassElectronZThreshold");
     nonTrigMVAThresholds_ =  pSet.getParameter<vector<double > >( "nonTrigMVAThresholds");
     nonTrigMVAEtaCuts_ =  pSet.getParameter<vector<double > >( "nonTrigMVAEtaCuts");
-    electronIsoThreshold_ = pSet.getParameter<double>( "electronIsoThreshold");
     electronEtaThresholds_ = pSet.getParameter<vector<double > >( "electronEtaThresholds");
-    useElectronMVARecipe_=pSet.getParameter<bool>("useElectronMVARecipe");
-    useElectronLooseID_=pSet.getParameter<bool>("useElectronLooseID");
+    ElectronID_ = pSet.getParameter<string>("ElectronID");
+    MuonID_ = pSet.getParameter<string>("MuonID");
     btagThresh_ = pSet.getParameter<double>( "btagThresh");
     BTagTypes_ = pSet.getParameter<vector<string>>( "BTagTypes" );
     doHHWWggTagCutFlowAnalysis_ = pSet.getParameter<bool>( "doHHWWggTagCutFlowAnalysis");
-    // doHHWWggNonResAnalysis_ = pSet.getParameter<bool>( "doHHWWggNonResAnalysis" );
     doHHWWggFHptOrdered_ = pSet.getParameter<bool>( "doHHWWggFHptOrdered" );
     doHHWWggFHminWHJets_ = pSet.getParameter<bool>( "doHHWWggFHminWHJets" );
     doHHWWggFHminWHLead2Jet_ = pSet.getParameter<bool>( "doHHWWggFHminWHLead2Jet" );
@@ -291,52 +261,52 @@ bool HHWWggTagProducer::compMu(const edm::Ptr<flashgg::Muon>& a, const edm::Ptr<
     return a->pt() > b->pt();
 }
 
-bool HHWWggTagProducer::checkPassMVAs( const flashgg::Photon*& leading_photon, const flashgg::Photon*& subleading_photon, edm::Ptr<reco::Vertex>& diphoton_vertex, double EB_Photon_MVA_Threshold, double EE_Photon_MVA_Threshold){
+// bool HHWWggTagProducer::checkPassMVAs( const flashgg::Photon*& leading_photon, const flashgg::Photon*& subleading_photon, edm::Ptr<reco::Vertex>& diphoton_vertex, double EB_Photon_MVA_Threshold, double EE_Photon_MVA_Threshold){
     
-    // MVA Check variables
-    bool lead_pass_TightPhoID = 0, sublead_pass_TightPhoID = 0;
-    double lp_Hgg_MVA = -99, slp_Hgg_MVA = -99;
-    double leading_pho_eta = -99, sub_leading_pho_eta = -99;
+//     // MVA Check variables
+//     bool lead_pass_TightPhoID = 0, sublead_pass_TightPhoID = 0;
+//     double lp_Hgg_MVA = -99, slp_Hgg_MVA = -99;
+//     double leading_pho_eta = -99, sub_leading_pho_eta = -99;
     
-    // Get MVA values wrt diphoton vertex
-    lp_Hgg_MVA = leading_photon->phoIdMvaDWrtVtx( diphoton_vertex );
-    slp_Hgg_MVA = subleading_photon->phoIdMvaDWrtVtx( diphoton_vertex );
+//     // Get MVA values wrt diphoton vertex
+//     lp_Hgg_MVA = leading_photon->phoIdMvaDWrtVtx( diphoton_vertex );
+//     slp_Hgg_MVA = subleading_photon->phoIdMvaDWrtVtx( diphoton_vertex );
     
-    // Get eta values
-    leading_pho_eta = leading_photon->p4().eta();
-    sub_leading_pho_eta = subleading_photon->p4().eta();
+//     // Get eta values
+//     leading_pho_eta = leading_photon->p4().eta();
+//     sub_leading_pho_eta = subleading_photon->p4().eta();
     
-    // leading photon
-    // EB
-    if (( abs(leading_pho_eta) > 0) && ( abs(leading_pho_eta) < 1.4442)){
-        if (lp_Hgg_MVA > EB_Photon_MVA_Threshold) lead_pass_TightPhoID = 1;
-    }
+//     // leading photon
+//     // EB
+//     if (( abs(leading_pho_eta) > 0) && ( abs(leading_pho_eta) < 1.4442)){
+//         if (lp_Hgg_MVA > EB_Photon_MVA_Threshold) lead_pass_TightPhoID = 1;
+//     }
     
-    // EE
-    else if (( abs(leading_pho_eta) > 1.566) && ( abs(leading_pho_eta) < 2.5)){
-        if (lp_Hgg_MVA > EE_Photon_MVA_Threshold) lead_pass_TightPhoID = 1;
-    }
+//     // EE
+//     else if (( abs(leading_pho_eta) > 1.566) && ( abs(leading_pho_eta) < 2.5)){
+//         if (lp_Hgg_MVA > EE_Photon_MVA_Threshold) lead_pass_TightPhoID = 1;
+//     }
     
-    // SubLeading Photon
-    // EB
-    if (( abs(sub_leading_pho_eta) > 0) && ( abs(sub_leading_pho_eta) < 1.4442)){
-        if (slp_Hgg_MVA > EB_Photon_MVA_Threshold) sublead_pass_TightPhoID = 1;
-    }
+//     // SubLeading Photon
+//     // EB
+//     if (( abs(sub_leading_pho_eta) > 0) && ( abs(sub_leading_pho_eta) < 1.4442)){
+//         if (slp_Hgg_MVA > EB_Photon_MVA_Threshold) sublead_pass_TightPhoID = 1;
+//     }
     
-    // EE
-    else if (( abs(sub_leading_pho_eta) > 1.566) && ( abs(sub_leading_pho_eta) < 2.5)){
-        if (slp_Hgg_MVA > EE_Photon_MVA_Threshold) sublead_pass_TightPhoID = 1;
-    }
+//     // EE
+//     else if (( abs(sub_leading_pho_eta) > 1.566) && ( abs(sub_leading_pho_eta) < 2.5)){
+//         if (slp_Hgg_MVA > EE_Photon_MVA_Threshold) sublead_pass_TightPhoID = 1;
+//     }
     
-    if (lead_pass_TightPhoID && sublead_pass_TightPhoID){
-        return 1;
-    }
+//     if (lead_pass_TightPhoID && sublead_pass_TightPhoID){
+//         return 1;
+//     }
     
-    else{
-        return 0;
-    }
+//     else{
+//         return 0;
+//     }
     
-}
+// }
 
 std::vector<double> HHWWggTagProducer::GetMuonVars(const std::vector<edm::Ptr<flashgg::Muon> > &muonPointers, const std::vector<edm::Ptr<reco::Vertex> > &vertexPointers)
 {
@@ -879,7 +849,9 @@ template<typename flashggObj> void HHWWggTagProducer::PrintScaleFactorsObj(flash
 
 // Set Central object weights in output trees for each scale factor
 HHWWggTag HHWWggTagProducer::SetCentralUpDownWeights(HHWWggTag tag_obj_, std::vector<edm::Ptr<flashgg::Electron> > goodElectrons, std::vector<edm::Ptr<flashgg::Muon> > goodMuons,
-                                                     std::vector<edm::Ptr<flashgg::Jet> > tagJets, edm::Ptr<flashgg::DiPhotonCandidate> dipho, bool doHHWWggDebug_)
+                                                     std::vector<edm::Ptr<flashgg::Jet> > tagJets, edm::Ptr<flashgg::DiPhotonCandidate> dipho, bool doHHWWggDebug_, 
+                                                     string MuonID_, double muPFIsoSumRelThreshold_
+                                                     )
 {
     
     //-- Apply scale factors from all weighted objects
@@ -918,9 +890,9 @@ HHWWggTag HHWWggTagProducer::SetCentralUpDownWeights(HHWWggTag tag_obj_, std::ve
     double ElectronIDWeight_down = 1, ElectronRecoWeight_down = 1;
     
     // Muons
-    double MuonMediumIDWeight = 1, MuonLooseRelISOWeight = 1;
-    double MuonMediumIDWeight_up = 1, MuonLooseRelISOWeight_up = 1;
-    double MuonMediumIDWeight_down = 1, MuonLooseRelISOWeight_down = 1;
+    double MuonIDWeight = 1, MuonIsoWeight = 1;
+    double MuonIDWeight_up = 1, MuonIsoWeight_up = 1;
+    double MuonIDWeight_down = 1, MuonIsoWeight_down = 1;
     
     // Jets
     double JetBTagReshapeWeight = 1, UnmatchedPUWeight = 1;
@@ -948,24 +920,63 @@ HHWWggTag HHWWggTagProducer::SetCentralUpDownWeights(HHWWggTag tag_obj_, std::ve
     tag_obj_.setWeight("ElectronRecoWeightDown01sigma",ElectronRecoWeight_down);
     
     // Muons
-    for (unsigned int muon_i = 0; muon_i < goodMuons.size(); muon_i++){
-        MuonMediumIDWeight = MuonMediumIDWeight * goodMuons.at(muon_i)->weight("MuonMediumIDWeightCentral");
-        MuonLooseRelISOWeight = MuonLooseRelISOWeight * goodMuons.at(muon_i)->weight("MuonLooseRelISOWeightCentral");
+    string MuonID_str_central, MuonID_str_up, MuonID_str_down;
+    string MuonISO_str_central, MuonISO_str_up, MuonISO_str_down;
+    if(MuonID_ == "Medium"){
+        MuonID_str_central = "MuonMediumIDWeightCentral";
+        MuonID_str_up = "MuonMediumIDWeightUp01sigma";
+        MuonID_str_down = "MuonMediumIDWeightDown01sigma";
         
-        MuonMediumIDWeight_up = MuonMediumIDWeight_up * goodMuons.at(muon_i)->weight("MuonMediumIDWeightUp01sigma");
-        MuonLooseRelISOWeight_up = MuonLooseRelISOWeight_up * goodMuons.at(muon_i)->weight("MuonLooseRelISOWeightUp01sigma");
-        
-        MuonMediumIDWeight_down = MuonMediumIDWeight_down * goodMuons.at(muon_i)->weight("MuonMediumIDWeightDown01sigma");
-        MuonLooseRelISOWeight_down = MuonLooseRelISOWeight_down * goodMuons.at(muon_i)->weight("MuonLooseRelISOWeightDown01sigma");
     }
-    tag_obj_.setWeight("MuonMediumIDWeightCentral",MuonMediumIDWeight);
-    tag_obj_.setWeight("MuonLooseRelISOWeightCentral",MuonLooseRelISOWeight);
+
+    else if(MuonID_ == "Tight"){
+        MuonID_str_central = "MuonTightIDWeightCentral";
+        MuonID_str_up = "MuonTightIDWeightUp01sigma";
+        MuonID_str_down = "MuonTightIDWeightDown01sigma";
+        
+    }    
+
+    if(muPFIsoSumRelThreshold_ == 0.25){
+        MuonISO_str_central = "MuonLooseRelISOWeightCentral";
+        MuonISO_str_up = "MuonLooseRelISOWeightUp01sigma";
+        MuonISO_str_down = "MuonLooseRelISOWeightDown01sigma";
+    }
+
+    else if(muPFIsoSumRelThreshold_ == 0.15){
+        MuonISO_str_central = "MuonTightRelISOWeightCentral";
+        MuonISO_str_up = "MuonTightRelISOWeightUp01sigma";
+        MuonISO_str_down = "MuonTightRelISOWeightDown01sigma";
+    }    
+
+    if(doHHWWggDebug_){
+        cout << "MuonID : " << MuonID_ << endl;
+        cout << "muPFIsoSumRelThreshold_ : " << muPFIsoSumRelThreshold_ << endl; 
+        cout << "MuonID_str_central : " << MuonID_str_central << endl; 
+        cout << "MuonISO_str_central : " << MuonISO_str_central << endl; 
+    }
+
+    for (unsigned int muon_i = 0; muon_i < goodMuons.size(); muon_i++){
+        // Set muon weight string based on input falgs
+
+        MuonIDWeight = MuonIDWeight * goodMuons.at(muon_i)->weight(MuonID_str_central);
+        MuonIsoWeight = MuonIsoWeight * goodMuons.at(muon_i)->weight(MuonISO_str_central);
+        
+        MuonIDWeight_up = MuonIDWeight_up * goodMuons.at(muon_i)->weight(MuonID_str_up);
+        MuonIsoWeight_up = MuonIsoWeight_up * goodMuons.at(muon_i)->weight(MuonISO_str_up);
+        
+        MuonIDWeight_down = MuonIDWeight_down * goodMuons.at(muon_i)->weight(MuonID_str_down);
+        MuonIsoWeight_down = MuonIsoWeight_down * goodMuons.at(muon_i)->weight(MuonISO_str_down);
+
+    }
+
+    tag_obj_.setWeight("MuonIDWeightCentral",MuonIDWeight);
+    tag_obj_.setWeight("MuonIsoWeightCentral",MuonIsoWeight);
     
-    tag_obj_.setWeight("MuonMediumIDWeightUp01sigma",MuonMediumIDWeight_up);
-    tag_obj_.setWeight("MuonLooseRelISOWeightUp01sigma",MuonLooseRelISOWeight_up);
+    tag_obj_.setWeight("MuonIDWeightUp01sigma",MuonIDWeight_up);
+    tag_obj_.setWeight("MuonIsoWeightUp01sigma",MuonIsoWeight_up);
     
-    tag_obj_.setWeight("MuonMediumIDWeightDown01sigma",MuonMediumIDWeight_down);
-    tag_obj_.setWeight("MuonLooseRelISOWeightDown01sigma",MuonLooseRelISOWeight_down);
+    tag_obj_.setWeight("MuonIDWeightDown01sigma",MuonIDWeight_down);
+    tag_obj_.setWeight("MuonIsoWeightDown01sigma",MuonIsoWeight_down);    
     
     // Jets
     for (unsigned int TagJet_i = 0; TagJet_i < tagJets.size(); TagJet_i++){

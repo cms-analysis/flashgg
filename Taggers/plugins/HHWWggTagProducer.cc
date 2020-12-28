@@ -69,8 +69,6 @@ namespace flashgg {
       event.getByToken( METToken_, METs );
       event.getByToken( mvaResultToken_, mvaResults );
       event.getByToken( vertexToken_, vertices );
-      event.getByToken( rhoTag_, rho);
-      double rho_    = *rho;
 
       //---output collection
       int n_good_electrons = 0;
@@ -163,8 +161,8 @@ namespace flashgg {
           edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( diphoIndex );
 
           //-- Get Photons
-          const flashgg::Photon* leadPho = dipho->leadingPhoton();
-          const flashgg::Photon* subleadPho = dipho->subLeadingPhoton();
+          // const flashgg::Photon* leadPho = dipho->leadingPhoton();
+          // const flashgg::Photon* subleadPho = dipho->subLeadingPhoton();
 
            //-- Vertex Info 
           diphoton_vertex = dipho->vtx();
@@ -195,12 +193,7 @@ namespace flashgg {
           dipho_MVA = mvares->result;
           diPho_pT=dipho->pt();
 
-          // Electrons
-          goodElectrons = selectStdElectrons( electrons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, electronEtaThresholds_,
-                                                                              useElectronMVARecipe_,useElectronLooseID_,
-                                                                              deltaRPhoElectronThreshold_,DeltaRTrkElec_,deltaMassElectronZThreshold_,
-                                                                              rho_, event.isRealData() );
-
+          // Save information for all electrons and muons without selections 
           if(doHHWWggTagCutFlowAnalysis_){
             for( unsigned int ei = 0; ei <  electrons->size() ; ei++ ){
               edm::Ptr<flashgg::Electron> theElectron = electrons->ptrAt( ei );
@@ -211,9 +204,20 @@ namespace flashgg {
               allMuons.push_back(theMuon);
             }
           }
-          // Muons
-          goodMuons = selectMuons( muons->ptrs(), dipho, vertices->ptrs(), muonEtaThreshold_, leptonPtThreshold_,
-          muPFIsoSumRelThreshold_, deltaRMuonPhoThreshold_, deltaRMuonPhoThreshold_ );
+
+          // Save Good electron and muon vectors 
+
+          // Electrons
+          goodElectrons = LeptonSelection2018::selectElectrons( electrons->ptrs(), dipho, leptonPtThreshold_, electronEtaThresholds_, deltaRPhoElectronThreshold_,
+                                                                deltaMassElectronZThreshold_, DeltaRTrkElec_, doHHWWggDebug_, ElectronID_ 
+          );
+
+
+          // Muons 
+          goodMuons = LeptonSelection2018::selectMuons( muons->ptrs(), dipho, vertices->ptrs(), leptonPtThreshold_, muonEtaThreshold_, muPFIsoSumRelThreshold_, 
+                                                        deltaRMuonPhoThreshold_, doHHWWggDebug_, MuonID_
+
+          );
 
           // If doing cut flow analysis, save Muon IDs
           if(doHHWWggTagCutFlowAnalysis_) MuonVars = GetMuonVars(muons->ptrs(), vertices->ptrs());
@@ -225,7 +229,7 @@ namespace flashgg {
           hasGoodMuons = ( goodMuons.size() > 0 );
 
           // Jets
-          unsigned int jetCollectionIndex = diphotons->at( diphoIndex ).jetCollectionIndex(); // not looping over systematics
+          unsigned int jetCollectionIndex = diphotons->at( diphoIndex ).jetCollectionIndex(); 
           edm::Handle<edm::View<flashgg::Jet> > Jets_;
           event.getByToken( jetTokens_[jetCollectionIndex], Jets_); 
           std::vector<edm::Ptr<Jet> > tagJets;
@@ -363,6 +367,7 @@ namespace flashgg {
 
               // Set tag object attributes 
               tag_obj.setSystLabel( systLabel_);
+              // tag_obj.setZeroVertex( zero_vertex );
               tag_obj.setDiPhotonIndex( diphoIndex );
               tag_obj.setCategoryNumber( catnum );
               tag_obj.setGenMhh( genMhh );
@@ -376,7 +381,7 @@ namespace flashgg {
 
               //-- Include Scale Factors 
               // Set CentralWeight values for each SF to access in trees 
-              tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);   
+              tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);   
 
               // if(doHHWWggDebug_){
               //   cout << "Electron scale factors:" << endl; 
@@ -389,11 +394,11 @@ namespace flashgg {
               //   }
               // }
 
-              // if(doHHWWggDebug_){
-              //   cout << "*********************************************************" << endl; 
-              //   cout << "HHWWgg Object Scale Factors:" << endl; 
-              //   PrintScaleFactorsObj(tag_obj);
-              // }
+              if(doHHWWggDebug_){
+                cout << "*********************************************************" << endl; 
+                cout << "HHWWgg Object Scale Factors:" << endl; 
+                PrintScaleFactorsObj(tag_obj);
+              }
 
               // Push back tag object 
               HHWWggtags->push_back( tag_obj );
@@ -483,6 +488,7 @@ namespace flashgg {
                 tag_obj = tag_obj_;
               }
               tag_obj.setSystLabel( systLabel_);
+              // tag_obj.setZeroVertex( zero_vertex );
               tag_obj.setDiPhotonIndex( diphoIndex );
               tag_obj.setCategoryNumber( catnum );
               tag_obj.setGenMhh( genMhh );
@@ -498,7 +504,7 @@ namespace flashgg {
                  
               //-- Include Scale Factors 
               // Set CentralWeight values for each SF to access in trees 
-              tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);                
+              tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);                
 
               HHWWggtags->push_back( tag_obj );
               FilledTag = 1;
@@ -518,7 +524,8 @@ namespace flashgg {
 
             num_FL_dr = GetNumFLDR(goodElectrons, goodMuons, deltaRLeps_);
 
-            if ( (n_good_leptons >=2 ) && (theMET->getCorPt() >= FL_METThreshold_) && num_FL_dr>=1 && (leadPho->p4().pt()+subleadPho->p4().pt())>0){
+            // if ( (n_good_leptons >=2 ) && (theMET->getCorPt() >= FL_METThreshold_) && num_FL_dr>=1 && (leadPho->p4().pt()+subleadPho->p4().pt())>0){
+            if ( (n_good_leptons >=2 ) && (theMET->getCorPt() >= FL_METThreshold_) && num_FL_dr>=1){
               if(doHHWWggDebug_) cout << "Filling Fully-Leptonic category..." << endl;
               catnum = 2; 
               double Save=0.;
@@ -600,6 +607,7 @@ namespace flashgg {
                     }
 
                   tag_obj.setSystLabel(systLabel_);
+                  // tag_obj.setZeroVertex( zero_vertex );
                   tag_obj.setDiPhotonIndex( diphoIndex );
                   tag_obj.setMVA( -0.9 );
                   tag_obj.setCategoryNumber( catnum );
@@ -611,7 +619,7 @@ namespace flashgg {
                   tag_obj.SetDiPhoPt(diPho_pT);
                   //-- Include Scale Factors 
                   // Set CentralWeight values for each SF to access in trees 
-                  tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);    
+                  tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);    
 
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
@@ -689,6 +697,7 @@ namespace flashgg {
                     tag_obj = tag_obj_;
                   }
                   tag_obj.setSystLabel(systLabel_);
+                  // tag_obj.setZeroVertex( zero_vertex );
                   tag_obj.setDiPhotonIndex( diphoIndex );
                   tag_obj.setMVA( -0.9 );
                   tag_obj.setCategoryNumber( catnum);
@@ -701,7 +710,7 @@ namespace flashgg {
                   tag_obj.SetDiPhoPt(diPho_pT);
                   //-- Include Scale Factors 
                   // Set CentralWeight values for each SF to access in trees 
-                  tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);    
+                  tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);    
 
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
@@ -781,6 +790,7 @@ namespace flashgg {
                     tag_obj = tag_obj_;
                   }
                   tag_obj.setSystLabel(systLabel_);
+                  // tag_obj.setZeroVertex( zero_vertex );
                   tag_obj.setDiPhotonIndex( diphoIndex );
                   tag_obj.setMVA( -0.9 );
                   tag_obj.setCategoryNumber( catnum );
@@ -793,7 +803,7 @@ namespace flashgg {
                   tag_obj.SetDiPhoPt(diPho_pT);                    
                   //-- Include Scale Factors 
                   // Set CentralWeight values for each SF to access in trees 
-                  tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);    
+                  tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);    
 
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
@@ -818,6 +828,7 @@ namespace flashgg {
               catnum = 3;
               HHWWggTag tag_obj(dipho, allElectrons, goodElectrons, allMuons, goodMuons, theMET, allJets, tagJets, Cut_Variables, MuonVars, JetVars);
               tag_obj.setSystLabel(systLabel_);
+              // tag_obj.setZeroVertex( zero_vertex );
               tag_obj.setDiPhotonIndex( diphoIndex );
               tag_obj.setCategoryNumber( catnum ); // Untagged category. Does not meet any selection criteria but want to save event
               tag_obj.setGenMhh( genMhh );
@@ -835,13 +846,13 @@ namespace flashgg {
               tag_obj.SetDiPhoPt(diPho_pT);                 
               //-- Include Scale Factors 
               // Set CentralWeight values for each SF to access in trees 
-              tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_);   
+              tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);   
 
-              // if(doHHWWggDebug_){
-                // cout << "*********************************************************" << endl; 
-                // cout << "HHWWgg Object Scale Factors:" << endl; 
-                // PrintScaleFactorsObj(tag_obj);
-              // }
+              if(doHHWWggDebug_){
+                cout << "*********************************************************" << endl; 
+                cout << "HHWWgg Object Scale Factors:" << endl; 
+                PrintScaleFactorsObj(tag_obj);
+              }
 
               // Push back tag object 
               HHWWggtags->push_back( tag_obj );

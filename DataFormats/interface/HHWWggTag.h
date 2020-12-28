@@ -55,6 +55,7 @@ namespace flashgg {
 
     std::vector<flashgg::Muon> GetMuons(std::vector<edm::Ptr<flashgg::Muon>>);
     std::vector<flashgg::Jet> GetJets(std::vector<edm::Ptr<flashgg::Jet>>);
+    // void setZeroVertex(edm::Ptr<reco::Vertex>);
     void SetGoodJets(std::vector<edm::Ptr<flashgg::Jet>>);
     void SetAllJets(std::vector<edm::Ptr<flashgg::Jet>>);
     void SetDiPhoMVA(double);
@@ -143,7 +144,9 @@ namespace flashgg {
     const std::vector<flashgg::Muon> goodMuons() const {return goodMuons_;}
     const std::vector<flashgg::Jet> allJets() const {return allJets_;}
     const std::vector<flashgg::Jet> goodJets() const {return goodJets_;}
+    // const edm::Ptr<reco::Vertex> ZeroVertex() const {return ZeroVertex_;}
     const float DiphoCentralWeight() const {return DiphoCentralWeight_;}
+// const std::vector<edm::Ptr<reco::Vertex>> vtx
 
     const LorentzVector & dijet() const { return dijet_; }
     const LorentzVector & dijet2() const { return dijet2_; }
@@ -194,6 +197,7 @@ namespace flashgg {
     std::vector<flashgg::Muon> goodMuons_;
     std::vector<flashgg::Jet> allJets_;
     std::vector<flashgg::Jet> goodJets_;
+    // edm::Ptr<reco::Vertex> ZeroVertex_;
 
     LorentzVector dijet_;
     LorentzVector dijet2_;

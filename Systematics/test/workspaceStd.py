@@ -468,17 +468,20 @@ if is_signal:
             variablesToUse.append("electronVetoSF%s01sigma[1,-999999.,999999.] := weight(\"electronVetoSF%s01sigma\")" % (direction,direction))
             variablesToUse.append("TriggerWeight%s01sigma[1,-999999.,999999.] := weight(\"TriggerWeight%s01sigma\")" % (direction,direction))
             variablesToUse.append("FracRVWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
-            # variablesToUse.append("MuonIDWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sIDWeight%s01sigma\")" % (direction,str(customize.metaConditions["MUON_ID"]),direction))
-            variablesToUse.append("MuonMediumIDWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sIDWeight%s01sigma\")" % (direction,str(customize.metaConditions["MUON_ID"]),direction)) ##-- Medium Muon ID selection
+            if customize.HHWWggTagsOnly: variablesToUse.append("MuonIDWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sIDWeight%s01sigma\")" % (direction,str(customize.metaConditions["HHWWggTag"]["MUON_ID"]),direction))
+            else: variablesToUse.append("MuonIDWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sIDWeight%s01sigma\")" % (direction,str(customize.metaConditions["MUON_ID"]),direction))
+            
+            # variablesToUse.append("MuonMediumIDWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sIDWeight%s01sigma\")" % (direction,str(customize.metaConditions["MUON_ID"]),direction)) ##-- Medium Muon ID selection
             variablesToUse.append("ElectronIDWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"ElectronIDWeight%s01sigma\")" % (direction,direction))
             variablesToUse.append("ElectronRecoWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"ElectronRecoWeight%s01sigma\")" % (direction,direction))
-            # variablesToUse.append("MuonIsoWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sISOWeight%s01sigma\")" % (direction,str(customize.metaConditions['MUON_ISO']),direction))
-            variablesToUse.append("MuonLooseRelISOWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sISOWeight%s01sigma\")" % (direction,str(customize.metaConditions['MUON_ISO']),direction)) ##-- Loose Muon ISO selection
+            if customize.HHWWggTagsOnly: variablesToUse.append("MuonIsoWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sISOWeight%s01sigma\")" % (direction,str(customize.metaConditions["HHWWggTag"]['MUON_ISO']),direction))
+            else: variablesToUse.append("MuonIsoWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sISOWeight%s01sigma\")" % (direction,str(customize.metaConditions['MUON_ISO']),direction))
+            
+            # variablesToUse.append("MuonLooseRelISOWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sISOWeight%s01sigma\")" % (direction,str(customize.metaConditions['MUON_ISO']),direction)) ##-- Loose Muon ISO selection
             variablesToUse.append("JetBTagCutWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"JetBTagCutWeight%s01sigma\")" % (direction,direction))
             variablesToUse.append("JetBTagReshapeWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"JetBTagReshapeWeight%s01sigma\")" % (direction,direction))
             if applyL1Prefiring:
                 variablesToUse.append("prefireWeight%s01sigma[1,-999999.,999999.] := weight(\"prefireWeight%s01sigma\")" % (direction,direction))
-                # variablesToUse.append("prefireWeightCentral[1,-999999.,999999.] := weight(\"prefireWeight\")")
             variablesToUse.append("THU_ggH_Mu%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Mu%s01sigma\")" % (direction,direction))
             variablesToUse.append("THU_ggH_Res%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Res%s01sigma\")" % (direction,direction))
             variablesToUse.append("THU_ggH_Mig01%s01sigma[1,-999999.,999999.] := getTheoryWeight(\"THU_ggH_Mig01%s01sigma\")" % (direction,direction))
