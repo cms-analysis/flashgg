@@ -475,6 +475,7 @@ class HHWWggCustomize():
 
         ##-- Jets
         self.process.flashggHHWWggTag.JetIDLevel=cms.string(str(self.metaConditions["HHWWggTag"]["jetID"]))
+        self.process.flashggHHWWggTag.applyPUJetID = cms.bool(self.metaConditions["HHWWggTag"]["applyPUJetID"]) 
 
         ##-- Electrons 
         Ele_ID_version = str(self.metaConditions["HHWWggTag"]["Ele_ID_version"])

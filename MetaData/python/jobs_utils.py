@@ -371,6 +371,7 @@ class JobsManager(object):
                     dargs = jobargs+shell_args("nJobs=%d" % (njobs)) 
                     ret,out = parallel.run("python %s" % pyjob,dargs+shell_args("dryRun=1 getMaxJobs=1 dumpPython=%s.py" % os.path.join(options.outputDir,dsetName) ),interactive=True)[2]
                     maxJobs = self.getMaxJobs(out)
+                    #maxJobs = 100 ##-- Hardcoded to take less time to run over datasets                     
                     print maxJobs
                     if maxJobs < 0:
                         print "Error getting number of jobs to be submitted"

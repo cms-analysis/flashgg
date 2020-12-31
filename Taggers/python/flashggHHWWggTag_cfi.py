@@ -64,6 +64,7 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     deltaRLeps = cms.double(0.4),
                                     FL_METThreshold = cms.double(20.), ##-- Only used for Fully-Leptonic Final State 
                                     JetIDLevel = cms.string(''), # Tight, Tight2017 or Tight2018 as set in HHWWggCustomize from MetaConditions 
+                                    applyPUJetID = cms.bool(True),
                                     ## define the pujid working point 
                                     pujidWpPtBin1 = cms.vdouble(pujidPtBin1_tight), ## WP for 20 < pT < 30 
                                     pujidWpPtBin2 = cms.vdouble(pujidPtBin2_tight), ## WP for 30 < pT < 50                                    

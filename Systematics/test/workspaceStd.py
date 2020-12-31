@@ -417,7 +417,7 @@ useEGMTools(process)
 
 # Only run systematics for signal events
 # convention: ggh vbf wzh (wh zh) tth
-signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh","WWgg","GluGluToHH"]
+signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh","WWgg","GluGluToHHTo2G2Qlnu","GluGluToHHTo2G2ZTo2G4Q","GluGluToHHTo2G2l2nu","GluGluToHHTo2G4Q"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 print"is_signal:",is_signal
 
@@ -470,14 +470,10 @@ if is_signal:
             variablesToUse.append("FracRVWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
             if customize.HHWWggTagsOnly: variablesToUse.append("MuonIDWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sIDWeight%s01sigma\")" % (direction,str(customize.metaConditions["HHWWggTag"]["MUON_ID"]),direction))
             else: variablesToUse.append("MuonIDWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sIDWeight%s01sigma\")" % (direction,str(customize.metaConditions["MUON_ID"]),direction))
-            
-            # variablesToUse.append("MuonMediumIDWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sIDWeight%s01sigma\")" % (direction,str(customize.metaConditions["MUON_ID"]),direction)) ##-- Medium Muon ID selection
             variablesToUse.append("ElectronIDWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"ElectronIDWeight%s01sigma\")" % (direction,direction))
             variablesToUse.append("ElectronRecoWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"ElectronRecoWeight%s01sigma\")" % (direction,direction))
             if customize.HHWWggTagsOnly: variablesToUse.append("MuonIsoWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sISOWeight%s01sigma\")" % (direction,str(customize.metaConditions["HHWWggTag"]['MUON_ISO']),direction))
             else: variablesToUse.append("MuonIsoWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sISOWeight%s01sigma\")" % (direction,str(customize.metaConditions['MUON_ISO']),direction))
-            
-            # variablesToUse.append("MuonLooseRelISOWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sISOWeight%s01sigma\")" % (direction,str(customize.metaConditions['MUON_ISO']),direction)) ##-- Loose Muon ISO selection
             variablesToUse.append("JetBTagCutWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"JetBTagCutWeight%s01sigma\")" % (direction,direction))
             variablesToUse.append("JetBTagReshapeWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"JetBTagReshapeWeight%s01sigma\")" % (direction,direction))
             if applyL1Prefiring:
@@ -677,7 +673,7 @@ for tag in tagList:
       isBinnedOnly = (systlabel !=  "")
       is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
       ##-- Don't have PDF weights for HHWWgg yet 
-      if (not customize.doHHWWggTag) and ( customize.doPdfWeights and customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId.count("bbh_") or customize.processId.count("thw_") or customize.processId.count("thq_")):
+      if ( customize.doPdfWeights and customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId.count("bbh_") or customize.processId.count("thw_") or customize.processId.count("thq_")):
           #print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
@@ -745,7 +741,13 @@ if ((customize.processId.count("wh") or customize.processId.count("zh")) and not
 
 #pythia8 has an unanticipated EM showering feature, check have two photons from hard scatter
 process.penultimateFilter= cms.Sequence()
-if customize.processId.count("WWgg") or customize.processId.count("ttH"):
+HHWWgg_FinalStates = ["GluGluToHHTo2G2Qlnu","GluGluToHHTo2G2ZTo2G4Q","GluGluToHHTo2G2l2nu","GluGluToHHTo2G4Q"]
+isHHWWgg_FinalState = 0
+for HHWWgg_FinalState in HHWWgg_FinalStates:
+    if customize.processId.count(HHWWgg_FinalState):
+        isHHWWgg_FinalState = 1 
+
+if (isHHWWgg_FinalState or customize.processId.count("ttH")):
 # if customize.processId.count("ggF_X") or customize.processId.count("ttH"):
 #  if customize.processId == "th_125": # for this sample the filter removes also H -> ZG
     process.load("flashgg/Systematics/HardProcessFinalStateFilter_cfi")

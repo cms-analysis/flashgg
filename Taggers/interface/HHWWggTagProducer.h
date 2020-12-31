@@ -110,6 +110,7 @@ private:
     std::vector< std::string > systematicsLabels;
     
     string JetIDLevel_;
+    bool applyPUJetID_; 
     std::vector<double> pujid_wp_pt_bin_1_;
     std::vector<double> pujid_wp_pt_bin_2_;    
     
@@ -173,7 +174,6 @@ private:
     double dipho_MVA;
     edm::InputTag genInfo_;
     edm::EDGetTokenT<GenEventInfoProduct> genInfoToken_;
-    // TH1F* nEvents;
     
     bool HHWWgguseZeroVtx_;
 };
@@ -189,6 +189,7 @@ METToken_( consumes<View<Met> >( pSet.getParameter<InputTag> ( "METTag" ) ) ),
 mvaResultToken_( consumes<View<flashgg::DiPhotonMVAResult> >( pSet.getParameter<InputTag> ( "MVAResultTag" ) ) ),
 systLabel_( pSet.getParameter<string> ( "SystLabel" ) ),
 JetIDLevel_( pSet.getParameter<string> ( "JetIDLevel" ) ),
+applyPUJetID_( pSet.getParameter<bool> ( "applyPUJetID" )),
 pujid_wp_pt_bin_1_( pSet.getParameter<std::vector<double> > ( "pujidWpPtBin1" ) ),
 pujid_wp_pt_bin_2_( pSet.getParameter<std::vector<double> > ( "pujidWpPtBin2" ) ),
 cc_( consumesCollector() )

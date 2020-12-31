@@ -100,7 +100,8 @@ namespace flashgg {
       Ptr<flashgg::Jet> jet2;
       Ptr<flashgg::Jet> jet3;
       Ptr<flashgg::Jet> jet4;
-      bool keepJet = true;
+      bool keepJet = 1;
+      bool passPUJetID = 1;
 
       // Saved Objects after selections
       std::vector<edm::Ptr<flashgg::Electron> > goodElectrons;
@@ -123,8 +124,9 @@ namespace flashgg {
       //-- MC truth
       TagTruthBase truth_obj;
       double genMhh = 0.;
-      double genCosThetaStar_CS = 0.;      
-      if( ! event.isRealData() ) {
+      double genCosThetaStar_CS = 0.;   
+      bool isData = event.isRealData();   
+      if( ! isData ) {
           Handle<View<reco::GenParticle> > genParticles;
           std::vector<edm::Ptr<reco::GenParticle> > selHiggses;
           event.getByToken( genParticleToken_, genParticles );
@@ -238,6 +240,10 @@ namespace flashgg {
           if(doHHWWggTagCutFlowAnalysis_) JetVars = GetJetVars(Jets_->ptrs(), dipho);
 
           // Jet Selections
+          if(doHHWWggDebug_){
+            cout << "applyPUJetID: " << applyPUJetID_ << endl; 
+          }
+
           for( unsigned int candIndex_outer = 0; candIndex_outer <  Jets_->size() ; candIndex_outer++ )
               {
                   keepJet = true;
@@ -264,32 +270,35 @@ namespace flashgg {
 
                   if( dRPhoLeadJet < deltaRPhoLeadJet_ || dRPhoSubLeadJet < deltaRPhoSubLeadJet_ ) { continue; }
 
-                  // // PUJet ID Selection 
-                  // // new PUJID for differents pt bins
-                  // std::vector<std::pair<double,double> > eta_cuts_(4);
-                  // eta_cuts_[0] = std::make_pair (0    ,2.50 );
-                  // eta_cuts_[1] = std::make_pair (2.50 ,2.75 );
-                  // eta_cuts_[2] = std::make_pair (2.75 ,3.00 );
-                  // eta_cuts_[3] = std::make_pair (3.00 ,10);
-                  
-                  // if ( (!pujid_wp_pt_bin_1_.empty())  &&
-                  //     (!pujid_wp_pt_bin_2_.empty())  ){
-                  //     bool pass=false;
-                  //     for (UInt_t eta_bin=0; eta_bin < pujid_wp_pt_bin_1_.size(); eta_bin++ ){
-                  //         if ( fabs( thejet->eta() ) >  eta_cuts_[eta_bin].first &&
-                  //             fabs( thejet->eta() ) <= eta_cuts_[eta_bin].second){
-                  //             if ( thejet->pt() >  20 &&
-                  //                 thejet->pt() <= 30 && thejet->puJetIdMVA() > pujid_wp_pt_bin_1_[eta_bin] )
-                  //                 pass=true;
-                  //             if ( thejet->pt() >  30 &&
-                  //                 thejet->pt() <= 50 && thejet->puJetIdMVA() > pujid_wp_pt_bin_2_[eta_bin] )
-                  //                 pass=true;
-                  //             if (thejet->pt() > 50) pass = true;
-                  //         }
-                  //     }
-                  //     // if(doHHWWggDebug_) std::cout <<  " pt="<< thejet->pt() << " :eta: "<< thejet->eta() << " :mva: "<< thejet->puJetIdMVA() << "  pass == " << pass << std::endl;
-                  //     if (!pass) continue; 
-                  // }
+                  if(applyPUJetID_){
+                    // PUJet ID Selection 
+                    std::vector<std::pair<double,double> > eta_cuts_(4);
+                    eta_cuts_[0] = std::make_pair (0    , 2.50 );
+                    eta_cuts_[1] = std::make_pair (2.50 , 2.75 );
+                    eta_cuts_[2] = std::make_pair (2.75 , 3.00 );
+                    eta_cuts_[3] = std::make_pair (3.00 , 10);
+                    
+                    if ( (!pujid_wp_pt_bin_1_.empty())  &&
+                        (!pujid_wp_pt_bin_2_.empty())  ){
+                        passPUJetID = 0;
+                        for (UInt_t eta_bin = 0; eta_bin < pujid_wp_pt_bin_1_.size(); eta_bin++ ){
+                            if ( fabs( thejet->eta() ) >  eta_cuts_[eta_bin].first &&
+                                fabs( thejet->eta() ) <= eta_cuts_[eta_bin].second){
+                                if ( thejet->pt() >  20 &&
+                                    thejet->pt() <= 30 && thejet->puJetIdMVA() > pujid_wp_pt_bin_1_[eta_bin] )
+                                    passPUJetID = 1;
+                                if ( thejet->pt() >  30 &&
+                                    thejet->pt() <= 50 && thejet->puJetIdMVA() > pujid_wp_pt_bin_2_[eta_bin] )
+                                    passPUJetID = 1;
+                                if (thejet->pt() > 50) passPUJetID = 1;
+                            }
+                        }
+                        // if(doHHWWggDebug_) std::cout <<  " pt="<< thejet->pt() << " :eta: "<< thejet->eta() << " :mva: "<< thejet->puJetIdMVA() << "  pass == " << pass << std::endl;
+                        if (!passPUJetID){
+                          keepJet = false;
+                        }  
+                    }
+                  }
 
                   if( hasGoodElec )
                       for( unsigned int electronIndex = 0; electronIndex < goodElectrons.size(); electronIndex++ )
@@ -381,18 +390,21 @@ namespace flashgg {
 
               //-- Include Scale Factors 
               // Set CentralWeight values for each SF to access in trees 
-              tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);   
+              if(!isData) tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);
 
-              // if(doHHWWggDebug_){
-              //   cout << "Electron scale factors:" << endl; 
-              //   if(goodElectrons.size() > 0){
-              //     PrintScaleFactorsPtr(goodElectrons[0]);
-              //   }
-              //   cout << "Muon scale factors:" << endl; 
-              //   if(goodMuons.size() > 0){
-              //     PrintScaleFactorsPtr(goodMuons[0]);
-              //   }
-              // }
+              if(doHHWWggDebug_){
+                if(tagJets.size() > 0){
+                  cout << "*********************************************************" << endl; 
+                  cout << "Leading Good Jet Scale Factors:" << endl; 
+                  PrintScaleFactorsPtr(tagJets[0]);
+                }
+              }
+
+              if(doHHWWggDebug_){
+                  cout << "*********************************************************" << endl; 
+                  cout << "Diphoton Scale Factors:" << endl; 
+                  PrintScaleFactorsObj(*dipho);
+              }
 
               if(doHHWWggDebug_){
                 cout << "*********************************************************" << endl; 
@@ -403,7 +415,7 @@ namespace flashgg {
               // Push back tag object 
               HHWWggtags->push_back( tag_obj );
               FilledTag = 1; 
-              if( ! event.isRealData() ) {
+              if( ! isData ) {
                 HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
               }
 
@@ -503,12 +515,12 @@ namespace flashgg {
               tag_obj.SetDiPhoPt(diPho_pT);
                  
               //-- Include Scale Factors 
-              // Set CentralWeight values for each SF to access in trees 
-              tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);                
+              // Set CentralWeight values for each SF to access in trees   
+              if(!isData) tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);  
 
               HHWWggtags->push_back( tag_obj );
               FilledTag = 1;
-              if( ! event.isRealData() ) {
+              if( ! isData ) {
                 HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
               }
             }  // if (n_good_leptons==0 && n_good_jets>=4)
@@ -618,14 +630,14 @@ namespace flashgg {
                   tag_obj.SetDiPhoMVA(dipho_MVA);
                   tag_obj.SetDiPhoPt(diPho_pT);
                   //-- Include Scale Factors 
-                  // Set CentralWeight values for each SF to access in trees 
-                  tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);    
+                  // Set CentralWeight values for each SF to access in trees   
+                  if(!isData) tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);
 
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
                   HHWWggtags->push_back( tag_obj );
                   FilledTag = 1;
-                  if( ! event.isRealData() ) {
+                  if( ! isData ) {
                     HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
                   }
 
@@ -700,7 +712,7 @@ namespace flashgg {
                   // tag_obj.setZeroVertex( zero_vertex );
                   tag_obj.setDiPhotonIndex( diphoIndex );
                   tag_obj.setMVA( -0.9 );
-                  tag_obj.setCategoryNumber( catnum);
+                  tag_obj.setCategoryNumber( catnum );
                   //-- Include Scale Factors 
                   DiphoCentralWeight = dipho->centralWeight();
                   prefireWeight = dipho->weight("prefireWeightCentral"); // if setting pre fire weight by hand 
@@ -710,19 +722,17 @@ namespace flashgg {
                   tag_obj.SetDiPhoPt(diPho_pT);
                   //-- Include Scale Factors 
                   // Set CentralWeight values for each SF to access in trees 
-                  tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);    
+                  if(!isData) tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);
 
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
                   HHWWggtags->push_back( tag_obj );
                   FilledTag = 1;
-                  if( ! event.isRealData() ) {
+                  if( ! isData ) {
                     HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
                   }
               }
             }
-
-
 
               if (n_good_muons >=1 && n_good_electrons >= 1){
               if (n_good_electrons == 1 && n_good_muons == 1){
@@ -803,13 +813,13 @@ namespace flashgg {
                   tag_obj.SetDiPhoPt(diPho_pT);                    
                   //-- Include Scale Factors 
                   // Set CentralWeight values for each SF to access in trees 
-                  tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);    
+                  if(!isData) tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);   
 
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );                  
                   HHWWggtags->push_back( tag_obj );
                   FilledTag = 1;
-                  if( ! event.isRealData() ) {
+                  if( ! isData ) {
                     HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
                   }
               }
@@ -819,9 +829,6 @@ namespace flashgg {
           } // FL selection
 
           // Untagged category
-          // Only push tag into this category if catnum has not changed (not tagged by other categories)
-          // If running on "*-Only", do not spend time filling untagged category. In this case make sure selections are loose enough for manipulation 
-          // if(FilledTag == 0 && (HHWWggAnalysisChannel_ != "SL-Only" && HHWWggAnalysisChannel_ != "FH-Only" && HHWWggAnalysisChannel_ != "FL-Only") ){ 
           if(FilledTag == 0 && FillUntagged_){
             if(doHHWWggTagCutFlowAnalysis_){
               if(doHHWWggDebug_) cout << "Filling untagged category..." << endl;
@@ -846,7 +853,21 @@ namespace flashgg {
               tag_obj.SetDiPhoPt(diPho_pT);                 
               //-- Include Scale Factors 
               // Set CentralWeight values for each SF to access in trees 
-              tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);   
+              if(!isData) tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_);  
+
+              if(doHHWWggDebug_){
+                if(tagJets.size() > 0){
+                  cout << "*********************************************************" << endl; 
+                  cout << "Leading Good Jet Scale Factors:" << endl; 
+                  PrintScaleFactorsPtr(tagJets[0]);
+                }
+              }
+
+              if(doHHWWggDebug_){
+                  cout << "*********************************************************" << endl; 
+                  cout << "Diphoton Scale Factors:" << endl; 
+                  PrintScaleFactorsObj(*dipho);
+              }
 
               if(doHHWWggDebug_){
                 cout << "*********************************************************" << endl; 
@@ -857,7 +878,7 @@ namespace flashgg {
               // Push back tag object 
               HHWWggtags->push_back( tag_obj );
               FilledTag = 1;  // actually need to configure this so that untagged isn't filled unless other preselected diphotons checked 
-              if( ! event.isRealData() ) {
+              if( ! isData ) {
                 HHWWggtags->back().setTagTruth( edm::refToPtr( edm::Ref<vector<TagTruthBase> >( rTagTruth, 0 ) ) );
               }
             } // doHHWWggTagCutFlowAnalysis_
