@@ -78,6 +78,22 @@ cd $CMSSW_BASE/src
 scram b -j 4
 ```
 
+Depending on the status of the classes compared to the version of the classes_def.xml file, you may receive an error like:
+
+```bash
+error: class 'flashgg::HHWWggTag' has a different checksum for ClassVersion 39. Increment ClassVersion to 40 and assign it to checksum 1253491559
+```
+
+This can be fixed by updating the class version like so:
+
+```bash
+cd flashgg
+scram build updateclassversion 
+mv DataFormats/src/classes_def.xml.generated 
+DataFormats/src/classes_def.xml
+scram b -j
+```
+
 ## Setting up a voms Proxy
 
 To access grid files to run the tagger on, you must run the following commands:
