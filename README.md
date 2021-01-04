@@ -89,8 +89,7 @@ This can be fixed by updating the class version like so:
 ```bash
 cd flashgg
 scram build updateclassversion 
-mv DataFormats/src/classes_def.xml.generated 
-DataFormats/src/classes_def.xml
+mv DataFormats/src/classes_def.xml.generated DataFormats/src/classes_def.xml
 scram b -j
 ```
 
