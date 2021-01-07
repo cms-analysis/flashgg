@@ -356,8 +356,8 @@ print
 printSystematicInfo(process)
 
 ## rerun rivet for stage 1p1 info
-if customize.useParentDataset and not customize.processId == "Data":
-    runRivetSequence(process, customize.metaConditions, customize.processId)
+#if customize.useParentDataset and not customize.processId == "Data":
+#    runRivetSequence(process, customize.metaConditions, customize.processId)
 
 # call the customization
 customize(process)
