@@ -137,25 +137,25 @@ customize.options.register('doHHWWggNonResAnalysis', # If true and doing HHWWggT
                            VarParsing.VarParsing.varType.bool,
                            'doHHWWggNonResAnalysis'
                            )  
-customize.options.register('doHHWWggFHptOrdered', # For HHWWgg analysis fully hardonic state, select jets based on pT order and not min WH difference 
+customize.options.register('doHHWWggFHptOrdered', # For HHWWgg analysis fully hadronic state, select jets based on pT order and not min WH difference 
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doHHWWggFHptOrdered'
                            )
-customize.options.register('doHHWWggFHminWHJets', # For HHWWgg analysis fully hardonic state, select jets based on pT order and not min WH difference
-                           False,
+customize.options.register('doHHWWggFHminWHJets', # For HHWWgg analysis fully hadronic state, select jets based on pT order and not min WH difference
+                           True,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doHHWWggFHminWHJets'
                            )
-customize.options.register('doHHWWggFHminWHLead2Jet', # For HHWWgg analysis fully hardonic state, select jets based on pT order and not min WH difference
+customize.options.register('doHHWWggFHminWHLead2Jet', # For HHWWgg analysis fully hadronic state, select jets based on pT order and not min WH difference
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doHHWWggFHminWHLead2Jet'
                            )
-customize.options.register('doHHWWggFHminHiggsMassOnly', # For HHWWgg analysis fully hardonic state, select jets based on pT order and not min WH difference
+customize.options.register('doHHWWggFHminHiggsMassOnly', # For HHWWgg analysis fully hadronic state, select jets based on pT order and not min WH difference
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
@@ -360,10 +360,22 @@ if customize.doHHWWggTag:
     import flashgg.Systematics.HHWWggCustomize 
     hhwwggc = flashgg.Systematics.HHWWggCustomize.HHWWggCustomize(process, customize, customize.metaConditions)
     minimalVariables += hhwwggc.variablesToDump()
-    systematicVariables_hhwwgg = hhwwggc.systematicVariables() # add scale factors to systematic variables for checks 
+    systematicVariables_hhwwgg = hhwwggc.SystematicVariablesToDump() 
     for HHWWggsystVar in systematicVariables_hhwwgg:
         systematicVariables.append(HHWWggsystVar)
-    # print"systematicVariables:",systematicVariables
+
+print 
+print "=========================="
+print "Checking HHWWgg"
+print "=========================="
+print "Nominal variables to dump:"
+print minimalVariables
+print "=========================="
+print "Systematic variables to dump:"
+print systematicVariables
+print "=========================="
+print "Number of nominal tree variables:",len(minimalVariables)
+print "Number of systematic tree variabels:",len(systematicVariables)
 
 if customize.doStageOne:
     assert (not customize.doHTXS)
@@ -537,7 +549,7 @@ print "-------------------------------------------------"
 
 # cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags)
 
-cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags) # used in workspacestd 
+cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags) 
 
 # Dump an object called NoTag for untagged events in order to track QCD weights
 # Will be broken if it's done for non-central values, so turn this on only for the non-syst tag sorter
@@ -672,7 +684,6 @@ for tag in tagList:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
       is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
-      ##-- Don't have PDF weights for HHWWgg yet 
       if ( customize.doPdfWeights and customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId.count("bbh_") or customize.processId.count("thw_") or customize.processId.count("thq_")):
           #print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
@@ -913,6 +924,7 @@ process.options.allowUnscheduled = cms.untracked.bool(True)
 # print "[cms path]"
 # print process.p
 # print 
+
 printSystematicInfo(process)
 
 # Detailed tag interpretation information printout (blinded)

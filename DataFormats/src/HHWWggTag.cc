@@ -171,6 +171,10 @@ void HHWWggTag::SetDiphoCentralWeight(double DiphoCentralWeight){
   DiphoCentralWeight_ = DiphoCentralWeight;
 }
 
+void HHWWggTag::SetJetIDs(vector<vector<double>> passesIDs){
+  goodJets_passJetPUID_ = passesIDs; 
+}
+
 //-- Fully Leptonic Leptons 
 
 void HHWWggTag::GetFLElectrons(edm::Ptr<flashgg::Electron> Ele1,edm::Ptr<flashgg::Electron> Ele2)
@@ -313,7 +317,35 @@ HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho,
   goodJets_ = GetJets(goodJets);
 }
 
-// Required this because HHWWggTag is derived from another class
+//-- SL systematic tree. Good objects only 
+HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho,
+                     std::vector<edm::Ptr<flashgg::Electron>> goodElectrons,
+                     std::vector<edm::Ptr<flashgg::Muon>> goodMuons,
+                     edm::Ptr<flashgg::Met> MET,
+                     std::vector<edm::Ptr<flashgg::Jet>> goodJets,
+                     std::vector<double> Cut_Variables) : Cut_Variables_(Cut_Variables)
+{
+  dipho_ = dipho;
+  GetObjects(dipho, MET);
+  goodElectrons_ = GetElectrons(goodElectrons);
+  goodMuons_ = GetMuons(goodMuons);
+  goodJets_ = GetJets(goodJets);
+}
+
+//-- FH systematic tree 
+HHWWggTag::HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho,
+              edm::Ptr<flashgg::Met> MET,
+              edm::Ptr<flashgg::Jet> jet1, edm::Ptr<flashgg::Jet> jet2,
+              edm::Ptr<flashgg::Jet> jet3, edm::Ptr<flashgg::Jet> jet4,
+              std::vector<edm::Ptr<flashgg::Jet>> goodJets, 
+              std::vector<double> Cut_Variables) : Cut_Variables_(Cut_Variables)
+{
+  dipho_ = dipho;
+  GetObjects(dipho, MET, jet1, jet2, jet3, jet4);
+  goodJets_ = GetJets(goodJets); // Note that goodJets are pT ordered. jet1-4 above are ordered based on FH algorithm which is not necessarily pT ordered 
+}
+
+// Require this because HHWWggTag is derived from another class
 HHWWggTag *HHWWggTag::clone() const
 {
     HHWWggTag *result = new HHWWggTag( *this );

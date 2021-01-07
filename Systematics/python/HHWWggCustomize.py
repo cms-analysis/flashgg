@@ -44,11 +44,6 @@ class HHWWggCustomize():
         cutFlowVars = [
             "passPS[2,0,2] := Cut_Variables[0]", # 
             "passPhotonSels[2,0,2] := Cut_Variables[1]", # 
-            # "passbVeto[2,0,2] := Cut_Variables[2]",
-            # "ExOneLep[2,0,2] := Cut_Variables[3]",
-            # "AtLeast2GoodJets[2,0,2] := Cut_Variables[4]",
-            # "AtLeast4GoodJets[2,0,2] := Cut_Variables[5]",
-            # "AtLeast4GoodJets0Lep[2,0,2] := Cut_Variables[6]",
             "mW1_40To160[2,0,2] := Cut_Variables[7]",
             "mW1_65To105[2,0,2] := Cut_Variables[8]",
             "mW2_0To160[2,0,2] := Cut_Variables[9]",
@@ -65,19 +60,14 @@ class HHWWggCustomize():
 
         #-- b scores
         bScores = []
-        # for jeti in range(0,6):
-            # var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "
-            # var2 = "jet" + str(jeti) + "_DeepCSVScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('pfDeepCSVJetTags:probb') : -99 "
-            # bScores.append(var1)
-            # bScores.append(var2)
 
         # inital / final photon energies for scaling and smearing validation
-        phoEs = [
-          "lp_E[100,0,100] := Leading_Photon.p4().E()",
-          "slp_E[100,0,100] := Subleading_Photon.p4().E()",
-          "lp_initE[100,0,100] := Leading_Photon.energyAtStep('initial')",
-          "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", # also want final energies
-        ]
+        # phoEs = [
+        #   "lp_E[100,0,100] := Leading_Photon.p4().E()",
+        #   "slp_E[100,0,100] := Subleading_Photon.p4().E()",
+        #   "lp_initE[100,0,100] := Leading_Photon.energyAtStep('initial')",
+        #   "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", # also want final energies
+        # ]
 
         # variables for miscellaneous debugging
         debugVars=[
@@ -151,39 +141,12 @@ class HHWWggCustomize():
         ]
 
         FL_vars =[
-          "lp_pt                               := Leading_Photon.p4().pt()",
-          "lp_eta                              := Leading_Photon.p4().eta()",
-          "lp_SC_eta                           := Leading_Photon.superCluster().eta()",
-          "lp_phi                              := Leading_Photon.p4().phi()",
-          "lp_E                                := Leading_Photon.p4().E()",
-          "lp_initE                            := Leading_Photon.energyAtStep('initial')",
-          "lp_r9                               := Leading_Photon.old_r9()",
-          "lp_full5x5_r9                       := Leading_Photon.full5x5_r9()",
-          "lp_Hgg_MVA                          := lp_Hgg_MVA()",
-          "lp_passElectronVeto                 := Leading_Photon.passElectronVeto()",
-          "lp_hasPixelSeed                     := Leading_Photon.hasPixelSeed",
-          # Subleading Photon
-          # slp = Subleading Photon
-          "slp_pt                              := Subleading_Photon.p4().pt()",
-          "slp_eta                             := Subleading_Photon.p4().eta()",
-          "slp_SC_eta                          := Subleading_Photon.superCluster().eta()",
-          "slp_phi                             := Subleading_Photon.p4().phi()",
-          "slp_E                               := Subleading_Photon.p4().E()",
-          "slp_initE                           := Subleading_Photon.energyAtStep('initial')",
-          "slp_r9                              := Subleading_Photon.old_r9()",
-          "slp_full5x5_r9                      := Subleading_Photon.full5x5_r9()",
-          "slp_Hgg_MVA                         := slp_Hgg_MVA()",
-          "slp_passElectronVeto                := Subleading_Photon.passElectronVeto()",
-          "slp_hasPixelSeed                    := Subleading_Photon.hasPixelSeed",
 
           # DiPhoton(s)
-        #  "n_dipho                             := diphoVector.size()",
-        #  "dipho_MVA                           := dipho_MVA()",
-        #  "CMS_hgg_mass                        := CMS_hgg_mass() ", # for cuts within HHWWggCandidate.cc before workspace
-       #   "leading_dpho_pt                     := ? leading_dpho.pt() != 0 ? leading_dpho.pt() : -99",
-        #  "leading_dpho_eta                    := ? leading_dpho.eta() != 0 ? leading_dpho.eta() : -99",
-         # "leading_dpho_phi                    := ? leading_dpho.phi() != 0 ? leading_dpho.phi() : -99",
-         # "leading_dpho_E                      := ? leading_dpho.E() != 0 ? leading_dpho.E() : -99",
+          # "leading_dpho_pt                     := ? leading_dpho.pt() != 0 ? leading_dpho.pt() : -99",
+          # "leading_dpho_eta                    := ? leading_dpho.eta() != 0 ? leading_dpho.eta() : -99",
+          # "leading_dpho_phi                    := ? leading_dpho.phi() != 0 ? leading_dpho.phi() : -99",
+          # "leading_dpho_E                      := ? leading_dpho.E() != 0 ? leading_dpho.E() : -99",
 
           # Electrons
           # If there is no leading electron (electronVector_.size() == 0) or no subleading electron (electronVector_.size() <= 1) plot -99
@@ -204,6 +167,28 @@ class HHWWggCustomize():
         finalStateVars = []
         finalStateVars.append("Leading_Photon_MVA:=lp_Hgg_MVA")
         finalStateVars.append("Subleading_Photon_MVA:=slp_Hgg_MVA")
+
+        extraPhoVars = [
+
+          ##-- Leading Photon
+          "Leading_Photon_SC_eta                           := Leading_Photon.superCluster().eta()",
+          "Leading_Photon_initE                            := Leading_Photon.energyAtStep('initial')",
+          "Leading_Photon_r9                               := Leading_Photon.old_r9()",
+          "Leading_Photon_full5x5_r9                       := Leading_Photon.full5x5_r9()",
+          "Leading_Photon_Hgg_MVA                          := lp_Hgg_MVA()",
+          "Leading_Photon_passElectronVeto                 := Leading_Photon.passElectronVeto()",
+          "Leading_Photon_hasPixelSeed                     := Leading_Photon.hasPixelSeed",
+
+          ##-- Subleading Photon
+          "Subleading_Photon_SC_eta                          := Subleading_Photon.superCluster().eta()",
+          "Subleading_Photon_r9                              := Subleading_Photon.old_r9()",
+          "Subleading_Photon_full5x5_r9                      := Subleading_Photon.full5x5_r9()",
+          "Subleading_Photon_passElectronVeto                := Subleading_Photon.passElectronVeto()",
+          "Subleading_Photon_hasPixelSeed                    := Subleading_Photon.hasPixelSeed",          
+        ]
+
+        for extraPhoVar in extraPhoVars:
+            finalStateVars.append(extraPhoVar)
 
         vertex_variables = []
         vertex_variables.append("GenVtx_z := GenVtx_z()")
@@ -231,7 +216,7 @@ class HHWWggCustomize():
                 objVec = "%s%s"%(t,o)
                 objectVectors.append(objVec)
 
-        print"vecs:",objectVectors
+        # print"vecs:",objectVectors
         for objV in objectVectors:
             vtitle = "N_%s"%(objV)
             vname = "%s.size()"%(objV)
@@ -240,19 +225,17 @@ class HHWWggCustomize():
             for v in p4_variables:
                 for i in range(checkN):
                     vtitle = "%s_%s_%s"%(objV,i,v)
-                    vname = "? %s.size() >= %s ? %s[%s].p4().%s() : -999"%(objV,i+1,objV,i,v)
+                    vname = "? %s.size() >= %s ? %s[%s].p4().%s() : -99"%(objV,i+1,objV,i,v)
                     entry = "%s:=%s"%(vtitle,vname)
                     finalStateVars.append(entry)
             if("Electrons" in objV):
                 eVars = ["passLooseId","passMediumId","passTightId","passMVALooseId","passMVAMediumId","passMVATightId"]
                 for eV in eVars:
                     for i in range(checkN):
-                        vtitle = "%s_%s_%s"%(objV,i,eV)
-                        vname = "? %s.size() >= %s ? %s[%s].%s() : -999"%(objV,i+1,objV,i,eV)
+                        vtitle = "%s_%s_%s"%(objV,i,eV) 
+                        vname = "? %s.size() >= %s ? %s[%s].%s() : -99"%(objV,i+1,objV,i,eV)
                         entry = "%s:=%s"%(vtitle,vname)
                         finalStateVars.append(entry)
-
-
 
             # if("Muons" in objV):
             #     mVars = ["pfIsolationR04().sumChargedHadronPt","pfIsolationR04().sumNeutralHadronEt","pfIsolationR04().sumPhotonEt",
@@ -262,13 +245,14 @@ class HHWWggCustomize():
             #         mVarTitle = mVarTitles[imV]
             #         for i in range(checkN):
             #             vtitle = "%s_%s_%s"%(objV,i,mVarTitle)
-            #             vname = "? %s.size() >= %s ? %s[%s].%s() : -999"%(objV,i+1,objV,i,mV)
+            #             vname = "? %s.size() >= %s ? %s[%s].%s() : -99"%(objV,i+1,objV,i,mV)
             #             entry = "%s:=%s"%(vtitle,vname)
             #             finalStateVars.append(entry)
 
             # var1 = "jet" + str(jeti) + "_DeepFlavourScore[2,0,2] := ? JetVector.size() >= " + str(jeti + 1) + " ? JetVector[" + str(jeti) + "].bDiscriminator('mini_pfDeepFlavourJetTags:probb') : -99 "
             if("Jets" in objV):
-                NtoCheck = 5 
+                NtoCheck = 10  ##-- To almost always cover all Fully Hadronic signal information 
+                # goodJetsToCheck = 10
                 # if(objV == "goodJets"): NtoCheck = 10 # want to save more good jet information for checking btags per event 
                 bscores = ["bDiscriminator('mini_pfDeepFlavourJetTags:probb')","bDiscriminator('pfDeepCSVJetTags:probb')",
                            "bDiscriminator('mini_pfDeepFlavourJetTags:probbb')","bDiscriminator('pfDeepCSVJetTags:probbb')",
@@ -281,11 +265,23 @@ class HHWWggCustomize():
                            "bDiscriminator_mini_pfDeepFlavourJetTags_problepb"
                         #    "DeepFlavourScore"
                           ]
+                ##-- PUJetID Booleans
+                if(objV == "goodJets"):
+                    for i in range(NtoCheck): ## -- only saved PUJetID for highest 4 pT jets (in FH) "? %s.size() >= %s ? %s[%s].%s() : -99"
+                        for iID,PUID in enumerate(["Loose","Medium","Tight"]):
+                            vtitle = "%s_%s_%s"%(objV,i,"Pass%sJetPUID"%(PUID))
+                            vname = "? goodJets_passJetPUID.size() >= %s ? goodJets_passJetPUID.at(%s).at(%s) : -99"%(i+1,i,iID)
+                            # vname = "? goodJets_passJetPUID.size() >= %s ? goodJets_passJetPUID[%s] : -99"%(i+1,i)
+                            # vname = "goodJets_passJetPUID[%s][%s]"%(i,iID)
+                            # vname = "? %s.size() >= %s ? %s[%s].%s : -99"%(objV,i+1,objV,i,bscore)
+                            entry = "%s:=%s"%(vtitle,vname)
+                            finalStateVars.append(entry)                
+
                 for ib,bscore in enumerate(bscores):
                     btitle = btitles[ib]
                     for i in range(NtoCheck):
                         vtitle = "%s_%s_%s"%(objV,i,btitle)
-                        vname = "? %s.size() >= %s ? %s[%s].%s : -999"%(objV,i+1,objV,i,bscore)
+                        vname = "? %s.size() >= %s ? %s[%s].%s : -99"%(objV,i+1,objV,i,bscore)
                         entry = "%s:=%s"%(vtitle,vname)
                         finalStateVars.append(entry)
 
@@ -301,21 +297,7 @@ class HHWWggCustomize():
                 vname = "MuonVars[%s]"%(i)
                 vtitle = "allMuons_%s_%s"%(m,muonVarTitle)
                 entry = "%s:=%s"%(vtitle,vname)
-                muon_vars.append(entry)
-
-        # # extraMuonVars_shorter = ["isLooseMuon","isMediumMuon","isTightMuon","isSoftMuon","isHighPtMuon"]
-        # extraMuonVars_shorter = ["isLooseMuon","isMediumMuon","isSoftMuon","isHighPtMuon"]
-
-        # # for var in extraMuonVars_shorter:
-        # for m in range(0,nMuons):
-        #     for n in range(0,len(extraMuonVars_shorter)):
-        #         muonVarTitle = extraMuonVars_shorter[n]
-        #         vtitle = "goodMuons_%s_%s"%(m,muonVarTitle)
-        #         # vtitle = "%s_%s_%s"%(objV,i,eV)
-        #         if(muonVarTitle == "isTightMuon"): vname = "? goodMuons.size() >= %s ? goodMuons[%s].%s(*ZeroVertex()) : -999"%(m+1,m,muonVarTitle)
-        #         else: vname = "? goodMuons.size() >= %s ? goodMuons[%s].%s() : -999"%(m+1,m,muonVarTitle)
-        #         entry = "%s:=%s"%(vtitle,vname)
-        #         finalStateVars.append(entry)     
+                muon_vars.append(entry)   
 
         # Save extra Jet variables
         jet_vars = [] 
@@ -345,7 +327,7 @@ class HHWWggCustomize():
                 #   JetVars_[jetIndex*numVars + 10] = passesJetPuIdforward_medium;
                 #   JetVars_[jetIndex*numVars + 11] = passesJetPuIdforward_tight;
                 i = j*nVars + n
-                vname = "JetVars[%s]"%(i)
+                vname = "JetVars[%s]"%(i) ##-- Should really make this a vector of vectors so entry i, j is for object i 
                 vtitle = "allJets_%s_%s"%(j,jetVarTitle)
                 entry = "%s:=%s"%(vtitle,vname)
                 jet_vars.append(entry)
@@ -359,9 +341,7 @@ class HHWWggCustomize():
 
         ##-- Save Central Scale Factor values for ntuple flexibility and studies 
         PhotonScaleFactors = ["LooseMvaSF", "PreselSF", "TriggerWeight", "electronVetoSF"]
-        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonIDWeight", "MuonIsoWeight"]
-        # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonMediumIDWeight", "MuonLooseRelISOWeight"]
-        # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonTightIDWeight", "MuonTightRelISOWeight"]
+        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight"] ##--add muons separately 
         JetScaleFactors = ["JetBTagCutWeight","JetBTagReshapeWeight"]
         ScaleFactorLabels = []
 
@@ -370,22 +350,16 @@ class HHWWggCustomize():
         for JSF in JetScaleFactors: ScaleFactorLabels.append(JSF)
 
         ScaleFactorVariables = []
+
         for SF in ScaleFactorLabels:
             variableLabel = "%sCentral := weight(\"%sCentral\")"%(SF,SF)
-
-            ##-- By default, running with systematics on saves up/down values. If not running with syst, set saving of up/down SFs here 
-            if(not self.customize.doSystematics):
-                variableLabelUp = "%sUp01sigma := weight(\"%sUp01sigma\")"%(SF,SF)
-                variableLabelDown = "%sDown01sigma := weight(\"%sDown01sigma\")"%(SF,SF)
-                ScaleFactorVariables.append(variableLabelUp)
-                ScaleFactorVariables.append(variableLabelDown)
-
-            # print"variableLabel:",variableLabel
             ScaleFactorVariables.append(variableLabel)
+
+        MuonIDLabel = "Muon%sIDWeightCentral"%(str(self.metaConditions["MUON_ID"]))
+        MuonIsoLabel = "Muon%sISOWeightCentral"%(str(self.metaConditions['MUON_ISO']))            
+        ScaleFactorVariables.append("MuonIDWeightCentral := weight(\"%s\")"%(MuonIDLabel))
+        ScaleFactorVariables.append("MuonIsoWeightCentral := weight(\"%s\")"%(MuonIsoLabel))
         ScaleFactorVariables.append("prefireWeightCentral := weight(\"prefireWeightCentral\")")
-        if(not self.customize.doSystematics):
-            ScaleFactorVariables.append("prefireWeightUp01sigma := weight(\"prefireWeightUp01sigma\")")
-            ScaleFactorVariables.append("prefireWeightDown01sigma := weight(\"prefireWeightDown01sigma\")")  
         ScaleFactorVariables.append("DiphoCentralWeight := DiphoCentralWeight()")
 
         if self.customize.saveHHWWggFinalStateVars:
@@ -397,23 +371,235 @@ class HHWWggCustomize():
             variables += FL_vars
             variables += muon_vars
             variables += jet_vars 
+            variables += HHVariables
 
         if self.customize.doHHWWggDebug:
             variables += debugVars
 
         return variables
 
-        # if self.customize.dumpWorkspace == False :
-        #     return variables
-        # else :
-        #     return var_workspace
+    def SystematicVariablesToDump(self):
 
-    def systematicVariables(self):
-        ##-- Save Scale Factor values for ntuple flexibility and studies 
+        ##- Variables for the systematics trees. Do not need "all" objects info
+        variables = []
+
+        ##-- Gen Level Variables
+        gen_vars = [
+            "genMhh := genMhh()",
+            "genCosThetaStar_CS := getGenCosThetaStar_CS()",           
+            "genAbsCosThetaStar_CS := abs(getGenCosThetaStar_CS())"        
+        ]
+
+        #-- Cut flow variables
+        cutFlowVars = [
+            "passPS[2,0,2] := Cut_Variables[0]", # 
+            "passPhotonSels[2,0,2] := Cut_Variables[1]", # 
+            "mW1_40To160[2,0,2] := Cut_Variables[7]",
+            "mW1_65To105[2,0,2] := Cut_Variables[8]",
+            "mW2_0To160[2,0,2] := Cut_Variables[9]",
+            "mH_105To160[2,0,2] := Cut_Variables[10]",
+            "mH_40To210[2,0,2] := Cut_Variables[11]",
+	        "FL_Lep_Flavor :=Cut_Variables[18]"
+        ]
+
+        #-- b scores
+        bScores = []
+
+        # variables for miscellaneous debugging
+        debugVars=[
+            "leadPhoMVA[2,0,2]:=lp_Hgg_MVA",
+            "subleadPhoMVA[2,0,2]:=slp_Hgg_MVA",
+            "Leading_Photon_pt:=lp_pt",
+            "Subleading_Photon_pt:=slp_pt"
+        ]
+
+        ##-- W, H variables 
+        HHVariables=[
+            "W1Candidate_E := dijet.E()",
+            "W1Candidate_M := dijet.M()",
+            "W1Candidate_pt := dijet.pt()",
+            "W1Candidate_px := dijet.px()",
+            "W1Candidate_py := dijet.py()",
+            "W1Candidate_pz := dijet.pz()",
+            "W1Candidate_eta := dijet.eta()",
+            "W1Candidate_phi := dijet.phi()",
+
+            "W2Candidate_E := dijet2.E()",
+            "W2Candidate_M := dijet2.M()",
+            "W2Candidate_pt := dijet2.pt()",
+            "W2Candidate_px := dijet2.px()",
+            "W2Candidate_py := dijet2.py()",
+            "W2Candidate_pz := dijet2.pz()",
+            "W2Candidate_eta := dijet2.eta()",
+            "W2Candidate_phi := dijet2.phi()",
+
+            "HWWCandidate_E := HWW.E()",
+            "HWWCandidate_M := HWW.M()",
+            "HWWCandidate_pt := HWW.pt()",
+            "HWWCandidate_px := HWW.px()",
+            "HWWCandidate_py := HWW.py()",
+            "HWWCandidate_pz := HWW.pz()",
+            "HWWCandidate_eta := HWW.eta()",
+            "HWWCandidate_phi := HWW.phi()",
+
+            "HGGCandidate_E := HGG.E()",
+            "HGGCandidate_M := HGG.M()",
+            "HGGCandidate_pt := HGG.pt()",
+            "HGGCandidate_px := HGG.px()",
+            "HGGCandidate_py := HGG.py()",
+            "HGGCandidate_pz := HGG.pz()",
+            "HGGCandidate_eta := HGG.eta()",
+            "HGGCandidate_phi := HGG.phi()",
+
+            "HHCandidate_E := HH.E()",
+            "HHCandidate_M := HH.M()",
+            "HHCandidate_pt := HH.pt()",
+            "HHCandidate_px := HH.px()",
+            "HHCandidate_py := HH.py()",
+            "HHCandidate_pz := HH.pz()",
+            "HHCandidate_eta := HH.eta()",
+            "HHCandidate_phi := HH.phi()",
+
+            # Delta eta between two higgs
+            "DeltaEta_HH := HWW.eta() - HGG.eta()",
+            # Delta phi between two higgs
+            "DeltaPhi_HH := HWW.phi() - HGG.phi()",
+            # Delta R between two higgs
+            "DeltaR_HH := sqrt((HWW.phi() - HGG.phi())*(HWW.phi() - HGG.phi()) + (HWW.eta() - HGG.eta())*(HWW.eta() - HGG.eta()))",
+            # cos (HWW, HGG): cos(theta) between Higgs decaying to W's and Higgs decaying to two photons
+            "cosThetaHH := cos(HWW.theta() - HGG.theta())",
+            # cos (W1, W2): cos(theta) between two w-boson system
+            "cosThetaWW := cos(dijet.theta() - dijet2.theta())",
+            # Delta Phi between Higgs decaying to two photons and the selected leading jet for the w-candidate
+            # "DeltaPhi_HGG_SelectedLeadJet := HGG.phi() - goodJets[JetIndex[0]].p4().phi()",
+            # Detta R between Higgs decaying to two photons and the selected leading jet for the w-candidate
+            # "DeltaR_HGG_SelectedLeadJet := sqrt( (HGG.phi() - goodJets[JetIndex[0]].p4().phi())*(HGG.phi() - goodJets[JetIndex[0]].p4().phi()) +  (HGG.eta() - goodJets[JetIndex[0]].p4().eta())*(HGG.eta() - goodJets[JetIndex[0]].p4().eta()) ) "
+        ]
+
+        FL_vars =[
+
+          # Electrons
+          # If there is no leading electron (electronVector_.size() == 0) or no subleading electron (electronVector_.size() <= 1) plot -99
+          "Leading_lepton_pt                     := Leading_lepton.pt() ",
+          "Leading_lepton_eta                    := Leading_lepton.eta()",
+          "Leading_lepton_phi                    := Leading_lepton.phi()",
+          "Leading_lepton_E                      := Leading_lepton.E()",
+          "Subleading_lepton_pt                  := Subleading_lepton.pt()",
+          "Subleading_lepton_eta                 := Subleading_lepton.eta()",
+          "Subleading_lepton_phi                 := Subleading_lepton.phi()",
+          "Subleading_lepton_E                   := Subleading_lepton.E()",
+        ]
+
+        vars = ["E","pt","px","py","pz","eta","phi"]
+        objects = ["Leading_Photon","Subleading_Photon","Electron","Muon","MET","Leading_Jet","Subleading_Jet","Sub2leading_Jet","Sub3leading_Jet"]
+        finalStateVars = []
+        finalStateVars.append("Leading_Photon_MVA:=lp_Hgg_MVA")
+        finalStateVars.append("Subleading_Photon_MVA:=slp_Hgg_MVA")
+
+        extraPhoVars = [
+          ##-- Leading Photon
+          "Leading_Photon_SC_eta                           := Leading_Photon.superCluster().eta()",
+          "Leading_Photon_initE                            := Leading_Photon.energyAtStep('initial')",
+          "Leading_Photon_r9                               := Leading_Photon.old_r9()",
+          "Leading_Photon_full5x5_r9                       := Leading_Photon.full5x5_r9()",
+          "Leading_Photon_Hgg_MVA                          := lp_Hgg_MVA()",
+          "Leading_Photon_passElectronVeto                 := Leading_Photon.passElectronVeto()",
+          "Leading_Photon_hasPixelSeed                     := Leading_Photon.hasPixelSeed",
+
+          ##-- Subleading Photon
+          "Subleading_Photon_SC_eta                          := Subleading_Photon.superCluster().eta()",
+          "Subleading_Photon_r9                              := Subleading_Photon.old_r9()",
+          "Subleading_Photon_full5x5_r9                      := Subleading_Photon.full5x5_r9()",
+          "Subleading_Photon_passElectronVeto                := Subleading_Photon.passElectronVeto()",
+          "Subleading_Photon_hasPixelSeed                    := Subleading_Photon.hasPixelSeed",          
+        ]
+
+        for extraPhoVar in extraPhoVars:
+            finalStateVars.append(extraPhoVar)
+
+        vertex_variables = []
+        vertex_variables.append("GenVtx_z := GenVtx_z()")
+        vertex_variables.append("HggVtx_z := HggVtx_z()")
+        vertex_variables.append("ZeroVtx_z := ZeroVtx_z()")
+
+        for obj in objects:
+            for var in vars:
+                vname = "%s.p4().%s()"%(obj,var)
+                vtitle = "%s_%s"%(obj,var)
+                entry = "%s:=%s"%(vtitle,vname)
+                finalStateVars.append(entry)
+
+        # Add all object vars
+        p4_variables = ["E","pt","px","py","pz","eta","phi"]
+        checkN = 5
+        objectVectors = []
+        objs = ["Electrons","Muons","Jets"]
+        vecTypes = ["good"]
+        for t in vecTypes:
+            for o in objs:
+                objVec = "%s%s"%(t,o)
+                objectVectors.append(objVec)
+
+        # print"vecs:",objectVectors
+        for objV in objectVectors:
+            vtitle = "N_%s"%(objV)
+            vname = "%s.size()"%(objV)
+            entry = "%s:=%s"%(vtitle,vname)
+            finalStateVars.append(entry)
+            for v in p4_variables:
+                for i in range(checkN):
+                    vtitle = "%s_%s_%s"%(objV,i,v)
+                    vname = "? %s.size() >= %s ? %s[%s].p4().%s() : -99"%(objV,i+1,objV,i,v)
+                    entry = "%s:=%s"%(vtitle,vname)
+                    finalStateVars.append(entry)
+            if("Electrons" in objV):
+                eVars = ["passLooseId","passMediumId","passTightId","passMVALooseId","passMVAMediumId","passMVATightId"]
+                for eV in eVars:
+                    for i in range(checkN):
+                        vtitle = "%s_%s_%s"%(objV,i,eV) 
+                        vname = "? %s.size() >= %s ? %s[%s].%s() : -99"%(objV,i+1,objV,i,eV)
+                        entry = "%s:=%s"%(vtitle,vname)
+                        finalStateVars.append(entry)
+
+            if("Jets" in objV):
+                NtoCheck = 5   
+                # goodJetsToCheck = 10
+                # if(objV == "goodJets"): NtoCheck = 10 # want to save more good jet information for checking btags per event 
+                bscores = ["bDiscriminator('mini_pfDeepFlavourJetTags:probb')","bDiscriminator('pfDeepCSVJetTags:probb')",
+                           "bDiscriminator('mini_pfDeepFlavourJetTags:probbb')","bDiscriminator('pfDeepCSVJetTags:probbb')",
+                           "bDiscriminator('mini_pfDeepFlavourJetTags:problepb')"
+                           ]
+
+                btitles = ["bDiscriminator_mini_pfDeepFlavourJetTags_probb","bDiscriminator_pfDeepCSVJetTags_probb",
+                           "bDiscriminator_mini_pfDeepFlavourJetTags_probbb","bDiscriminator_pfDeepCSVJetTags_probbb",
+                           "bDiscriminator_mini_pfDeepFlavourJetTags_problepb"
+                          ]
+                ##-- PUJetID Booleans
+                if(objV == "goodJets"):
+                    for i in range(NtoCheck): ## -- only saved PUJetID for highest 4 pT jets (in FH) "? %s.size() >= %s ? %s[%s].%s() : -99"
+                        for iID,PUID in enumerate(["Loose","Medium","Tight"]):
+                            vtitle = "%s_%s_%s"%(objV,i,"Pass%sJetPUID"%(PUID))
+                            vname = "? goodJets_passJetPUID.size() >= %s ? goodJets_passJetPUID.at(%s).at(%s) : -99"%(i+1,i,iID)
+                            entry = "%s:=%s"%(vtitle,vname)
+                            finalStateVars.append(entry)                
+
+                for ib,bscore in enumerate(bscores):
+                    btitle = btitles[ib]
+                    for i in range(NtoCheck):
+                        vtitle = "%s_%s_%s"%(objV,i,btitle)
+                        vname = "? %s.size() >= %s ? %s[%s].%s : -99"%(objV,i+1,objV,i,bscore)
+                        entry = "%s:=%s"%(vtitle,vname)
+                        finalStateVars.append(entry)
+
+        # for removal of prompt-prompt events from QCD and GJet samples
+        finalStateVars.append("Leading_Photon_genMatchType:=Leading_Photon.genMatchType()")
+        finalStateVars.append("Subleading_Photon_genMatchType:=Subleading_Photon.genMatchType()")
+        finalStateVars.append("dipho_MVA                           := dipho_MVA()")
+        finalStateVars.append("dipho_pt                           := dipho_pt()")
+
+        ##-- Save Central Scale Factor values for ntuple flexibility and studies 
         PhotonScaleFactors = ["LooseMvaSF", "PreselSF", "TriggerWeight", "electronVetoSF"]
-        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonIDWeight", "MuonIsoWeight"]
-        # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonMediumIDWeight", "MuonLooseRelISOWeight"]
-        # LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight", "MuonTightIDWeight", "MuonTightRelISOWeight"]
+        LeptonScaleFactors = ["ElectronIDWeight", "ElectronRecoWeight"] ##--add muons separately 
         JetScaleFactors = ["JetBTagCutWeight","JetBTagReshapeWeight"]
         ScaleFactorLabels = []
 
@@ -422,24 +608,37 @@ class HHWWggCustomize():
         for JSF in JetScaleFactors: ScaleFactorLabels.append(JSF)
 
         ScaleFactorVariables = []
+
         for SF in ScaleFactorLabels:
             variableLabel = "%sCentral := weight(\"%sCentral\")"%(SF,SF)
-            variableLabelUp = "%sUp01sigma := weight(\"%sUp01sigma\")"%(SF,SF)
-            variableLabelDown = "%sDown01sigma := weight(\"%sDown01sigma\")"%(SF,SF)
             ScaleFactorVariables.append(variableLabel)
-            ScaleFactorVariables.append(variableLabelUp)
-            ScaleFactorVariables.append(variableLabelDown)
+
+        MuonIDLabel = "Muon%sIDWeightCentral"%(str(self.metaConditions["MUON_ID"]))
+        MuonIsoLabel = "Muon%sISOWeightCentral"%(str(self.metaConditions['MUON_ISO']))            
+        ScaleFactorVariables.append("MuonIDWeightCentral := weight(\"%s\")"%(MuonIDLabel))
+        ScaleFactorVariables.append("MuonIsoWeightCentral := weight(\"%s\")"%(MuonIsoLabel))
         ScaleFactorVariables.append("prefireWeightCentral := weight(\"prefireWeightCentral\")")
-        ScaleFactorVariables.append("prefireWeightUp01sigma := weight(\"prefireWeightUp01sigma\")")
-        ScaleFactorVariables.append("prefireWeightDown01sigma := weight(\"prefireWeightDown01sigma\")")  
         ScaleFactorVariables.append("DiphoCentralWeight := DiphoCentralWeight()")
+
+        if self.customize.saveHHWWggFinalStateVars:
+            variables += cutFlowVars
+            variables += ScaleFactorVariables
+            variables += vertex_variables
+            variables += gen_vars            
+            variables += finalStateVars
+            variables += FL_vars
+            variables += HHVariables
+
+        if self.customize.doHHWWggDebug:
+            variables += debugVars
+
+        return variables
+
+    def systematicVariables(self):
 
         systematicVariables=[
             "CMS_hgg_mass[160,100,180]:=diPhoton().mass"
         ]
-
-        for ScaleFactorVar in ScaleFactorVariables:
-            systematicVariables.append(ScaleFactorVar)
 
         return systematicVariables
 
@@ -476,6 +675,7 @@ class HHWWggCustomize():
         ##-- Jets
         self.process.flashggHHWWggTag.JetIDLevel=cms.string(str(self.metaConditions["HHWWggTag"]["jetID"]))
         self.process.flashggHHWWggTag.applyPUJetID = cms.bool(self.metaConditions["HHWWggTag"]["applyPUJetID"]) 
+        self.process.flashggHHWWggTag.btagThresh = cms.double(self.metaConditions["bTagSystematics"]["bDiscriminatorValue_pfDeepJet"]) ##-- Used for FL final state 
 
         ##-- Electrons 
         Ele_ID_version = str(self.metaConditions["HHWWggTag"]["Ele_ID_version"])
@@ -536,11 +736,6 @@ class HHWWggCustomize():
              self.process.p.remove(getattr(self.process,'flashggTagSorter'+systlabel))
              self.process.p.replace(self.process.flashggSystTagMerger,getattr(self.process, 'flashggTagSorter'+systlabel)*self.process.flashggSystTagMerger)
            setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggHHWWggTag')) ))
-        #    setattr(getattr(self.process, 'flashggTagSorter'+systlabel), 'TagPriorityRanges', cms.VPSet( cms.PSet(TagName = cms.InputTag('flashggHHWWggTag', systlabel)) ))
-
-        # print 'from loop after:',process.flashggSystTagMerger.src
-
-
 
     def HHWWggTagRunSequence(self,systlabels,jetsystlabels,phosystlabels):
         

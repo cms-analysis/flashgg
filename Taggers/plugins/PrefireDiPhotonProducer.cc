@@ -152,14 +152,15 @@ namespace flashgg {
             WeightedObject prefireObject;
 
             if (applyToCentral_) {
-                // prefireObject.setCentralWeight( (1. - prefireProbability) ); // Adjusting to make central weight accesible by prefireWeightCentral label 
+                prefireObject.setCentralWeight( (1. - prefireProbability) ); 
                 prefireObject.setWeight("prefireWeightCentral", (1. - prefireProbability) ); // Adjusting to make central weight accesible by prefireWeightCentral label 
                 prefireObject.setWeight("prefireWeightUp01sigma",   std::min(1.,  1. - prefireProbability + prefireProbabilityUnc));
                 prefireObject.setWeight("prefireWeightDown01sigma", std::max(0.,  1. - prefireProbability - prefireProbabilityUnc));
                 updatedDipho->includeWeights(prefireObject);
             }
             else {
-                prefireObject.setWeight("prefireWeightCentral", (1. - prefireProbability) ); // Changing name 'prefireWeight' --> 'prefireWeightCentral'
+                // prefireObject.setWeight("prefireWeight", (1. - prefireProbability) );
+                prefireObject.setWeight("prefireWeightCentral", (1. - prefireProbability) ); // Changing name 'prefireWeight' --> 'prefireWeightCentral' to stay consistent with other scale factors 
                 prefireObject.setWeight("prefireWeightUp01sigma",   std::min(1.,  1. - prefireProbability + prefireProbabilityUnc));
                 prefireObject.setWeight("prefireWeightDown01sigma", std::max(0.,  1. - prefireProbability - prefireProbabilityUnc));
                 updatedDipho->includeWeights(prefireObject);

@@ -64,6 +64,7 @@ namespace flashgg {
 
     // Jet Vars 
     void SetJetVars(std::vector<double>); 
+    void SetJetIDs(std::vector<std::vector<double>>);
 
     //-- Fully Leptonic Leptons 
     void GetFLElectrons(edm::Ptr<flashgg::Electron> Ele1,edm::Ptr<flashgg::Electron> Ele2);
@@ -112,6 +113,24 @@ namespace flashgg {
               std::vector<edm::Ptr<flashgg::Jet>>, std::vector<edm::Ptr<flashgg::Jet>>,
               std::vector<double>, std::vector<double>, std::vector<double>
               );
+
+    //-- SL systematic tree. Good objects only 
+    HHWWggTag(edm::Ptr<DiPhotonCandidate>,
+                          std::vector<edm::Ptr<flashgg::Electron>>,
+                          std::vector<edm::Ptr<flashgg::Muon>>,
+                          edm::Ptr<flashgg::Met>,
+                          std::vector<edm::Ptr<flashgg::Jet>>,
+                          std::vector<double>); 
+
+
+    //-- FH systematic tree. Good objects only 
+    HHWWggTag(edm::Ptr<DiPhotonCandidate> dipho,
+                  edm::Ptr<flashgg::Met>,
+                  edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>,
+                  edm::Ptr<flashgg::Jet>, edm::Ptr<flashgg::Jet>,
+                  std::vector<edm::Ptr<flashgg::Jet>>, 
+                  std::vector<double>);
+
 
     // Required this because HHWWggTag is derived from another class
     virtual HHWWggTag *clone() const override;
@@ -171,6 +190,9 @@ namespace flashgg {
     double ZeroVtx_z() const {return ZeroVtx_z_; }
     void setZeroVtx_z(double x) { ZeroVtx_z_ = x; }
 
+    // Jet PUID Booleans 
+    const std::vector<std::vector<double>> goodJets_passJetPUID() const {return goodJets_passJetPUID_;}
+
   private:
     double mva_;
     long eventNumber_;
@@ -181,8 +203,8 @@ namespace flashgg {
     float lp_pt_;
     float slp_pt_;
     std::vector<double> Cut_Variables_;
-    std::vector<double> MuonVars_ = {-999}; // Give initial value to avoid void vectors when obtaining final state variables  
-    std::vector<double> JetVars_ = {-999}; // Give initial value to avoid void vectors when obtaining final state variables 
+    std::vector<double> MuonVars_ = {-99}; // Give initial value to avoid void vectors when obtaining final state variables  
+    std::vector<double> JetVars_ = {-99}; // Give initial value to avoid void vectors when obtaining final state variables 
     flashgg::Electron Electron_;
     flashgg::Muon Muon_;
     flashgg::Jet Leading_Jet_;
@@ -215,6 +237,9 @@ namespace flashgg {
     double GenVtx_z_; 
     double HggVtx_z_; 
     double ZeroVtx_z_; 
+
+    // Jet PUID booleans  
+    vector<vector<double>> goodJets_passJetPUID_; 
 
     double DiphoCentralWeight_;
   };

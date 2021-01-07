@@ -38,7 +38,7 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     jetEtaThreshold=  cms.double(2.4),
                                     deltaRPhoLeadJet = cms.double(0.4),
                                     deltaRPhoSubLeadJet = cms.double(0.4),
-                                    muPFIsoSumRelThreshold = cms.double(0.25), ##-- Set in HHWWggCustomize based on metaconditions. 0.25 is loose. 0.15 tight? 
+                                    muPFIsoSumRelThreshold = cms.double(0.15), ##-- Set in HHWWggCustomize based on metaconditions. 0.25 is loose. 0.15 tight? 
                                     deltaRJetMuonThreshold = cms.double(0.4),
                                     DeltaRTrkElec = cms.double(.4),
                                     deltaRPhoElectronThreshold = cms.double(0.4), 
@@ -46,11 +46,11 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     electronEtaThresholds=cms.vdouble(1.4442,1.566,2.5),
                                     nonTrigMVAThresholds = cms.vdouble(0.913286,0.805013,0.358969),
                                     nonTrigMVAEtaCuts = cms.vdouble(0.8,1.479,2.5),
-                                    ElectronID = cms.string("passMVAMediumId"), ##-- Set in metaconditions, pass through HHWWggCustomize 
-                                    MuonID = cms.string("isLooseMuon"), ##-- Set in metaconditions, pass through HHWWggCustomize 
+                                    ElectronID = cms.string("passLooseId"), ##-- Set in metaconditions, pass through HHWWggCustomize 
+                                    MuonID = cms.string("isTightMuon"), ##-- Set in metaconditions, pass through HHWWggCustomize 
 
                                     ##-- Misc 
-                                    btagThresh = cms.double(2), ##-- anything greater than 1 should save all events 
+                                    btagThresh = cms.double(2), ##-- anything greater than 1 should save all events. Set in HHWWggCustomize from metaconditions 
                                     BTagTypes = cms.vstring('mini_pfDeepFlavourJetTags:probb','mini_pfDeepFlavourJetTags:probbb','mini_pfDeepFlavourJetTags:problepb'),
                                     doHHWWggTagCutFlowAnalysis = cms.bool(False), # save events for cut flow analysis
                                     doHHWWggNonResAnalysis = cms.bool(False),
@@ -66,8 +66,8 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     JetIDLevel = cms.string(''), # Tight, Tight2017 or Tight2018 as set in HHWWggCustomize from MetaConditions 
                                     applyPUJetID = cms.bool(True),
                                     ## define the pujid working point 
-                                    pujidWpPtBin1 = cms.vdouble(pujidPtBin1_tight), ## WP for 20 < pT < 30 
-                                    pujidWpPtBin2 = cms.vdouble(pujidPtBin2_tight), ## WP for 30 < pT < 50                                    
+                                    pujidWpPtBin1 = cms.vdouble(pujidPtBin1_loose), ## WP for 20 < pT < 30 
+                                    pujidWpPtBin2 = cms.vdouble(pujidPtBin2_loose), ## WP for 30 < pT < 50                                    
 
                                     ##-- Fully Leptonic Final State Parameters 
                                     lep1ptThre = cms.double(20.),
@@ -85,5 +85,5 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     FH_Dipho_pT_Thre = cms.double(160.),
 
                                     # Vertex choice 
-                                    HHWWgguseZeroVtx = cms.bool(False) ##-- Set with cmssw config flag, done in HHWWggCustomize                          
+                                    HHWWgguseZeroVtx = cms.bool(True) ##-- Set with cmssw config flag, done in HHWWggCustomize                          
                                     )

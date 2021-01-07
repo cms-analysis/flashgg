@@ -97,6 +97,22 @@ def createStandardSystematicsProducers(process, options):
     from flashgg.Systematics.flashggJetSystematics_cfi import jetSystematicsCustomize
     jetSystematics = jetSystematicsCustomize(process, options)
     jetSystematicsInputTags = jetSystematics.createJetSystematics(UnpackedJetCollectionVInputTag)
+
+    # JetpSets = [getattr(process,"flashggJetSystematics%i"%i).SystMethods for i in range(1)]
+    # # newvpset = cms.VPSet()
+    # for JetpSet in JetpSets:
+    #     for pset in JetpSet:
+    #         if(pset.Label.value() == "PUJIDShift"):
+    #             pset.ApplyCentralValue = cms.bool(True)
+    #             # print"pset:",pset.Label.value()
+    #             # print"Central value?",pset.ApplyCentralValue.value()
+
+    # newvpset = cms.VPSet()
+    # for pset in systs:
+    #     if (pset.Label.value().count("Scale") or pset.Label.value().count("SigmaEOverESmearing")) and not pset.Label.value().count("Gain"):
+    #         pset.ApplyCentralValue = cms.bool(True) # Turn on central shift for data (it is off for MC)
+    #         newvpset += [pset]
+
     return jetSystematicsInputTags
 
 def modifyTagSequenceForSystematics(process,jetSystematicsInputTags,ZPlusJetMode=False):
