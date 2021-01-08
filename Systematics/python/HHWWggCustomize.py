@@ -8,19 +8,11 @@ class HHWWggCustomize():
     def __init__(self, process, customize, metaConditions):
         """constructor for HHWWggCustomize Class
 
-        Arguments:
-            process {[type]} -- [description]
-            customize {[type]} -- [description]
-            metaConditions {[type]} -- [description]
-
-        Member functions:
-            process --
-            customize --
-            metaConditions --
             tagList -- Categories:  0 : Semi-Leptonic  channel
                                     1 : Fully Hadronic channel (jets selection based on min W and H mass OR pT depending on input flag. min WH by default)
                                     2 : Fully-leptonic channel
                                     3 : Untagged --> Meets no criteria but want to save event to output
+
         """
         self.process = process
         self.customize = customize
@@ -29,6 +21,7 @@ class HHWWggCustomize():
         self.customizeTagSequence()
 
     def variablesToDump(self):
+        # self.customize.HHWWggAnalysisChannel
 
         ##- Variables for the nominal output tag tree (non systematic trees for each category)
         variables = []
@@ -57,17 +50,6 @@ class HHWWggCustomize():
             # "passMetPt:= Cut_Variables[17]",
 	        "FL_Lep_Flavor :=Cut_Variables[18]"
         ]
-
-        #-- b scores
-        bScores = []
-
-        # inital / final photon energies for scaling and smearing validation
-        # phoEs = [
-        #   "lp_E[100,0,100] := Leading_Photon.p4().E()",
-        #   "slp_E[100,0,100] := Subleading_Photon.p4().E()",
-        #   "lp_initE[100,0,100] := Leading_Photon.energyAtStep('initial')",
-        #   "slp_initE[100,0,100] := Subleading_Photon.energyAtStep('initial')", # also want final energies
-        # ]
 
         # variables for miscellaneous debugging
         debugVars=[
@@ -141,15 +123,7 @@ class HHWWggCustomize():
         ]
 
         FL_vars =[
-
-          # DiPhoton(s)
-          # "leading_dpho_pt                     := ? leading_dpho.pt() != 0 ? leading_dpho.pt() : -99",
-          # "leading_dpho_eta                    := ? leading_dpho.eta() != 0 ? leading_dpho.eta() : -99",
-          # "leading_dpho_phi                    := ? leading_dpho.phi() != 0 ? leading_dpho.phi() : -99",
-          # "leading_dpho_E                      := ? leading_dpho.E() != 0 ? leading_dpho.E() : -99",
-
-          # Electrons
-          # If there is no leading electron (electronVector_.size() == 0) or no subleading electron (electronVector_.size() <= 1) plot -99
+          # Leptons
           "Leading_lepton_pt                     := Leading_lepton.pt() ",
           "Leading_lepton_eta                    := Leading_lepton.eta()",
           "Leading_lepton_phi                    := Leading_lepton.phi()",
@@ -158,8 +132,6 @@ class HHWWggCustomize():
           "Subleading_lepton_eta                 := Subleading_lepton.eta()",
           "Subleading_lepton_phi                 := Subleading_lepton.phi()",
           "Subleading_lepton_E                   := Subleading_lepton.E()",
-          # If there is no leading muon (muonVector_.size() == 0) or no subleading muon (muonVector_.size() <= 1) plot -99
-          "Met_pt                              := MET.pt()"
         ]
 
         vars = ["E","pt","px","py","pz","eta","phi"]
@@ -368,10 +340,12 @@ class HHWWggCustomize():
             variables += vertex_variables
             variables += gen_vars            
             variables += finalStateVars
-            variables += FL_vars
+            if(self.customize.HHWWggAnalysisChannel == "FL" or self.customize.HHWWggAnalysisChannel == "all"):
+                variables += FL_vars
             variables += muon_vars
             variables += jet_vars 
-            variables += HHVariables
+            if(self.customize.HHWWggAnalysisChannel == "FH" or self.customize.HHWWggAnalysisChannel == "all"):
+                variables += HHVariables
 
         if self.customize.doHHWWggDebug:
             variables += debugVars
@@ -477,9 +451,7 @@ class HHWWggCustomize():
         ]
 
         FL_vars =[
-
-          # Electrons
-          # If there is no leading electron (electronVector_.size() == 0) or no subleading electron (electronVector_.size() <= 1) plot -99
+          # Leptons
           "Leading_lepton_pt                     := Leading_lepton.pt() ",
           "Leading_lepton_eta                    := Leading_lepton.eta()",
           "Leading_lepton_phi                    := Leading_lepton.phi()",
@@ -626,8 +598,10 @@ class HHWWggCustomize():
             variables += vertex_variables
             variables += gen_vars            
             variables += finalStateVars
-            variables += FL_vars
-            variables += HHVariables
+            if(self.customize.HHWWggAnalysisChannel == "FL" or self.customize.HHWWggAnalysisChannel == "all"):
+                variables += FL_vars
+            if(self.customize.HHWWggAnalysisChannel == "FH" or self.customize.HHWWggAnalysisChannel == "all"):
+                variables += HHVariables         
 
         if self.customize.doHHWWggDebug:
             variables += debugVars

@@ -913,18 +913,18 @@ HHWWggTag HHWWggTagProducer::SetCentralUpDownWeights(HHWWggTag tag_obj_, std::ve
 
         // Only save BTagCutWeight
         if(Tag_ == "FL"){
-            tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagCutWeightCentral");
+            tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagCutWeight");
         }
 
         // Save both b tag SFs for the untagged case in case the event is used for SL, FH or FL after ntuple production 
         else if(Tag_ == "Untagged"){ // If using untagged events, will need to divide out SF not being used 
-            tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagCutWeightCentral");
-            tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagReshapeWeightCentral");
+            tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagCutWeight"); // for untagged just apply medium WP bveto SF since in the case these events are used, not 100% precise anyway 
+            // tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagReshapeWeight");
         }
 
         // Only save bTagReshapeWeight for MVA final states 
         else{
-            tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagReshapeWeightCentral");
+            tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagReshapeWeight");
         }
     }
     
