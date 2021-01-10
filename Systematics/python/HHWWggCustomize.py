@@ -72,10 +72,6 @@ class HHWWggCustomize():
         gen_vars.append("genCosThetaStar_CS := getGenCosThetaStar_CS()")
         gen_vars.append("genAbsCosThetaStar_CS := abs(getGenCosThetaStar_CS())")
 
-        print"gen_vars:"
-        for gen_var in gen_vars:
-            print gen_var 
-
         #-- Cut flow variables
         cutFlowVars = [
             "passPS[2,0,2] := Cut_Variables[0]", # 
@@ -374,7 +370,34 @@ class HHWWggCustomize():
         ScaleFactorVariables.append("prefireWeightCentral := weight(\"prefireWeightCentral\")")
         ScaleFactorVariables.append("DiphoCentralWeight := DiphoCentralWeight()")
 
+        HHWWgg_FinalStates = ["GluGluToHHTo2G2Qlnu","GluGluToHHTo2G2ZTo2G4Q","GluGluToHHTo2G2l2nu","GluGluToHHTo2G4Q"]
+        isHHWWgg_FinalState = 0
+        for HHWWgg_FinalState in HHWWgg_FinalStates:
+            if self.customize.processId.count(HHWWgg_FinalState):
+                isHHWWgg_FinalState = 1 
+        
+        print"====================> in HHWWggCustomize"
+        print"====================> isHHWWgg_FinalState: ",isHHWWgg_FinalState
+
+        ##-- Use this to verify that SFs are applied when systematic variations are not. Desired in the case of MVA trained backgrounds: need scale factors but don't need systematic variations
+        UpDownSFs = []
+        if (not self.customize.doSystematics) and (not isHHWWgg_FinalState): ##-- not running wwgg, and not running systematics. 
+            for direction in ["Up","Down"]:
+                UpDownSFs.append("LooseMvaSF%s01sigma[1,-999999.,999999.] := weight(\"LooseMvaSF%s01sigma\")" % (direction,direction))
+                UpDownSFs.append("PreselSF%s01sigma[1,-999999.,999999.] := weight(\"PreselSF%s01sigma\")" % (direction,direction))
+                UpDownSFs.append("electronVetoSF%s01sigma[1,-999999.,999999.] := weight(\"electronVetoSF%s01sigma\")" % (direction,direction))
+                UpDownSFs.append("TriggerWeight%s01sigma[1,-999999.,999999.] := weight(\"TriggerWeight%s01sigma\")" % (direction,direction))
+                UpDownSFs.append("FracRVWeight%s01sigma[1,-999999.,999999.] := weight(\"FracRVWeight%s01sigma\")" % (direction,direction))
+                UpDownSFs.append("MuonIDWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sIDWeight%s01sigma\")" % (direction,str(self.metaConditions["HHWWggTag"]["MUON_ID"]),direction))
+                UpDownSFs.append("ElectronIDWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"ElectronIDWeight%s01sigma\")" % (direction,direction))
+                UpDownSFs.append("ElectronRecoWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"ElectronRecoWeight%s01sigma\")" % (direction,direction))
+                UpDownSFs.append("MuonIsoWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"Muon%sISOWeight%s01sigma\")" % (direction,str(self.metaConditions["HHWWggTag"]['MUON_ISO']),direction))
+                UpDownSFs.append("JetBTagCutWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"JetBTagCutWeight%s01sigma\")" % (direction,direction))
+                UpDownSFs.append("JetBTagReshapeWeight%s01sigma[1,-999999.,999999.] := getObjectWeight(\"JetBTagReshapeWeight%s01sigma\")" % (direction,direction))
+                UpDownSFs.append("prefireWeight%s01sigma[1,-999999.,999999.] := weight(\"prefireWeight%s01sigma\")" % (direction,direction))
+
         if self.customize.saveHHWWggFinalStateVars:
+            variables += UpDownSFs
             variables += cutFlowVars
             variables += ScaleFactorVariables
             variables += vertex_variables
