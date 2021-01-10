@@ -110,6 +110,9 @@ private:
     Handle<View<flashgg::DiPhotonMVAResult> > mvaResults;
     
     Handle<View<reco::Vertex> > vertices;
+
+    // EDGetTokenT<View<reco::GenParticle> > genParticleToken_;
+    // Handle<View<reco::GenParticle> > genParticle;    
     
     string systLabel_;
     

@@ -758,8 +758,14 @@ for HHWWgg_FinalState in HHWWgg_FinalStates:
     if customize.processId.count(HHWWgg_FinalState):
         isHHWWgg_FinalState = 1 
         
+HHWWgg_Backgrounds = ["tth_125","vbf_125","wzh_125","ggh_125"]
+isHHWWgg_Bkg = 0
+for HHWWgg_Bkg in HHWWgg_Backgrounds:
+    if customize.processId.count(HHWWgg_Bkg):
+        isHHWWgg_Bkg = 1
+
 #pythia8 has an unanticipated EM showering feature, check have two photons from hard scatter
-if (isHHWWgg_FinalState or customize.processId.count("ttH")):
+if (isHHWWgg_FinalState or isHHWWgg_Bkg or customize.processId.count("ttH")):
 # if customize.processId.count("ggF_X") or customize.processId.count("ttH"):
 #  if customize.processId == "th_125": # for this sample the filter removes also H -> ZG
     process.load("flashgg/Systematics/HardProcessFinalStateFilter_cfi")

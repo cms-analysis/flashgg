@@ -217,6 +217,11 @@ void HHWWggTag::SetGenObjs(std::vector<edm::Ptr<reco::GenParticle> > genHiggsBos
   }       
 
 }
+
+// void SavePDFInfo(GenEventInfoProduct::PDF const * pdf){
+
+// }
+
 //-- Fully Leptonic Leptons 
 
 void HHWWggTag::GetFLElectrons(edm::Ptr<flashgg::Electron> Ele1,edm::Ptr<flashgg::Electron> Ele2)

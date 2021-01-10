@@ -70,6 +70,9 @@ namespace flashgg {
     void SetGenObjs(std::vector<edm::Ptr<reco::GenParticle> >, std::vector<edm::Ptr<reco::GenParticle> >, std::vector<edm::Ptr<reco::GenParticle> >,
                     std::vector<edm::Ptr<reco::GenParticle> >, std::vector<edm::Ptr<reco::GenParticle> >, std::vector<edm::Ptr<reco::GenParticle> >);
 
+    //-- PDF Info 
+    // void SavePDFInfo();
+
     //-- Fully Leptonic Leptons 
     void GetFLElectrons(edm::Ptr<flashgg::Electron> Ele1,edm::Ptr<flashgg::Electron> Ele2);
     void GetFLMuons(edm::Ptr<flashgg::Muon> muon1,edm::Ptr<flashgg::Muon> muon2);
@@ -206,7 +209,10 @@ namespace flashgg {
     const std::vector<reco::Candidate::LorentzVector > genNeutrinos() const {return genNeutrinos_;}
     const std::vector<double> genQuarksPdgIds() const {return genQuarksPdgIds_;}
     const std::vector<double> genLeptonsPdgIds() const {return genLeptonsPdgIds_;}
-    const std::vector<double> genNeutrinosPdgIds() const {return genNeutrinosPdgIds_;}    
+    const std::vector<double> genNeutrinosPdgIds() const {return genNeutrinosPdgIds_;}   
+
+    // PDF Info 
+     
 
   private:
     double mva_;

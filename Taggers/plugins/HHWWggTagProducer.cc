@@ -143,6 +143,9 @@ namespace flashgg {
           std::vector<edm::Ptr<reco::GenParticle> > selHiggses;
           event.getByToken( genParticleToken_, genParticles );
 
+          edm::Handle<GenEventInfoProduct> genEvtInfo; 
+          event.getByToken(genInfoToken_, genEvtInfo);
+
           // To obtain Higgs vertex information 
           reco::GenParticle::Point higgsVtx(0.,0.,0.);
 
@@ -197,32 +200,12 @@ namespace flashgg {
                 }
             }
 
-            // Order by pT 
-            // if(genHiggsBosons.size() >= 2){
-            //   if(genHiggsBosons[1]->p4().pt() > genHiggsBosons[0]->p4().pt()){
-            //     edm::Ptr<reco::GenParticle> h1 = genHiggsBosons[0];
-            //     edm::Ptr<reco::GenParticle> h2 = genHiggsBosons[1];
-            //     genHiggsBosons[0] = h2;
-            //     genHiggsBosons[1] = h1;
-            //   }  
-            // }
-       
-            // if(genWBosons.size() >= 2){
-            //   if(genWBosons[1]->p4().pt() > genWBosons[0]->p4().pt()){
-            //     edm::Ptr<reco::GenParticle> w1 = genWBosons[0];
-            //     edm::Ptr<reco::GenParticle> w2 = genWBosons[1];
-            //     genWBosons[0] = w2;
-            //     genWBosons[1] = w1;
-            //   }  
-            // }    
-
-            // if(genPhotons.size() >= 2){
-            //   if(genPhotons[1]->p4().pt() > genPhotons[0]->p4().pt()){
-            //     edm::Ptr<reco::GenParticle> pho1 = genPhotons[0];
-            //     edm::Ptr<reco::GenParticle> pho2 = genPhotons[1];
-            //     genPhotons[0] = pho2;
-            //     genPhotons[1] = pho1;
-            //   }   
+            // PDF info 
+            // GenEventInfoProduct::PDF const *pdf = genEvtInfo->pdf();
+            // alternative PS event weights
+            // std::vector<double> ps_weights = genEvtInfo->weights();
+            // for (unsigned int i = 0; i < ps_weights.size(); i++){
+              // std::cout << "ps_weights[" << i << "] = " << ps_weights[i] << std::endl;
             // }
 
             if(genHiggsBosons.size() >= 2) std::sort(genHiggsBosons.begin(), genHiggsBosons.end(), compPt);
@@ -479,6 +462,7 @@ namespace flashgg {
               if(!isData){
                 tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);
                 tag_obj.SetGenObjs(genHiggsBosons, genWBosons, genPhotons, genQuarks, genLeptons, genNeutrinos);
+                // tag_obj.SavePDFInfo(pdf);
               } 
 
               // if(doHHWWggDebug_){
@@ -604,6 +588,7 @@ namespace flashgg {
               if(!isData){
                 tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);  
                 tag_obj.SetGenObjs(genHiggsBosons, genWBosons, genPhotons, genQuarks, genLeptons, genNeutrinos);
+                // tag_obj.SavePDFInfo(pdf);
               } 
 
               HHWWggtags->push_back( tag_obj );
@@ -742,6 +727,7 @@ namespace flashgg {
                   if(!isData){
                     tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);
                     tag_obj.SetGenObjs(genHiggsBosons, genWBosons, genPhotons, genQuarks, genLeptons, genNeutrinos);
+                    // tag_obj.SavePDFInfo(pdf);
                   } 
 
                   tag_obj.setGenMhh( genMhh );
@@ -839,6 +825,7 @@ namespace flashgg {
                   if(!isData){
                     tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);
                     tag_obj.SetGenObjs(genHiggsBosons, genWBosons, genPhotons, genQuarks, genLeptons, genNeutrinos);
+                    // tag_obj.SavePDFInfo(pdf);
                   } 
 
                   tag_obj.setGenMhh( genMhh );
@@ -936,6 +923,7 @@ namespace flashgg {
                   if(!isData){
                     tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_); 
                     tag_obj.SetGenObjs(genHiggsBosons, genWBosons, genPhotons, genQuarks, genLeptons, genNeutrinos);
+                    // tag_obj.SavePDFInfo(pdf);
                   }   
 
                   tag_obj.setGenMhh( genMhh );
@@ -983,6 +971,7 @@ namespace flashgg {
               if(!isData){
                 tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);  
                 tag_obj.SetGenObjs(genHiggsBosons, genWBosons, genPhotons, genQuarks, genLeptons, genNeutrinos);
+                // tag_obj.SavePDFInfo(pdf);
               } 
               tag_obj = ComputePUJetIDs(tagJets, tag_obj);
 
