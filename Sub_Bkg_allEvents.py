@@ -18,5 +18,5 @@ print"Submit command:"
 print "====================="
 print command 
 print "====================="
-os.sys(command)
+os.system(command)
 print "SUBMITTED"
