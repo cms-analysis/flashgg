@@ -175,6 +175,48 @@ void HHWWggTag::SetJetIDs(vector<vector<double>> passesIDs){
   goodJets_passJetPUID_ = passesIDs; 
 }
 
+void HHWWggTag::SetGenObjs(std::vector<edm::Ptr<reco::GenParticle> > genHiggsBosons, std::vector<edm::Ptr<reco::GenParticle> > genWBosons, std::vector<edm::Ptr<reco::GenParticle> > genPhotons,
+                           std::vector<edm::Ptr<reco::GenParticle> > genQuarks, std::vector<edm::Ptr<reco::GenParticle> >  genLeptons,  std::vector<edm::Ptr<reco::GenParticle> > genNeutrinos){
+
+  int pdgId; 
+
+  for(unsigned int i = 0; i < genHiggsBosons.size(); i++){
+    reco::Candidate::LorentzVector genFourVec = genHiggsBosons.at(i)->p4();
+    genHiggsBosons_.push_back(genFourVec);
+  }
+
+  for(unsigned int i = 0; i < genWBosons.size(); i++){
+    reco::Candidate::LorentzVector genFourVec = genWBosons.at(i)->p4();
+    genWBosons_.push_back(genFourVec);    
+  }
+
+  for(unsigned int i = 0; i < genPhotons.size(); i++){
+    reco::Candidate::LorentzVector genFourVec = genPhotons.at(i)->p4();
+    genPhotons_.push_back(genFourVec);    
+  }    
+
+  for(unsigned int i = 0; i < genQuarks.size(); i++){
+    pdgId = genQuarks.at(i)->pdgId();
+    reco::Candidate::LorentzVector genFourVec = genQuarks.at(i)->p4();
+    genQuarks_.push_back(genFourVec);    
+    genQuarksPdgIds_.push_back(pdgId);    
+  } 
+
+  for(unsigned int i = 0; i < genLeptons.size(); i++){
+    pdgId = genLeptons.at(i)->pdgId();
+    reco::Candidate::LorentzVector genFourVec = genLeptons.at(i)->p4();
+    genLeptons_.push_back(genFourVec);    
+    genLeptonsPdgIds_.push_back(pdgId);    
+  } 
+
+  for(unsigned int i = 0; i < genNeutrinos.size(); i++){
+    pdgId = genNeutrinos.at(i)->pdgId();
+    reco::Candidate::LorentzVector genFourVec = genNeutrinos.at(i)->p4();
+    genNeutrinos_.push_back(genFourVec);    
+    genNeutrinosPdgIds_.push_back(pdgId);    
+  }       
+
+}
 //-- Fully Leptonic Leptons 
 
 void HHWWggTag::GetFLElectrons(edm::Ptr<flashgg::Electron> Ele1,edm::Ptr<flashgg::Electron> Ele2)

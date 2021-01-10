@@ -66,6 +66,10 @@ namespace flashgg {
     void SetJetVars(std::vector<double>); 
     void SetJetIDs(std::vector<std::vector<double>>);
 
+    //-- Gen Particles
+    void SetGenObjs(std::vector<edm::Ptr<reco::GenParticle> >, std::vector<edm::Ptr<reco::GenParticle> >, std::vector<edm::Ptr<reco::GenParticle> >,
+                    std::vector<edm::Ptr<reco::GenParticle> >, std::vector<edm::Ptr<reco::GenParticle> >, std::vector<edm::Ptr<reco::GenParticle> >);
+
     //-- Fully Leptonic Leptons 
     void GetFLElectrons(edm::Ptr<flashgg::Electron> Ele1,edm::Ptr<flashgg::Electron> Ele2);
     void GetFLMuons(edm::Ptr<flashgg::Muon> muon1,edm::Ptr<flashgg::Muon> muon2);
@@ -193,6 +197,17 @@ namespace flashgg {
     // Jet PUID Booleans 
     const std::vector<std::vector<double>> goodJets_passJetPUID() const {return goodJets_passJetPUID_;}
 
+    // Gen particles
+    const std::vector<reco::Candidate::LorentzVector > genHiggsBosons() const {return genHiggsBosons_;}
+    const std::vector<reco::Candidate::LorentzVector > genWBosons() const {return genWBosons_;}
+    const std::vector<reco::Candidate::LorentzVector > genPhotons() const {return genPhotons_;}
+    const std::vector<reco::Candidate::LorentzVector > genQuarks() const {return genQuarks_;}
+    const std::vector<reco::Candidate::LorentzVector > genLeptons() const {return genLeptons_;}
+    const std::vector<reco::Candidate::LorentzVector > genNeutrinos() const {return genNeutrinos_;}
+    const std::vector<double> genQuarksPdgIds() const {return genQuarksPdgIds_;}
+    const std::vector<double> genLeptonsPdgIds() const {return genLeptonsPdgIds_;}
+    const std::vector<double> genNeutrinosPdgIds() const {return genNeutrinosPdgIds_;}    
+
   private:
     double mva_;
     long eventNumber_;
@@ -240,6 +255,17 @@ namespace flashgg {
 
     // Jet PUID booleans  
     vector<vector<double>> goodJets_passJetPUID_; 
+
+    // Gen particles
+    std::vector<reco::Candidate::LorentzVector> genHiggsBosons_;
+    std::vector<reco::Candidate::LorentzVector> genWBosons_;
+    std::vector<reco::Candidate::LorentzVector> genPhotons_;
+    std::vector<reco::Candidate::LorentzVector> genQuarks_;
+    std::vector<reco::Candidate::LorentzVector> genLeptons_;
+    std::vector<reco::Candidate::LorentzVector> genNeutrinos_;
+    std::vector<double> genQuarksPdgIds_; 
+    std::vector<double> genLeptonsPdgIds_;
+    std::vector<double> genNeutrinosPdgIds_;       
 
     double DiphoCentralWeight_;
   };

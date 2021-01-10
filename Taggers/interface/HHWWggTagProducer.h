@@ -68,6 +68,9 @@ private:
     int GetNumFLDR(std::vector<edm::Ptr<flashgg::Electron> >, std::vector<edm::Ptr<flashgg::Muon> >, double);
     static bool compEle(const edm::Ptr<flashgg::Electron>& a, const edm::Ptr<flashgg::Electron>& b);
     static bool compMu(const edm::Ptr<flashgg::Muon>& a, const edm::Ptr<flashgg::Muon>& b);
+    // template <class flashggPtr>
+    // static bool compPt(flashggPtr, flashggPtr);
+    static bool compPt(edm::Ptr<reco::GenParticle>, edm::Ptr<reco::GenParticle>);
     float getGenCosThetaStar_CS(TLorentzVector h1, TLorentzVector h2);
     template <class flashggPtr>
     void PrintScaleFactorsPtr(flashggPtr);
@@ -77,6 +80,7 @@ private:
                                       std::vector<edm::Ptr<flashgg::Jet> >, edm::Ptr<flashgg::DiPhotonCandidate>, bool, std::string, double, string);
     double PassPUJetID(vector<double>, vector<double>, Ptr<flashgg::Jet>);    
     HHWWggTag ComputePUJetIDs(vector<Ptr<flashgg::Jet>>, HHWWggTag);
+    std::vector<edm::Ptr<reco::GenParticle> > OrderParticles(std::vector<edm::Ptr<reco::GenParticle> >);
     
     void produce( Event &, const EventSetup & ) override;
     std::vector<edm::EDGetTokenT<edm::View<DiPhotonCandidate> > > diPhotonTokens_;
@@ -262,6 +266,15 @@ bool HHWWggTagProducer::compEle(const edm::Ptr<flashgg::Electron>& a, const edm:
 bool HHWWggTagProducer::compMu(const edm::Ptr<flashgg::Muon>& a, const edm::Ptr<flashgg::Muon>& b)
 {
     return a->pt() > b->pt();
+}
+
+// template<typename flashggPtr> 
+bool HHWWggTagProducer::compPt(edm::Ptr<reco::GenParticle> Particle_a, edm::Ptr<reco::GenParticle> Particle_b)
+{
+    auto FourVec_a = Particle_a->p4();
+    auto FourVec_b = Particle_b->p4();
+
+    return FourVec_a.pt() > FourVec_b.pt();
 }
 
 // bool HHWWggTagProducer::checkPassMVAs( const flashgg::Photon*& leading_photon, const flashgg::Photon*& subleading_photon, edm::Ptr<reco::Vertex>& diphoton_vertex, double EB_Photon_MVA_Threshold, double EE_Photon_MVA_Threshold){
@@ -858,41 +871,41 @@ HHWWggTag HHWWggTagProducer::SetCentralUpDownWeights(HHWWggTag tag_obj_, std::ve
                                                      )
 {
     
-    //-- If debugging, print object weights 
-    if(doHHWWggDebug_){
+    // //-- If debugging, print object weights 
+    // if(doHHWWggDebug_){
 
-        // Diphoton
-        cout << "*********************************************************" << endl; 
-        cout << "Diphoton Scale Factors:" << endl; 
-        PrintScaleFactorsObj(*dipho);
+    //     // Diphoton
+    //     cout << "*********************************************************" << endl; 
+    //     cout << "Diphoton Scale Factors:" << endl; 
+    //     PrintScaleFactorsObj(*dipho);
 
-        // Jets
-        for (unsigned int i = 0; i < tagJets.size(); i++){
-            if(tagJets.size() > 0){
-                cout << "*********************************************************" << endl; 
-                cout << "Good Jet " << i << " Scale Factors:" << endl; 
-                PrintScaleFactorsPtr(tagJets[i]);
-            }
-        }
+    //     // Jets
+    //     for (unsigned int i = 0; i < tagJets.size(); i++){
+    //         if(tagJets.size() > 0){
+    //             cout << "*********************************************************" << endl; 
+    //             cout << "Good Jet " << i << " Scale Factors:" << endl; 
+    //             PrintScaleFactorsPtr(tagJets[i]);
+    //         }
+    //     }
 
-        // Electrons
-        for (unsigned int i = 0; i < goodElectrons.size(); i++){
-            if(goodElectrons.size() > 0){
-                cout << "*********************************************************" << endl; 
-                cout << "Good Electron " << i << " Scale Factors:" << endl; 
-                PrintScaleFactorsPtr(goodElectrons[i]);
-            }
-        }
+    //     // Electrons
+    //     for (unsigned int i = 0; i < goodElectrons.size(); i++){
+    //         if(goodElectrons.size() > 0){
+    //             cout << "*********************************************************" << endl; 
+    //             cout << "Good Electron " << i << " Scale Factors:" << endl; 
+    //             PrintScaleFactorsPtr(goodElectrons[i]);
+    //         }
+    //     }
 
-        // Muons 
-        for (unsigned int i = 0; i < goodMuons.size(); i++){
-            if(goodMuons.size() > 0){
-                cout << "*********************************************************" << endl; 
-                cout << "Good Muon " << i << " Scale Factors:" << endl; 
-                PrintScaleFactorsPtr(goodMuons[i]);
-            }
-        }
-    }
+    //     // Muons 
+    //     for (unsigned int i = 0; i < goodMuons.size(); i++){
+    //         if(goodMuons.size() > 0){
+    //             cout << "*********************************************************" << endl; 
+    //             cout << "Good Muon " << i << " Scale Factors:" << endl; 
+    //             PrintScaleFactorsPtr(goodMuons[i]);
+    //         }
+    //     }
+    // }
 
     //-- Apply scale factors from all weighted objects
     // Diphoton
@@ -907,26 +920,31 @@ HHWWggTag HHWWggTagProducer::SetCentralUpDownWeights(HHWWggTag tag_obj_, std::ve
     for (unsigned int muon_i = 0; muon_i < goodMuons.size(); muon_i++){
         tag_obj_.includeWeights(*goodMuons.at(muon_i));
     }
-    
+
     // Jets
     for (unsigned int TagJet_i = 0; TagJet_i < tagJets.size(); TagJet_i++){
-
-        // Only save BTagCutWeight
-        if(Tag_ == "FL"){
-            tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagCutWeight");
-        }
-
-        // Save both b tag SFs for the untagged case in case the event is used for SL, FH or FL after ntuple production 
-        else if(Tag_ == "Untagged"){ // If using untagged events, will need to divide out SF not being used 
-            tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagCutWeight"); // for untagged just apply medium WP bveto SF since in the case these events are used, not 100% precise anyway 
-            // tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagReshapeWeight");
-        }
-
-        // Only save bTagReshapeWeight for MVA final states 
-        else{
-            tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagReshapeWeight");
-        }
+        tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagReshapeWeight"); // Apply JetBTagReshapeWeight for all final state categories 
     }
+
+    // // Jets
+    // for (unsigned int TagJet_i = 0; TagJet_i < tagJets.size(); TagJet_i++){
+
+    //     // Only save BTagCutWeight
+    //     if(Tag_ == "FL"){
+    //         tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagCutWeight");
+    //     }
+
+    //     // Save both b tag SFs for the untagged case in case the event is used for SL, FH or FL after ntuple production 
+    //     else if(Tag_ == "Untagged"){ // If using untagged events, will need to divide out SF not being used 
+    //         tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagCutWeight"); // for untagged just apply medium WP bveto SF since in the case these events are used, not 100% precise anyway 
+    //         // tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagReshapeWeight");
+    //     }
+
+    //     // Only save bTagReshapeWeight for MVA final states 
+    //     else{
+    //         tag_obj_.includeWeightsByLabel(*tagJets.at(TagJet_i),"JetBTagReshapeWeight");
+    //     }
+    // }
     
     // // //-- Save central, up/down scale factors in output trees for checks / flexibility
     // // //-- Initialize Values with 1 incase there are no good electrons, muons or jets since in end values are set to tag object SF values
@@ -1172,6 +1190,24 @@ HHWWggTag HHWWggTagProducer::ComputePUJetIDs(vector<Ptr<flashgg::Jet>> jets, HHW
     return tag_obj; 
 
 }
+
+// std::vector<edm::Ptr<reco::GenParticle> > HHWWggTagProducer::OrderParticles(std::vector<edm::Ptr<reco::GenParticle> > GenParticles )
+// {
+    // double maxpT = -999; 
+    // double tempPt; 
+    // int N_genParticles = GenParticles.size();
+    // edm::Ptr<reco::GenParticle> GenPart; 
+
+    // for (unsigned int i; i < N_genParticles; i ++){
+    //     GenPart = GenParticles.at(i);
+    //     tempPt = GenPart->p4().pt(); 
+
+
+    // }
+
+    
+
+// }
 
 
 }

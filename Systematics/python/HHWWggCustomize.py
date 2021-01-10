@@ -27,11 +27,54 @@ class HHWWggCustomize():
         variables = []
 
         ##-- Gen Level Variables
-        gen_vars = [
-            "genMhh := genMhh()",
-            "genCosThetaStar_CS := getGenCosThetaStar_CS()",           
-            "genAbsCosThetaStar_CS := abs(getGenCosThetaStar_CS())"        
-        ]
+        gen_vars = []
+
+        CommonGenObjs = ["HiggsBosons", "WBosons","Photons"]
+        kinVars = ["pt","eta","phi","E","M"]
+        orderTitleDict = {
+            0: "Leading",
+            1: "Subleading"
+        }
+        particleNamesDict = {
+            "HiggsBosons" : "Higgs",
+            "WBosons" : "W",
+            "Photons" : "Photon"
+        }        
+
+        for CommonGenObj in CommonGenObjs:
+            for kinVar in kinVars:
+                for i in range(2): # leading, subleading
+                    placement = orderTitleDict[i]
+                    particle = particleNamesDict[CommonGenObj]
+                    varTitle = "%s_GEN_%s_%s"%(placement,particle,kinVar)
+                    varName = "? gen%s.size() >= %s ? gen%s.at(%s).%s() : -99"%(CommonGenObj, i+1, CommonGenObj, i, kinVar)
+                    varEntry = "%s:=%s"%(varTitle,varName)
+                    gen_vars.append(varEntry) 
+
+        ##-- Gen Quarks, Leptons, Neutrinos 
+        GenObjsInfo = [["Quarks","Quark",4],["Leptons","Lepton",2],["Neutrinos","Neutrino",2]] ##-- particle and number to check for. Max depends on WWgg final state. If you get 4 quarks for SL state, can probably filter out the proton quarks via an eta cut as they should be very high eta
+        
+        for GenObjInfo in GenObjsInfo:
+            VectorName, Particle, maxToCheck = GenObjInfo[0], GenObjInfo[1], GenObjInfo[2]
+            for i in range(maxToCheck):
+                for kinVar in kinVars:
+                    varTitle = "GEN_%s_%s_%s"%(Particle,i,kinVar)
+                    varName = "? gen%s.size() >= %s ? gen%s.at(%s).%s() : -99"%(VectorName, i + 1, VectorName, i, kinVar)
+                    varEntry = "%s:=%s"%(varTitle,varName)
+                    gen_vars.append(varEntry)
+                ##-- also save pdgId
+                varTitle = "GEN_%s_%s_pdgId"%(Particle,i)
+                varName = "? gen%sPdgIds.size() >= %s ? gen%sPdgIds.at(%s) : -99"%(VectorName, i+1, VectorName, i)
+                varEntry = "%s:=%s"%(varTitle,varName)
+                gen_vars.append(varEntry)
+
+        gen_vars.append("genMhh := genMhh()")
+        gen_vars.append("genCosThetaStar_CS := getGenCosThetaStar_CS()")
+        gen_vars.append("genAbsCosThetaStar_CS := abs(getGenCosThetaStar_CS())")
+
+        print"gen_vars:"
+        for gen_var in gen_vars:
+            print gen_var 
 
         #-- Cut flow variables
         cutFlowVars = [
@@ -243,9 +286,6 @@ class HHWWggCustomize():
                         for iID,PUID in enumerate(["Loose","Medium","Tight"]):
                             vtitle = "%s_%s_%s"%(objV,i,"Pass%sJetPUID"%(PUID))
                             vname = "? goodJets_passJetPUID.size() >= %s ? goodJets_passJetPUID.at(%s).at(%s) : -99"%(i+1,i,iID)
-                            # vname = "? goodJets_passJetPUID.size() >= %s ? goodJets_passJetPUID[%s] : -99"%(i+1,i)
-                            # vname = "goodJets_passJetPUID[%s][%s]"%(i,iID)
-                            # vname = "? %s.size() >= %s ? %s[%s].%s : -99"%(objV,i+1,objV,i,bscore)
                             entry = "%s:=%s"%(vtitle,vname)
                             finalStateVars.append(entry)                
 

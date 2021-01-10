@@ -84,11 +84,22 @@ namespace flashgg {
       double HggVtx_z = -99;
       double ZeroVtx_z = -99; 
 
+      // Gen information 
+      int pdgId; 
+      std::vector<edm::Ptr<reco::GenParticle> > genHiggsBosons;
+      std::vector<edm::Ptr<reco::GenParticle> > genWBosons;
+      std::vector<edm::Ptr<reco::GenParticle> > genPhotons;    
+      std::vector<edm::Ptr<reco::GenParticle> > genQuarks;    
+      std::vector<edm::Ptr<reco::GenParticle> > genLeptons;    
+      std::vector<edm::Ptr<reco::GenParticle> > genNeutrinos; 
+      // edm::Ptr<reco::GenParticle& a;
+      // edm::Ptr<reco::GenParticle& b;         
+
       // Misc
       int num_FL_dr = 0;
       int catnum = 3; // category number. default to untagged
       double DiphoCentralWeight = 1;
-      double prefireWeight = 1; // If you are setting prefire weight by hand 
+      // double prefireWeight = 1; // If you are setting prefire weight by hand 
       // Saved Objects after selections
       std::vector<edm::Ptr<flashgg::Jet> > allJets;
       std::vector<edm::Ptr<flashgg::Jet> > FHJets; // four jets for fully hadronic tag
@@ -131,6 +142,8 @@ namespace flashgg {
           Handle<View<reco::GenParticle> > genParticles;
           std::vector<edm::Ptr<reco::GenParticle> > selHiggses;
           event.getByToken( genParticleToken_, genParticles );
+
+          // To obtain Higgs vertex information 
           reco::GenParticle::Point higgsVtx(0.,0.,0.);
 
           for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
@@ -142,6 +155,7 @@ namespace flashgg {
                   GenVtx_z = higgsVtx.z();
               } 
           }
+
           if (selHiggses.size()==2){
               TLorentzVector H1,H2;
               H1.SetPtEtaPhiE(selHiggses[0]->p4().pt(),selHiggses[0]->p4().eta(),selHiggses[0]->p4().phi(),selHiggses[0]->p4().energy());
@@ -149,6 +163,88 @@ namespace flashgg {
               genMhh  = (H1+H2).M();
               genCosThetaStar_CS = getGenCosThetaStar_CS(H1,H2);   
           }
+
+          // Save gen particles in nominal tree
+          if(systLabel_ == ""){
+            for( unsigned int genLoop = 0 ; genLoop < genParticles->size(); genLoop++ ) {
+                edm::Ptr<reco::GenParticle> genPar = genParticles->ptrAt(genLoop);
+                if(genPar->isHardProcess()){
+                  pdgId = genPar->pdgId();
+                  if(doHHWWggDebug_) std::cout << "==> Hard Process Gen Particle pdgID: " << pdgId << std::endl; 
+                  if(pdgId==25){
+                      genHiggsBosons.push_back(genPar);
+                  }
+                  else if(abs(pdgId)==24){
+                      genWBosons.push_back(genPar);
+                  }
+
+                  else if(pdgId == 22){
+                      genPhotons.push_back(genPar);
+                  }
+
+                  else if(abs(pdgId) >= 1 && abs(pdgId) <= 5){ // can check number of b quarks here 
+                      genQuarks.push_back(genPar);
+                  }
+
+                  else if(abs(pdgId) == 11 || abs(pdgId) == 13 || abs(pdgId) == 15){ // can check number of taus here 
+                      genLeptons.push_back(genPar);
+                  }     
+
+                  else if(abs(pdgId) == 12 || abs(pdgId) == 14 || abs(pdgId) == 16){ // can check number of tau neutrinos here 
+                      genNeutrinos.push_back(genPar);
+                  }                                    
+
+                }
+            }
+
+            // Order by pT 
+            // if(genHiggsBosons.size() >= 2){
+            //   if(genHiggsBosons[1]->p4().pt() > genHiggsBosons[0]->p4().pt()){
+            //     edm::Ptr<reco::GenParticle> h1 = genHiggsBosons[0];
+            //     edm::Ptr<reco::GenParticle> h2 = genHiggsBosons[1];
+            //     genHiggsBosons[0] = h2;
+            //     genHiggsBosons[1] = h1;
+            //   }  
+            // }
+       
+            // if(genWBosons.size() >= 2){
+            //   if(genWBosons[1]->p4().pt() > genWBosons[0]->p4().pt()){
+            //     edm::Ptr<reco::GenParticle> w1 = genWBosons[0];
+            //     edm::Ptr<reco::GenParticle> w2 = genWBosons[1];
+            //     genWBosons[0] = w2;
+            //     genWBosons[1] = w1;
+            //   }  
+            // }    
+
+            // if(genPhotons.size() >= 2){
+            //   if(genPhotons[1]->p4().pt() > genPhotons[0]->p4().pt()){
+            //     edm::Ptr<reco::GenParticle> pho1 = genPhotons[0];
+            //     edm::Ptr<reco::GenParticle> pho2 = genPhotons[1];
+            //     genPhotons[0] = pho2;
+            //     genPhotons[1] = pho1;
+            //   }   
+            // }
+
+            if(genHiggsBosons.size() >= 2) std::sort(genHiggsBosons.begin(), genHiggsBosons.end(), compPt);
+            if(genWBosons.size() >= 2) std::sort(genWBosons.begin(), genWBosons.end(), compPt);
+            if(genPhotons.size() >= 2) std::sort(genPhotons.begin(), genPhotons.end(), compPt);
+            if(genQuarks.size() >= 2)    std::sort(genQuarks.begin(), genQuarks.end(), compPt);  
+            if(genLeptons.size() >= 2)   std::sort(genLeptons.begin(), genLeptons.end(), compPt);   
+            if(genNeutrinos.size() >= 2) std::sort(genNeutrinos.begin(), genNeutrinos.end(), compPt);    
+                  
+            if(doHHWWggDebug_){
+              std::cout << "======================" << std::endl;
+              std::cout << "==> N Gen Higgs: " << genHiggsBosons.size() << std::endl;
+              std::cout << "==> N Gen W Bosons: " << genWBosons.size() << std::endl;
+              std::cout << "==> N Gen Photons: " << genPhotons.size() << std::endl;
+              std::cout << "==> N Gen Quarks: " << genQuarks.size() << std::endl;
+              std::cout << "==> N Gen Leptons: " << genLeptons.size() << std::endl;
+              std::cout << "==> N Gen Neutrinos: " << genNeutrinos.size() << std::endl;
+            }  
+
+          }          
+
+
           truth_obj.setGenPV( higgsVtx );
           truths->push_back( truth_obj );
       }
@@ -380,13 +476,16 @@ namespace flashgg {
               
               //-- Include Scale Factors 
               // Set CentralWeight values for each SF to access in trees 
-              if(!isData) tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);
+              if(!isData){
+                tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);
+                tag_obj.SetGenObjs(genHiggsBosons, genWBosons, genPhotons, genQuarks, genLeptons, genNeutrinos);
+              } 
 
-              if(doHHWWggDebug_){
-                cout << "*********************************************************" << endl; 
-                cout << "HHWWgg Object Scale Factors:" << endl; 
-                PrintScaleFactorsObj(tag_obj);
-              }
+              // if(doHHWWggDebug_){
+              //   cout << "*********************************************************" << endl; 
+              //   cout << "HHWWgg Object Scale Factors:" << endl; 
+              //   PrintScaleFactorsObj(tag_obj);
+              // }
 
               // Push back tag object 
               HHWWggtags->push_back( tag_obj );
@@ -502,7 +601,10 @@ namespace flashgg {
                  
               //-- Include Scale Factors 
               // Set CentralWeight values for each SF to access in trees   
-              if(!isData) tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);  
+              if(!isData){
+                tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);  
+                tag_obj.SetGenObjs(genHiggsBosons, genWBosons, genPhotons, genQuarks, genLeptons, genNeutrinos);
+              } 
 
               HHWWggtags->push_back( tag_obj );
               FilledTag = 1;
@@ -637,7 +739,10 @@ namespace flashgg {
                   tag_obj.SetDiPhoPt(diPho_pT);
                   //-- Include Scale Factors 
                   // Set CentralWeight values for each SF to access in trees   
-                  if(!isData) tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);
+                  if(!isData){
+                    tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);
+                    tag_obj.SetGenObjs(genHiggsBosons, genWBosons, genPhotons, genQuarks, genLeptons, genNeutrinos);
+                  } 
 
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );  
@@ -731,7 +836,10 @@ namespace flashgg {
                   tag_obj.SetDiPhoPt(diPho_pT);
                   //-- Include Scale Factors 
                   // Set CentralWeight values for each SF to access in trees 
-                  if(!isData) tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);
+                  if(!isData){
+                    tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);
+                    tag_obj.SetGenObjs(genHiggsBosons, genWBosons, genPhotons, genQuarks, genLeptons, genNeutrinos);
+                  } 
 
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );    
@@ -825,7 +933,10 @@ namespace flashgg {
                   tag_obj.SetDiPhoPt(diPho_pT);                    
                   //-- Include Scale Factors 
                   // Set CentralWeight values for each SF to access in trees 
-                  if(!isData) tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);   
+                  if(!isData){
+                    tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_); 
+                    tag_obj.SetGenObjs(genHiggsBosons, genWBosons, genPhotons, genQuarks, genLeptons, genNeutrinos);
+                  }   
 
                   tag_obj.setGenMhh( genMhh );
                   tag_obj.setGenCosThetaStar_CS( genCosThetaStar_CS );   
@@ -869,14 +980,17 @@ namespace flashgg {
 
               //-- Include Scale Factors 
               // Set CentralWeight values for each SF to access in trees 
-              if(!isData) tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);  
+              if(!isData){
+                tag_obj = SetCentralUpDownWeights(tag_obj, goodElectrons, goodMuons, tagJets, dipho, doHHWWggDebug_, MuonID_, muPFIsoSumRelThreshold_, Tag_);  
+                tag_obj.SetGenObjs(genHiggsBosons, genWBosons, genPhotons, genQuarks, genLeptons, genNeutrinos);
+              } 
               tag_obj = ComputePUJetIDs(tagJets, tag_obj);
 
-              if(doHHWWggDebug_){
-                cout << "*********************************************************" << endl; 
-                cout << "HHWWgg Object Scale Factors:" << endl; 
-                PrintScaleFactorsObj(tag_obj);
-              }
+              // if(doHHWWggDebug_){
+              //   cout << "*********************************************************" << endl; 
+              //   cout << "HHWWgg Object Scale Factors:" << endl; 
+              //   PrintScaleFactorsObj(tag_obj);
+              // }
 
               // Push back tag object 
               HHWWggtags->push_back( tag_obj );
