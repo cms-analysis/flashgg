@@ -144,6 +144,12 @@
         "jetID" : "Tight2017"
     },
 
+    "flashggGluGluHMVA" : 
+    {  
+        "weightFile" : "flashgg/Taggers/data/STXSmodels/nClassesGGHModel.xml",
+        "jetID" : "Tight2017"
+    },
+
     "stageOneCombinedTag" :
     {  
         "rawDiphoBounds" : [
