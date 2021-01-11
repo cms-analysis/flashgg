@@ -401,7 +401,8 @@ class HHWWggCustomize():
             variables += cutFlowVars
             variables += ScaleFactorVariables
             variables += vertex_variables
-            variables += gen_vars            
+            if self.customize.processId != "Data": ##-- do not save gen vars for data as they will all be unset 
+                variables += gen_vars
             variables += finalStateVars
             if(self.customize.HHWWggAnalysisChannel == "FL" or self.customize.HHWWggAnalysisChannel == "all"):
                 variables += FL_vars
