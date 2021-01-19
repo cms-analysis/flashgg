@@ -1,0 +1,8 @@
+{
+    "processes" : {
+        "Data": [
+            "/DoubleEG/spigazzi-Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-Run2016B-17Jul2018_ver2-v1-86023db6be00ee64cd62a3172358fb9f/USER"
+	]
+    },
+    "cmdLine"  : "campaign=Era2016_RR-17Jul2018_v2 HHWWggAnalysisChannel=all FillUntagged=1 useAAA=True processId=Data processType=Data "
+}

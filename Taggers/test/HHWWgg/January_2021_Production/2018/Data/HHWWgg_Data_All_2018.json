@@ -9,5 +9,5 @@
             "/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018D-22Jan2019-v2-dc8e5fb301bfbf2559680ca888829f0c/USER"
         ]
     },
-    "cmdLine"  : "campaign=Era2018_RR-17Sep2018_v2 doHHWWggNonResAnalysis=1 useAAA=True processId=Data processType=Data metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json "
+    "cmdLine"  : "campaign=Era2018_RR-17Sep2018_v2 HHWWggAnalysisChannel=all FillUntagged=1 useAAA=True processId=Data processType=Data "
 }
