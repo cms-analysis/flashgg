@@ -1,4 +1,4 @@
-{
+{ 
     "/VBFHToGG_M125_13TeV_amcatnlo_pythia8_CUETP8M1Up/alesauva-2016_1-10_6_4-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext1-v2-4bd6355cff7d33666671172ac76a1afc/USER": {
         "dset_type": "mc", 
         "files": [
@@ -804,3 +804,4 @@
         "vetted": true
     }
 }
+
