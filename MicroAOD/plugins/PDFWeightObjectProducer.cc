@@ -125,6 +125,12 @@ namespace flashgg {
 			if( ( iter->tag() ).compare( tag_ ) == 0 ) {
 				//cout << iter->tag() << endl;
 				weight_lines = iter->lines();
+                for (auto &line: weight_lines) {
+                    std::size_t htPos = line.find("#");
+                    if (htPos != std::string::npos) {
+                        line = line.substr(0, htPos);
+                    }
+                }
 			}
 
             for (unsigned int iLine = 0; iLine<lines.size(); iLine++) {
@@ -180,6 +186,11 @@ namespace flashgg {
                 alphas_id_1 = "306101";
                 alphas_id_2 = "306102";
             }
+            
+            if (pdfidx == 325300){
+                alphas_id_1 = "325401";
+                alphas_id_2 = "325402";
+            }
                 
             cout << "alpha_S min and max id             : " << alphas_id_1 << "   " << alphas_id_2 << endl;
         }
@@ -198,8 +209,8 @@ namespace flashgg {
         
         
         // --- Name of the weightgroup
-        string scalevar = "scale_variation";
-        string pdfvar   = "PDF_variation";
+        string scalevar = "scale variation";
+        string pdfvar   = "hessian_pdfas";
         //        string alphavar;  //only for thq samples
         //        string pdfnlovar; //only for thq samples (could be extended to the rest of samples)
 
@@ -233,11 +244,11 @@ namespace flashgg {
                     std::size_t foundNonStandard;
                     if (weightgroupname1) foundNonStandard=v.second.get<std::string>("<xmlattr>.name").find(std::string("PDF"))!=std::string::npos && v.second.get<std::string>("<xmlattr>.name").find(std::string("variation")) ==std::string::npos;
                     else if (weightgroupname2) foundNonStandard=v.second.get<std::string>("<xmlattr>.type").find(std::string("PDF"))!=std::string::npos && v.second.get<std::string>("<xmlattr>.type").find(std::string("variation"))==std::string::npos;
-                    if  (foundNonStandard && isStandardSample_){ 
+                    if (foundNonStandard && isStandardSample_){ 
                         if(debug_) std::cout<<"customizing non-standard sample"<<std::endl;
                     
                     isStandardSample_=false;
-                    doAlphasWeights_=false;
+                    // doAlphasWeights_=false;
                     
                     for(auto it = PDFmapString_.begin(); it != PDFmapString_.end(); it++){
                         if(it->second == (unsigned int)pdfidx){
@@ -261,9 +272,26 @@ namespace flashgg {
 
                 // -- PDFs + alpha_s weights
                 int variationindex=0;
-                if ( (weightgroupname1 && weightgroupname1.get().substr(0,pdfvar.length()) == pdfvar) || (weightgroupname2 && weightgroupname2.get().substr(0,pdfvar.length()) == pdfvar)) {
+                std::size_t wgN1PdfV=0;
+                std::size_t wgN2PdfV=0;
+                bool wgN1PdfVFound=false;
+                bool wgN2PdfVFound=false;
+                if (weightgroupname1) {
+                    wgN1PdfV = weightgroupname1.get().find(pdfvar);
+                    if (wgN1PdfV != std::string::npos) {
+                        wgN1PdfVFound = true;
+                    }
+                }
+                if (weightgroupname2) {
+                    wgN2PdfV = weightgroupname2.get().find(pdfvar);
+                    if (wgN2PdfV != std::string::npos) {
+                        wgN2PdfVFound = true;
+                    }
+                }
+                
+                if ( (weightgroupname1 && wgN1PdfVFound) || (weightgroupname2 && wgN2PdfVFound)) {
                                     
-                    BOOST_FOREACH(boost::property_tree::ptree::value_type &vs,subtree)
+                    BOOST_FOREACH(boost::property_tree::ptree::value_type &vs,subtree) {
                         if (vs.first == "weight") {
                             if (debug_) std::cout << "SCZ " << vs.first <<  "   " << vs.second.get<std::string>("<xmlattr>.id")  << "  " << vs.second.data()<< endl;
                             
@@ -290,7 +318,7 @@ namespace flashgg {
                             if (debug_)cout<<"pdfindex "<<pdfindex<<" id:"<<id<<endl;
                                                         
 
-                            if (pdfindex >= boost::lexical_cast<int>(pdfid_1) && pdfindex <= boost::lexical_cast<int>(pdfid_2)){
+                            if (pdfindex >= boost::lexical_cast<int>(pdfid_1) && pdfindex <= boost::lexical_cast<int>(pdfid_2) && id>=1010){
                                 PDFWeightProducer::pdf_indices.push_back( id );
                             }
                             
@@ -300,14 +328,33 @@ namespace flashgg {
                                 }
                             }
                         }
+                    }
                 }// end loop over PDF weights
 
 
 
                 // -- Scale weights
-                if ( (weightgroupname1 && weightgroupname1.get().substr(0,scalevar.length()) == scalevar)  || ( weightgroupname2 && weightgroupname2.get().substr(0,scalevar.length()) == scalevar) ) {               
+                std::size_t wgN1ScaleV = 0;
+                std::size_t wgN2ScaleV = 0;
+                bool wgN1ScaleVFound=false;
+                bool wgN2ScaleVFound=false;
+                std::cout << "scalevar: " << scalevar << std::endl;
+                if (weightgroupname1) {
+                    wgN1ScaleV = weightgroupname1.get().find(scalevar);
+                    if (wgN1ScaleV != std::string::npos) {
+                        wgN1ScaleVFound = true;
+                    }
+                }
+                if (weightgroupname2) {
+                    wgN2ScaleV = weightgroupname2.get().find(scalevar);
+                    if (wgN2ScaleV != std::string::npos) {
+                        wgN2ScaleVFound = true;
+                    }
+                }
+                if ( (weightgroupname1 && wgN1ScaleVFound)  || ( weightgroupname2 && wgN2ScaleVFound) ) {               
                     
                     BOOST_FOREACH(boost::property_tree::ptree::value_type &vs,subtree)
+                        {
                         if (vs.first == "weight") {
                                                 
                             string strwid  = vs.second.get<std::string>("<xmlattr>.id");
@@ -315,7 +362,10 @@ namespace flashgg {
                             
                             scale_indices.push_back( id );
                         }
-                }// end loop over scale weights
+                        }
+                    
+                }
+                // end loop over scale weights
                 
                 // -- Alpha_s weights                                                                                                                                                                        
 //                if (  (weightgroupname1 && weightgroupname1.get() == alphavar)  || ( weightgroupname2 && weightgroupname2.get() == alphavar) ) ) {
@@ -345,6 +395,10 @@ namespace flashgg {
 //                }// end loop over pdf nlo weights
             }
         }
+        if (scale_indices.size() == 0 && pdfidx == 325300){
+            std::cout << "WARNING: Manually filling scale indices with {1001,1002,1003,1004,1005,1006,1007,1008,1009}" << std::endl;
+            scale_indices = {1001,1002,1003,1004,1005,1006,1007,1008,1009};
+        }
 
         if (debug_) {
             std::cout << "pdf_indices:";
@@ -368,7 +422,6 @@ namespace flashgg {
             }
             std::cout <<std::endl;
         }
-
 
     }
 
