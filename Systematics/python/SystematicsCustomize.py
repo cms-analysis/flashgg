@@ -369,7 +369,7 @@ def recalculatePDFWeights(process, options):
                                                     nPdfEigWeights = cms.uint32(60),
                                                     mc2hessianCSV = cms.untracked.string(options["mc2hessianCSV"].encode("ascii")),
                                                     LHERunLabel = cms.string("externalLHEProducer"),
-                                                    Debug = cms.bool(True),
+                                                    Debug = cms.bool(False),
                                                     PDFmap = cms.PSet(#see here https://lhapdf.hepforge.org/pdfsets.html to update the map if needed
                                                         NNPDF31_nnlo_as_0118_mc_hessian_pdfas = cms.untracked.uint32(325300)
                                                         # NNPDF30_lo_as_0130_nf_4 = cms.untracked.uint32(263400),
