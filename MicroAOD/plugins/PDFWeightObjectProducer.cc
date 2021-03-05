@@ -315,6 +315,7 @@ namespace flashgg {
                             
                             if (isStandardSample_){
                                 boost::split(strs, strw, boost::is_any_of("="));
+                                std::cout << "Standard sample strs " << strs.back() << std::endl;
                             }else{
                                 strs.push_back(std::to_string(pdfidx + variationindex));
                                 variationindex++;
