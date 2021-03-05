@@ -209,8 +209,8 @@ namespace flashgg {
         
         
         // --- Name of the weightgroup
-        string scalevar = "scale variation";
-        string pdfvar   = "hessian_pdfas";
+        string scalevar = "scale_variation";
+        string pdfvar   = "PDF_variation";
         //        string alphavar;  //only for thq samples
         //        string pdfnlovar; //only for thq samples (could be extended to the rest of samples)
 
@@ -248,7 +248,7 @@ namespace flashgg {
                         if(debug_) std::cout<<"customizing non-standard sample"<<std::endl;
                     
                     isStandardSample_=false;
-                    // doAlphasWeights_=false;
+                    doAlphasWeights_=false;
                     
                     for(auto it = PDFmapString_.begin(); it != PDFmapString_.end(); it++){
                         if(it->second == (unsigned int)pdfidx){
@@ -256,10 +256,16 @@ namespace flashgg {
                             if(debug_)std::cout<<"setting pdf var to "<<pdfvar<<std::endl;
                         }
                     }
+                    if (pdfidx == 325300 && pdfvar == "NNPDF31_nnlo_as_0118_mc_hessian_pdfas") {
+                        isStandardSample_=true;
+                        doAlphasWeights_=true;
+                    }
                     
 
                 }
                 }
+
+               
 
                 if (debug_) {
                     std::cout << "weightgroupname1 and weightgroupname2 are:" << std::endl;
