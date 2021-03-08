@@ -237,7 +237,7 @@
 	"eta" : 2.5
     },
 
-    "mc2hessianCSV" : "PhysicsTools/HepMCCandAlgos/data/NNPDF30_lo_as_0130_hessian_60.csv",
+    "mc2hessianCSV" : "PhysicsTools/HepMCCandAlgos/data/NNPDF30_nlo_as_0118_hessian_60.csv",
 
     "bRegression" :
     {
