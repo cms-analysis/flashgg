@@ -152,11 +152,6 @@
     "QCD_Pt-30to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8" : {"xs" : 24810.0 , "br" : 1.0,"itype":30 },
     "QCD_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8" : {"xs" : 118100.0 , "br" : 1.0,"itype":32 },
     "QCD_Pt-30toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8" : {"xs" : 241400.0 , "br" : 1.0,"itype":31 },
-    "QCD_Pt-120to170_EMEnriched_TuneCP5_13TeV_pythia8" : {"xs" : 118100.0 , "br" : 1.0,"itype":32 },
-    "QCD_Pt-170to300_EMEnriched_TuneCP5_13TeV_pythia8" : {"xs" : 118100.0 , "br" : 1.0,"itype":32 },
-    "QCD_Pt-300toInf_EMEnriched_TuneCP5_13TeV_pythia8" : {"xs" : 118100.0 , "br" : 1.0,"itype":32 },
-    "QCD_Pt-50to80_EMEnriched_TuneCP5_13TeV_pythia8" : {"xs" : 118100.0 , "br" : 1.0,"itype":32 },
-    "QCD_Pt-80to120_EMEnriched_TuneCP5_13TeV_pythia8" : {"xs" : 118100.0 , "br" : 1.0,"itype":32 },
 
     "DoubleEG"                                                      : { "xs" : 0.0, "itype" :0                       },
     "EGamma"                                                        : { "xs" : 0.0, "itype" :0                       },
