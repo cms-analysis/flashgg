@@ -3,11 +3,6 @@
         "dset_type": "mc", 
         "files": [
             {
-                "bad": true, 
-                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/HHWWgg_v2-2_Test/94X_mc2017-RunIIFall18/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200811_094113/0000/myMicroAODOutputFile_6.root", 
-                "nevents": 25243
-            }, 
-            {
                 "bad": false, 
                 "events": 10344, 
                 "name": "/store/group/lnujj/rasharma/QCD/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/crab_QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/200905_222749/0000/myMicroAODOutputFile_5.root", 

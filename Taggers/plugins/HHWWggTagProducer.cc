@@ -490,10 +490,12 @@ namespace flashgg {
             if (n_good_leptons==0 && n_good_jets>=4)
             {
               catnum = 1;
+              if(doHHWWggDebug_) cout << "\n\nFilling Fully-Hadronic category..." << endl;
+              // Ptr<flashgg::Met> theMET = METs->ptrAt( 0 );
 
               // Define four jets with WH min method, or just take four leading pT
               if(doHHWWggFHptOrdered_){
-                if (doHHWWggDebug_) std::cout << "\n\n=============> doHHWWggFHptOrdered_ ==================\n\n" << std::endl;
+                if (doHHWWggDebug_) std::cout << "=============> doHHWWggFHptOrdered_ ==================" << std::endl;
                 FHJets = GetFHPtOrderedJets(doHHWWggDebug_, tagJets);
                 jet1 = FHJets[0];
                 jet2 = FHJets[1];
@@ -502,7 +504,7 @@ namespace flashgg {
               }
               else if (doHHWWggFHminWHJets_)
               {
-                if (doHHWWggDebug_) std::cout << "\n\n=============> doHHWWggFHminWHJets_ ==================\n\n" << std::endl;
+                if (doHHWWggDebug_) std::cout << "=============> doHHWWggFHminWHJets_ ==================" << std::endl;
                 FHJets = GetFHminWHJets(doHHWWggDebug_, tagJets);
                 jet1 = FHJets[0];
                 jet2 = FHJets[1];
@@ -511,7 +513,7 @@ namespace flashgg {
               }
               else if (doHHWWggFHminWHLead2Jet_)
               {
-                if (doHHWWggDebug_) std::cout << "\n\n=============> doHHWWggFHminWHLead2Jet_ ==================\n\n" << std::endl;
+                if (doHHWWggDebug_) std::cout << "=============> doHHWWggFHminWHLead2Jet_ ==================" << std::endl;
                 FHJets = GetFHminWHLead2Jet(doHHWWggDebug_, tagJets);
                 jet1 = FHJets[0];
                 jet2 = FHJets[1];
@@ -520,7 +522,7 @@ namespace flashgg {
               }
               else if (doHHWWggFHminHiggsMassOnly_) // kept doHHWWggFHminHiggsMassOnly_ to true in Taggers/python/flashggHHWWggTag_cfi.py; this ensures that this won't eneter in the last else
               {
-                if (doHHWWggDebug_) std::cout << "\n\n=============> doHHWWggFHminHiggsMassOnly_ ==================\n\n" << std::endl;
+                if (doHHWWggDebug_) std::cout << "=============> doHHWWggFHminHiggsMassOnly_ ==================" << std::endl;
                 FHJets = GetFHminHiggsMassOnly(doHHWWggDebug_, tagJets);
                 jet1 = FHJets[0];
                 jet2 = FHJets[1];
@@ -536,8 +538,6 @@ namespace flashgg {
                 std::cout << "==> Please you any one options while running "        << std::endl;
                 exit(0);
               }
-
-              if(doHHWWggDebug_) cout << "Filling Fully-Hadronic category..." << endl;
               HHWWggTag tag_obj;
 
               if (doHHWWggTagCutFlowAnalysis_){

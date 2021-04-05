@@ -481,12 +481,12 @@ vector<Ptr<flashgg::Jet> > HHWWggTagProducer::GetFHminWHJets(bool doHHWWggDebug,
     // Select 2 jets whose mass closest to W-boson mass
     for (int CountJet1 = 0; CountJet1 < nTagJets-1; CountJet1++) {
         for (int CountJet2 = CountJet1+1; CountJet2 < nTagJets; CountJet2++) {
-            if (DEBUG) std::cout << "(CountJet1,CountJet2) = (" << CountJet1 << "," << CountJet2 << ")" << std::endl;
+            if (DEBUG) std::cout << "\t(CountJet1,CountJet2) = (" << CountJet1 << "," << CountJet2 << ")" << std::endl;
             jet11 = tagJets_[CountJet1];
             jet12 = tagJets_[CountJet2];
             
             double deltaMass =  abs((jet11->p4() + jet12->p4()).M() - 80.0);
-            if (DEBUG) std::cout << "deltaMass = " << deltaMass << "\t TempMinWMass = " << TempMinWMass << std::endl;
+            if (DEBUG) std::cout << "\tdeltaMass = " << deltaMass << "\t TempMinWMass = " << TempMinWMass << std::endl;
             if ( deltaMass < TempMinWMass)
             {
                 if  (jet11->p4().pt() > jet12->p4().pt()) {
@@ -497,22 +497,22 @@ vector<Ptr<flashgg::Jet> > HHWWggTagProducer::GetFHminWHJets(bool doHHWWggDebug,
                     OnShellW_SubLeadingJetIndex = CountJet1;
                 }
                 TempMinWMass = deltaMass;
-                if (DEBUG) std::cout << "==> (CountJet1,CountJet2) = (" << CountJet1 << "," << CountJet2 << ")" << std::endl;
+                if (DEBUG) std::cout << "\t==> (CountJet1,CountJet2) = (" << CountJet1 << "," << CountJet2 << ")" << std::endl;
             }
         }
     }
-    if (DEBUG) std::cout << "[INFO] Print Jet Index (After W-Selection): " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] Print Jet Index (After W-Selection): " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
     
     for (int CountJet1 = 0; CountJet1 < nTagJets-1; CountJet1++) {
         if (CountJet1 == OnShellW_LeadingJetIndex || CountJet1 == OnShellW_SubLeadingJetIndex) continue;
         for (int CountJet2 = CountJet1+1; CountJet2 < nTagJets; CountJet2++) {
             if (CountJet2 == OnShellW_LeadingJetIndex || CountJet2 == OnShellW_SubLeadingJetIndex) continue;
-            if (DEBUG) std::cout << "(CountJet1,CountJet2) = (" << CountJet1 << "," << CountJet2 << ")" << std::endl;
+            if (DEBUG) std::cout << "\t(CountJet1,CountJet2) = (" << CountJet1 << "," << CountJet2 << ")" << std::endl;
             jet11 = tagJets_[CountJet1];
             jet12 = tagJets_[CountJet2];
             
             double deltaMass =  abs((jet11->p4() + jet12->p4() + tagJets_[OnShellW_LeadingJetIndex]->p4() + tagJets_[OnShellW_SubLeadingJetIndex]->p4() ).M() - 125.0);
-            if (DEBUG) std::cout << "deltaMass = " << deltaMass << "\t TempMinHMass = " << TempMinHMass << std::endl;
+            if (DEBUG) std::cout << "\tdeltaMass = " << deltaMass << "\t TempMinHMass = " << TempMinHMass << std::endl;
             if ( deltaMass < TempMinHMass)
             {
                 if  (jet11->p4().pt() > jet12->p4().pt()) {
@@ -523,7 +523,7 @@ vector<Ptr<flashgg::Jet> > HHWWggTagProducer::GetFHminWHJets(bool doHHWWggDebug,
                     OffShellW_SubLeadingJetIndex = CountJet1;
                 }
                 TempMinHMass = deltaMass;
-                if (DEBUG) std::cout << "==> (CountJet1,CountJet2) = (" << CountJet1 << "," << CountJet2 << ")" << std::endl;
+                if (DEBUG) std::cout << "\t==> (CountJet1,CountJet2) = (" << CountJet1 << "," << CountJet2 << ")" << std::endl;
             }
         }
     }
@@ -532,11 +532,11 @@ vector<Ptr<flashgg::Jet> > HHWWggTagProducer::GetFHminWHJets(bool doHHWWggDebug,
     jet3 = tagJets_[OffShellW_LeadingJetIndex];
     jet4 = tagJets_[OffShellW_SubLeadingJetIndex];
     
-    if (DEBUG) std::cout << "[INFO] Print pt of 4 selected jets: " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet1 pT = " << jet1->p4().pt() << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet2 pT = " << jet2->p4().pt() << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet3 pT = " << jet3->p4().pt() << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet4 pT = " << jet4->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] Print pt of 4 selected jets: " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet1 pT = " << jet1->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet2 pT = " << jet2->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet3 pT = " << jet3->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet4 pT = " << jet4->p4().pt() << std::endl;
     
     FHJets_.push_back(jet1);
     FHJets_.push_back(jet2);
@@ -566,17 +566,17 @@ vector<Ptr<flashgg::Jet> > HHWWggTagProducer::GetFHminWHLead2Jet(bool doHHWWggDe
     Ptr<flashgg::Jet> jet4;
     
     int nTagJets = tagJets_.size();
-    if (DEBUG) std::cout << "Size of jets: " << nTagJets << std::endl;
+    if (DEBUG) std::cout << "\tSize of jets: " << nTagJets << std::endl;
     
     // Select 2 jets whose mass closest to W-boson mass
     for (int CountJet1 = 0; CountJet1 < nTagJets-1; CountJet1++) {
         for (int CountJet2 = CountJet1+1; CountJet2 < nTagJets; CountJet2++) {
-            if (DEBUG) std::cout << "(CountJet1,CountJet2) = (" << CountJet1 << "," << CountJet2 << ")" << std::endl;
+            if (DEBUG) std::cout << "\t(CountJet1,CountJet2) = (" << CountJet1 << "," << CountJet2 << ")" << std::endl;
             jet11 = tagJets_[CountJet1];
             jet12 = tagJets_[CountJet2];
             
             double deltaMass =  abs((jet11->p4() + jet12->p4()).M() - 80.0);
-            if (DEBUG) std::cout << "deltaMass = " << deltaMass << "\t TempMinWMass = " << TempMinWMass << std::endl;
+            if (DEBUG) std::cout << "\tdeltaMass = " << deltaMass << "\t TempMinWMass = " << TempMinWMass << std::endl;
             if ( deltaMass < TempMinWMass)
             {
                 if  (jet11->p4().pt() > jet12->p4().pt()) {
@@ -587,11 +587,11 @@ vector<Ptr<flashgg::Jet> > HHWWggTagProducer::GetFHminWHLead2Jet(bool doHHWWggDe
                     OnShellW_SubLeadingJetIndex = CountJet1;
                 }
                 TempMinWMass = deltaMass;
-                if (DEBUG) std::cout << "==> (CountJet1,CountJet2) = (" << CountJet1 << "," << CountJet2 << ")" << std::endl;
+                if (DEBUG) std::cout << "\t==> (CountJet1,CountJet2) = (" << CountJet1 << "," << CountJet2 << ")" << std::endl;
             }
         }
     }
-    if (DEBUG) std::cout << "[INFO] Print Jet Index (After W-Selection): " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] Print Jet Index (After W-Selection): " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
     
     // 2 Off-shell w-boson jets; out of remaning jets select leading 2 jets.
     // Here, I am selecting first two jets after excluding already selected jets.
@@ -600,7 +600,7 @@ vector<Ptr<flashgg::Jet> > HHWWggTagProducer::GetFHminWHLead2Jet(bool doHHWWggDe
         if (CountJet1 == OnShellW_LeadingJetIndex || CountJet1 == OnShellW_SubLeadingJetIndex) continue;
         
         jet11 = tagJets_[CountJet1];
-        if (DEBUG) std::cout << "(CountJet1) = (" << CountJet1 << "), pT(jet): " << jet11->p4().pt() << ",\tTempJetCounter: " << TempJetCounter << std::endl;
+        if (DEBUG) std::cout << "\t(CountJet1) = (" << CountJet1 << "), pT(jet): " << jet11->p4().pt() << ",\tTempJetCounter: " << TempJetCounter << std::endl;
         
         if (TempJetCounter==0) OffShellW_LeadingJetIndex = CountJet1;
         if (TempJetCounter==1) OffShellW_SubLeadingJetIndex = CountJet1;
@@ -613,11 +613,11 @@ vector<Ptr<flashgg::Jet> > HHWWggTagProducer::GetFHminWHLead2Jet(bool doHHWWggDe
     jet3 = tagJets_[OffShellW_LeadingJetIndex];
     jet4 = tagJets_[OffShellW_SubLeadingJetIndex];
     
-    if (DEBUG) std::cout << "[INFO] Print pt of 4 selected jets: " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet1 pT = " << jet1->p4().pt() << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet2 pT = " << jet2->p4().pt() << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet3 pT = " << jet3->p4().pt() << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet4 pT = " << jet4->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] Print pt of 4 selected jets: " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet1 pT = " << jet1->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet2 pT = " << jet2->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet3 pT = " << jet3->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet4 pT = " << jet4->p4().pt() << std::endl;
     
     FHJets_.push_back(jet1);
     FHJets_.push_back(jet2);
@@ -657,14 +657,14 @@ vector<Ptr<flashgg::Jet> > HHWWggTagProducer::GetFHminHiggsMassOnly(bool doHHWWg
         for (int CountJet2 = CountJet1+1; CountJet2 < nTagJets-2; CountJet2++) {
             for (int CountJet3 = CountJet2+1; CountJet3 < nTagJets-1; CountJet3++) {
                 for (int CountJet4 = CountJet3+1; CountJet4 < nTagJets; CountJet4++) {
-                    if (DEBUG) std::cout << "(CountJet1,CountJet2,CountJet3,CountJet4) = (" << CountJet1 << "," << CountJet2 <<"," << CountJet3 <<"," << CountJet4 << ")" << std::endl;
+                    if (DEBUG) std::cout << "\t(CountJet1,CountJet2,CountJet3,CountJet4) = (" << CountJet1 << "," << CountJet2 <<"," << CountJet3 <<"," << CountJet4 << ")" << std::endl;
                     jet11 = tagJets_[CountJet1];
                     jet12 = tagJets_[CountJet2];
                     jet13 = tagJets_[CountJet3];
                     jet14 = tagJets_[CountJet4];
                     
                     double deltaMass =  abs((jet11->p4() + jet12->p4() + jet13->p4() + jet14->p4()).M() - 125.1);
-                    if (DEBUG) std::cout << "deltaMass = " << deltaMass << "\t TempMinWMass = " << TempMinWMass << std::endl;
+                    if (DEBUG) std::cout << "\tdeltaMass = " << deltaMass << "\t TempMinWMass = " << TempMinWMass << std::endl;
                     if ( deltaMass < TempMinWMass)
                     {
                         TempJet[0] = CountJet1;
@@ -672,13 +672,13 @@ vector<Ptr<flashgg::Jet> > HHWWggTagProducer::GetFHminHiggsMassOnly(bool doHHWWg
                         TempJet[2] = CountJet3;
                         TempJet[3] = CountJet4;
                         TempMinWMass = deltaMass;
-                        if (DEBUG) std::cout << "==> (CountJet1,CountJet2) = (" << CountJet1 << "," << CountJet2 << ")" << std::endl;
+                        if (DEBUG) std::cout << "\t==> (CountJet1,CountJet2) = (" << CountJet1 << "," << CountJet2 << ")" << std::endl;
                     }
                 }
             }
         }
     }
-    if (DEBUG) std::cout << "[INFO] Print Jet Index (After W-Selection): " << TempJet[0] << "\t" << TempJet[1] << "\t" << TempJet[2] << "\t" << TempJet[3]  << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] Print Jet Index (After W-Selection): " << TempJet[0] << "\t" << TempJet[1] << "\t" << TempJet[2] << "\t" << TempJet[3]  << std::endl;
     
     // 2 Off-shell w-boson jets; out of remaning jets select leading 2 jets.
     TempMinWMass = 9999.0;
@@ -712,11 +712,11 @@ vector<Ptr<flashgg::Jet> > HHWWggTagProducer::GetFHminHiggsMassOnly(bool doHHWWg
     jet3 = tagJets_[OffShellW_LeadingJetIndex];
     jet4 = tagJets_[OffShellW_SubLeadingJetIndex];
     
-    if (DEBUG) std::cout << "[INFO] Print pt of 4 selected jets: " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet1 pT = " << jet1->p4().pt() << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet2 pT = " << jet2->p4().pt() << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet3 pT = " << jet3->p4().pt() << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet4 pT = " << jet4->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] Print pt of 4 selected jets: " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet1 pT = " << jet1->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet2 pT = " << jet2->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet3 pT = " << jet3->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet4 pT = " << jet4->p4().pt() << std::endl;
     
     FHJets_.push_back(jet1);
     FHJets_.push_back(jet2);
@@ -762,7 +762,7 @@ vector<Ptr<flashgg::Jet> > HHWWggTagProducer::GetFHPtOrderedJets(bool doHHWWggDe
             }
         }
     }
-    if (DEBUG) std::cout << "[INFO] Print pt of 2 selected jets: " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] Print pt of 2 selected jets: " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
     
     int TempJetCounter = 0;
     for (int i = 0; i < 4; ++i)
@@ -778,11 +778,11 @@ vector<Ptr<flashgg::Jet> > HHWWggTagProducer::GetFHPtOrderedJets(bool doHHWWggDe
     jet3 = tagJets_[OffShellW_LeadingJetIndex];
     jet4 = tagJets_[OffShellW_SubLeadingJetIndex];
     
-    if (DEBUG) std::cout << "[INFO] Print pt of 4 selected jets: " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet1 pT = " << jet1->p4().pt() << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet2 pT = " << jet2->p4().pt() << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet3 pT = " << jet3->p4().pt() << std::endl;
-    if (DEBUG) std::cout << "[INFO] jet4 pT = " << jet4->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] Print pt of 4 selected jets: " << OnShellW_LeadingJetIndex << "\t" << OnShellW_SubLeadingJetIndex << "\t" << OffShellW_LeadingJetIndex << "\t" << OffShellW_SubLeadingJetIndex  << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet1 pT = " << jet1->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet2 pT = " << jet2->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet3 pT = " << jet3->p4().pt() << std::endl;
+    if (DEBUG) std::cout << "\t[INFO] jet4 pT = " << jet4->p4().pt() << std::endl;
     
     FHJets_.push_back(jet1);
     FHJets_.push_back(jet2);

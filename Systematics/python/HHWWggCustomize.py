@@ -234,6 +234,7 @@ class HHWWggCustomize():
             entry = "%s:=%s"%(vtitle,vname)
             finalStateVars.append(entry)
             for v in p4_variables:
+                if("Jets" in objV): checkN = 10
                 for i in range(checkN):
                     vtitle = "%s_%s_%s"%(objV,i,v)
                     vname = "? %s.size() >= %s ? %s[%s].p4().%s() : -99"%(objV,i+1,objV,i,v)
@@ -583,6 +584,7 @@ class HHWWggCustomize():
             entry = "%s:=%s"%(vtitle,vname)
             finalStateVars.append(entry)
             for v in p4_variables:
+                if("Jets" in objV): checkN = 10
                 for i in range(checkN):
                     vtitle = "%s_%s_%s"%(objV,i,v)
                     vname = "? %s.size() >= %s ? %s[%s].p4().%s() : -99"%(objV,i+1,objV,i,v)
@@ -600,7 +602,7 @@ class HHWWggCustomize():
             if("Jets" in objV):
                 NtoCheck = 5   
                 # goodJetsToCheck = 10
-                # if(objV == "goodJets"): NtoCheck = 10 # want to save more good jet information for checking btags per event 
+                if(objV == "goodJets"): NtoCheck = 10 # want to save more good jet information for checking btags per event 
                 bscores = ["bDiscriminator('mini_pfDeepFlavourJetTags:probb')","bDiscriminator('pfDeepCSVJetTags:probb')",
                            "bDiscriminator('mini_pfDeepFlavourJetTags:probbb')","bDiscriminator('pfDeepCSVJetTags:probbb')",
                            "bDiscriminator('mini_pfDeepFlavourJetTags:problepb')"
