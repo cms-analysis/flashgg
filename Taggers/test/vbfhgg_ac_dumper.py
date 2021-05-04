@@ -75,10 +75,8 @@ else: process.GlobalTag.globaltag = str(customize.metaConditions['globalTags']['
 
 #Systematics customize
 from flashgg.Systematics.SystematicsCustomize import *
-#jetSystematicsInputTags = None
 jetSystematicsInputTags = createStandardSystematicsProducers(process,customize)
 modifyTagSequenceForSystematics(process,jetSystematicsInputTags,2)
-
 #Using standard tools
 useEGMTools(process)
 
@@ -253,12 +251,13 @@ matching_photon = [
     "prompt_pho_2 := diPhoton.subLeadingPhoton.genMatchType()"
 ]
 
-cloneTagSequenceForEachSystematic(process,
-                                  systlabels=systlabels,
-                                  phosystlabels=phosystlabels,
-                                  jetsystlabels=jetsystlabels,
-                                  jetSystematicsInputTags=jetSystematicsInputTags,
-                                  ZPlusJetMode=2)
+if customize.doSystematics:
+    cloneTagSequenceForEachSystematic(process,
+                                      systlabels=systlabels,
+                                      phosystlabels=phosystlabels,
+                                      jetsystlabels=jetsystlabels,
+                                      jetSystematicsInputTags=jetSystematicsInputTags,
+                                      ZPlusJetMode=2)
 
 all_variables = var.dipho_variables + var.dijet_variables + new_variables
 
@@ -328,7 +327,6 @@ if (customize.processId.count("qcd") or customize.processId.count("gjet")) and c
 
 process.p = cms.Path(process.dataRequirements
                      * process.genFilter
-                     #* process.flashggUpdatedIdMVADiPhotons #replaced by version below now...
                      * process.flashggDifferentialPhoIdInputsCorrection
                      * process.flashggDiPhotonSystematics
                      * process.flashggMetSystematics
@@ -337,7 +335,7 @@ process.p = cms.Path(process.dataRequirements
                      * (process.flashggUnpackedJets
                         * process.ak4PFCHSL1FastL2L3CorrectorChain
                         * process.jetSystematicsSequence)
-                     * (process.flashggTagSequence
+                    * (process.flashggTagSequence
                         + process.systematicsTagSequences)
                      * process.flashggSystTagMerger
                      * process.finalFilter
@@ -353,11 +351,12 @@ for mn in mns:
     elif hasattr(module,"DiPhotonTag"):
         print str(module),module.DiPhotonTag
 print
-printSystematicInfo(process)
+if customize.doSystematics:
+    printSystematicInfo(process)
 
 ## rerun rivet for stage 1p1 info
-if customize.useParentDataset and not customize.processId == "Data":
-    runRivetSequence(process, customize.metaConditions, customize.processId)
+#if customize.useParentDataset and not customize.processId == "Data":
+#    runRivetSequence(process, customize.metaConditions, customize.processId)
 
 # call the customization
 customize(process)
