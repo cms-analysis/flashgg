@@ -306,16 +306,18 @@
     "PhoIdInputCorrections":
     {
 	"corrections_summary" : "flashgg/Taggers/data/PhoIdInputsCorrections/corrections_summary_2018_Legacy.json",
-	"SS_variables" : ["f0 := pt",
-                          "f1 := superCluster.eta",
-                          "f2 := phi",
-                          "f3 := global.rho",
-                          "f4 := sieip",
-                          "f5 := s4",
-                          "f6 := full5x5_r9",
-                          "f7 := superCluster.phiWidth",
-                          "f8 := full5x5_sigmaIetaIeta",
-                          "f9 := superCluster.etaWidth"]
+	"SS_variables" : [
+        "f0 := pt",
+        "f1 := superCluster.eta",
+        "f2 := phi",
+        "f3 := global.rho",
+        "f4 := sieip",
+        "f5 := s4",
+        "f6 := full5x5_r9",
+        "f7 := superCluster.phiWidth",
+        "f8 := full5x5_sigmaIetaIeta",
+        "f9 := superCluster.etaWidth"
+        ]
     },
 
     "L1Prefiring" :

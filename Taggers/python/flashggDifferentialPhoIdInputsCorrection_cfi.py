@@ -23,6 +23,7 @@ flashggDifferentialPhoIdInputsCorrection = cms.EDProducer("FlashggDifferentialPh
                                                                                                       autoDetectBunchSpacing = cms.bool(False)
                                                                                                   ),
                                                           correctShowerShapes = cms.bool(True),
+                                                          correctPreshower = cms.bool(False),
                                                           correctIsolations = cms.bool(True),
 
                                                           phoIso_corrector_config_EB = cms.PSet(),
@@ -58,7 +59,7 @@ def setup_flashggDifferentialPhoIdInputsCorrection( process, metaConditions ):
     with open(os.path.expandvars('$CMSSW_BASE/src/'+metaConditions['PhoIdInputCorrections']['corrections_summary'])) as json_file:
         corrections_summary = json.load(json_file)
 
-        #---Shower shapes
+    #---Shower shapes
     for var in corrections_summary['shower_shapes'].keys():
         for subdet in ['EB', 'EE']:
             ss_summary = corrections_summary['shower_shapes'][var][subdet]
@@ -86,9 +87,26 @@ def setup_flashggDifferentialPhoIdInputsCorrection( process, metaConditions ):
                                #     'f9 := superCluster.etaWidth'
                                # ]
                                #    )
-                                   
 
-        #---Isolations
+    #---Preshower
+    # Runs only for EE if "preshower" key is present in the metaconditions
+    if 'preshower' in corrections_summary:
+        setattr(flashggDifferentialPhoIdInputsCorrection, 'correctPreshower', cms.bool(True))
+        for var in corrections_summary['preshower'].keys():
+            preshower_summary = corrections_summary['preshower'][var]
+            setattr(flashggDifferentialPhoIdInputsCorrection, var + '_corrector_config', 
+                    cms.PSet(
+                        variables = cms.VPSet(),
+                        weights = cms.FileInPath(str(preshower_summary['weights'])),
+                        regr_output_scaling = cms.string('x[0]*(%f)+(%f)' % (preshower_summary['scale'], preshower_summary['center'])),
+                        regression = cms.bool(True),
+                        classifier = cms.string('BDTG_{}'.format(var))
+                    )
+                )
+            xgb_config = getattr(flashggDifferentialPhoIdInputsCorrection, var + '_corrector_config')
+            cfgTools.addVariables(xgb_config.variables, [str(st) for st in preshower_summary['variables']])
+
+    #---Isolations
     for subdet in ['EB', 'EE']:
         #-photon isolation
         iso_summary = corrections_summary['isolations']['phoIso'][subdet]
