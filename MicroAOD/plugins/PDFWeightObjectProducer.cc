@@ -316,7 +316,6 @@ namespace flashgg {
                             
                             if (isStandardSample_){
                                 boost::split(strs, strw, boost::is_any_of("="));
-                                std::cout << "Standard sample strs " << strs.back() << std::endl;
                             }else{
                                 strs.push_back(std::to_string(pdfidx + variationindex));
                                 variationindex++;
@@ -346,7 +345,6 @@ namespace flashgg {
                 std::size_t wgN2ScaleV = 0;
                 bool wgN1ScaleVFound=false;
                 bool wgN2ScaleVFound=false;
-                std::cout << "scalevar: " << scalevar << std::endl;
                 if (weightgroupname1) {
                     wgN1ScaleV = weightgroupname1.get().find(scalevar);
                     if (wgN1ScaleV != std::string::npos) {
@@ -546,7 +544,6 @@ namespace flashgg {
         
         if(isStandardSample_ || pdfvar.find("hessian") != std::string::npos)
             {
-                std::cout << "Doing mc2hessian! File: " << mc2hessianCSV_ << std::endl;
                 pdfweightshelper_.DoMC2Hessian(nomlheweight,inpdfweights.data(),outpdfweights.data());   
             }
         
