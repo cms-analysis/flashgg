@@ -531,7 +531,7 @@ namespace flashgg {
         if(doAlphasWeights_)assert(PDFWeightProducer::alpha_indices.size() == 2);
 		
         // --- Get MCtoHessian PDF weights
-        if((isStandardSample_ && mc2hessianCSV_ != "") || (pdfvar.find("hessian") == std::string::npos && mc2hessianCSV_ != ""))
+        if(isStandardSample_  && mc2hessianCSV_ != "" && pdfvar.find("hessian") == std::string::npos)
         {
             edm::FileInPath mc2hessianCSVFile(mc2hessianCSV_);
             pdfweightshelper_.Init(PDFWeightProducer::pdf_indices.size(),nPdfEigWeights_,mc2hessianCSVFile);
@@ -542,7 +542,7 @@ namespace flashgg {
         //        double nomlheweight = LHEEventHandle->weights()[0].wgt;//ok, but not-safe to access the vector, see line below
         double nomlheweight = LHEEventHandle->originalXWGTUP();
         
-        if((isStandardSample_ && mc2hessianCSV_ != "") || (pdfvar.find("hessian") == std::string::npos && mc2hessianCSV_ != ""))
+        if(isStandardSample_  && mc2hessianCSV_ != "" && pdfvar.find("hessian") == std::string::npos)
             {
                 pdfweightshelper_.DoMC2Hessian(nomlheweight,inpdfweights.data(),outpdfweights.data());   
             }
@@ -551,7 +551,7 @@ namespace flashgg {
             
 
             double wgtval = inpdfweights[iwgt];
-            if ((isStandardSample_  && mc2hessianCSV_ != "") || (pdfvar.find("hessian") == std::string::npos && mc2hessianCSV_ != ""))wgtval = outpdfweights[iwgt];
+            if (isStandardSample_  && mc2hessianCSV_ != "" && pdfvar.find("hessian") == std::string::npos)wgtval = outpdfweights[iwgt];
             
             
             float real_weight = wgtval*gen_weight/nomlheweight;
