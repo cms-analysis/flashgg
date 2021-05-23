@@ -108,10 +108,13 @@ def getConfig(extended=False, dumpShowerShapes=False, dumpClusterShapes=False, d
                          "probePhoIso_uncorr            := ? getProbe.hasUserFloat('uncorr_pfPhoIso03') ? getProbe.userFloat('uncorr_pfPhoIso03') : -999",
                          "probeChIso03_uncorr           := ? getProbe.hasUserFloat('uncorr_pfChIso03') ? getProbe.userFloat('uncorr_pfChIso03') : -999",
                          "probeChIso03worst_uncorr      := ? getProbe.hasUserFloat('uncorr_pfChIsoWorst03') ? getProbe.userFloat('uncorr_pfChIsoWorst03') : -999",
+                         "probeesEnergyOverSCRawEnergy_uncorr      := ? getProbe.hasUserFloat('uncorr_esEnergyOverSCRawEnergy') ? getProbe.userFloat('uncorr_esEnergyOverSCRawEnergy') : -999",
                          "probePhoIdMVA_uncorr          := ? getProbe.hasUserFloat('original_phoId') ? getProbe.userFloat('original_phoId') : -999" ]
 
     probeCorrClVars = ["probePhiWidth := ? getProbe.hasUserFloat('phiWidth') ? getProbe.userFloat('phiWidth') : -999",
                        "probeEtaWidth := ? getProbe.hasUserFloat('etaWidth') ? getProbe.userFloat('etaWidth') : -999"]
+
+    probePreshower = ["probeesEnergyOverSCRawEnergy := ? getProbe.hasUserFloat('esEnergyOverSCRawEnergy') ? getProbe.userFloat('esEnergyOverSCRawEnergy') : -999"]
 
     singleEleVars = minSingleEleVars
     singleEleViewVars = minSingleEleViewVars
@@ -142,6 +145,8 @@ def getConfig(extended=False, dumpShowerShapes=False, dumpClusterShapes=False, d
 
     if trackClIsoCorrections:
         variables.extend(probeUncorrClIsos + probeCorrClVars)
+
+    variables.extend(probePreshower)
 
     return variables
 
