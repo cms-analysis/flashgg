@@ -1,0 +1,20 @@
+{
+    "cmdLine"  : "metaConditions=/afs/cern.ch/work/m/mciprian/higgsAna/VBFHgg/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2017_legacy_v1.json campaign=Era2017_legacy_v1 useAAA=True lumiMask=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt ",
+    "processes": {
+	"ggh_125"   : [
+	    "/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8",
+	    "/GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8"
+        ],
+	"vbf_125"   : [
+	    "/VBFHToGG_M-125_TuneCP5_13TeV-powheg-pythia8",
+	    "/VBFHToGG_M125_TuneCP5_13TeV-amcatnlo-pythia8",
+	    "VBFHiggs0L1ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
+	    "/VBFHiggs0L1Zgf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
+	    "/VBFHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
+	    "/VBFHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
+	    "/VBFHiggs0Mf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
+	    "/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
+	    "/VBFHiggs0PHf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ]
+    }
+}
