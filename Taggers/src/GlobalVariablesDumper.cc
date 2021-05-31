@@ -116,7 +116,6 @@ namespace flashgg {
         tree->Branch( "lumi", &cache_.lumi, "lumi/i" );
         tree->Branch( "processIndex", &processIndex_, "processIndex/I" );
         tree->Branch( "run", &cache_.run, "run/i" );
-        tree->Branch( "nvtx", &cache_.nvtx );
         if( getPu_ ) {
             tree->Branch( "npu", &cache_.npu );
         }
