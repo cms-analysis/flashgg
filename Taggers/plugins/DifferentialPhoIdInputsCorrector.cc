@@ -51,13 +51,16 @@ namespace flashgg {
         ConsumesCollector cc_;
         GlobalVariablesComputer globalVariablesComputer_;
         bool correctShowerShapes_;
+        bool correctPreshower_;
         bool correctIsolations_;
+
         map<string, MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB> > correctionsEB_;
         map<string, TFormula> correctionScalingsEB_;
         map<string, MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB> > correctionsEE_;
         map<string, TFormula> correctionScalingsEE_;
         // static list of variables to be corrected
         static vector<string> showerShapes_;
+        static vector<string> preshowers_;
         std::string weights_;
 
         EffectiveAreas effectiveAreas_;
@@ -70,6 +73,7 @@ namespace flashgg {
     };
     
     vector<string> DifferentialPhoIdInputsCorrector::showerShapes_ = {"r9", "s4", "sieie", "sieip", "etaWidth", "phiWidth"};
+    vector<string> DifferentialPhoIdInputsCorrector::preshowers_ = {"esEnergyOverSCRawEnergy"};
 
     DifferentialPhoIdInputsCorrector::DifferentialPhoIdInputsCorrector( const edm::ParameterSet &pSet ) :
         diphoToken_(consumes<edm::View<flashgg::DiPhotonCandidate> >(pSet.getParameter<edm::InputTag>("diphotonSrc"))),
@@ -77,6 +81,7 @@ namespace flashgg {
         cc_( consumesCollector() ),
         globalVariablesComputer_(pSet.getParameter<edm::ParameterSet>("globalVariables"), cc_),
         correctShowerShapes_(pSet.getParameter<bool>("correctShowerShapes")),
+        correctPreshower_(pSet.getParameter<bool>("correctPreshower")),
         correctIsolations_(pSet.getParameter<bool>("correctIsolations")),
         effectiveAreas_((pSet.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath()),
         phoIsoPtScalingCoeff_(pSet.getParameter<std::vector<double >>("phoIsoPtScalingCoeff")),
@@ -106,8 +111,21 @@ namespace flashgg {
                 correctionsEE_[ss_var] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(xgb_config, &globalVariablesComputer_);
                 correctionScalingsEE_[ss_var] = TFormula("", xgb_config.getParameter<string>("regr_output_scaling").c_str());
             }
+        }
 
-
+        /* 
+         * Preshower case: in 2018, the standard set of Shower Shape corrections doesn't make the agreement better for EE
+         * We thus correct also esEnergyOverSCRawEnergy, add it to the end of the quantile regression chain and feed it 
+         * as input to the PhotoinIDMVA
+         */ 
+        if(correctPreshower_)
+        {
+            for(auto& preshower_var : preshowers_)
+            {
+                auto xgb_config = pSet.getParameter<edm::ParameterSet>(preshower_var+"_corrector_config");
+                correctionsEE_[preshower_var] = MVAComputer<Photon, StringObjectFunction<Photon, true>, useXGB>(xgb_config, &globalVariablesComputer_);
+                correctionScalingsEE_[preshower_var] = TFormula("", xgb_config.getParameter<string>("regr_output_scaling").c_str());
+            }
         }
 
         //---Load isolation corrections
@@ -252,6 +270,15 @@ namespace flashgg {
                     {
                         std::cout << "WARNING: R9<0, Original R9: " << pho.userFloat("uncorr_r9") << " corrected R9: " << pho.full5x5_r9() << std::endl;
                     }
+            }
+
+            //---For esEnergyOverSCRawEnergy we apply a further cut abs(ScEta)>1.653 to design the region where the variable is defined
+            if(correctPreshower_ && std::abs(pho.superCluster()->eta())>1.653)
+            {
+                pho.addUserFloat("uncorr_esEnergyOverSCRawEnergy", pho.superCluster()->preshowerEnergy()/pho.superCluster()->rawEnergy());
+
+                //---Compute corrections
+                pho.addUserFloat("esEnergyOverSCRawEnergy", (pho.userFloat("uncorr_esEnergyOverSCRawEnergy") + correctionScalings->at("esEnergyOverSCRawEnergy").Eval(corrections->at("esEnergyOverSCRawEnergy")(pho)[0])));
             }
 
             if(correctIsolations_)
