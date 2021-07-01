@@ -4,6 +4,8 @@
 # python Systematics/scripts/resubmit_jobs.py --dir FL_SM2017 -s /eos/user/a/atishelm/ntuples/HHWWgg_flashgg/TaggerOutput/FL_SM2017/
 # python Systematics/scripts/resubmit_jobs.py --dir HHWWgg_2018_Data_Workspaces -s /eos/user/a/atishelm/ntuples/HHWWgg/HHWWgg_2018_Data_Workspaces/
 
+dryRun = 1
+
 import os
 import subprocess
 from optparse import OptionParser
@@ -56,7 +58,10 @@ def get_files_from_json(path_json):
   return flist
 
 def list_root(directory):
+  # print"Searching directory:",directory 
   flist = os.listdir(directory)
+  #all_files = [fname for fname in flist if '.root' in fname]
+  
   return [fname for fname in flist if '.root' in fname]
 
 def find_runJobs(missing,dir):
@@ -82,7 +87,7 @@ def submit_missing(runJobs_dict,dir,resubmit=True):
     bashCommand = "condor_submit %s/%s_mis.sub"%(dir,cluster)
     if resubmit : 
        print 'Resubmitting now!'
-       os.system(bashCommand)
+       if(not dryRun): os.system(bashCommand)
     else : 
       print 'Ready to resubmit, please set resubmit to True if you are ready : '
       print bashCommand
@@ -152,10 +157,17 @@ def main():
 
   full_output =  get_files_from_json(dir+"/task_config.json")
   present_output =  list_root(stageDir)
+  # print"present_output:",present_output
   corrupted_files = files_to_remove(present_output,stageDir)
-  not_finished = list(set(full_output) - set(present_output))
-  not_finished += corrupted_files
-  print(not_finished)
+  not_finished_ = list(set(full_output) - set(present_output))
+  not_finished_ += corrupted_files
+  
+  #not_finished = [fname for fname in not_finished_ if "GluGluHToGG" not in fname]
+  not_finished = [fname for fname in not_finished_]
+
+  # print"full_output:",full_output
+  # print"present_output:",present_output
+  print"not_finished:",not_finished
   print 'Number of missing files : ',len(not_finished)
   #print 'Missing the following files : ' not_finished
   
