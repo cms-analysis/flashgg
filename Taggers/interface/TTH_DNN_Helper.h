@@ -168,10 +168,10 @@ void TTH_DNN_Helper::SetInputs(std::vector<edm::Ptr<flashgg::Jet>> jets, std::ve
         object_features_unordered[i][1] = jets[i]->eta();
         object_features_unordered[i][2] = jets[i]->phi();
         object_features_unordered[i][3] = log(jets[i]->energy());
-        object_features_unordered[i][4] = jets[i]->bDiscriminator("pfDeepCSVJetTags:probb");
-        object_features_unordered[i][5] = jets[i]->bDiscriminator("pfDeepCSVJetTags:probbb");
-        object_features_unordered[i][6] = jets[i]->bDiscriminator("pfDeepCSVJetTags:probc");
-        object_features_unordered[i][7] = jets[i]->bDiscriminator("pfDeepCSVJetTags:probudsg");
+        object_features_unordered[i][4] = jets[i]->bDiscriminator("mini_pfDeepFlavourJetTags:probb");
+        object_features_unordered[i][5] = jets[i]->bDiscriminator("mini_pfDeepFlavourJetTags:probbb");
+        object_features_unordered[i][6] = jets[i]->bDiscriminator("mini_pfDeepFlavourJetTags:probc");
+        object_features_unordered[i][7] = jets[i]->bDiscriminator("mini_pfDeepFlavourJetTags:probuds"); 
     }
 
     // Third, order jets by pT

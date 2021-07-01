@@ -66,6 +66,14 @@ namespace flashgg {
         float sigmawv; 
         float diphopt; 
 
+        // extra vars
+        float dijet_leadPhi;
+        float dijet_subleadPhi;
+        float dijet_subsubleadPhi;
+        float dijet_leadJEn;
+        float dijet_SubleadJEn;
+        float dijet_SubsubleadJEn;
+
         //getter fns
         float prob_0J_PTH_0_10() const {return ggHMVAResult_prob_0J_PTH_0_10;} 
         float prob_0J_PTH_GT10() const {return ggHMVAResult_prob_0J_PTH_GT10;} 
