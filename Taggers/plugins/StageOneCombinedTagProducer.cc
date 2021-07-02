@@ -182,10 +182,9 @@ namespace flashgg {
         float mjj = 0.;
         float ptHjj = 0.;
         float mvaScore = tag_obj.diPhotonMVA().transformedMvaValue(); // maps output score from TMVA back to XGBoost original
-        //float dijetScore = tag_obj.VBFMVA().VBFMVAValue();
         float dijetScore = tag_obj.VBFMVA().prob_VBF_value();
         float gghScore = tag_obj.VBFMVA().prob_ggH_value();
-        float vhHadScore = tag_obj.VHhadMVA().VHhadMVAValue();
+        float vhHadScore = tag_obj.VHhadMVA().transformedMvaValue( tag_obj.VHhadMVA().VHhadMVAValue() );
         float leadMvaScore = tag_obj.diPhotonMVA().leadmva;
         float subleadMvaScore = tag_obj.diPhotonMVA().subleadmva;
         float leadPToM = tag_obj.diPhotonMVA().leadptom;
