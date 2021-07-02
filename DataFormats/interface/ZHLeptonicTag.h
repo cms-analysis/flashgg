@@ -24,11 +24,25 @@ namespace flashgg {
         const std::vector<edm::Ptr<flashgg::Electron> > electrons() const {return Electrons_;}
         const std::vector<edm::Ptr<Jet> > jets() const { return Jets_;}
         const edm::Ptr<flashgg::Met>  met() const { return MET_;}
-        
+
+        const bool associatedZ() const { return associatedZ_; }
+        const bool associatedW() const { return associatedW_; }
+        const bool VhasNeutrinos() const { return VhasNeutrinos_; }
+        const bool VhasLeptons() const { return VhasLeptons_; }
+        const bool VhasHadrons() const { return VhasHadrons_; }
+        const float Vpt() const { return Vpt_; }
+
         void setJets( std::vector<edm::Ptr<Jet> > Jets ) { Jets_ = Jets; }
         void setMuons( std::vector<edm::Ptr<Muon> > Muons ) {Muons_ = Muons;}
         void setMET( edm::Ptr<flashgg::Met> MET ) {MET_ = MET;}
         void setElectrons( std::vector<edm::Ptr<Electron> > Electrons ) {Electrons_ = Electrons;}
+
+        void setAssociatedZ( const bool &val ) { associatedZ_ = val; }
+        void setAssociatedW( const bool &val ) { associatedW_ = val; }
+        void setVhasNeutrinos( const bool &val ) { VhasNeutrinos_ = val; }
+        void setVhasLeptons( const bool &val ) { VhasLeptons_ = val; }
+        void setVhasHadrons( const bool &val ) { VhasHadrons_ = val; }
+        void setVpt( const float &val ) { Vpt_ = val; }
 
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kZHLeptonic; }
 
@@ -37,6 +51,14 @@ namespace flashgg {
         std::vector<edm::Ptr<Electron> > Electrons_;
         std::vector<edm::Ptr<Jet> > Jets_;
         edm::Ptr<flashgg::Met> MET_;
+
+        bool associatedZ_;
+        bool associatedW_;
+        bool VhasNeutrinos_;
+        bool VhasLeptons_;
+        bool VhasHadrons_;
+        float Vpt_;
+
     };
 }
 
