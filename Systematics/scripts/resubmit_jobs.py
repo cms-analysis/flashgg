@@ -4,7 +4,7 @@
 # python Systematics/scripts/resubmit_jobs.py --dir FL_SM2017 -s /eos/user/a/atishelm/ntuples/HHWWgg_flashgg/TaggerOutput/FL_SM2017/
 # python Systematics/scripts/resubmit_jobs.py --dir HHWWgg_2018_Data_Workspaces -s /eos/user/a/atishelm/ntuples/HHWWgg/HHWWgg_2018_Data_Workspaces/
 
-dryRun = 1
+dryRun = 0
 
 import os
 import subprocess

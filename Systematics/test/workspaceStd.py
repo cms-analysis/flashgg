@@ -167,7 +167,7 @@ customize.options.register('HHWWggAnalysisChannel', # SL, FL or FH
                            VarParsing.VarParsing.varType.string,
                            'HHWWggAnalysisChannel'
                            )  
-customize.options.register('FillUntagged', # SL, FL or FH 
+customize.options.register('FillUntagged', # SL, FL or FH not filled but fill in extra category - HHWWgg
                            False, ##-- Do not fill untagged by default 
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
@@ -184,7 +184,13 @@ customize.options.register('HHWWgguseZeroVtx', # save more variables to perform 
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'HHWWgguseZeroVtx'
-                           )                                                    
+                           )
+customize.options.register('runOnZee', # Change triggers to tagnprobe and invert electron veto requirement on diphoton preselections 
+                           False,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'runOnZee'
+                           )                                                                                 
 customize.options.register('doBJetRegression',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
@@ -729,6 +735,18 @@ for tag in tagList:
 # process.hltHighLevel= hltHighLevel.clone(HLTPaths = cms.vstring(hlt_paths))
 # print"[HHWWgg workspaceStd.py debug] - process:",process
 # print"[HHWWgg workspaceStd.py debug] - customize:",customize
+
+print("Run on Zee:",customize.runOnZee)
+# cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json campaign=Era2017_RR-31Mar2018_v2 dataset=/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=all HHWWgguseZeroVtx=1 FillUntagged=1 runOnZee=1
+if customize.runOnZee:
+    print("Inverting electorn veto requirement in diphoton preselections")
+    process.flashggPreselectedDiPhotons.variables =  cms.vstring('pfPhoIso03',
+                                                                 'trkSumPtHollowConeDR03',
+                                                                 'full5x5_sigmaIetaIeta',
+                                                                 'full5x5_r9',
+                                                                #  'passElectronVeto') ##-- Regular diphoton preselections --> Checked and this returns the same number of events in Tag_3 as nominal preselections
+                                                                 '1-passElectronVeto') ##-- Invert electron veto requirement
+
 filterHLTrigger(process, customize)
 
 process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
@@ -937,6 +955,12 @@ printSystematicInfo(process)
 # Detailed tag interpretation information printout (blinded)
 process.flashggTagSorter.StoreOtherTagInfo = True
 # process.flashggTagSorter.BlindedSelectionPrintout = True
+
+##-- Zee
+if customize.runOnZee:
+    ##-- Change 100-180 CMS_Hgg_mass cuts because want to look at mass peak near 90 GeV 
+    process.flashggTagSorter.MassCutLower = cms.double(0)
+    process.flashggTagSorter.MassCutUpper = cms.double(180)
 
 ### Rerun microAOD sequence on top of microAODs using the parent dataset
 if customize.useParentDataset:

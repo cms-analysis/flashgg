@@ -400,12 +400,25 @@ def recalculatePDFWeights(process, options):
     process.p.insert(0, process.flashggPDFWeightObject)
 
 def filterHLTrigger(process, options):
+    print"in filterHLTrigger"
+
+    ##-- Zee HLTs 
+    # 2016: "HLT_Ele27_WPTight_Gsf*"
+    # 2017: "HLT_Ele32_WPTight_Gsf*"
+    # 2018: "HLT_Ele*_WPTight_Gsf_v*"
 
     import re
     from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
     hlt_paths = []
-    for dset in options.metaConditions["TriggerPaths"]:
-        regDset = re.compile(dset)
-        if re.match(regDset, options.datasetName()):
-            hlt_paths.extend([str(x) for x in options.metaConditions["TriggerPaths"][dset][options.analysisType]])
+
+    ##-- If runOnZee option chosen, set HLT paths accordingly 
+    if(options.runOnZee):
+        print("***SETTING 2017 TAGNPROBE HLT PATH***")
+        hlt_paths = ["HLT_Ele32_WPTight_Gsf*"]
+    else:
+        for dset in options.metaConditions["TriggerPaths"]:
+            regDset = re.compile(dset)
+            if re.match(regDset, options.datasetName()):
+                hlt_paths.extend([str(x) for x in options.metaConditions["TriggerPaths"][dset][options.analysisType]])
+    print"hlt_paths:",hlt_paths
     process.hltHighLevel = hltHighLevel.clone(HLTPaths=cms.vstring(hlt_paths))
