@@ -4,8 +4,6 @@
 # python Systematics/scripts/resubmit_jobs.py --dir FL_SM2017 -s /eos/user/a/atishelm/ntuples/HHWWgg_flashgg/TaggerOutput/FL_SM2017/
 # python Systematics/scripts/resubmit_jobs.py --dir HHWWgg_2018_Data_Workspaces -s /eos/user/a/atishelm/ntuples/HHWWgg/HHWWgg_2018_Data_Workspaces/
 
-dryRun = 0
-
 import os
 import subprocess
 from optparse import OptionParser
@@ -82,12 +80,12 @@ def find_runJobs(missing,dir):
   return runJobs_dict    
 
 
-def submit_missing(runJobs_dict,dir,resubmit=True):
+def submit_missing(dryRun_, runJobs_dict, dir, resubmit=True):
   for cluster in runJobs_dict.keys():
     bashCommand = "condor_submit %s/%s_mis.sub"%(dir,cluster)
     if resubmit : 
        print 'Resubmitting now!'
-       if(not dryRun): os.system(bashCommand)
+       if(not dryRun_): os.system(bashCommand)
     else : 
       print 'Ready to resubmit, please set resubmit to True if you are ready : '
       print bashCommand
@@ -143,6 +141,7 @@ def main():
   parser.add_option("-p", "--parentDataset", action="store_true",  dest="parentDataset",default=False,
                   help="use parent dataset")
   parser.add_option("-f", "--filterNegR9", action="store_true",  dest="filterNegR9",default=False, help="use parent dataset")
+  parser.add_option("--dryRun", action="store_true", dest="dryRun", default=False, help="Dry run - do not resubmit any jobs, just check which are missing")
 
   (options, args) = parser.parse_args()
   dir = os.path.dirname(os.path.abspath('%s/task_config.json'%options.dir))
@@ -176,7 +175,7 @@ def main():
   print 'runJobs to be resubmitted : ',runJobs_dict
   prepare_runJobs_missing(runJobs_dict,dir,options.parentDataset, options.filterNegR9)
   print 'Submitting missing jobs : '
-  submit_missing(runJobs_dict,dir,options.resubmit)
+  submit_missing(options.dryRun, runJobs_dict, dir, options.resubmit)
 
 
 

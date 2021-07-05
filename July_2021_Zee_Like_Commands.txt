@@ -1,0 +1,35 @@
+#-- Run over 2017 data
+
+fggRunJobs.py --load Taggers/test/HHWWgg/January_2021_Production/2017/Data/HHWWgg_Data_All_2017.json -D -P -n 500 -d Data_2017 --stage-to=/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/WWZ_SignalTopology_Checks/2017/Data_2017/ -x cmsRun Systematics/test/workspaceStd.py maxEvents=-1 -q longlunch --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json doHHWWggTag=1 HHWWggTagsOnly=1 doSystematics=1 dumpTrees=1 dumpWorkspace=0 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 copyInputMicroAOD=1 runOnZee=1
+
+##-- 2017 Zee 
+fggRunJobs.py --load Taggers/test/HHWWgg/WWZ_Zee_Checks/2017/Zee.json -D -P -n 500 -d Zee_2017 --stage-to=/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/WWZ_SignalTopology_Checks/2017/Zee_2017/ -x cmsRun Systematics/test/workspaceStd.py maxEvents=-1 -q longlunch --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json doHHWWggTag=1 HHWWggTagsOnly=1 doSystematics=0 dumpTrees=1 dumpWorkspace=0 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 copyInputMicroAOD=1
+
+##-- Zee split into 1000 jobs each, no copy of microAOD
+fggRunJobs.py --load Taggers/test/HHWWgg/WWZ_Zee_Checks/2017/Zee.json -D -P -n 1000 -d Zee_2017_again --stage-to=/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/WWZ_SignalTopology_Checks/2017/Zee_2017_again/ -x cmsRun Systematics/test/workspaceStd.py maxEvents=-1 -q workday --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json doHHWWggTag=1 HHWWggTagsOnly=1 doSystematics=0 dumpTrees=1 dumpWorkspace=0 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1
+
+########################################################################
+
+##-- 2016 WWZ
+
+# Local
+cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1-HHWWgg.json campaign=Era2016_RR-17Jul2018_v2 dataset=WWZ_TuneCUETP8M1_13TeV-amcatnlo-pythia8 doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=all FillUntagged=1 runOnZee=1 HHWWgguseZeroVtx=1
+
+# Condor 
+fggRunJobs.py --load Taggers/test/HHWWgg/WWZ_Zee_Checks/2016/WWZ.json -D -P -n 500 -d WWZ_2016 --stage-to=/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/WWZ_SignalTopology_Checks/2016/WWZ_2016/ -x cmsRun Systematics/test/workspaceStd.py maxEvents=-1 -q longlunch --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1-HHWWgg.json doHHWWggTag=1 HHWWggTagsOnly=1 doSystematics=0 dumpTrees=1 dumpWorkspace=0 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1
+
+##-- 2017 WWZ
+
+# Local
+cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json campaign=Era2017_RR-31Mar2018_v2 dataset=WWZ_4F_TuneCP5_13TeV-amcatnlo-pythia8 doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=all FillUntagged=1 runOnZee=1 HHWWgguseZeroVtx=1
+
+# Condor 
+fggRunJobs.py --load Taggers/test/HHWWgg/WWZ_Zee_Checks/2017/WWZ.json -D -P -n 500 -d WWZ_2017 --stage-to=/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/WWZ_SignalTopology_Checks/2017/WWZ_2017/ -x cmsRun Systematics/test/workspaceStd.py maxEvents=-1 -q longlunch --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json doHHWWggTag=1 HHWWggTagsOnly=1 doSystematics=0 dumpTrees=1 dumpWorkspace=0 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 
+
+##-- 2018 WWZ
+
+# Local 
+cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1-HHWWgg.json campaign=Era2018_RR-17Sep2018_v2 dataset=WWZ_TuneCP5_13TeV-amcatnlo-pythia8 doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=all FillUntagged=1 runOnZee=1 HHWWgguseZeroVtx=1
+
+# Condor 
+fggRunJobs.py --load Taggers/test/HHWWgg/WWZ_Zee_Checks/2018/WWZ.json -D -P -n 500 -d WWZ_2018 --stage-to=/eos/user/a/atishelm/ntuples/HHWWgg_flashgg/WWZ_SignalTopology_Checks/2018/WWZ_2018/ -x cmsRun Systematics/test/workspaceStd.py maxEvents=-1 -q longlunch --no-use-tarball --no-copy-proxy metaConditions=/afs/cern.ch/work/a/atishelm/private/flashgg-10_6_8/CMSSW_10_6_8/src/flashgg/MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1-HHWWgg.json doHHWWggTag=1 HHWWggTagsOnly=1 doSystematics=0 dumpTrees=1 dumpWorkspace=0 doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 
