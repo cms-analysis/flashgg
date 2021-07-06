@@ -63,7 +63,8 @@
 <class name="std::vector<flashgg::SigmaMpTTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::SigmaMpTTag> >"/>
 
-<class name="flashgg::VBFTag" ClassVersion="14">
+<class name="flashgg::VBFTag" ClassVersion="15">
+ <version ClassVersion="15" checksum="510981098"/>
  <version ClassVersion="14" checksum="3568401465"/>
  <version ClassVersion="13" checksum="2763928631"/>
  <version ClassVersion="12" checksum="3071493064"/>
