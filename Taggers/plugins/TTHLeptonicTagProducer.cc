@@ -133,10 +133,12 @@ namespace flashgg {
         vector<double> MVAThreshold_pt2_;
         vector<double> MVAThreshold_pt3_;
         vector<double> MVAThreshold_pt4_;
+        vector<double> MVAThreshold_pt5_;
         vector<double> STXSPtBoundaries_pt1;
         vector<double> STXSPtBoundaries_pt2;
         vector<double> STXSPtBoundaries_pt3;
         vector<double> STXSPtBoundaries_pt4;
+        vector<double> STXSPtBoundaries_pt5;
         double deltaRJetLeadPhoThreshold_;
         double deltaRJetSubLeadPhoThreshold_;
         double jetsNumberThreshold_;
@@ -496,10 +498,12 @@ namespace flashgg {
         MVAThreshold_pt2_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt2");
         MVAThreshold_pt3_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt3");
         MVAThreshold_pt4_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt4");
+        MVAThreshold_pt5_ = iConfig.getParameter<std::vector<double>>( "MVAThreshold_pt5");
         STXSPtBoundaries_pt1 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt1" );
         STXSPtBoundaries_pt2 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt2" );
         STXSPtBoundaries_pt3 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt3" );
         STXSPtBoundaries_pt4 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt4" );
+        STXSPtBoundaries_pt5 = iConfig.getParameter<vector<double > >( "STXSPtBoundaries_pt5" );
         //assert( is_sorted( STXSPtBoundaries_pt1.begin(), STXSBoundaries_pt1.end() ) ); // 
         //assert( is_sorted( STXSPtBoundaries_pt2.begin(), STXSBoundaries_pt2.end() ) ); // 
         PhoMVAThreshold_ = iConfig.getParameter<double>( "PhoMVAThreshold");
@@ -697,6 +701,16 @@ namespace flashgg {
             }
         }
 
+        if (pT > STXSPtBoundaries_pt5[0] && pT < STXSPtBoundaries_pt5[1]) {
+            for(int n = 0 ; n < ( int )MVAThreshold_pt5_.size() ; n++ ) {
+                if( ( double )tthmvavalue > MVAThreshold_pt5_[MVAThreshold_pt5_.size() - n - 1] ) {
+                    //cout << "pT range: [" << STXSPtBoundaries_pt5[0] << ", " << STXSPtBoundaries_pt5[1] << "], Leptonic cat " << n + MVAThreshold_pt1_.size() << endl; 
+                    return n + MVAThreshold_pt1_.size() + MVAThreshold_pt2_.size() + MVAThreshold_pt3_.size() + MVAThreshold_pt4_.size();
+                }
+            }
+        }
+ 
+
         return -1; // Does not pass, object will not be produced
     }
 
@@ -714,7 +728,6 @@ namespace flashgg {
                 cout << MVAThreshold_[i] << " ";
         }
 
-      
         return -1; // Does not pass, object will not be produced
     }
 
@@ -884,7 +897,7 @@ namespace flashgg {
                 std::vector<edm::Ptr<flashgg::Muon> >     MuonsTight;
                 std::vector<edm::Ptr<flashgg::Electron> > Electrons;
                 std::vector<edm::Ptr<flashgg::Electron> > ElectronsTight;
-                
+
                 std::vector<double> lepPt;
                 std::vector<double> lepEta;
                 std::vector<double> lepPhi;
@@ -1102,10 +1115,12 @@ namespace flashgg {
                         tagJets.push_back( thejet );
                         float bDiscriminatorValue = -2.;
                         if(bTag_ == "pfDeepCSV") bDiscriminatorValue = thejet->bDiscriminator("pfDeepCSVJetTags:probb")+thejet->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+                        else if (bTag_ == "pfDeepJet") bDiscriminatorValue = thejet->bDiscriminator("mini_pfDeepFlavourJetTags:probb")+thejet->bDiscriminator("mini_pfDeepFlavourJetTags:probbb") ;
                         else  bDiscriminatorValue = thejet->bDiscriminator( bTag_ );
 
                         float bDiscriminatorValue_noBB = -2;
                         if(bTag_ == "pfDeepCSV") bDiscriminatorValue_noBB = thejet->bDiscriminator("pfDeepCSVJetTags:probb");
+                        else if (bTag_ == "pfDeepJet") bDiscriminatorValue_noBB = thejet->bDiscriminator("mini_pfDeepFlavourJetTags:probb");
                         else  bDiscriminatorValue_noBB = thejet->bDiscriminator( bTag_ );
 
                         bDiscriminatorValue >= 0. ? bTags.push_back(bDiscriminatorValue) : bTags.push_back(-1.);
@@ -1143,8 +1158,10 @@ namespace flashgg {
                 // Set variables to compute MVA value
                 if(tagJets.size()>0){
                     if(bTag_ == "pfDeepCSV") btag_1_=tagJets[0]->bDiscriminator("pfDeepCSVJetTags:probb")+tagJets[0]->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+                    else if (bTag_ == "pfDeepJet") btag_1_ = tagJets[0]->bDiscriminator("mini_pfDeepFlavourJetTags:probb")+tagJets[0]->bDiscriminator("mini_pfDeepFlavourJetTags:probbb") ;
                     else  btag_1_ = tagJets[0]->bDiscriminator( bTag_ );
                     if(bTag_ == "pfDeepCSV") btag_noBB_1_=tagJets[0]->bDiscriminator("pfDeepCSVJetTags:probb");
+                    else if (bTag_ == "pfDeepJet") btag_noBB_1_ = tagJets[0]->bDiscriminator("mini_pfDeepFlavourJetTags:probb");
                     else  btag_noBB_1_ = tagJets[0]->bDiscriminator( bTag_ );
                     jetPt_1_=tagJets[0]->pt();
                     jetEta_1_=tagJets[0]->eta();
@@ -1153,8 +1170,10 @@ namespace flashgg {
 
                 if(tagJets.size()>1){
                     if(bTag_ == "pfDeepCSV") btag_2_=tagJets[1]->bDiscriminator("pfDeepCSVJetTags:probb")+tagJets[1]->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+                    else if (bTag_ == "pfDeepJet") btag_2_ = tagJets[1]->bDiscriminator("mini_pfDeepFlavourJetTags:probb")+tagJets[1]->bDiscriminator("mini_pfDeepFlavourJetTags:probbb") ;
                     else  btag_2_ = tagJets[1]->bDiscriminator( bTag_ );
                     if(bTag_ == "pfDeepCSV") btag_noBB_2_=tagJets[1]->bDiscriminator("pfDeepCSVJetTags:probb");
+                    else if (bTag_ == "pfDeepJet") btag_noBB_2_ = tagJets[1]->bDiscriminator("mini_pfDeepFlavourJetTags:probb");
                     else  btag_noBB_2_ = tagJets[1]->bDiscriminator( bTag_ );
                     jetPt_2_=tagJets[1]->pt();
                     jetEta_2_=tagJets[1]->eta();
@@ -1163,23 +1182,27 @@ namespace flashgg {
 
                 if(tagJets.size()>2){
                     if(bTag_ == "pfDeepCSV") btag_3_=tagJets[2]->bDiscriminator("pfDeepCSVJetTags:probb")+tagJets[2]->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+                    else if (bTag_ == "pfDeepJet") btag_3_ = tagJets[2]->bDiscriminator("mini_pfDeepFlavourJetTags:probb")+tagJets[2]->bDiscriminator("mini_pfDeepFlavourJetTags:probbb") ;
                     else  btag_3_ = tagJets[2]->bDiscriminator( bTag_ );
                     if(bTag_ == "pfDeepCSV") btag_noBB_3_=tagJets[2]->bDiscriminator("pfDeepCSVJetTags:probb");
+                    else if (bTag_ == "pfDeepJet") btag_noBB_3_ = tagJets[2]->bDiscriminator("mini_pfDeepFlavourJetTags:probb");
                     else  btag_noBB_3_ = tagJets[2]->bDiscriminator( bTag_ );
                     jetPt_3_=tagJets[2]->pt();
                     jetEta_3_=tagJets[2]->eta();
                     jetPhi_3_=tagJets[2]->phi();
                 }
-                /* kinematics of fourth leading jet not currently used in BDT
+
                 if(tagJets.size()>3){
                     if(bTag_ == "pfDeepCSV") btag_4_=tagJets[3]->bDiscriminator("pfDeepCSVJetTags:probb")+tagJets[3]->bDiscriminator("pfDeepCSVJetTags:probbb") ;
+                    else if (bTag_ == "pfDeepJet") btag_4_ = tagJets[3]->bDiscriminator("mini_pfDeepFlavourJetTags:probb")+tagJets[3]->bDiscriminator("mini_pfDeepFlavourJetTags:probbb") ;
                     else  btag_4_ = tagJets[3]->bDiscriminator( bTag_ );
                     if(bTag_ == "pfDeepCSV") btag_noBB_4_=tagJets[3]->bDiscriminator("pfDeepCSVJetTags:probb");
+                    else if (bTag_ == "pfDeepJet") btag_noBB_4_ = tagJets[3]->bDiscriminator("mini_pfDeepFlavourJetTags:probb");
                     else  btag_noBB_4_ = tagJets[3]->bDiscriminator( bTag_ );
                     jetPt_4_=tagJets[3]->pt();
                     jetEta_4_=tagJets[3]->eta();
                     jetPhi_4_=tagJets[3]->phi();
-                } */
+                } 
 
                 diPhoY_= dipho->rapidity();
                 diPhoPtoM_= dipho->pt()/dipho->mass();
@@ -1294,7 +1317,7 @@ namespace flashgg {
                     global_features_ttH_vs_tH[i] = global_features[i];
 
                 double forward_jet_pt, forward_jet_eta;
-                calculate_forward_jet_features(forward_jet_pt, forward_jet_eta, tagJets, "pfDeepCSVJetTags:probb", maxBTagVal_noBB_);
+                calculate_forward_jet_features(forward_jet_pt, forward_jet_eta, tagJets, "mini_pfDeepFlavourJetTags:probb", maxBTagVal_noBB_);
   
                 double lep1_charge, lep2_charge;
                 calculate_lepton_charges(lep1_charge, lep2_charge, Muons, Electrons);
@@ -1478,11 +1501,15 @@ namespace flashgg {
                     int chosenTag = computeStage1Kinematics( tthltags_obj );
                     tthltags_obj.setStage1recoTag( chosenTag );
 
+                    float btagReshapeNorm = 1.;
+
                     for( unsigned int i = 0; i < tagJets.size(); ++i )
                     {
                         tthltags_obj.includeWeightsByLabel( *tagJets[i] , "JetBTagReshapeWeight");
+                        btagReshapeNorm *= tagJets[i]->weight("JetBTagReshapeWeightCentral");
                     }
 
+                    tthltags_obj.setWeight( "btagReshapeNorm_TTH_LEP", btagReshapeNorm );
 
                     for( unsigned int i = 0; i < Muons.size(); ++i )
                         tthltags_obj.includeWeights( *Muons.at(i));
@@ -1583,13 +1610,13 @@ namespace flashgg {
             chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag2;
         }
         else if ( catNum == 3 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_0_60_Tag3;
-        }
-        else if ( catNum == 4 ) {
             chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_60_120_Tag0;
         }
-        else if ( catNum == 5 ) {
+        else if ( catNum == 4 ) {
             chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_60_120_Tag1;
+        }
+        else if ( catNum == 5 ) {
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_60_120_Tag2;
         }
         else if ( catNum == 6 ) {
             chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_120_200_Tag0;
@@ -1598,10 +1625,10 @@ namespace flashgg {
             chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_120_200_Tag1;
         }
         else if ( catNum == 8 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_GT200_Tag0;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_200_300_Tag0;
         }
         else if ( catNum == 9 ) {
-            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_GT200_Tag1;
+            chosenTag_ = DiPhotonTagBase::stage1recoTag::RECO_TTH_LEP_PTH_GT300_Tag0;
         }
         return chosenTag_;
     }
