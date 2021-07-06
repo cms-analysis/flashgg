@@ -21,7 +21,7 @@ def flashggPrepareTagSequence(process, options):
         flashggVBFMVA.vbfMVAweightfile = cms.FileInPath(str(options["flashggVBFMVA"]["weightFile"]))
         flashggVBFMVA.JetIDLevel = cms.string(str(options["flashggVBFMVA"]["jetID"]))
     if "flashggVHhadMVA" in options:
-        flashggVHhadMVA.vbfMVAweightfile = cms.FileInPath(str(options["flashggVHhadMVA"]["weightFile"]))
+        flashggVHhadMVA.vhHadMVAweightfile = cms.FileInPath(str(options["flashggVHhadMVA"]["weightFile"]))
         flashggVHhadMVA.JetIDLevel = cms.string(str(options["flashggVHhadMVA"]["jetID"]))
     if "flashggGluGluHMVA" in options:
         flashggGluGluHMVA.ggHMVAweightfile = cms.FileInPath(str(options["flashggGluGluHMVA"]["weightFile"]))
