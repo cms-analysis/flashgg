@@ -61,9 +61,15 @@ namespace flashgg {
         float dijet_leadEta_;
         float dijet_subleadEta_;
         float dijet_subsubleadEta_;
+        float dijet_leadPhi_;
+        float dijet_subleadPhi_;
+        float dijet_subsubleadPhi_;
         float dijet_leadJPt_;
         float dijet_subleadJPt_;
         float dijet_subsubleadJPt_;
+        float dijet_leadJEn_;
+        float dijet_subleadJEn_;
+        float dijet_subsubleadJEn_;
         float dijet_leadPUMVA_;
         float dijet_subleadPUMVA_;
         float dijet_subsubleadPUMVA_;
@@ -113,9 +119,15 @@ namespace flashgg {
         dijet_leadEta_        = -999.;
         dijet_subleadEta_    = -999.;
         dijet_subsubleadEta_ = -999.;
+        dijet_leadPhi_        = -999.;
+        dijet_subleadPhi_    = -999.;
+        dijet_subsubleadPhi_ = -999.;
         dijet_leadJPt_       = -999.;
         dijet_subleadJPt_    = -999.;
         dijet_subsubleadJPt_ = -999.;
+        dijet_leadJEn_       = -999.;
+        dijet_subleadJEn_    = -999.;
+        dijet_subsubleadJEn_ = -999.;
         dijet_leadPUMVA_     = -999.;
         dijet_subleadPUMVA_  = -999.;
         dijet_subsubleadPUMVA_    = -999.;
@@ -204,9 +216,15 @@ namespace flashgg {
             dijet_leadEta_        = -999.;
             dijet_subleadEta_    = -999.;
             dijet_subsubleadEta_ = -999.;
+            dijet_leadPhi_        = -999.;
+            dijet_subleadPhi_    = -999.;
+            dijet_subsubleadPhi_ = -999.;
             dijet_leadJPt_       = -999.;
             dijet_subleadJPt_    = -999.;
             dijet_subsubleadJPt_ = -999.;
+            dijet_leadJEn_       = -999.;
+            dijet_subleadJEn_    = -999.;
+            dijet_subsubleadJEn_ = -999.;
             dijet_leadPUMVA_     = -999.;
             dijet_subleadPUMVA_  = -999.;
             dijet_subsubleadPUMVA_    = -999.;
@@ -442,8 +460,12 @@ namespace flashgg {
                 mvares.subleadJet        = dijetP4s.second;
                 dijet_leadEta_           = dijetP4s.first.eta();
                 dijet_subleadEta_        = dijetP4s.second.eta();
+                dijet_leadPhi_           = dijetP4s.first.phi();
+                dijet_subleadPhi_        = dijetP4s.second.phi();
                 dijet_leadJPt_           = dijetP4s.first.pt();
                 dijet_subleadJPt_        = dijetP4s.second.pt();
+                dijet_leadJEn_           = dijetP4s.first.energy();
+                dijet_subleadJEn_        = dijetP4s.second.energy();
                 dijet_leadPUMVA_         = Jets[jetCollectionIndex]->ptrAt( dijet_indices.first )->puJetIdMVA();
                 dijet_subleadPUMVA_    = Jets[jetCollectionIndex]->ptrAt( dijet_indices.second )->puJetIdMVA();
                 dijet_leadDeltaPhi_      = deltaPhi( Jets[jetCollectionIndex]->ptrAt( dijet_indices.first )->phi(), (diPhotonP4s[0]+diPhotonP4s[1]).phi());
@@ -459,13 +481,17 @@ namespace flashgg {
                   dijet_subsubleadDeltaPhi_ = deltaPhi( Jets[jetCollectionIndex]->ptrAt( jet_3_index )->phi(), (diPhotonP4s[0]+diPhotonP4s[1]).phi());
                   dijet_subsubleadDeltaEta_ = Jets[jetCollectionIndex]->ptrAt( jet_3_index )->eta() - (diPhotonP4s[0]+diPhotonP4s[1]).eta();
                   dijet_subsubleadJPt_    = Jets[jetCollectionIndex]->ptrAt( jet_3_index )->pt();
+                  dijet_subsubleadJEn_    = Jets[jetCollectionIndex]->ptrAt( jet_3_index )->energy();
                   dijet_subsubleadEta_    = Jets[jetCollectionIndex]->ptrAt( jet_3_index )->eta();
+                  dijet_subsubleadPhi_    = Jets[jetCollectionIndex]->ptrAt( jet_3_index )->phi();
                 }
 
                 //mvares.diphoton       = *diPhotons->ptrAt( candIndex );
             } else if (dijet_indices.first != -1) {
                 dijet_leadEta_           = Jets[jetCollectionIndex]->ptrAt( dijet_indices.first )->eta();
+                dijet_leadPhi_           = Jets[jetCollectionIndex]->ptrAt( dijet_indices.first )->phi();
                 dijet_leadJPt_           = Jets[jetCollectionIndex]->ptrAt( dijet_indices.first )->pt();
+                dijet_leadJEn_           = Jets[jetCollectionIndex]->ptrAt( dijet_indices.first )->energy();
                 dijet_leadPUMVA_         = Jets[jetCollectionIndex]->ptrAt( dijet_indices.first )->puJetIdMVA();
                 dijet_leadDeltaPhi_      = deltaPhi( Jets[jetCollectionIndex]->ptrAt( dijet_indices.first )->phi(), (diPhotonP4s[0]+diPhotonP4s[1]).phi());
                 dijet_leadDeltaEta_      = Jets[jetCollectionIndex]->ptrAt( dijet_indices.first )->eta() - (diPhotonP4s[0]+diPhotonP4s[1]).eta();
@@ -503,9 +529,15 @@ namespace flashgg {
             mvares.dijet_leadEta     = dijet_leadEta_;
             mvares.dijet_subleadEta  = dijet_subleadEta_;
             mvares.dijet_subsubleadEta =  dijet_subsubleadEta_;
+            mvares.dijet_leadPhi     = dijet_leadPhi_;
+            mvares.dijet_subleadPhi  = dijet_subleadPhi_;
+            mvares.dijet_subsubleadPhi =  dijet_subsubleadPhi_;
             mvares.dijet_leadJPt     = dijet_leadJPt_;
             mvares.dijet_SubleadJPt  = dijet_subleadJPt_;
             mvares.dijet_SubsubleadJPt =  dijet_subsubleadJPt_;
+            mvares.dijet_leadJEn     = dijet_leadJEn_;
+            mvares.dijet_SubleadJEn  = dijet_subleadJEn_;
+            mvares.dijet_SubsubleadJEn =  dijet_subsubleadJEn_;
             mvares.dijet_leadPUMVA   = dijet_leadPUMVA_;
             mvares.dijet_subleadPUMVA = dijet_subleadPUMVA_;
             mvares.dijet_subsubleadPUMVA =  dijet_subsubleadPUMVA_;

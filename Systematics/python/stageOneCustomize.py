@@ -29,18 +29,21 @@ class StageOneCustomize():
             ["RECO_VBFTOPO_JET3_HIGHMJJ_Tag0",0], ["RECO_VBFTOPO_JET3_HIGHMJJ_Tag1",0], 
             ["RECO_VBFTOPO_BSM_Tag0",0], ["RECO_VBFTOPO_BSM_Tag1",0],
             ["RECO_VBFLIKEGGH_Tag0",0], ["RECO_VBFLIKEGGH_Tag1",0], 
-            ["RECO_TTH_HAD_PTH_0_60_Tag0",0], ["RECO_TTH_HAD_PTH_0_60_Tag1",0], ["RECO_TTH_HAD_PTH_0_60_Tag2",0], ["RECO_TTH_HAD_PTH_0_60_Tag3",0],
-            ["RECO_TTH_HAD_PTH_60_120_Tag0",0], ["RECO_TTH_HAD_PTH_60_120_Tag1",0], ["RECO_TTH_HAD_PTH_60_120_Tag2",0], ["RECO_TTH_HAD_PTH_60_120_Tag3",0],
+            ["RECO_TTH_HAD_PTH_0_60_Tag0",0], ["RECO_TTH_HAD_PTH_0_60_Tag1",0], ["RECO_TTH_HAD_PTH_0_60_Tag2",0],
+            ["RECO_TTH_HAD_PTH_60_120_Tag0",0], ["RECO_TTH_HAD_PTH_60_120_Tag1",0], ["RECO_TTH_HAD_PTH_60_120_Tag2",0],
             ["RECO_TTH_HAD_PTH_120_200_Tag0",0], ["RECO_TTH_HAD_PTH_120_200_Tag1",0], ["RECO_TTH_HAD_PTH_120_200_Tag2",0], ["RECO_TTH_HAD_PTH_120_200_Tag3",0],
-            ["RECO_TTH_HAD_PTH_GT200_Tag0",0], ["RECO_TTH_HAD_PTH_GT200_Tag1",0], ["RECO_TTH_HAD_PTH_GT200_Tag2",0], ["RECO_TTH_HAD_PTH_GT200_Tag3",0],
-            ["RECO_WH_LEP_LOW_Tag0",0], ["RECO_WH_LEP_LOW_Tag1",0], ["RECO_WH_LEP_LOW_Tag2",0], 
-            ["RECO_WH_LEP_HIGH_Tag0",0], ["RECO_WH_LEP_HIGH_Tag1",0], ["RECO_WH_LEP_HIGH_Tag2",0], 
+            ["RECO_TTH_HAD_PTH_200_300_Tag0",0], ["RECO_TTH_HAD_PTH_200_300_Tag1",0], ["RECO_TTH_HAD_PTH_200_300_Tag2",0],
+            ["RECO_TTH_HAD_PTH_GT300_Tag0",0], ["RECO_TTH_HAD_PTH_GT300_Tag1",0],
+            ["RECO_WH_LEP_PTV_0_75_Tag0",0], ["RECO_WH_LEP_PTV_0_75_Tag1",0],
+            ["RECO_WH_LEP_PTV_75_150_Tag0",0], ["RECO_WH_LEP_PTV_75_150_Tag1",0],
+            ["RECO_WH_LEP_PTV_GT150_Tag0",0],
             ["RECO_ZH_LEP_Tag0",0], ["RECO_ZH_LEP_Tag1",0],
-            ["RECO_VH_MET_Tag0",0], ["RECO_VH_MET_Tag1",0],
-            ["RECO_TTH_LEP_PTH_0_60_Tag0",0], ["RECO_TTH_LEP_PTH_0_60_Tag1",0], ["RECO_TTH_LEP_PTH_0_60_Tag2",0], ["RECO_TTH_LEP_PTH_0_60_Tag3",0],
-            ["RECO_TTH_LEP_PTH_60_120_Tag0",0], ["RECO_TTH_LEP_PTH_60_120_Tag1",0],
+            ["RECO_VH_MET_Tag0",0], ["RECO_VH_MET_Tag1",0], ["RECO_VH_MET_Tag2",0],
+            ["RECO_TTH_LEP_PTH_0_60_Tag0",0], ["RECO_TTH_LEP_PTH_0_60_Tag1",0], ["RECO_TTH_LEP_PTH_0_60_Tag2",0],
+            ["RECO_TTH_LEP_PTH_60_120_Tag0",0], ["RECO_TTH_LEP_PTH_60_120_Tag1",0], ["RECO_TTH_LEP_PTH_60_120_Tag2",0],
             ["RECO_TTH_LEP_PTH_120_200_Tag0",0], ["RECO_TTH_LEP_PTH_120_200_Tag1",0],
-            ["RECO_TTH_LEP_PTH_GT200_Tag0",0], ["RECO_TTH_LEP_PTH_GT200_Tag1",0],
+            ["RECO_TTH_LEP_PTH_200_300_Tag0",0],
+            ["RECO_TTH_LEP_PTH_GT300_Tag0",0],
             ["RECO_THQ_LEP",0]
         ]
         if self.customize.processId == "Data": 
@@ -65,6 +68,9 @@ class StageOneCustomize():
             "CMS_hgg_mass[160,100,180]:=diPhoton().mass",
             "dZ[40,-20.,20.]:=(tagTruth().genPV().z-diPhoton().vtx().z)",
             "NNLOPSweight[1,-999999.,999999.] := tagTruth().weight(\"NNLOPSweight\")",
+            "btagReshapeNorm_TTH_LEP[1,-999999.,999999.] := weight(\"btagReshapeNorm_TTH_LEP\")",
+            "btagReshapeNorm_TTH_HAD[1,-999999.,999999.] := weight(\"btagReshapeNorm_TTH_HAD\")",
+            "btagReshapeNorm_THQ_LEP[1,-999999.,999999.] := weight(\"btagReshapeNorm_THQ_LEP\")",
             "centralObjectWeight[1,-999999.,999999.] := centralWeight"
         ]
 

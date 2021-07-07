@@ -462,7 +462,7 @@ namespace flashgg {
                 dipho->getLeadingPhoton().setpfChgIso03(leadChgIsos);
                 auto subleadChgIsos = dipho->getSubLeadingPhoton().pfChgIso03();
                 subleadChgIsos[dipho->vtx()] = dipho->getSubLeadingPhoton().pfChgIsoWrtChosenVtx03();
-                dipho->getLeadingPhoton().setpfChgIso03(leadChgIsos);
+                dipho->getSubLeadingPhoton().setpfChgIso03(subleadChgIsos);
 
                 if( reRunRegression_ ) {
                     // store original energy 

@@ -23,11 +23,26 @@ namespace flashgg {
         const edm::Ptr<DiPhotonCandidate> diPhotonCandidate() const { return theDiPhotonCandidate_;}
         const float MinDeltaPhiJetMet() const { return minDeltaPhiJetMet_; }
         const float MaxJetDeepCSV() const { return max_dcsv_val_; }
+
+        const bool associatedZ() const { return associatedZ_; }
+        const bool associatedW() const { return associatedW_; }
+        const bool VhasNeutrinos() const { return VhasNeutrinos_; }
+        const bool VhasLeptons() const { return VhasLeptons_; }
+        const bool VhasHadrons() const { return VhasHadrons_; }
+        const float Vpt() const { return Vpt_; }
+
         void setMet( edm::Ptr<flashgg::Met> );
         void setJets( std::vector<edm::Ptr<Jet> > Jets ) { Jets_ = Jets; }
         void setMinDeltaPhiJetMet( float val ) { minDeltaPhiJetMet_ = val; }
         void setMaxJetDeepCSV( float val ) { max_dcsv_val_ = val; }
-        
+
+        void setAssociatedZ( const bool &val ) { associatedZ_ = val; }
+        void setAssociatedW( const bool &val ) { associatedW_ = val; }
+        void setVhasNeutrinos( const bool &val ) { VhasNeutrinos_ = val; }
+        void setVhasLeptons( const bool &val ) { VhasLeptons_ = val; }
+        void setVhasHadrons( const bool &val ) { VhasHadrons_ = val; }
+        void setVpt( const float &val ) { Vpt_ = val; }
+
         DiPhotonTagBase::tag_t tagEnum() const override {return DiPhotonTagBase::kVHMet; }
 
     private:
@@ -36,6 +51,14 @@ namespace flashgg {
         std::vector<edm::Ptr<Jet> > Jets_;
         float minDeltaPhiJetMet_;
         float max_dcsv_val_;
+
+        bool associatedZ_;
+        bool associatedW_;
+        bool VhasNeutrinos_;
+        bool VhasLeptons_;
+        bool VhasHadrons_;
+        float Vpt_;
+
     };
 
 }

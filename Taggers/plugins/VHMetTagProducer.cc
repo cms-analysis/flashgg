@@ -56,14 +56,13 @@ namespace flashgg {
         //configurable selection variables
         double leadPhoOverMassThreshold_   ;
         double subleadPhoOverMassThreshold_;
+        double phoIdMVAThreshold_          ;
         double diphoMVAThreshold_          ;
         double metPtThreshold_             ;
+        double dPhiDiphotonMetThreshold_   ;
         double jetEtaThreshold_            ;
         double jetPtThreshold_             ;
-        double deltaRPhoLeadJet_           ;
-        double deltaRPhoSubLeadJet_        ;
-        double phoIdMVAThreshold_          ;
-        double dPhiDiphotonMetThreshold_   ;
+        double deltaRJetPhoThreshold_      ;
 
         //VHMetMVA
         unique_ptr<TMVA::Reader> VHMetMva_;
@@ -75,14 +74,14 @@ namespace flashgg {
         float _min_phoId        ; 
         float _max_phoId        ; 
         float _dipho_cosphi     ; 
-        float _njet             ;
-        float _jet1_pt          ;
-        float _max_jet_dCSV     ;
         float _met              ;
         float _met_sumEt        ;
-        float _min_dPhi_jet_met ;
-        float _dPhi_dipho_met   ;
+        float _dphi_dipho_met   ;
         float _pt_balance       ;
+        float _njet             ;
+        float _max_jet_pt       ;
+        float _max_jet_dCSV     ;
+        float _min_dphi_jet_met ;
 
         FileInPath VHMetMVAweightfile_ ;
 
@@ -106,12 +105,11 @@ namespace flashgg {
         subleadPhoOverMassThreshold_ = iConfig.getParameter<double>( "subleadPhoOverMassThreshold" );
         phoIdMVAThreshold_           = iConfig.getParameter<double>( "phoIdMVAThreshold" );
         diphoMVAThreshold_           = iConfig.getParameter<double>( "diphoMVAThreshold" );
-        jetPtThreshold_              = iConfig.getParameter<double>( "jetPtThreshold");
-        jetEtaThreshold_             = iConfig.getParameter<double>( "jetEtaThreshold");
-        deltaRPhoLeadJet_            = iConfig.getParameter<double>( "deltaRPhoLeadJet");
-        deltaRPhoSubLeadJet_         = iConfig.getParameter<double>( "deltaRPhoSubLeadJet");
         metPtThreshold_              = iConfig.getParameter<double>( "metPtThreshold" );
         dPhiDiphotonMetThreshold_    = iConfig.getParameter<double>( "dPhiDiphotonMetThreshold" );
+        jetPtThreshold_              = iConfig.getParameter<double>( "jetPtThreshold");
+        jetEtaThreshold_             = iConfig.getParameter<double>( "jetEtaThreshold");
+        deltaRJetPhoThreshold_       = iConfig.getParameter<double>( "deltaRJetPhoThreshold");
 
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
             auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
@@ -127,14 +125,14 @@ namespace flashgg {
         _min_phoId        = -999.; 
         _max_phoId        = -999.; 
         _dipho_cosphi     = -999.; 
-        _njet             = -999.; 
-        _jet1_pt          = -999.; 
-        _max_jet_dCSV     = -999.; 
         _met              = -999.; 
         _met_sumEt        = -999.; 
-        _min_dPhi_jet_met = -999.; 
-        _dPhi_dipho_met   = -999.; 
+        _dphi_dipho_met   = -999.; 
         _pt_balance       = -999.; 
+        _njet             = -999.; 
+        _max_jet_pt       = -999.; 
+        _max_jet_dCSV     = -999.; 
+        _min_dphi_jet_met = -999.; 
 
         VHMetMva_.reset( new TMVA::Reader( "!Color:!Silent" ) );
         VHMetMva_->AddVariable( "pho1_eta"           ,&_pho1_eta         ); 
@@ -144,14 +142,14 @@ namespace flashgg {
         VHMetMva_->AddVariable( "min_phoId"          ,&_min_phoId        ); 
         VHMetMva_->AddVariable( "max_phoId"          ,&_max_phoId        ); 
         VHMetMva_->AddVariable( "dipho_cosphi"       ,&_dipho_cosphi     ); 
-        VHMetMva_->AddVariable( "njet"               ,&_njet             ); 
-        VHMetMva_->AddVariable( "jet1_pt"            ,&_jet1_pt          ); 
-        VHMetMva_->AddVariable( "max_jet_dCSV"       ,&_max_jet_dCSV     ); 
         VHMetMva_->AddVariable( "met"                ,&_met              ); 
         VHMetMva_->AddVariable( "met_sumEt"          ,&_met_sumEt        ); 
-        VHMetMva_->AddVariable( "min_dPhi_jet_met"   ,&_min_dPhi_jet_met ); 
-        VHMetMva_->AddVariable( "dPhi_dipho_met"     ,&_dPhi_dipho_met   ); 
+        VHMetMva_->AddVariable( "dphi_dipho_met"     ,&_dphi_dipho_met   ); 
         VHMetMva_->AddVariable( "pt_balance"         ,&_pt_balance       );
+        VHMetMva_->AddVariable( "njet"               ,&_njet             ); 
+        VHMetMva_->AddVariable( "max_jet_pt"         ,&_max_jet_pt       ); 
+        VHMetMva_->AddVariable( "max_jet_dCSV"       ,&_max_jet_dCSV     ); 
+        VHMetMva_->AddVariable( "min_dphi_jet_met"   ,&_min_dphi_jet_met ); 
         VHMetMva_->BookMVA( "BDT", VHMetMVAweightfile_.fullPath() );
 
         boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
@@ -264,15 +262,12 @@ namespace flashgg {
         electronEtaThresholds_.push_back(2.4);
         //unsigned int idx = 0;
 
-        double idmva1 = 0.;
-        double idmva2 = 0.;
-
         for( unsigned int candIndex = 0; candIndex < diPhotons->size() ; candIndex++ ) {
             edm::Ptr<flashgg::DiPhotonMVAResult> mvares = mvaResults->ptrAt( candIndex );
             edm::Ptr<flashgg::DiPhotonCandidate> dipho = diPhotons->ptrAt( candIndex );
 
-            idmva1 = dipho->leadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
-            idmva2 = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
+            double idmva1 = dipho->leadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
+            double idmva2 = dipho->subLeadingPhoton()->phoIdMvaDWrtVtx( dipho->vtx() );
 
             if( dipho->leadingPhoton()->pt() < dipho->mass() * leadPhoOverMassThreshold_ ) continue;
             if( dipho->subLeadingPhoton()->pt() < dipho->mass() * subleadPhoOverMassThreshold_ ) continue;
@@ -282,39 +277,22 @@ namespace flashgg {
             if( fabs( deltaPhi(theMET->getCorPhi(), dipho->phi()) ) < dPhiDiphotonMetThreshold_ ) continue;
 
             //Lepton Veto
-            std::vector<edm::Ptr<flashgg::Muon> > goodMuons = selectMuons( theMuons->ptrs(), 
-                                        dipho, 
-                                        vertices->ptrs(), 
-                                        2.4, 
-                                        10, 
-                                        0.25,
-                                        0.2, 
-                                        0.2 
-                                        );
-            std::vector<edm::Ptr<Electron> >goodElectrons = selectStdElectrons( theElectrons->ptrs(), 
-                                                   dipho, 
-                                                   vertices->ptrs(), 
-                                                   10,  
-                                                   electronEtaThresholds_,
-                                                   false,
-                                                   true,
-                                                   0.2,
-                                                   0.35,
-                                                   10,
-                                                   rho_, 
-                                                   evt.isRealData() 
-                                                   );
+            std::vector<edm::Ptr<flashgg::Muon> > goodMuons =
+                LeptonSelection2018::selectMuons(theMuons->ptrs(), dipho, vertices->ptrs(), 10., 2.4, 0.25, 0.2);
+            std::vector<edm::Ptr<Electron> >goodElectrons =
+                LeptonSelection2018::selectElectrons(theElectrons->ptrs(), dipho, 10., electronEtaThresholds_, 0.2, 5., 0.2);
 
             if( goodElectrons.size() != 0 || goodMuons.size() != 0 ) continue;
 
-            float minDeltaPhiJetMet   = 3.2;
-            float max_dcsv_val        = -1;
+            float max_jet_pt          = -1.;
+            float max_jet_dCSV        = -2.;
+            float minDeltaPhiJetMet   = 4.0;
 
             unsigned int jetCollectionIndex = diPhotons->ptrAt( candIndex )->jetCollectionIndex();
             std::vector<edm::Ptr<Jet> > tagJets;
             for( unsigned int jetIndex = 0; jetIndex < Jets[jetCollectionIndex]->size() ; jetIndex++ ) {
                 edm::Ptr<flashgg::Jet> thejet = Jets[jetCollectionIndex]->ptrAt( jetIndex );
-                if(!thejet->passesJetID  ( flashgg::Tight2017 ) ) continue;
+                if( !thejet->passesJetID ( flashgg::Tight2017 ) ) continue;
 
                 if( fabs( thejet->eta() ) > jetEtaThreshold_ ) continue;
                 if( thejet->pt() < jetPtThreshold_ ) continue;
@@ -326,21 +304,17 @@ namespace flashgg {
                                     diPhotons->ptrAt( candIndex )->subLeadingPhoton()->superCluster()->eta(),
                                     diPhotons->ptrAt( candIndex )->subLeadingPhoton()->superCluster()->phi() );
 
-                if( dRPhoLeadJet < deltaRPhoLeadJet_ || dRPhoSubLeadJet < deltaRPhoSubLeadJet_ ) continue;
+                if( dRPhoLeadJet < deltaRJetPhoThreshold_ || dRPhoSubLeadJet < deltaRJetPhoThreshold_ ) continue;
 
+                float pt             = thejet->pt();
                 float dcsv_val       = thejet->bDiscriminator("pfDeepCSVJetTags:probb") + thejet->bDiscriminator("pfDeepCSVJetTags:probbb");
                 float deltaPhiMetJet = fabs(deltaPhi(thejet->phi(), theMET->getCorPhi()));
 
+                if (pt > max_jet_pt)                        max_jet_pt        = pt;
+                if (dcsv_val > max_jet_dCSV)                max_jet_dCSV      = dcsv_val;
                 if (deltaPhiMetJet < minDeltaPhiJetMet)     minDeltaPhiJetMet = deltaPhiMetJet;
-                if (dcsv_val > max_dcsv_val)                max_dcsv_val = dcsv_val;
 
                 tagJets.push_back( thejet );
-            }
-
-            //Tmp cut for VBF priority. It will be removed next iteration
-            if( tagJets.size() > 1 ) {
-                double mjj = (tagJets[0]->p4() + tagJets[1]->p4()).mass();
-                if( mjj > 350. ) continue;
             }
 
             _pho1_eta         = dipho->leadingPhoton()->eta(); 
@@ -351,12 +325,12 @@ namespace flashgg {
             _max_phoId        = TMath::Max(idmva1, idmva2);
             _dipho_cosphi     = TMath::Cos( deltaPhi(dipho->leadingPhoton()->phi(), dipho->subLeadingPhoton()->phi()) );
             _njet             = tagJets.size();
-            _jet1_pt          = tagJets.size() > 0 ? tagJets[0]->pt() : -50.;
-            _max_jet_dCSV     = max_dcsv_val;
+            _max_jet_pt       = max_jet_pt;
+            _max_jet_dCSV     = max_jet_dCSV;
             _met              = theMET->getCorPt();
             _met_sumEt        = theMET->sumEt();
-            _min_dPhi_jet_met = minDeltaPhiJetMet; 
-            _dPhi_dipho_met   = fabs( deltaPhi(theMET->getCorPhi(), dipho->phi()) );
+            _min_dphi_jet_met = minDeltaPhiJetMet; 
+            _dphi_dipho_met   = fabs( deltaPhi(theMET->getCorPhi(), dipho->phi()) );
             _pt_balance       = (dipho->pt() - theMET->getCorPt()) / dipho->pt();
 
             float vhmetmva    = VHMetMva_->EvaluateMVA( "BDT" );
@@ -373,13 +347,27 @@ namespace flashgg {
                 tag_obj.setJets( tagJets );
                 tag_obj.setMet( theMET );
                 tag_obj.setMinDeltaPhiJetMet(minDeltaPhiJetMet);
-                tag_obj.setMaxJetDeepCSV(max_dcsv_val);
+                tag_obj.setMaxJetDeepCSV(max_jet_dCSV);
+
+                if( ! evt.isRealData() ) {
+                    tag_obj.setAssociatedZ( associatedZ );
+                    tag_obj.setAssociatedW( associatedW );
+                    tag_obj.setVhasNeutrinos( VhasNeutrinos );
+                    tag_obj.setVhasLeptons( VhasLeptons );
+                    tag_obj.setVhasHadrons( VhasHadrons );
+                    tag_obj.setVpt( Vpt );
+                }
+
                 if( catnum == 0 ) { 
                     tag_obj.setStage1recoTag( DiPhotonTagBase::stage1recoTag::RECO_VH_MET_Tag0 );
                 } else if ( catnum == 1 ) {
                     tag_obj.setStage1recoTag( DiPhotonTagBase::stage1recoTag::RECO_VH_MET_Tag1 );
+                } else if ( catnum == 2 ) {
+                    tag_obj.setStage1recoTag( DiPhotonTagBase::stage1recoTag::RECO_VH_MET_Tag2 );
                 }
+
                 vhettags->push_back( tag_obj );
+
                 if( ! evt.isRealData() ) {
                     VHTagTruth truth_obj;
                     truth_obj.setGenPV( higgsVtx );
