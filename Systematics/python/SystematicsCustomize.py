@@ -371,8 +371,9 @@ def recalculatePDFWeights(process, options):
                                                     LHERunLabel = cms.string("externalLHEProducer"),
                                                     Debug = cms.bool(False),
                                                     PDFmap = cms.PSet(#see here https://lhapdf.hepforge.org/pdfsets.html to update the map if needed
-                                                        NNPDF30_lo_as_0130_nf_4 = cms.untracked.uint32(263400),
-                                                        NNPDF31_nnlo_as_0118_nf_4 = cms.untracked.uint32(320900)
+                                                        NNPDF31_nnlo_as_0118_mc_hessian_pdfas = cms.untracked.uint32(325300)
+                                                        # NNPDF30_lo_as_0130_nf_4 = cms.untracked.uint32(263400),
+                                                        # NNPDF31_nnlo_as_0118_nf_4 = cms.untracked.uint32(320900)
                                                     )
                                                 ) 
     process.p.insert(0, process.flashggPDFWeightObject)

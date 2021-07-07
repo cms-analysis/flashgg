@@ -98,6 +98,7 @@ namespace flashgg {
             auto & collection = *src;
             
             int count = ( max_ > 0 ? max_ : collection.size() );
+
             for( size_t iob = 0; iob<collection.size() && count > 0; ++iob ) {
                 auto & cand = collection.at(iob);
                 bool add = true;
