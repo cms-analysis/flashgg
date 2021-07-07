@@ -1,0 +1,97 @@
+{
+    "/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/alesauva-2018_1-10_6_4-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2-2be68fc10a89a148f00b8c7257127493/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 11000, 
+                "name": "/store/user/alesauva/flashgg/2018_1/10_6_4/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/2018_1-10_6_4-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/210702_202408/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 11000, 
+                "totEvents": 11000, 
+                "weights": 1838.8642578125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/alesauva/flashgg/2018_1/10_6_4/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/2018_1-10_6_4-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/210702_202408/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4191.5048828125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/alesauva/flashgg/2018_1/10_6_4/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/2018_1-10_6_4-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/210702_202408/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4182.3173828125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/alesauva/flashgg/2018_1/10_6_4/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/2018_1-10_6_4-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/210702_202408/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4158.869140625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/alesauva/flashgg/2018_1/10_6_4/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/2018_1-10_6_4-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/210702_202408/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4180.2314453125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/alesauva/flashgg/2018_1/10_6_4/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/2018_1-10_6_4-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/210702_202408/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4183.53564453125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/alesauva/flashgg/2018_1/10_6_4/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/2018_1-10_6_4-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/210702_202408/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4163.55712890625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/alesauva/flashgg/2018_1/10_6_4/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/2018_1-10_6_4-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/210702_202408/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4180.2939453125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/alesauva/flashgg/2018_1/10_6_4/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/2018_1-10_6_4-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/210702_202408/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4191.14404296875
+            }, 
+            {
+                "bad": false, 
+                "events": 14000, 
+                "name": "/store/user/alesauva/flashgg/2018_1/10_6_4/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/2018_1-10_6_4-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/210702_202408/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 14000, 
+                "totEvents": 14000, 
+                "weights": 2333.081787109375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/alesauva/flashgg/2018_1/10_6_4/WWZ_TuneCP5_13TeV-amcatnlo-pythia8/2018_1-10_6_4-v0-RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15_ext1-v2/210702_202408/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4179.32666015625
+            }
+        ], 
+        "parent_n_units": 250000, 
+        "vetted": true
+    }
+}
