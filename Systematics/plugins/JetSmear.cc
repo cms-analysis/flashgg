@@ -126,7 +126,7 @@ namespace flashgg {
                 }
                 float rnd = y.userFloat(random_label_);       
                 float extra_smear_width = std::sqrt(max<float>(scale_factor*scale_factor - 1,0.)) * r;
-                float escale = (1. + rnd * extra_smear_width);
+                float escale = max<float>(0, 1. + rnd * extra_smear_width); // Protect against large smearings that turn the jet energy to be negative
                 if (debug_) {
                     std::cout << "  " << shiftLabel( syst_shift ) << ": Jet has pt=" << y.pt() << " eta=" << y.eta() << " NO GEN MATCH "
                               << " rnd=" << rnd << " r=" << r << " scale_factor=" << scale_factor << " extra_smear_width=" << extra_smear_width
