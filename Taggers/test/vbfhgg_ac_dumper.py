@@ -15,7 +15,7 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 process.maxEvents   = cms.untracked.PSet( input  = cms.untracked.int32( 10 ) )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
 
 systlabels    = [""]
 phosystlabels = []
@@ -48,19 +48,20 @@ customize.options.register('analysisType',
                            'mainAnalysis',
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.string,
-                           'analysisType')
-
-customize.options.register('ignoreNegR9',
-                           False,
-                           VarParsing.VarParsing.multiplicity.singleton,
-                           VarParsing.VarParsing.varType.bool,
-                           'ignoreNegR9')
+                           'analysisType'
+                           )
 
 customize.options.register('doSystematics',
                            False,
                            VarParsing.VarParsing.multiplicity.singleton,
                            VarParsing.VarParsing.varType.bool,
                            'doSystematics')
+
+customize.options.register('ignoreNegR9',
+                           True,
+                           VarParsing.VarParsing.multiplicity.singleton,
+                           VarParsing.VarParsing.varType.bool,
+                           'ignoreNegR9')
 
 # set default options if needed
 customize.setDefault("maxEvents",-1)
@@ -75,8 +76,10 @@ else: process.GlobalTag.globaltag = str(customize.metaConditions['globalTags']['
 
 #Systematics customize
 from flashgg.Systematics.SystematicsCustomize import *
+#jetSystematicsInputTags = None
 jetSystematicsInputTags = createStandardSystematicsProducers(process,customize)
 modifyTagSequenceForSystematics(process,jetSystematicsInputTags,2)
+
 #Using standard tools
 useEGMTools(process)
 
@@ -97,6 +100,8 @@ process.flashggTagSequence.remove(process.flashggVHHadronicTag)
 process.flashggTagSorter.TagPriorityRanges = cms.VPSet(
     cms.PSet(TagName = cms.InputTag('flashggVBFTag'))
 )
+
+process.flashggTagSorter.AddTruthInfo = cms.bool(False)
 
 #set the prefiring correctly 
 applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
@@ -180,7 +185,7 @@ from flashgg.MetaData.samples_utils import SamplesManager
 
 process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
-'root://xrootd-cms.infn.it//store/user/spigazzi/flashgg/Era2017_RR-31Mar2018_v2/legacyRun2FullV1/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8/Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/190703_101705/0000/myMicroAODOutputFile_15.root'
+'/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M-125_13TeV_powheg_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/191111_133402/0000/myMicroAODOutputFile_10.root'
                              )
 )
 
@@ -242,6 +247,63 @@ new_variables = [
     "dijet_jet2_pujid_mva := subleading_pujidMVA()",
     "dipho_pt             := diPhoton.pt",
     "dijet_pt             := VBFMVA.dijet_pt",
+    "centralObjectWeight  := centralWeight",
+]
+
+jet_vars = [
+    "gghMVA_n_rec_jets         := GluGluHMVA.n_rec_jets",
+    "gghMVA_Mjj                := GluGluHMVA.dijet_Mjj",
+    "gghMVA_leadEta            := GluGluHMVA.dijet_leadEta",
+    "gghMVA_subleadEta         := GluGluHMVA.dijet_subleadEta",
+    "gghMVA_subsubleadEta      := GluGluHMVA.dijet_subsubleadEta",
+    "gghMVA_leadPhi            := GluGluHMVA.dijet_leadPhi",
+    "gghMVA_subleadPhi         := GluGluHMVA.dijet_subleadPhi",
+    "gghMVA_subsubleadPhi      := GluGluHMVA.dijet_subsubleadPhi",
+    "gghMVA_leadJPt            := GluGluHMVA.dijet_leadJPt",
+    "gghMVA_SubleadJPt         := GluGluHMVA.dijet_SubleadJPt",
+    "gghMVA_SubsubleadJPt      := GluGluHMVA.dijet_SubsubleadJPt",
+    "gghMVA_leadJEn            := GluGluHMVA.dijet_leadJEn",
+    "gghMVA_SubleadJEn         := GluGluHMVA.dijet_SubleadJEn",
+    "gghMVA_SubsubleadJEn      := GluGluHMVA.dijet_SubsubleadJEn",
+    "gghMVA_leadPUMVA          := GluGluHMVA.dijet_leadPUMVA",
+    "gghMVA_subleadPUMVA       := GluGluHMVA.dijet_subleadPUMVA",
+    "gghMVA_subsubleadPUMVA    := GluGluHMVA.dijet_subsubleadPUMVA",
+    "gghMVA_leadDeltaPhi       := GluGluHMVA.dijet_leadDeltaPhi",
+    "gghMVA_subleadDeltaPhi    := GluGluHMVA.dijet_subleadDeltaPhi",
+    "gghMVA_subsubleadDeltaPhi := GluGluHMVA.dijet_subsubleadDeltaPhi",
+    "gghMVA_leadDeltaEta       := GluGluHMVA.dijet_leadDeltaEta",
+    "gghMVA_subleadDeltaEta    := GluGluHMVA.dijet_subleadDeltaEta",
+    "gghMVA_subsubleadDeltaEta := GluGluHMVA.dijet_subsubleadDeltaEta",
+]
+
+ggH_mva_probs = [
+    "ggHMVAResult_prob_0J_PTH_0_10                := GluGluHMVA.ggHMVAResult_prob_0J_PTH_0_10()",
+    "ggHMVAResult_prob_0J_PTH_GT10                := GluGluHMVA.ggHMVAResult_prob_0J_PTH_GT10()",
+    "ggHMVAResult_prob_1J_PTH_0_60                := GluGluHMVA.ggHMVAResult_prob_1J_PTH_0_60()",
+    "ggHMVAResult_prob_1J_PTH_60_120              := GluGluHMVA.ggHMVAResult_prob_1J_PTH_60_120()",
+    "ggHMVAResult_prob_1J_PTH_120_200             := GluGluHMVA.ggHMVAResult_prob_1J_PTH_120_200()", 
+    "ggHMVAResult_prob_GE2J_MJJ_0_350_PTH_0_60    := GluGluHMVA.ggHMVAResult_prob_GE2J_MJJ_0_350_PTH_0_60()",
+    "ggHMVAResult_prob_GE3J_MJJ_0_350_PTH_60_120  := GluGluHMVA.ggHMVAResult_prob_GE2J_MJJ_0_350_PTH_60_120()", 
+    "ggHMVAResult_prob_GE2J_MJJ_0_350_PTH_120_200 := GluGluHMVA.ggHMVAResult_prob_GE2J_MJJ_0_350_PTH_120_200()",
+    "ggHMVAResult_prob_PTH_GT200                  := GluGluHMVA.ggHMVAResult_prob_PTH_GT200()",
+]
+
+VBF_mva_probs = [
+    "vbfMvaResult_prob_bkg := VBFMVA.vbfMvaResult_prob_bkg()",
+    "vbfMvaResult_prob_ggH := VBFMVA.vbfMvaResult_prob_ggH()",
+    "vbfMvaResult_prob_VBF := VBFMVA.vbfMvaResult_prob_VBF()",
+]
+
+vh_mva_inputs = [
+    "dijet_minDRJetPho    :=  VBFMVA.dijet_minDRJetPho",
+    "dijet_centrality_gg  :=  VBFMVA.dijet_centrality_gg",
+    "dijet_centrality_j3  :=  VBFMVA.dijet_centrality_j3",
+    "dijet_centrality_g   :=  VBFMVA.dijet_centrality_g ",
+    "cosThetaStar         :=  VHhadMVA.cosThetaStar",
+]
+
+vh_had_probs  = [
+    "VH_had_mvascore      := VHhadMVA.VHhadMVAValue()",
 ]
 
 matching_photon = [
@@ -259,7 +321,7 @@ if customize.doSystematics:
                                       jetSystematicsInputTags=jetSystematicsInputTags,
                                       ZPlusJetMode=2)
 
-all_variables = var.dipho_variables + var.dijet_variables + new_variables
+all_variables = var.dipho_variables + var.dijet_variables + new_variables + jet_vars + ggH_mva_probs + VBF_mva_probs + vh_mva_inputs + vh_had_probs
 
 if customize.processId != "Data":
     all_variables += matching_photon# + jet_syst_weights
@@ -327,6 +389,7 @@ if (customize.processId.count("qcd") or customize.processId.count("gjet")) and c
 
 process.p = cms.Path(process.dataRequirements
                      * process.genFilter
+                     #* process.flashggUpdatedIdMVADiPhotons #replaced by version below now...
                      * process.flashggDifferentialPhoIdInputsCorrection
                      * process.flashggDiPhotonSystematics
                      * process.flashggMetSystematics
@@ -335,7 +398,7 @@ process.p = cms.Path(process.dataRequirements
                      * (process.flashggUnpackedJets
                         * process.ak4PFCHSL1FastL2L3CorrectorChain
                         * process.jetSystematicsSequence)
-                    * (process.flashggTagSequence
+                     * (process.flashggTagSequence
                         + process.systematicsTagSequences)
                      * process.flashggSystTagMerger
                      * process.finalFilter
