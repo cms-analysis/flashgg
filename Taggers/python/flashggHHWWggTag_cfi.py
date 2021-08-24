@@ -24,6 +24,7 @@ flashggHHWWggTag = cms.EDProducer("FlashggHHWWggTagProducer",
                                     ElectronTag                      = cms.InputTag('flashggElectronSystematics'),
                                     MuonTag                          = cms.InputTag('flashggMuonSystematics'),
                                     METTag                           = cms.InputTag('flashggMetSystematics'),
+                                    # METTag                           = cms.InputTag('flashggMetsCorr'),
                                     JetTags                          = UnpackedJetCollectionVInputTag,
                                     MVAResultTag                     = cms.InputTag('flashggDiPhotonMVA'),
 

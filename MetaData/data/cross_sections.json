@@ -383,6 +383,8 @@
   "xs": 489.0,
   "br": 1.0
  },
+ "WGToLNuG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8"                   : { "xs" : 191.4  },
+ "WGToLNuG_TuneCP5_13TeV-madgraphMLM-pythia8"                           : { "xs" : 463.9  },
  "VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8": {
   "xs": 2.2569,
   "itype": -125400,
@@ -901,6 +903,9 @@
   "xs": 117.864,
   "br": 1.0
  },
+
+ "ZGToLLG_01J_5f_TuneCP5_13TeV-amcatnloFXFX-pythia8" : { "xs" : 55.6  },
+
  "ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_UpPS": {
   "xs": 0.5071,
   "itype": -125300,
@@ -1966,6 +1971,14 @@
 
   "WWZ_TuneCP5_13TeV-amcatnlo-pythia8": {
       "xs" : 0.1651
-  }
+  },
+
+  "ZZ_TuneCUETP8M1_13TeV-pythia8"                                        : { "xs" : 10.16  },
+  "ZZ_TuneCP5_13TeV-pythia8"                                             : { "xs" : 12.14  },
+  "TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8"                 : { "xs" : 0.2529 },
+  "TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8"                      : { "xs" : 0.2432 },
+  "TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8"         : { "xs" : 0.2001 },
+  "TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8"              : { "xs" : 0.2149 }   
+
 
 }

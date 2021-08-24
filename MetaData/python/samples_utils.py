@@ -617,7 +617,14 @@ class SamplesManager(object):
                 catalog[ dsetName ]["parent_n_units"] = self.getParentInfo(catalog[ dsetName ]["dset_type"], dsetName)
         else:
             #---First import
+            #numberOfEvents = das_query("dataset=%s instance=%s " % (dsetName,self.dbs_instance_))['data'][2]['dataset'][0]['nevents']
+            print("dsetName:",dsetName)
+            dsetName = dsetName.replace("u'", "'")
+            print("dbs_instance:",self.dbs_instance_)
+            print("das query:",das_query("dataset=%s instance=%s " % (dsetName,self.dbs_instance_)))
+            
             numberOfEvents = das_query("dataset=%s instance=%s " % (dsetName,self.dbs_instance_))['data'][2]['dataset'][0]['nevents']
+            #numberOfEvents = das_query("dataset=%s instance=phys03 " % (dsetName))['data'][2]['dataset'][0]['nevents']
             dset_type = das_query("datatype dataset=%s instance=prod/phys03" % dsetName)
             dset_type = dset_type['data'][0]['datatype'][0]['data_type'] if 'data' in dset_type else None
             parent_info = self.getParentInfo(dset_type, dsetName) if dset_type else None
