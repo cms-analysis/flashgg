@@ -4403,6 +4403,1311 @@
         "parent_n_units": 5216439, 
         "vetted": true
     }, 
+    "/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/lata-Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2-59721402629b4b4fae2a29dd9bb0dfe1/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 4000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 4000, 
+                "totEvents": 4000, 
+                "weights": 4000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 24000, 
+                "totEvents": 24000, 
+                "weights": 24000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 4000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 4000, 
+                "totEvents": 4000, 
+                "weights": 4000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 6000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 6000, 
+                "totEvents": 6000, 
+                "weights": 6000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1100_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190356/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }
+        ], 
+        "parent_n_units": 400000, 
+        "vetted": true
+    }, 
+    "/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/lata-Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2-59721402629b4b4fae2a29dd9bb0dfe1/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 12000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 12000, 
+                "totEvents": 12000, 
+                "weights": 12000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 6000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 6000, 
+                "totEvents": 6000, 
+                "weights": 6000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 6000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 6000, 
+                "totEvents": 6000, 
+                "weights": 6000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 11000, 
+                "totEvents": 11000, 
+                "weights": 11000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 20000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 20000, 
+                "totEvents": 20000, 
+                "weights": 20000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 24000, 
+                "totEvents": 24000, 
+                "weights": 24000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 9000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 9000, 
+                "totEvents": 9000, 
+                "weights": 9000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1200_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_190810/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }
+        ], 
+        "parent_n_units": 400000, 
+        "vetted": true
+    }, 
+    "/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/lata-Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2-59721402629b4b4fae2a29dd9bb0dfe1/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 10000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 10000, 
+                "totEvents": 10000, 
+                "weights": 10000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 10000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 10000, 
+                "totEvents": 10000, 
+                "weights": 10000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 6000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 6000, 
+                "totEvents": 6000, 
+                "weights": 6000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 22000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 22000, 
+                "totEvents": 22000, 
+                "weights": 22000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1400_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_191618/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }
+        ], 
+        "parent_n_units": 400000, 
+        "vetted": true
+    }, 
+    "/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/lata-Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2-59721402629b4b4fae2a29dd9bb0dfe1/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 13000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 13000, 
+                "totEvents": 13000, 
+                "weights": 13000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 4000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 4000, 
+                "totEvents": 4000, 
+                "weights": 4000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 23000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 23000, 
+                "totEvents": 23000, 
+                "weights": 23000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-1700_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_192807/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }
+        ], 
+        "parent_n_units": 400000, 
+        "vetted": true
+    }, 
+    "/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/lata-Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2-59721402629b4b4fae2a29dd9bb0dfe1/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 6000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 6000, 
+                "totEvents": 6000, 
+                "weights": 6000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 4000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 4000, 
+                "totEvents": 4000, 
+                "weights": 4000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 4000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 4000, 
+                "totEvents": 4000, 
+                "weights": 4000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 4000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 4000, 
+                "totEvents": 4000, 
+                "weights": 4000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 4000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 4000, 
+                "totEvents": 4000, 
+                "weights": 4000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 22000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 22000, 
+                "totEvents": 22000, 
+                "weights": 22000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-650_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_194326/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }
+        ], 
+        "parent_n_units": 400000, 
+        "vetted": true
+    }, 
+    "/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/lata-Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2-59721402629b4b4fae2a29dd9bb0dfe1/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 4000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 4000, 
+                "totEvents": 4000, 
+                "weights": 4000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 8000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 8000, 
+                "totEvents": 8000, 
+                "weights": 8000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 20000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 20000, 
+                "totEvents": 20000, 
+                "weights": 20000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 12000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 12000, 
+                "totEvents": 12000, 
+                "weights": 12000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-800_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195414/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }
+        ], 
+        "parent_n_units": 400000, 
+        "vetted": true
+    }, 
+    "/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/lata-Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2-59721402629b4b4fae2a29dd9bb0dfe1/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 2000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 4000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 4000, 
+                "totEvents": 4000, 
+                "weights": 4000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 12000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 12000, 
+                "totEvents": 12000, 
+                "weights": 12000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 25000.0
+            }, 
+            {
+                "bad": false, 
+                "events": 22000, 
+                "name": "/store/user/lata/Era2017_legacy_v1/v1_p1/TprimeBToTH_Hgg_M-900_LH_TuneCP5_PSweights_13TeV-madgraph_pythia8/Era2017_legacy_v1-v1_p1-v0-RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2/210826_195810/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 22000, 
+                "totEvents": 22000, 
+                "weights": 22000.0
+            }
+        ], 
+        "parent_n_units": 400000, 
+        "vetted": true
+    }, 
     "/VHToGG_M124_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/lata-Era2017_legacy_v1-v1_p2-v0-RunIISummer19UL17MiniAODv2-106X_mc2017_realistic_v9-v1-2eeed5aee679ec65a15a221b3d4d5a07/USER": {
         "dset_type": "mc", 
         "files": [
@@ -6663,7 +7968,7 @@
         ], 
         "parent_n_units": 280656, 
         "vetted": true
-    }, 
+    },
     "/ttHJetToGG_M130_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/alesauva-UL2017_5-10_6_4-v0-RunIISummer19UL17MiniAOD-106X_mc2017_realistic_v6-v1-40c8f5e3297812fbf727853bb545f6df/USER": {
         "dset_type": "mc", 
         "files": [
