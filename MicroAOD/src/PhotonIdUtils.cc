@@ -292,7 +292,7 @@ float PhotonIdUtils::computeMVAWrtVtx( /*edm::Ptr<flashgg::Photon>& photon,*/
     phoIdMva_ScEta_           = photon.superCluster()->eta();
     phoIdMva_rho_             = rho; // we don't want to add the event-based rho as flashgg::photon member
     phoIdMva_ESEffSigmaRR_    = photon.esEffSigmaRR();
-    phoIdMva_esEnovSCRawEn_   = photon.superCluster()->preshowerEnergy()/photon.superCluster()->rawEnergy();
+    phoIdMva_esEnovSCRawEn_   = photon.hasUserFloat("esEnergyOverSCRawEnergy") ? photon.userFloat("esEnergyOverSCRawEnergy") : photon.superCluster()->preshowerEnergy()/photon.superCluster()->rawEnergy();
         
     if( photon.isEB() )      { phoIdMva = phoIdMva_EB_; }
     else if( photon.isEE() ) { phoIdMva = phoIdMva_EE_; }
