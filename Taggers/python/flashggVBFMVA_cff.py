@@ -30,7 +30,8 @@ flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
                                rmsforwardCut = cms.double(3.0), # default was 0.03 , running on loose pujid
                                MinDijetMinv  = cms.double(0.0),
                                DrJetPhoton   = cms.double(0.4), # Keep the same value for now, should be set later to 0.4
-                               vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/dijet-2017-10Jul.xml")
+                               vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/dijet-2017-10Jul.xml"),
+                               vbfDNNpbfile = cms.FileInPath("flashgg/Taggers/data/vbfdnn_smAndCPodd_2021-08-31.pb")
 )
 
 # Legacy DiPhoDiJet MVA
