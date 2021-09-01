@@ -21,7 +21,8 @@
 <class name="flashgg::ZPlusJetTag"/>
 <class name="std::vector<flashgg::ZPlusJetTag>"/>
 <class name="edm::Wrapper<std::vector<flashgg::ZPlusJetTag> >"/>
-<class name="flashgg::VBFMVAResult" ClassVersion="14">
+<class name="flashgg::VBFMVAResult" ClassVersion="15">
+ <version ClassVersion="15" checksum="3140594911"/>
  <version ClassVersion="14" checksum="1268265449"/>
   <version ClassVersion="13" checksum="3046935215"/>
 </class>

@@ -462,7 +462,7 @@ namespace flashgg {
                 mvares.vbfMvaResult_value = VbfMva_->EvaluateMVA( _MVAMethod.c_str() );
                 //mvares.vbfMvaResult_value = VbfMva_->GetProba( _MVAMethod.c_str() );
             }
-            else if (_MVAMethod == "Multi") {
+            else if (_MVAMethod == "Multi" || _MVAMethod == "DNNMulti") {
                 mvares.vbfMvaResult_prob_bkg = VbfMva_->EvaluateMulticlass( 0, _MVAMethod.c_str() );
                 mvares.vbfMvaResult_prob_ggH = VbfMva_->EvaluateMulticlass( 1, _MVAMethod.c_str() );
                 mvares.vbfMvaResult_prob_VBF = VbfMva_->EvaluateMulticlass( 2, _MVAMethod.c_str() );
@@ -482,12 +482,13 @@ namespace flashgg {
                 
                 std::map<std::string, double> res = (*tfTool_)(mvaInputs);
 
-                mvares.vbfMvaResult_prob_bkg = res["other"];
-                mvares.vbfMvaResult_prob_ggH = res["ggH"];
-                mvares.vbfMvaResult_prob_VBF = res["VBF"];
+                mvares.vbfDnnResult_prob_bkg = res["other"];
+                mvares.vbfDnnResult_prob_ggH = res["ggH"];
+                mvares.vbfDnnResult_prob_VBF = res["VBF"];
 
+                std::cout << "\t==> DNN Multiclass, n. classes = " << dnn_classes_.size() << std::endl;
                 for (unsigned i = 0; i < dnn_classes_.size(); i++) {
-                    std::cout << dnn_classes_[i] << "  " << res[dnn_classes_[i]] << std::endl;
+                    std::cout << "class = " << dnn_classes_[i] << " ;\t  result = " << res[dnn_classes_[i]] << std::endl;
                 }
             }
             

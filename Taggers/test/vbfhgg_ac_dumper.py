@@ -15,7 +15,7 @@ process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 process.maxEvents   = cms.untracked.PSet( input  = cms.untracked.int32( 10 ) )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1000 )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32( 1 )
 
 systlabels    = [""]
 phosystlabels = []
@@ -187,7 +187,7 @@ process.source = cms.Source ("PoolSource",
                              fileNames = cms.untracked.vstring(
 '/store/user/spigazzi/flashgg/Era2016_RR-17Jul2018_v2/legacyRun2FullV1/GluGluHToGG_M-125_13TeV_powheg_pythia8/Era2016_RR-17Jul2018_v2-legacyRun2FullV1-v0-RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v1/191111_133402/0000/myMicroAODOutputFile_10.root'
                              )
-)
+                         )
 
 process.TFileService = cms.Service("TFileService",
                                    fileName = cms.string("test.root"))
@@ -215,6 +215,9 @@ process.flashggVBFTag.RequireVBFPreselection = cms.bool(False)
 process.flashggVBFMVA.rmsforwardCut = cms.double(customize.forwardJetRMSCut)
 process.flashggVBFMVA.pujidWpPtBin1 = cms.vdouble(mva_wp[customize.pujidWP][0])
 process.flashggVBFMVA.pujidWpPtBin2 = cms.vdouble(mva_wp[customize.pujidWP][1])
+# MVA method
+process.flashggVBFMVA.MVAMethod = cms.string("DNNMulti")
+process.flashggVBFMVA.vbfDNNpbfile = cms.FileInPath("flashgg/Taggers/data/vbfdnn_smAndCPodd_2021-08-31.pb")
 # Print to user
 print '------------------------------------------------------------'
 print ' PUJID Working point    ::' , customize.pujidWP
@@ -292,6 +295,9 @@ VBF_mva_probs = [
     "vbfMvaResult_prob_bkg := VBFMVA.vbfMvaResult_prob_bkg()",
     "vbfMvaResult_prob_ggH := VBFMVA.vbfMvaResult_prob_ggH()",
     "vbfMvaResult_prob_VBF := VBFMVA.vbfMvaResult_prob_VBF()",
+    "vbfDnnResult_prob_bkg := VBFMVA.vbfDnnResult_prob_bkg()",
+    "vbfDnnResult_prob_ggH := VBFMVA.vbfDnnResult_prob_ggH()",
+    "vbfDnnResult_prob_VBF := VBFMVA.vbfDnnResult_prob_VBF()",
 ]
 
 vh_mva_inputs = [
