@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os
 import pickle
 import shutil
@@ -101,6 +102,7 @@ def haddChunks(idir, removeDestDir, cleanUp=False, maxSize=None):
             compdir = file.rstrip(".root")
             try:
                 prefix,num = compdir.rsplit('_',1)
+                if not num.isdigit(): continue
             except ValueError:
                 # ok, not a chunk
                 continue
