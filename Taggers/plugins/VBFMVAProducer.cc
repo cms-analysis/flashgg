@@ -155,7 +155,7 @@ namespace flashgg {
             
             VbfMva_->BookMVA( _MVAMethod.c_str() , vbfMVAweightfile_.fullPath() );
         }
-        else if (_MVAMethod == "Multi"){
+        else if (_MVAMethod == "Multi" || _MVAMethod == "DNNMulti"){
             VbfMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
             VbfMva_->AddVariable( "dipho_lead_ptoM"        , &leadPho_PToM_        );
             VbfMva_->AddVariable( "dipho_sublead_ptoM"     , &sublPho_PToM_        );
@@ -168,7 +168,7 @@ namespace flashgg {
             VbfMva_->AddVariable( "dijet_minDRJetPho"      , &dijet_minDRJetPho_   );
             VbfMva_->AddVariable( "dijet_dipho_dphi_trunc" , &dijet_dphi_trunc_    );
             
-            VbfMva_->BookMVA( _MVAMethod.c_str() , vbfMVAweightfile_.fullPath() );
+            VbfMva_->BookMVA( "Multi" , vbfMVAweightfile_.fullPath() );
         }
         else if (_MVAMethod == "DNNMulti"){
             dnn_variables_.push_back( "dipho_lead_ptoM"        );
@@ -463,9 +463,9 @@ namespace flashgg {
                 //mvares.vbfMvaResult_value = VbfMva_->GetProba( _MVAMethod.c_str() );
             }
             else if (_MVAMethod == "Multi" || _MVAMethod == "DNNMulti") {
-                mvares.vbfMvaResult_prob_bkg = VbfMva_->EvaluateMulticlass( 0, _MVAMethod.c_str() );
-                mvares.vbfMvaResult_prob_ggH = VbfMva_->EvaluateMulticlass( 1, _MVAMethod.c_str() );
-                mvares.vbfMvaResult_prob_VBF = VbfMva_->EvaluateMulticlass( 2, _MVAMethod.c_str() );
+                mvares.vbfMvaResult_prob_bkg = VbfMva_->EvaluateMulticlass( 0, "Multi" );
+                mvares.vbfMvaResult_prob_ggH = VbfMva_->EvaluateMulticlass( 1, "Multi" );
+                mvares.vbfMvaResult_prob_VBF = VbfMva_->EvaluateMulticlass( 2, "Multi" );
             }
             else if (_MVAMethod == "DNNMulti") {
                 std::map<std::string, double> mvaInputs;
