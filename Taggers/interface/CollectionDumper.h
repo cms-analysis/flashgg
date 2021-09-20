@@ -192,7 +192,9 @@ namespace flashgg {
         // dumpNNLOPSweight_( cfg.getUntrackedParameter<bool>( "dumpNNLOPSweight", false ) ),
         globalVarsDumper_(0)
     {
+        std::cout << "EDM0 dump global variables = " << dumpGlobalVariables_ << std::endl;
         if( dumpGlobalVariables_ ) {
+            std::cout << "EDM1 dump global variables = " << dumpGlobalVariables_ << std::endl;
             globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ) );
         }
         _init(cfg, fs);
@@ -223,7 +225,9 @@ namespace flashgg {
         stxsPtHToken_( cc.consumes<float>( stxsPtHTag_  ) ),
         globalVarsDumper_(0)
     {
+        std::cout << "EDM2 dump global variables = " << dumpGlobalVariables_ << std::endl;
         if( dumpGlobalVariables_ ) {
+            std::cout << "EDM3 dump global variables = " << dumpGlobalVariables_ << std::endl;
             globalVarsDumper_ = new GlobalVariablesDumper( cfg.getParameter<edm::ParameterSet>( "globalVariables" ), std::forward<edm::ConsumesCollector>(cc) );
         }
         _init(cfg, fs);
@@ -630,7 +634,7 @@ namespace flashgg {
         }
         const auto & collection = *collectionH;
         
-        if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
+        if( globalVarsDumper_ ) { std::cout << "EDMX now filling " << std::endl; globalVarsDumper_->fill( event ); }
         
         weight_ = eventWeight( event );
         genweight_ = eventGenWeight( event );

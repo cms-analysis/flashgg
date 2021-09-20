@@ -46,6 +46,7 @@
 #include "flashgg/DataFormats/interface/VHTagTruth.h" //mplaner
 #include "flashgg/DataFormats/interface/WeightedObject.h"
 #include "flashgg/DataFormats/interface/PDFWeightObject.h"
+#include "flashgg/DataFormats/interface/LHEInfoObject.h"
 #include "flashgg/DataFormats/interface/ZPlusJetTag.h"
 #include "flashgg/DataFormats/interface/TagCandidate.h"
 #include "flashgg/DataFormats/interface/TagAndProbeCandidate.h" //spigazzi
@@ -64,6 +65,11 @@ namespace  {
         std::vector<flashgg::PDFWeightObject>                             vec_fgg_pobj;
         edm::Wrapper<std::vector<flashgg::PDFWeightObject> >               wrp_vec_fgg_pobj;
 
+        flashgg::LHEInfoObject                                          fgg_lhe;
+        edm::Ptr<flashgg::LHEInfoObject>                                ptr_fgg_lhe;
+        edm::Wrapper<flashgg::LHEInfoObject>                            wrp_fgg_lhe;
+        std::vector<flashgg::LHEInfoObject>                             vec_fgg_lhe;
+        edm::Wrapper<std::vector<flashgg::LHEInfoObject> >              wrp_vec_fgg_lhe;
 
         flashgg::Photon                                                   fgg_pho;
         edm::Ptr<flashgg::Photon>                                     ptr_fgg_pho;

@@ -41,6 +41,10 @@ namespace flashgg {
                 extraFloatTags_.push_back( extraFloats.getParameter<InputTag>(name) );
             }
         }
+        if (cfg.exists( "dumpLHEInfo" ) ) {
+            std::cout << "Parameter dumpLHEInfo exists..." << std::endl;
+            lheInfoTag_ = cfg.getParameter<InputTag>( "lheInfo");
+        }
         _init(cfg);
     }
 
@@ -79,6 +83,10 @@ namespace flashgg {
                 extraVectorFloatTokens_.push_back( cc.consumes<std::vector<float>>(extrafloatPSet.getParameter<InputTag>("src")) );
             }
         }
+        if (cfg.exists( "dumpLHEInfo" ) ) {
+            lheInfoTag_   = cfg.getParameter<InputTag>( "lheInfo");
+            lheInfoToken_ = cc.consumes<LHEInfoObject>( lheInfoTag_ );
+        }
         _init(cfg);
     }
 
@@ -101,6 +109,10 @@ namespace flashgg {
             //            const auto extraFloats = cfg.getParameter<ParameterSet>( "extraFloats" );
             //            extraFloatNames_ = extraFloats.getParameterNamesForType<InputTag>();
             extraFloatVariables_.resize(extraFloatNames_.size(),0.);
+        }
+        
+        if( cfg.exists( "dumpLHEInfo" ) ) {
+            dumpLHEInfo_ = cfg.getParameter<bool>( "dumpLHEInfo" );
         }
     }
 
@@ -132,6 +144,15 @@ namespace flashgg {
         //        for( size_t iextra = 0; iextra<extraFloatNames_.size(); ++iextra ) {
         //            tree->Branch( extraFloatNames_[iextra].c_str(), &extraFloatVariables_[iextra] );
         //        }
+
+        if ( dumpLHEInfo_ ) {
+            bookLHEInfoVariables( tree );
+        }
+    }
+
+    void GlobalVariablesDumper::bookLHEInfoVariables( TTree *tree ) {
+        tree->Branch( "lhe_alphaS", &cache_.lhe_alphaS);
+        tree->Branch( "lhe_njets",  &cache_.lhe_njets, "lhe_njets/I");
     }
 
 
@@ -255,6 +276,15 @@ namespace flashgg {
                 }
             }
         }
+
+        if(dumpLHEInfo_) {
+            Handle<LHEInfoObject> lheInfo;
+            fullEvent->getByToken( lheInfoToken_, lheInfo );
+            cache_.lhe_alphaS = lheInfo->alphaS();
+            cache_.lhe_njets = lheInfo->nJets();
+            std::cout << "Filling the cache with alphaS  = " << lheInfo->alphaS() << std::endl;
+        }
+
     }
 
 

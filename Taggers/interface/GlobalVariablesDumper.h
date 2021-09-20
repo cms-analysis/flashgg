@@ -7,6 +7,7 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
 #include "flashgg/MicroAOD/interface/GlobalVariablesComputer.h"
+#include "flashgg/DataFormats/interface/LHEInfoObject.h"
 
 class TTree;
 
@@ -35,20 +36,25 @@ namespace flashgg {
         void bookNNLOPSweight(bool x);
         void setNNLOPSweight(double NNLOPSweight);
 
+        void bookLHEInfoVariables(TTree *target);
+
 
     private:
 
         void _init( const edm::ParameterSet &cfg );
 
         edm::InputTag triggerTag_;
+        edm::InputTag lheInfoTag_;
         edm::EDGetTokenT<edm::TriggerResults> triggerToken_;
         std::vector<std::pair<std::string, bool>> bits_;
-        
+        edm::EDGetTokenT<flashgg::LHEInfoObject> lheInfoToken_;
+
         bool dumpLumiFactor_;
         double lumiFactor_;
         int processIndex_;
         // bool dumpNNLOPSweight_;
         // double NNLOPSweight_;
+        bool dumpLHEInfo_;
 
         std::vector<edm::EDGetTokenT<float>> extraFloatTokens_;
         std::vector<edm::EDGetTokenT<std::vector<float>>> extraVectorFloatTokens_;
@@ -63,7 +69,9 @@ namespace flashgg {
         std::map<std::string, double> extraFloatVmaxs_;
         std::map<std::string, std::vector<double > > extraFloatBinnings_;
         std::vector<float> extraFloatVariables_;
-        
+       
+        flashgg::LHEInfoObject lheInfo_;
+ 
     };
 
 }
