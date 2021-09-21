@@ -11,7 +11,6 @@
 
 #include "flashgg/Taggers/interface/SimpleTableOutputBranches.h"
 #include "flashgg/MicroAOD/interface/GlobalVariablesComputer.h"
-#include "flashgg/DataFormats/interface/LHEInfoObject.h"
 
 class TTree;
 
@@ -40,21 +39,18 @@ namespace flashgg {
         void bookNNLOPSweight(bool x);
         void setNNLOPSweight(double NNLOPSweight);
 
-        void bookLHEInfoVariables(TTree *target);
-
-
     private:
 
         void _init( const edm::ParameterSet &cfg );
 
         edm::InputTag triggerTag_;
-        edm::InputTag lheInfoTag_;
         edm::InputTag lheTableTag_;
+        edm::InputTag lhePartTableTag_;
 
         edm::EDGetTokenT<edm::TriggerResults> triggerToken_;
         std::vector<std::pair<std::string, bool>> bits_;
-        edm::EDGetTokenT<flashgg::LHEInfoObject> lheInfoToken_;
         edm::EDGetTokenT<nanoaod::FlatTable> lheTableToken_;
+        edm::EDGetTokenT<nanoaod::FlatTable> lhePartTableToken_;
 
         bool dumpLumiFactor_;
         double lumiFactor_;
@@ -77,7 +73,6 @@ namespace flashgg {
         std::map<std::string, std::vector<double > > extraFloatBinnings_;
         std::vector<float> extraFloatVariables_;
        
-        flashgg::LHEInfoObject lheInfo_;
         std::vector<SimpleTableOutputBranches> m_tables;
         TTree *m_tree;
 

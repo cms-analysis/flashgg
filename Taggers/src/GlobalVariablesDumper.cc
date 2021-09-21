@@ -43,8 +43,8 @@ namespace flashgg {
         }
         if (cfg.exists( "dumpLHEInfo" ) ) {
             std::cout << "Parameter dumpLHEInfo exists..." << std::endl;
-            lheInfoTag_ = cfg.getParameter<InputTag>( "lheInfo");
             lheTableTag_  = cfg.getParameter<InputTag>( "lheTable");
+            lhePartTableTag_  = cfg.getParameter<InputTag>( "lhePartTable");
         }
         _init(cfg);
     }
@@ -85,13 +85,13 @@ namespace flashgg {
             }
         }
         if (cfg.exists( "dumpLHEInfo" ) ) {
-            lheInfoTag_   = cfg.getParameter<InputTag>( "lheInfo");
-            lheInfoToken_ = cc.consumes<LHEInfoObject>( lheInfoTag_ );
-
             lheTableTag_  = cfg.getParameter<InputTag>( "lheTable");
             lheTableToken_ = cc.consumes<nanoaod::FlatTable>( lheTableTag_ );
+            lhePartTableTag_  = cfg.getParameter<InputTag>( "lhePartTable");
+            lhePartTableToken_ = cc.consumes<nanoaod::FlatTable>( lhePartTableTag_ );
             m_tables.clear();
             m_tables.emplace_back("nanoaod::FlatTable", lheTableToken_);
+            m_tables.emplace_back("nanoaod::FlatTable", lhePartTableToken_);
         }
         _init(cfg);
     }
@@ -152,16 +152,9 @@ namespace flashgg {
         //        }
 
         if ( dumpLHEInfo_ ) {
-            bookLHEInfoVariables( tree );
             m_tree = tree;
         }
     }
-
-    void GlobalVariablesDumper::bookLHEInfoVariables( TTree *tree ) {
-        tree->Branch( "lhe_alphaS", &cache_.lhe_alphaS);
-        tree->Branch( "lhe_njets",  &cache_.lhe_njets, "lhe_njets/I");
-    }
-
 
     std::vector<std::string> GlobalVariablesDumper::getExtraFloatNames(){
         return extraFloatNames_;
@@ -285,11 +278,6 @@ namespace flashgg {
         }
 
         if(dumpLHEInfo_) {
-            Handle<LHEInfoObject> lheInfo;
-            fullEvent->getByToken( lheInfoToken_, lheInfo );
-            cache_.lhe_alphaS = lheInfo->alphaS();
-            cache_.lhe_njets = lheInfo->nJets();
-            std::cout << "Filling the cache with alphaS  = " << lheInfo->alphaS() << std::endl;
             for (auto& t : m_tables)
                 t.fill(*fullEvent, *m_tree, false);
         }

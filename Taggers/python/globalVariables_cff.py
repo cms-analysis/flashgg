@@ -11,6 +11,7 @@ globalVariables = cms.PSet(
     puInfo=cms.InputTag("slimmedAddPileupInfo"),
     extraFloats=cms.PSet(),
     dumpLHEInfo=cms.bool(False),
-    lheInfo=cms.InputTag("flashggLHEInfos")
+    lheTable=cms.InputTag("lheInfoTable:LHE"),
+    lhePartTable=cms.InputTag("lheInfoTable:LHEPart"),
     )
 

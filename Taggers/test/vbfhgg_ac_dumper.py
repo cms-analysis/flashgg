@@ -201,7 +201,6 @@ process.vbfTagDumper.dumpHistos    = True
 process.vbfTagDumper.dumpWorkspace = False
 process.vbfTagDumper.src = "flashggSystTagMerger"
 process.vbfTagDumper.globalVariables.dumpLHEInfo = True 
-process.vbfTagDumper.globalVariables.lheInfo = cms.InputTag("flashggLHEInfos")
 
 # OPTIONS FOR VBF DUMPER
 # Use JetID
@@ -219,7 +218,7 @@ process.flashggVBFMVA.pujidWpPtBin1 = cms.vdouble(mva_wp[customize.pujidWP][0])
 process.flashggVBFMVA.pujidWpPtBin2 = cms.vdouble(mva_wp[customize.pujidWP][1])
 # MVA method
 process.flashggVBFMVA.MVAMethod = cms.string("DNNMulti")
-process.flashggVBFMVA.vbfDNNpbfile = cms.FileInPath("flashgg/Taggers/data/vbfdnn_3classes_smAndCPoddAndL1_2021-09-08.pb")
+process.flashggVBFMVA.vbfDNNpbfile = cms.FileInPath("flashgg/Taggers/data/vbfdnn_3classes_smAndCPoddAndL1_2021-09-21.pb")
 # Print to user
 print '------------------------------------------------------------'
 print ' PUJID Working point    ::' , customize.pujidWP
@@ -401,21 +400,19 @@ if (customize.processId.count("qcd") or customize.processId.count("gjet")) and c
         raise Exception,"Mis-configuration of python for prompt-fake filter"
 
 # Save the LHE information to make a-posteriori re-weighting
-process.lheInfos = cms.Sequence()
+process.lheInfosSeq = cms.Sequence()
 if customize.processId != "Data":
     if is_signal: 
         print '-------------------------------------------------------------'
         print ' Running on signal, so adding the sequence to store LHE info '
         customize.options.useParentDataset = True
-        process.load("flashgg/Taggers/flashggLHEInfoProducer_cfi")
-        process.lheInfos += process.flashggLHEInfos
-        from PhysicsTools.NanoAOD.nano_cff import lheInfoTable
-        process.lheInfos += lheInfoTable
+        process.load("PhysicsTools.NanoAOD.nano_cff")
+        process.lheInfosSeq += process.lheInfoTable
         print '-------------------------------------------------------------'
 
 process.p = cms.Path(process.dataRequirements
                      * process.genFilter
-                     * process.lheInfos
+                     * process.lheInfosSeq
                      #* process.flashggUpdatedIdMVADiPhotons #replaced by version below now...
                      * process.flashggDifferentialPhoIdInputsCorrection
                      * process.flashggDiPhotonSystematics
