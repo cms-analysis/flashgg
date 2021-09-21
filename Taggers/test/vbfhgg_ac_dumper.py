@@ -409,6 +409,8 @@ if customize.processId != "Data":
         customize.options.useParentDataset = True
         process.load("flashgg/Taggers/flashggLHEInfoProducer_cfi")
         process.lheInfos += process.flashggLHEInfos
+        from PhysicsTools.NanoAOD.nano_cff import lheInfoTable
+        process.lheInfos += lheInfoTable
         print '-------------------------------------------------------------'
 
 process.p = cms.Path(process.dataRequirements
@@ -420,9 +422,9 @@ process.p = cms.Path(process.dataRequirements
                      * process.flashggMetSystematics
                      * process.flashggMuonSystematics
                      * process.flashggElectronSystematics
-                     # * (process.flashggUnpackedJets
-                     #    * process.ak4PFCHSL1FastL2L3CorrectorChain
-                     #    * process.jetSystematicsSequence)
+                     * (process.flashggUnpackedJets
+                        * process.ak4PFCHSL1FastL2L3CorrectorChain
+                        * process.jetSystematicsSequence)
                       * (process.flashggTagSequence
                          + process.systematicsTagSequences)
                       * process.flashggSystTagMerger
