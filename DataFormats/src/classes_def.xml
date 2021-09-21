@@ -13,13 +13,6 @@
 <class name="std::vector<flashgg::PDFWeightObject>"/>
 <class name="edm::Wrapper<std::vector<flashgg::PDFWeightObject> >"/>
 
-<class name="flashgg::LHEInfoObject"/>
-<class name="edm::Wrapper<flashgg::LHEInfoObject>"/>
-<class name="edm::Ptr<flashgg::LHEInfoObject>"/>
-<class name="std::vector<flashgg::LHEInfoObject>"/>
-<class name="edm::Wrapper<std::vector<flashgg::LHEInfoObject> >"/>
-<class name="std::vector<edm::Ptr<reco::GenParticle> >"/>
-
 <class name="flashgg::DiPhotonMVAResult" ClassVersion="12">
  <version ClassVersion="12" checksum="3655353171"/>
   <version ClassVersion="11" checksum="1225448115"/>
