@@ -44,6 +44,7 @@ namespace flashgg {
         if (cfg.exists( "dumpLHEInfo" ) ) {
             std::cout << "Parameter dumpLHEInfo exists..." << std::endl;
             lheInfoTag_ = cfg.getParameter<InputTag>( "lheInfo");
+            lheTableTag_  = cfg.getParameter<InputTag>( "lheTable");
         }
         _init(cfg);
     }
@@ -86,6 +87,11 @@ namespace flashgg {
         if (cfg.exists( "dumpLHEInfo" ) ) {
             lheInfoTag_   = cfg.getParameter<InputTag>( "lheInfo");
             lheInfoToken_ = cc.consumes<LHEInfoObject>( lheInfoTag_ );
+
+            lheTableTag_  = cfg.getParameter<InputTag>( "lheTable");
+            lheTableToken_ = cc.consumes<nanoaod::FlatTable>( lheTableTag_ );
+            m_tables.clear();
+            m_tables.emplace_back("nanoaod::FlatTable", lheTableToken_);
         }
         _init(cfg);
     }
@@ -147,6 +153,7 @@ namespace flashgg {
 
         if ( dumpLHEInfo_ ) {
             bookLHEInfoVariables( tree );
+            m_tree = tree;
         }
     }
 
@@ -283,6 +290,8 @@ namespace flashgg {
             cache_.lhe_alphaS = lheInfo->alphaS();
             cache_.lhe_njets = lheInfo->nJets();
             std::cout << "Filling the cache with alphaS  = " << lheInfo->alphaS() << std::endl;
+            for (auto& t : m_tables)
+                t.fill(*fullEvent, *m_tree, false);
         }
 
     }

@@ -32,7 +32,6 @@ public:
     
     edm::Handle<LHEEventProduct> lheInfo;
     for (const auto& lheTag : lheTag_) {
-      std::cout << "The LHE input tag is " << lheTag_ << std::endl;
       iEvent.getByToken(lheTag, lheInfo);
       if (lheInfo.isValid()) {
         break;

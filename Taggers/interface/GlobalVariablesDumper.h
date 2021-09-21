@@ -1,11 +1,15 @@
 #ifndef flashgg_GlobalVariablesDumper_h
 #define flashgg_GlobalVariablesDumper_h
 
+#include "TTree.h"
+
 #include "FWCore/Common/interface/EventBase.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "DataFormats/NanoAOD/interface/FlatTable.h"
 
+#include "flashgg/Taggers/interface/SimpleTableOutputBranches.h"
 #include "flashgg/MicroAOD/interface/GlobalVariablesComputer.h"
 #include "flashgg/DataFormats/interface/LHEInfoObject.h"
 
@@ -45,9 +49,12 @@ namespace flashgg {
 
         edm::InputTag triggerTag_;
         edm::InputTag lheInfoTag_;
+        edm::InputTag lheTableTag_;
+
         edm::EDGetTokenT<edm::TriggerResults> triggerToken_;
         std::vector<std::pair<std::string, bool>> bits_;
         edm::EDGetTokenT<flashgg::LHEInfoObject> lheInfoToken_;
+        edm::EDGetTokenT<nanoaod::FlatTable> lheTableToken_;
 
         bool dumpLumiFactor_;
         double lumiFactor_;
@@ -71,7 +78,9 @@ namespace flashgg {
         std::vector<float> extraFloatVariables_;
        
         flashgg::LHEInfoObject lheInfo_;
- 
+        std::vector<SimpleTableOutputBranches> m_tables;
+        TTree *m_tree;
+
     };
 
 }

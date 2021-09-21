@@ -634,7 +634,7 @@ namespace flashgg {
         }
         const auto & collection = *collectionH;
         
-        if( globalVarsDumper_ ) { std::cout << "EDMX now filling " << std::endl; globalVarsDumper_->fill( event ); }
+        if( globalVarsDumper_ ) { globalVarsDumper_->fill( event ); }
         
         weight_ = eventWeight( event );
         genweight_ = eventGenWeight( event );
