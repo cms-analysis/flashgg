@@ -78,7 +78,15 @@ namespace flashgg {
         float dijet_leady_    ;
         float dijet_subleady_ ;
         float dijet_dipho_pt_ ;
-        
+
+        float dipho_cosphi_;
+        float dipho_leadEta_;
+        float dipho_subleadEta_;
+        float dipho_sumpt_;
+        float dipho_leadPt_;
+        float dipho_subleadPt_;
+        float dipho_leadPhi_;
+        float dipho_subleadPhi_;
         float dipho_PToM_  ;
         float leadPho_PToM_;
         float sublPho_PToM_;
@@ -171,21 +179,25 @@ namespace flashgg {
             VbfMva_->BookMVA( "Multi" , vbfMVAweightfile_.fullPath() );
         }
         if (_MVAMethod == "DNNMulti"){
-
-            dnn_variables_.push_back( "dijet_LeadJPt"          );
-            dnn_variables_.push_back( "abs_dijet_leadEta"      );
-            dnn_variables_.push_back( "dijet_SubJPt"           );
-            dnn_variables_.push_back( "abs_dijet_subleadEta"   );
-            dnn_variables_.push_back( "dipho_lead_ptoM"        );
-            dnn_variables_.push_back( "dipho_sublead_ptoM"     );
-            dnn_variables_.push_back( "dijet_Mjj"              );
-            dnn_variables_.push_back( "dijet_centrality"       );
-            dnn_variables_.push_back( "dijet_dipho_dphi_trunc" );
-            dnn_variables_.push_back( "dijet_abs_dEta"         );
-            dnn_variables_.push_back( "dijet_dphi"             );
-            dnn_variables_.push_back( "dijet_minDRJetPho"      );
-            dnn_variables_.push_back( "dipho_PToM"             );
-
+            dnn_variables_.push_back( "leadJPt" );
+            dnn_variables_.push_back( "subJPt"  );
+            dnn_variables_.push_back( "leadJEta" );
+            dnn_variables_.push_back( "subJEta"  );
+            dnn_variables_.push_back( "leadGPtOverM"); 
+            dnn_variables_.push_back( "subGPtOverM"); 
+            dnn_variables_.push_back( "mJJ" );
+            dnn_variables_.push_back( "dijet_dipho_dphi" );
+            dnn_variables_.push_back( "diphoCosDphi" );
+            dnn_variables_.push_back( "dipho_PToM" );
+            dnn_variables_.push_back( "dipho_leadEta" );
+            dnn_variables_.push_back( "dipho_subleadEta" );
+            dnn_variables_.push_back( "dijet_dphi" );
+            dnn_variables_.push_back( "dijet_abs_dEta" );
+            dnn_variables_.push_back( "dipho_sumpt" );
+            dnn_variables_.push_back( "dipho_leadPt" );
+            dnn_variables_.push_back( "dipho_subleadPt" );
+            dnn_variables_.push_back( "dipho_leadPhi" );
+            dnn_variables_.push_back( "dipho_subleadPhi");
 
             dnn_classes_.push_back( "vbfH"  );
             dnn_classes_.push_back( "ggH"   );
@@ -225,6 +237,7 @@ namespace flashgg {
             dijet_Zep_        = -999.;
             dijet_dphi_trunc_ = -999.;
             dijet_dipho_dphi_ = -999.;
+            dipho_cosphi_     = -999.;
             dijet_dphi_       = -999.;
             dijet_Mjj_        = -999.;
             dijet_dy_         = -999.;
@@ -236,6 +249,13 @@ namespace flashgg {
             dijet_centrality_j3_ = -999.;
             dijet_centrality_g_  = -999.;
             dipho_PToM_       = -999.;
+            dipho_leadEta_    = -999.;
+            dipho_subleadEta_ = -999.;
+            dipho_sumpt_      = -999.;
+            dipho_leadPt_     = -999.;
+            dipho_subleadPt_  = -999.;
+            dipho_leadPhi_    = -999.;
+            dipho_subleadPhi_ = -999.;
             leadPho_PToM_     = -999.;
             sublPho_PToM_     = -999.;
            
@@ -420,6 +440,14 @@ namespace flashgg {
                 dijet_Mjj_           = (dijetP4s.first + dijetP4s.second).M();
 
                 dipho_PToM_       = (diPhotonP4s[0] + diPhotonP4s[1]).Pt()/(diPhotonP4s[0] + diPhotonP4s[1]).M();
+                dipho_cosphi_     = fabs(TMath::Cos(diPhotonP4s[0].Phi() - diPhotonP4s[1].Phi()));
+                dipho_leadEta_    = diPhotonP4s[0].Eta();
+                dipho_subleadEta_ = diPhotonP4s[1].Eta();
+                dipho_sumpt_      = diPhotons->ptrAt( candIndex )->sumPt();
+                dipho_leadPt_     = diPhotonP4s[0].Pt();
+                dipho_subleadPt_  = diPhotonP4s[1].Pt();
+                dipho_leadPhi_    = diPhotonP4s[0].Phi();
+                dipho_subleadPhi_ = diPhotonP4s[1].Phi();
                 leadPho_PToM_     = diPhotonP4s[0].pt()/(diPhotonP4s[0] + diPhotonP4s[1]).M();
                 sublPho_PToM_     = diPhotonP4s[1].pt()/(diPhotonP4s[0] + diPhotonP4s[1]).M();
                 
@@ -475,20 +503,26 @@ namespace flashgg {
             if (_MVAMethod == "DNNMulti") {
                 std::map<std::string, double> mvaInputs;
 
-                mvaInputs["dijet_LeadJPt"]          = dijet_LeadJPt_;
-                mvaInputs["abs_dijet_leadEta"]      = dijet_leadEta_;
-                mvaInputs["dijet_SubJPt"]           = dijet_SubJPt_;
-                mvaInputs["abs_dijet_subleadEta"]   = dijet_subleadEta_;
-                mvaInputs["dipho_lead_ptoM"]        = leadPho_PToM_;
-                mvaInputs["dipho_sublead_ptoM"]     = sublPho_PToM_;
-                mvaInputs["dijet_Mjj"]              = dijet_Mjj_;
-                mvaInputs["dijet_centrality"]       = dijet_centrality_gg_;
-                mvaInputs["dijet_dipho_dphi_trunc"] = dijet_dphi_trunc_;
-                mvaInputs["dijet_abs_dEta"]         = dijet_abs_dEta_;
-                mvaInputs["dijet_dphi"]             = dijet_dphi_;
-                mvaInputs["dijet_minDRJetPho"]      = dijet_minDRJetPho_;
-                mvaInputs["dipho_PToM"]             = dipho_PToM_;
-                
+                mvaInputs["leadJPt"] = dijet_LeadJPt_;
+                mvaInputs["subJPt"]  = dijet_SubJPt_;
+                mvaInputs["leadJEta"] = fabs(dijet_leadEta_); 
+                mvaInputs["subJEta"] = fabs(dijet_subleadEta_);
+                mvaInputs["leadGPtOverM"] = leadPho_PToM_;
+                mvaInputs["subGPtOverM"] = sublPho_PToM_;
+                mvaInputs["mJJ"] = dijet_Mjj_;
+                mvaInputs["dijet_dipho_dphi"] = dijet_dipho_dphi_;
+                mvaInputs["diphoCosDphi"] = dipho_cosphi_;
+                mvaInputs["dipho_PToM"] = dipho_PToM_;
+                mvaInputs["dipho_leadEta"] = fabs(dipho_leadEta_);
+                mvaInputs["dipho_subleadEta"] = fabs(dipho_subleadEta_);
+                mvaInputs["dijet_dphi"] = dijet_dphi_; 
+                mvaInputs["dijet_abs_dEta"] = dijet_abs_dEta_;
+                mvaInputs["dipho_sumpt"] = dipho_sumpt_;
+                mvaInputs["dipho_leadPt"] = dipho_leadPt_;
+                mvaInputs["dipho_subleadPt"] = dipho_subleadPt_;
+                mvaInputs["dipho_leadPhi"] = dipho_leadPhi_;
+                mvaInputs["dipho_subleadPhi"] = dipho_subleadPhi_;
+
                 std::map<std::string, double> res = (*tfTool_)(mvaInputs);
 
                 mvares.vbfDnnResult_prob_bkg = res["other"];
