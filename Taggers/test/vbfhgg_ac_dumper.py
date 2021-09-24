@@ -200,6 +200,7 @@ process.vbfTagDumper.dumpTrees     = True
 process.vbfTagDumper.dumpHistos    = True
 process.vbfTagDumper.dumpWorkspace = False
 process.vbfTagDumper.src = "flashggSystTagMerger"
+process.vbfTagDumper.globalVariables.dumpLHEInfo = True 
 
 # OPTIONS FOR VBF DUMPER
 # Use JetID
@@ -229,6 +230,11 @@ print '------------------------------------------------------------'
 print ' running on Zee         ::' , customize.runOnZee
 print '------------------------------------------------------------'
 
+signal_processes = ["ggh_", "vbf_", "wzh_", "wh_", "zh_", "bbh_", "thq_", "thw_",
+                    "tth_", "HHTo2B2G", "GluGluHToGG", "VBFHToGG", "VHToGG", "ttHToGG", "Acceptance"]
+
+is_signal = reduce(lambda y, z: y or z, map(
+    lambda x: customize.processId.count(x), signal_processes))
 
 # run on Drell-Yan
 if customize.runOnZee:
@@ -393,8 +399,20 @@ if (customize.processId.count("qcd") or customize.processId.count("gjet")) and c
     else:
         raise Exception,"Mis-configuration of python for prompt-fake filter"
 
+# Save the LHE information to make a-posteriori re-weighting
+process.lheInfosSeq = cms.Sequence()
+if customize.processId != "Data":
+    if is_signal: 
+        print '-------------------------------------------------------------'
+        print ' Running on signal, so adding the sequence to store LHE info '
+        customize.options.useParentDataset = True
+        process.load("PhysicsTools.NanoAOD.nano_cff")
+        process.lheInfosSeq += process.lheInfoTable
+        print '-------------------------------------------------------------'
+
 process.p = cms.Path(process.dataRequirements
                      * process.genFilter
+                     * process.lheInfosSeq
                      #* process.flashggUpdatedIdMVADiPhotons #replaced by version below now...
                      * process.flashggDifferentialPhoIdInputsCorrection
                      * process.flashggDiPhotonSystematics
@@ -404,11 +422,11 @@ process.p = cms.Path(process.dataRequirements
                      * (process.flashggUnpackedJets
                         * process.ak4PFCHSL1FastL2L3CorrectorChain
                         * process.jetSystematicsSequence)
-                     * (process.flashggTagSequence
-                        + process.systematicsTagSequences)
-                     * process.flashggSystTagMerger
-                     * process.finalFilter
-                     * process.vbfTagDumper
+                      * (process.flashggTagSequence
+                         + process.systematicsTagSequences)
+                      * process.flashggSystTagMerger
+                      * process.finalFilter
+                      * process.vbfTagDumper
                      )
 
 print "--- Dumping modules that take diphotons as input: ---"

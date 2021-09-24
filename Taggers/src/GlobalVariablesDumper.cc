@@ -41,6 +41,11 @@ namespace flashgg {
                 extraFloatTags_.push_back( extraFloats.getParameter<InputTag>(name) );
             }
         }
+        if (cfg.exists( "dumpLHEInfo" ) ) {
+            std::cout << "Parameter dumpLHEInfo exists..." << std::endl;
+            lheTableTag_  = cfg.getParameter<InputTag>( "lheTable");
+            lhePartTableTag_  = cfg.getParameter<InputTag>( "lhePartTable");
+        }
         _init(cfg);
     }
 
@@ -79,6 +84,15 @@ namespace flashgg {
                 extraVectorFloatTokens_.push_back( cc.consumes<std::vector<float>>(extrafloatPSet.getParameter<InputTag>("src")) );
             }
         }
+        if (cfg.exists( "dumpLHEInfo" ) ) {
+            lheTableTag_  = cfg.getParameter<InputTag>( "lheTable");
+            lheTableToken_ = cc.consumes<nanoaod::FlatTable>( lheTableTag_ );
+            lhePartTableTag_  = cfg.getParameter<InputTag>( "lhePartTable");
+            lhePartTableToken_ = cc.consumes<nanoaod::FlatTable>( lhePartTableTag_ );
+            m_tables.clear();
+            m_tables.emplace_back("nanoaod::FlatTable", lheTableToken_);
+            m_tables.emplace_back("nanoaod::FlatTable", lhePartTableToken_);
+        }
         _init(cfg);
     }
 
@@ -101,6 +115,10 @@ namespace flashgg {
             //            const auto extraFloats = cfg.getParameter<ParameterSet>( "extraFloats" );
             //            extraFloatNames_ = extraFloats.getParameterNamesForType<InputTag>();
             extraFloatVariables_.resize(extraFloatNames_.size(),0.);
+        }
+        
+        if( cfg.exists( "dumpLHEInfo" ) ) {
+            dumpLHEInfo_ = cfg.getParameter<bool>( "dumpLHEInfo" );
         }
     }
 
@@ -132,8 +150,11 @@ namespace flashgg {
         //        for( size_t iextra = 0; iextra<extraFloatNames_.size(); ++iextra ) {
         //            tree->Branch( extraFloatNames_[iextra].c_str(), &extraFloatVariables_[iextra] );
         //        }
-    }
 
+        if ( dumpLHEInfo_ ) {
+            m_tree = tree;
+        }
+    }
 
     std::vector<std::string> GlobalVariablesDumper::getExtraFloatNames(){
         return extraFloatNames_;
@@ -255,6 +276,12 @@ namespace flashgg {
                 }
             }
         }
+
+        if(dumpLHEInfo_) {
+            for (auto& t : m_tables)
+                t.fill(*fullEvent, *m_tree, false);
+        }
+
     }
 
 
