@@ -180,24 +180,18 @@ namespace flashgg {
         }
         if (_MVAMethod == "DNNMulti"){
             dnn_variables_.push_back( "leadJPt" );
-            dnn_variables_.push_back( "subJPt"  );
             dnn_variables_.push_back( "leadJEta" );
+            dnn_variables_.push_back( "subJPt"  );
             dnn_variables_.push_back( "subJEta"  );
             dnn_variables_.push_back( "leadGPtOverM"); 
             dnn_variables_.push_back( "subGPtOverM"); 
             dnn_variables_.push_back( "mJJ" );
-            dnn_variables_.push_back( "dijet_dipho_dphi" );
-            dnn_variables_.push_back( "diphoCosDphi" );
-            dnn_variables_.push_back( "dipho_PToM" );
-            dnn_variables_.push_back( "dipho_leadEta" );
-            dnn_variables_.push_back( "dipho_subleadEta" );
-            dnn_variables_.push_back( "dijet_dphi" );
+            dnn_variables_.push_back( "centrality" );
+            dnn_variables_.push_back( "dijet_dipho_dphi_trunc" );
             dnn_variables_.push_back( "dijet_abs_dEta" );
-            dnn_variables_.push_back( "dipho_sumpt" );
-            dnn_variables_.push_back( "dipho_leadPt" );
-            dnn_variables_.push_back( "dipho_subleadPt" );
-            dnn_variables_.push_back( "dipho_leadPhi" );
-            dnn_variables_.push_back( "dipho_subleadPhi");
+            dnn_variables_.push_back( "dijet_dphi" );
+            dnn_variables_.push_back( "dijet_minDRJetPho" );            
+            dnn_variables_.push_back( "dipho_PToM" );
 
             dnn_classes_.push_back( "vbfH"  );
             dnn_classes_.push_back( "ggH"   );
@@ -504,30 +498,24 @@ namespace flashgg {
                 std::map<std::string, double> mvaInputs;
 
                 mvaInputs["leadJPt"] = dijet_LeadJPt_;
-                mvaInputs["subJPt"]  = dijet_SubJPt_;
                 mvaInputs["leadJEta"] = fabs(dijet_leadEta_); 
+                mvaInputs["subJPt"]  = dijet_SubJPt_;
                 mvaInputs["subJEta"] = fabs(dijet_subleadEta_);
                 mvaInputs["leadGPtOverM"] = leadPho_PToM_;
                 mvaInputs["subGPtOverM"] = sublPho_PToM_;
                 mvaInputs["mJJ"] = dijet_Mjj_;
-                mvaInputs["dijet_dipho_dphi"] = dijet_dipho_dphi_;
-                mvaInputs["diphoCosDphi"] = dipho_cosphi_;
-                mvaInputs["dipho_PToM"] = dipho_PToM_;
-                mvaInputs["dipho_leadEta"] = fabs(dipho_leadEta_);
-                mvaInputs["dipho_subleadEta"] = fabs(dipho_subleadEta_);
-                mvaInputs["dijet_dphi"] = dijet_dphi_; 
+                mvaInputs["centrality"] = dijet_centrality_gg_;
+                mvaInputs["dijet_dipho_dphi_trunc"] = dijet_dphi_trunc_;
                 mvaInputs["dijet_abs_dEta"] = dijet_abs_dEta_;
-                mvaInputs["dipho_sumpt"] = dipho_sumpt_;
-                mvaInputs["dipho_leadPt"] = dipho_leadPt_;
-                mvaInputs["dipho_subleadPt"] = dipho_subleadPt_;
-                mvaInputs["dipho_leadPhi"] = dipho_leadPhi_;
-                mvaInputs["dipho_subleadPhi"] = dipho_subleadPhi_;
+                mvaInputs["dijet_dphi"] = dijet_dphi_;
+                mvaInputs["dijet_minDRJetPho"] = dijet_minDRJetPho_;
+                mvaInputs["dipho_PToM"] = dipho_PToM_;
 
                 std::map<std::string, double> res = (*tfTool_)(mvaInputs);
 
-                mvares.vbfDnnResult_prob_bkg = res["other"];
+                mvares.vbfDnnResult_prob_VBF = res["vbfH"];
                 mvares.vbfDnnResult_prob_ggH = res["ggH"];
-                mvares.vbfDnnResult_prob_VBF = res["VBF"];
+                mvares.vbfDnnResult_prob_bkg = res["other"];
 
                 // std::cout << "\t==> DNN Multiclass, n. classes = " << dnn_classes_.size() << std::endl;
                 // for (unsigned i = 0; i < dnn_classes_.size(); i++) {
