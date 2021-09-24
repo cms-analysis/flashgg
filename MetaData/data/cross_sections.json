@@ -1978,7 +1978,10 @@
   "TTZToLLNuNu_M-10_TuneCUETP8M1_13TeV-amcatnlo-pythia8"                 : { "xs" : 0.2529 },
   "TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8"                      : { "xs" : 0.2432 },
   "TTWJetsToLNu_TuneCUETP8M1_13TeV-amcatnloFXFX-madspin-pythia8"         : { "xs" : 0.2001 },
-  "TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8"              : { "xs" : 0.2149 }   
+  "TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8"              : { "xs" : 0.2149 },
 
+  "W1Jets_14TeV" : {"xs" : 0.001},
+  "W2Jets_14TeV" : {"xs" : 0.001},
+  "W3Jets_14TeV" : {"xs" : 0.001}
 
 }

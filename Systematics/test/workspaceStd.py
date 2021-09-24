@@ -742,7 +742,7 @@ for tag in tagList:
 print("Run on Zee:",customize.runOnZee)
 # cmsRun Systematics/test/workspaceStd.py metaConditions=MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1-HHWWgg.json campaign=Era2017_RR-31Mar2018_v2 dataset=/DoubleEG/spigazzi-Era2017_RR-31Mar2018_v2-legacyRun2FullV1-v0-Run2017B-31Mar2018-v1-d9c0c6cde5cc4a64343ae06f842e5085/USER doHHWWggTag=1 HHWWggTagsOnly=1 maxEvents=500 doSystematics=0 dumpWorkspace=0 dumpTrees=1 useAAA=1 processId=Data processType=Data doHHWWggTagCutFlow=1 saveHHWWggFinalStateVars=1 HHWWggAnalysisChannel=all HHWWgguseZeroVtx=1 FillUntagged=1 runOnZee=1
 if customize.runOnZee:
-    print("Inverting electorn veto requirement in diphoton preselections")
+    print("Inverting electron veto requirement in diphoton preselections")
     process.flashggPreselectedDiPhotons.variables =  cms.vstring('pfPhoIso03',
                                                                  'trkSumPtHollowConeDR03',
                                                                  'full5x5_sigmaIetaIeta',

@@ -1,0 +1,62 @@
+{
+
+
+    "/W1Jets_14TeV/atishelm-WJets_14TeV_Summer20UL17-d909eea59eb0d15dda952c1c02419b37/USER": {
+  
+        "dset_type": "mc",
+        "files": [
+    
+            {
+             "bad"  : false, 
+             "events" : 28292,
+             "name" : "/store/group/phys_higgs/cmshgg/atishelm/flashgg/WJets_14TeV/W1Jets_14TeV/WJets_14TeV_Summer20UL17/210923_080931/0000/myMicroAODOutputFile_1.root",
+             "nevents" : 28292,
+             "totEvents" : 28292,
+             "weights" : 28292
+            }
+         ],
+            "parent_n_units" : 28292,
+            "vetted" : true  
+    
+      },
+
+
+      "/W2Jets_14TeV/atishelm-W2Jets_14TeV_Summer20UL17-d909eea59eb0d15dda952c1c02419b37/USER": {
+  
+        "dset_type": "mc",
+        "files": [
+    
+            {
+             "bad"  : false, 
+             "events" : 43992,
+             "name" : "/store/group/phys_higgs/cmshgg/atishelm/flashgg/WJets_14TeV/W2Jets_14TeV/W2Jets_14TeV_Summer20UL17/210923_082203/0000/myMicroAODOutputFile_1.root",
+             "nevents" : 43992,
+             "totEvents" : 43992,
+             "weights" : 43992
+            }
+         ],
+            "parent_n_units" : 43992,
+            "vetted" : true  
+    
+      },
+      
+      "/W3Jets_14TeV/atishelm-W3Jets_14TeV_Summer20UL17-d909eea59eb0d15dda952c1c02419b37/USER": {
+  
+        "dset_type": "mc",
+        "files": [
+    
+            {
+             "bad"  : false, 
+             "events" : 39563,
+             "name" : "/store/group/phys_higgs/cmshgg/atishelm/flashgg/WJets_14TeV/W3Jets_14TeV/W3Jets_14TeV_Summer20UL17/210923_083254/0000/myMicroAODOutputFile_1.root",
+             "nevents" : 39563,
+             "totEvents" : 39563,
+             "weights" : 39563
+            }
+         ],
+            "parent_n_units" : 39563,
+            "vetted" : true  
+    
+      }
+
+}
