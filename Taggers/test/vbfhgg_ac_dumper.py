@@ -200,7 +200,6 @@ process.vbfTagDumper.dumpTrees     = True
 process.vbfTagDumper.dumpHistos    = True
 process.vbfTagDumper.dumpWorkspace = False
 process.vbfTagDumper.src = "flashggSystTagMerger"
-process.vbfTagDumper.globalVariables.dumpLHEInfo = True 
 
 # OPTIONS FOR VBF DUMPER
 # Use JetID
@@ -408,6 +407,7 @@ if customize.processId != "Data":
         customize.options.useParentDataset = True
         process.load("PhysicsTools.NanoAOD.nano_cff")
         process.lheInfosSeq += process.lheInfoTable
+        process.vbfTagDumper.globalVariables.dumpLHEInfo = True 
         print '-------------------------------------------------------------'
 
 process.p = cms.Path(process.dataRequirements
