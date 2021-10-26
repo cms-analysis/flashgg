@@ -40,27 +40,31 @@ dipho_variables=[
 ]
 
 ele_variables=[
-    "n_ele      := electrons.size",
-    "ele1_Pt    := ?(electrons.size>0)? electrons.at(0).pt               : -999",
-    "ele1_Eta   := ?(electrons.size>0)? electrons.at(0).eta              : -999",
-    "ele1_Phi   := ?(electrons.size>0)? electrons.at(0).phi              : -999",
-    "ele1_E     := ?(electrons.size>0)? electrons.at(0).energy           : -999",
-    "ele1_EtaSC := ?(electrons.size>0)? electrons.at(0).superCluster.eta : -999",
-    "ele1_PhiSC := ?(electrons.size>0)? electrons.at(0).superCluster.phi : -999",
-    "ele2_Pt    := ?(electrons.size>1)? electrons.at(1).pt               : -999",
-    "ele2_Eta   := ?(electrons.size>1)? electrons.at(1).eta              : -999",
-    "ele2_Phi   := ?(electrons.size>1)? electrons.at(1).phi              : -999",
-    "ele2_E     := ?(electrons.size>1)? electrons.at(1).energy           : -999",
-    "ele2_EtaSC := ?(electrons.size>1)? electrons.at(1).superCluster.eta : -999",
-    "ele2_PhiSC := ?(electrons.size>1)? electrons.at(1).superCluster.phi : -999"
+    "n_ele        := electrons.size",
+    "ele1_Charge  := ?(electrons.size>0)? electrons.at(0).charge           : 0",
+    "ele1_Pt      := ?(electrons.size>0)? electrons.at(0).pt               : -999",
+    "ele1_Eta     := ?(electrons.size>0)? electrons.at(0).eta              : -999",
+    "ele1_Phi     := ?(electrons.size>0)? electrons.at(0).phi              : -999",
+    "ele1_E       := ?(electrons.size>0)? electrons.at(0).energy           : -999",
+    "ele1_EtaSC   := ?(electrons.size>0)? electrons.at(0).superCluster.eta : -999",
+    "ele1_PhiSC   := ?(electrons.size>0)? electrons.at(0).superCluster.phi : -999",
+    "ele2_Charge  := ?(electrons.size>1)? electrons.at(1).charge           : 0",
+    "ele2_Pt      := ?(electrons.size>1)? electrons.at(1).pt               : -999",
+    "ele2_Eta     := ?(electrons.size>1)? electrons.at(1).eta              : -999",
+    "ele2_Phi     := ?(electrons.size>1)? electrons.at(1).phi              : -999",
+    "ele2_E       := ?(electrons.size>1)? electrons.at(1).energy           : -999",
+    "ele2_EtaSC   := ?(electrons.size>1)? electrons.at(1).superCluster.eta : -999",
+    "ele2_PhiSC   := ?(electrons.size>1)? electrons.at(1).superCluster.phi : -999"
 ]
 
 mu_variables=[
     "n_mu       := muons.size",
+    "mu1_Charge := ?(muons.size>0)? muons.at(0).charge : 0",
     "mu1_Pt     := ?(muons.size>0)? muons.at(0).pt     : -999",
     "mu1_Eta    := ?(muons.size>0)? muons.at(0).eta    : -999",
     "mu1_Phi    := ?(muons.size>0)? muons.at(0).phi    : -999",
     "mu1_E      := ?(muons.size>0)? muons.at(0).energy : -999",
+    "mu2_Charge := ?(muons.size>1)? muons.at(1).charge : 0",
     "mu2_Pt     := ?(muons.size>1)? muons.at(1).pt     : -999",
     "mu2_Eta    := ?(muons.size>1)? muons.at(1).eta    : -999",
     "mu2_Phi    := ?(muons.size>1)? muons.at(1).phi    : -999",
@@ -68,36 +72,35 @@ mu_variables=[
 ]
 
 jet_variables=[
-    "n_jets          := jets.size",
-    "jet1_Pt         := ?(jets.size>0)? jets.at(0).pt     : -999",
-    "jet1_Eta        := ?(jets.size>0)? jets.at(0).eta    : -999",
-    "jet1_Phi        := ?(jets.size>0)? jets.at(0).phi    : -999",
-    "jet1_E          := ?(jets.size>0)? jets.at(0).energy : -999",
-    "jet1_deepbtag   := ?(jets.size>0)? jets.at(0).bDiscriminator('pfDeepCSVJetTags:probb') + jets.at(0).bDiscriminator('pfDeepCSVJetTags:probbb') : -999",
-    "jet2_Pt         := ?(jets.size>1)? jets.at(1).pt     : -999",
-    "jet2_Eta        := ?(jets.size>1)? jets.at(1).eta    : -999",
-    "jet2_Phi        := ?(jets.size>1)? jets.at(1).phi    : -999",
-    "jet2_E          := ?(jets.size>1)? jets.at(1).energy : -999",
-    "jet2_deepbtag   := ?(jets.size>1)? jets.at(1).bDiscriminator('pfDeepCSVJetTags:probb') + jets.at(1).bDiscriminator('pfDeepCSVJetTags:probbb') : -999"
+    "n_jets      := jets.size"
 ]
 
+njet = 15
+for i in range(njet):
+    jet_variables.append( "jet%d_Pt  := ?(jets.size>%d)? jets.at(%d).pt      : -999" % (i+1, i, i))
+    jet_variables.append( "jet%d_Eta := ?(jets.size>%d)? jets.at(%d).eta     : -999" % (i+1, i, i))
+    jet_variables.append( "jet%d_Phi := ?(jets.size>%d)? jets.at(%d).phi     : -999" % (i+1, i, i))
+    jet_variables.append( "jet%d_E   := ?(jets.size>%d)? jets.at(%d).energy  : -999" % (i+1, i, i))
+    jet_variables.append( "jet%d_deepbtag   := ?(jets.size>%d)? jets.at(%d).bDiscriminator('pfDeepCSVJetTags:probb') + jets.at(%d).bDiscriminator('pfDeepCSVJetTags:probbb') : -999" % (i+1, i, i, i) )
+
 met_variables=[
-    "met_Pt  := met.corPt()",
-    "met_Phi := met.corPhi()",
-    "met_Sig := met.mEtSig()",
+    "met_Pt      := met.getCorPt()",
+    "met_Phi     := met.getCorPhi()",
+    "met_sumEt   := met.sumEt()",
+    "met_Sig     := met.mEtSig()",
     "met_RealSig := met.significance()"
 ]
 
-#extra_variables=[
-#    "minDeltaPhiJetMet := MinDeltaPhiJetMet()"
-#]
+extra_variables=[
+    "minDeltaPhiJetMet := MinDeltaPhiJetMet()",
+    "maxJetDeepCSV     := MaxJetDeepCSV()"
+]
 
 gen_variables=[
-    "hasZ    := tagTruth().associatedZ()",
-    "hasW    := tagTruth().associatedW()",
-    "VhasDau := tagTruth().VhasDaughters()",
-    "VhasNeu := tagTruth().VhasNeutrinos()",
-    "VhasLep := tagTruth().VhasLeptons()",
-    "VhasHad := tagTruth().VhasHadrons()",
-    "Vpt     := tagTruth().Vpt()"
+    "hasZ    := associatedZ()",
+    "hasW    := associatedW()",
+    "VhasNeu := VhasNeutrinos()",
+    "VhasLep := VhasLeptons()",
+    "VhasHad := VhasHadrons()",
+    "Vpt     := Vpt()"
 ]
