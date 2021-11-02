@@ -16,7 +16,7 @@ def hadd(file, odir, idirs, appx=''):
         return
     elif not file.endswith('.root'):
         return
-    haddCmd = ['hadd']
+    haddCmd = ['hadd -k']
     haddCmd.append(file.replace(idirs[0], odir).replace('.root', appx+'.root'))
     for dir in idirs:
         haddCmd.append( file.replace( idirs[0], dir ) )
