@@ -1,3 +1,4 @@
+
 {
     "/DoubleEG/alesauva-UL_test-10_6_4-v0-Run2017C-09Aug2019_UL2017-v1-53faf905fdb551f89c40f719673e864f/USER": {
         "dset_type": "data", 
@@ -10776,7 +10777,7 @@
                 "totEvents": 4365, 
                 "weights": 4365
             }, 
-            {
+                {
                 "bad": false, 
                 "events": 4860, 
                 "lumis": {
@@ -10795,11 +10796,11 @@
                         140
                     ]
                 }, 
-                "name": "/store/user/alesauva/flashgg/UL2017_test/10_6_4/DoubleEG/UL_test-10_6_4-v0-Run2017C-09Aug2019_UL2017-v1/200814_080042/0001/myMicroAODOutputFile_1331.root", 
+                "name": "/store/user/alesauva/flashgg/UL2017_test_2/10_6_4/DoubleEG/UL_test-10_6_4-v0-Run2017C-09Aug2019_UL2017-v1/200818_151659/0001/myMicroAODOutputFile_1331.root", 
                 "nevents": 4860, 
                 "totEvents": 4860, 
                 "weights": 4860
-            }, 
+            },
             {
                 "bad": false, 
                 "events": 5262, 
