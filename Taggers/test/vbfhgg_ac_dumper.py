@@ -11,6 +11,7 @@ from flashgg.MetaData.MetaConditionsReader import *
 # SYSTEMATICS SECTION
 process = cms.Process("FLASHggSyst")
 process.load("FWCore.MessageService.MessageLogger_cfi")
+process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load("Configuration.StandardSequences.GeometryDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
@@ -408,7 +409,7 @@ melaTable = cms.EDProducer("MELAGenMatrixElementTableProducer",
    #candVVmode = cms.string("undecayed"),
    #decayVVmode = cms.int32(-1),
    #melaSetup = cms.string("ZH_NLO"),
-   mode = cms.string(""),
+   mode = cms.string("Decay_gammagamma"),
    normalize = cms.bool(True),
    matrixElements = cms.vstring(),
    #   "Name:SM Couplings:ghz1=1,0;ghw1=1,0",
@@ -718,14 +719,13 @@ elif bases == "any":
 else:
     raise RuntimeError("Unsupported bases %r" % bases)
 
-# Decay
-if "Decay" in melaTable.mode.value():
-    if ('kind' not in tests[test]) or tests[test]['kind'] != 'preNano':
-        process.higgsDecayTable = cms.EDProducer("HiggsDecayLevelVariablesProducer",
-               genParticles = process.finalGenParticles.src
-        )
-        process.tables += process.higgsDecayTable
-    #process.maxEvents.input = 20
+# # Decay
+# if "Decay" in melaTable.mode.value():
+#     process.higgsDecayTable = cms.EDProducer("HiggsDecayLevelVariablesProducer",
+#            genParticles = 'genParticles'
+#     )
+#     process.tables += process.higgsDecayTable
+#     #process.maxEvents.input = 20
 
 
 
@@ -737,6 +737,8 @@ if customize.processId != "Data":
         print ' Running on signal, so adding the sequence to store LHE info '
         customize.options.useParentDataset = True
         process.load("PhysicsTools.NanoAOD.nano_cff")
+        process.lheInfosSeq += process.genParticleSequence
+        process.lheInfosSeq += process.particleLevelSequence
         process.lheInfosSeq += process.lheInfoTable
         process.vbfTagDumper.globalVariables.dumpLHEInfo = True 
         print '-------------------------------------------------------------'
