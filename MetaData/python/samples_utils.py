@@ -1212,8 +1212,8 @@ Commands:
         print
         print "Datasets in catalog:"
         print "-"*(largest+48)
-        print "Name".ljust(largest), ("N events").rjust(10), ("N parent").rjust(10), ("N good").rjust(7), ("N bad" ).rjust(7), ("Avg"   ).rjust(7)
-        print "    ".ljust(largest), ("or lumis").rjust(10), ("").rjust(10), ("files" ).rjust(7), ("files" ).rjust(7), ("weight").rjust(7)
+        print "Name".ljust(largest), ("N events").rjust(10), ("N parent").rjust(10), ("N good").rjust(7), ("N bad" ).rjust(7), ("Avg"   ).rjust(7), ("Sum      ").rjust(7)
+        print "    ".ljust(largest), ("or lumis").rjust(10), ("").rjust(10), ("files" ).rjust(7), ("files" ).rjust(7), ("weight").rjust(7), ("weights").rjust(7)
         print "-"*(largest+48)
         for d,n in zip(datasets,slim_datasets):
             nevents = 0.
@@ -1231,7 +1231,8 @@ Commands:
             parent_n_units = catalog[d]["parent_n_units"] if catalog[d]["parent_n_units"] else -1.
             print n.ljust(largest), ("%d" % int(nevents)).rjust(11), ("%d" % int(parent_n_units)).rjust(11), ("%d" % nfiles).rjust(7),
             print ("%d" % (len(catalog[d]["files"]) - nfiles )).rjust(7),
-            if weights != 0.: print ("%1.2g" % ( weights/nevents ) ).rjust(7),
+            if weights != 0.: print ("%1.10g" % ( weights/nevents ) ).rjust(7),
+            if weights != 0.: print ("%1.10g" % (weights)).rjust(7),
             else: print " ".rjust(7),
             print
             totev += nevents
