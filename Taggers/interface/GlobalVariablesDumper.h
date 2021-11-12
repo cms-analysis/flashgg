@@ -46,11 +46,13 @@ namespace flashgg {
         edm::InputTag triggerTag_;
         edm::InputTag lheTableTag_;
         edm::InputTag lhePartTableTag_;
+        std::vector<edm::InputTag> melaTablesTag_;
 
         edm::EDGetTokenT<edm::TriggerResults> triggerToken_;
         std::vector<std::pair<std::string, bool>> bits_;
         edm::EDGetTokenT<nanoaod::FlatTable> lheTableToken_;
         edm::EDGetTokenT<nanoaod::FlatTable> lhePartTableToken_;
+        std::vector<edm::EDGetTokenT<nanoaod::FlatTable> > melaTablesTokens_;
 
         bool dumpLumiFactor_;
         double lumiFactor_;
@@ -58,6 +60,7 @@ namespace flashgg {
         // bool dumpNNLOPSweight_;
         // double NNLOPSweight_;
         bool dumpLHEInfo_;
+        bool dumpMelaWeightsInfo_;
 
         std::vector<edm::EDGetTokenT<float>> extraFloatTokens_;
         std::vector<edm::EDGetTokenT<std::vector<float>>> extraVectorFloatTokens_;

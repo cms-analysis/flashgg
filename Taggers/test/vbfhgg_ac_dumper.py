@@ -407,9 +407,9 @@ melaTable = cms.EDProducer("MELAGenMatrixElementTableProducer",
    sqrts = cms.double(13.0),
    mH = cms.double(125.0),
    #candVVmode = cms.string("undecayed"),
-   #decayVVmode = cms.int32(-1),
+   decayVVmode = cms.int32(0),
    #melaSetup = cms.string("ZH_NLO"),
-   mode = cms.string("Decay_gammagamma"),
+   mode = cms.string("VBF_NLO"),
    normalize = cms.bool(True),
    matrixElements = cms.vstring(),
    #   "Name:SM Couplings:ghz1=1,0;ghw1=1,0",
@@ -746,6 +746,19 @@ if customize.processId != "Data":
     melaTables=True
     if melaTables:
         process.lheInfosSeq += process.tables
+        process.vbfTagDumper.globalVariables.dumpMelaWeightsInfo = True
+        process.vbfTagDumper.globalVariables.melaTables = cms.VInputTag('melaGenMatrixElementHiggsTable',
+                                                                        #'melaGenMatrixElementHELFlipTable',
+                                                                        #'melaGenMatrixElementHELFlipEffTable',
+                                                                        #'melaGenMatrixElementHELNoGTable',
+                                                                        'melaGenMatrixElementHELatNLONoGFixTable',
+                                                                        'melaGenMatrixElementHELatNLOFlipZGFixTable',
+                                                                        'melaGenMatrixElementHELatNLOFlipZGEffFixTable',
+                                                                        'melaGenMatrixElementWarFlipTable',
+                                                                        'melaGenMatrixElementWarFlipEffTable',
+                                                                        'melaGenMatrixElementWarNoGTable',
+                                                                        
+        )
 
 
 process.p = cms.Path(process.dataRequirements
