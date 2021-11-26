@@ -1,0 +1,38 @@
+{
+    "cmdLine"  : "metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json campaign=Era2018_RR-17Sep2018_v2 useAAA=True lumiMask=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt ",
+    "processes": {
+	"ggh_125"   : [
+            "/GluGluHToGG_M-125_13TeV_powheg_pythia8"
+        ],
+	"vbf_125"   : [
+            "/VBFHToGG_M-125_13TeV_powheg_pythia8",
+            "/VBFHToGG_M125_13TeV_amcatnlo_pythia8",
+            "/VBFHiggs0L1ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
+            "/VBFHiggs0L1ZgToGG_M125_13TeV_JHUGenV7011_pythia8",
+            "/VBFHiggs0L1Zgf05ph0ToGG_M125_13TeV_JHUGenV7011_pythia8",
+            "/VBFHiggs0L1f05ph0ToGG_M125_13TeV_JHUGenV7011_pythia8",
+            "/VBFHiggs0MToGG_M125_13TeV_JHUGenV7011_pythia8",
+            "/VBFHiggs0Mf05ph0ToGG_M125_13TeV_JHUGenV7011_pythia8",
+            "/VBFHiggs0PHToGG_M125_13TeV_JHUGenV7011_pythia8",
+            "/VBFHiggs0PHf05ph0ToGG_M125_13TeV_JHUGenV7011_pythia8",
+            "/VBFHiggs0PMToGG_M125_13TeV_JHUGenV7011_pythia8"
+        ],
+        "dipho"   : [
+            "/DiPhotonJetsBox_M40_80-sherpa",
+            "/DiPhotonJetsBox_MGG-80toInf_13TeV-sherpa"
+        ],
+        "gjet_anyfake"   : [
+            "/GJet_Pt-20to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8",
+            "/GJet_Pt-40toInf_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV_Pythia8",
+            "/GJet_Pt-20toInf_DoubleEMEnriched_MGG-40to80_TuneCP5_13TeV_Pythia8"
+        ],
+        "Data"   : [
+            "/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018D-22Jan2019-v2-dc8e5fb301bfbf2559680ca888829f0c/USER",
+            "/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1-e35808f23b4776d10c777cb2c9d2f07a/USER",
+            "/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018B-17Sep2018-v1-dc8e5fb301bfbf2559680ca888829f0c/USER",
+            "/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018A-17Sep2018-v2-dc8e5fb301bfbf2559680ca888829f0c/USER",
+            "/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018C-17Sep2018-v1-e35808f23b4776d10c777cb2c9d2f07a/USER",
+            "/EGamma/spigazzi-Era2018_RR-17Sep2018_v2-legacyRun2FullV2-v0-Run2018A-17Sep2018-v2-e35808f23b4776d10c777cb2c9d2f07a/USER"
+        ]
+    }
+}

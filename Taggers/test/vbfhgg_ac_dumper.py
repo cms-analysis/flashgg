@@ -449,15 +449,13 @@ JHU_points = ["Name:SM Couplings:ghz1=1,0;ghw1=1,0",
 process.melaGenMatrixElementACTableJHU = melaTable.clone(name = "MEWeight_prodJHUGen", matrixElements = JHU_points)
 process.tablesAC = cms.Sequence(process.melaGenMatrixElementACTableJHU)
 
+bases = "any"
 if bases in ("any", "AC JHU"):
     print "Anomalous couplings\n", "\n".join(JHU_points)
-
 
 from MelaAnalytics.GenericMEComputer.couplingUtils import *
 
 test = 'test'
-
-bases = "any"
 if   "SMEFT"    in test: bases = "Warsaw"
 elif "HELatNLO" in test: bases = "HELatNLO"
 elif "HEL"      in test: bases = "HEL"
