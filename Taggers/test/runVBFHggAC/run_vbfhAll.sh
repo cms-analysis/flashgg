@@ -1,0 +1,3 @@
+fggRunJobs.py --load runVBFHggAC/samples_UL2018.json -d TEST_VBFH_UL2018_30Nov21 --stage-to /eos/cms/store/group/phys_higgs/emanuele/vbfhgg_ac/VBFHiggs_UL2018_30November2021 -x cmsRun vbfhgg_ac_dumper.py maxEvents=-1 runOnZee=False -q tomorrow pujidWP=tight doSystematics=False useParentDataset=False -n 100 --no-copy-proxy --no-use-tarball --hadd
+
+#fggRunJobs.py --load runVBFHggAC/samples_UL2017.json -d TEST_VBFH_UL2017_08Sep2021 --stage-to /eos/cms/store/group/phys_higgs/emanuele/vbfhgg_ac/VBFHiggs_UL2017_08September2021 -x cmsRun vbfhgg_ac_dumper.py maxEvents=-1 runOnZee=False -q tomorrow pujidWP=tight doSystematics=False useParentDataset=False -n 100 --no-copy-proxy --no-use-tarball --hadd
