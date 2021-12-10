@@ -200,8 +200,10 @@
 
 	"bTagEffBins" : "bTagEffBins2016",
         
-	"bTagger" : "pfDeepJet",  
-        
+	"bTagger" : "pfDeepJet",
+
+    "isNewCSVFormat" : false,
+
 	"bDiscriminatorValue_pfDeepCSV" : 0.6321,
 	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_2016LegacySF_V1.csv",
 	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_2016LegacySF_WP_V1.csv",

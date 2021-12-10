@@ -4,8 +4,9 @@
 #include "DataFormats/Common/interface/PtrVector.h"
 #include "flashgg/DataFormats/interface/Jet.h"
 #include "CommonTools/Utils/interface/StringCutObjectSelector.h"
-#include "CondFormats/BTauObjects/interface/BTagCalibration.h"
-#include "CondTools/BTau/interface/BTagCalibrationReader.h"
+//#include "CondFormats/BTauObjects/interface/BTagCalibration.h"
+//#include "CondTools/BTau/interface/BTagCalibrationReader.h"
+#include "flashgg/Systematics/interface/BTagCalibrationStandalone.h"
 
 //For reshaping BTag shape
 
@@ -57,7 +58,7 @@ namespace flashgg {
         bTagReshapeSystOption_ = conf.getParameter<int>( "bTagReshapeSystOption"); 
         // std::string btag_algo = bTag_=="pfDeepJet" ? "DeepJet" : "pfDeepCSV" ? "DeepCSV" : "CSVv2";  //// DeepJet =  DeepFlavour
         std::string btag_algo = bTag_=="pfDeepJet" ? "DeepJet" : "DeepCSV" ;
-        calibReshape_ = BTagCalibration(btag_algo, conf.getParameter<edm::FileInPath>("bTagCalibrationFile").fullPath());
+        calibReshape_ = BTagCalibration(btag_algo, conf.getParameter<edm::FileInPath>("bTagCalibrationFile").fullPath(), conf.getParameter<bool>("isNewCSVFormat"));
     }
 
     std::string JetBTagReshapeWeight::shiftLabel( int syst_value ) const

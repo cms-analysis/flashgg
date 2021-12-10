@@ -226,13 +226,15 @@
 
 	"bTagger" : "pfDeepJet",
 
+    "isNewCSVFormat" : true,
+
 	"bDiscriminatorValue_pfDeepCSV" : 0.4506,
-	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_106XUL17SF.csv",
-	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_106XUL17SF_WPonly.csv",
+	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/reshaping_deepCSV_106XUL17_v3.csv",
+	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/wp_deepCSV_106XUL17_v3.csv",
 
 	"bDiscriminatorValue_pfDeepJet" : 0.3040,
-	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepJet_106XUL17SF.csv",
-	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepJet_106XUL17SF_WPonly.csv",
+	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/reshaping_deepJet_106XUL17_v3.csv",
+	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/wp_deepJet_106XUL17_v3.csv",
 
 	"eta" : 2.5
     },
