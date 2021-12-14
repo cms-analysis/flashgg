@@ -281,7 +281,7 @@
     "VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8"                          : { "xs" : 1.9989,   "br" : 0.002238, "kf" : 1.06, "itype":-130400 },
 
     "VBFHToGG_M120_13TeV_amcatnlo_pythia8"                          : { "xs" : 3.9350,   "br" : 0.002218, "kf" : 1.06, "itype":-120100 },
-    "VBFHToGG_M120_TuneCP5_13TeV_amcatnlo_pythia8"                  : { "xs" : 3.9350,   "br" : 0.002218, "kf" : 1.06, "itype":-120100 },
+    "VBFHToGG_M120_TuneCP5_13TeV-amcatnlo-pythia8"                  : { "xs" : 3.9350,   "br" : 0.002218, "kf" : 1.06, "itype":-120100 },
     "VBFHToGG_M-120_13TeV_powheg_pythia8"                          : { "xs" : 3.9350,   "br" : 0.002218, "kf" : 1.06, "itype":-120100 },
     "VBFHToGG_M121_13TeV_amcatnlo_pythia8"                          : { "xs" : 3.9040,   "br" : 0.002235, "kf" : 1.06, "itype":-121100 },
     "VBFHToGG_M-121_13TeV_powheg_pythia8"                          : { "xs" : 3.9040,   "br" : 0.002235, "kf" : 1.06, "itype":-121100 },
