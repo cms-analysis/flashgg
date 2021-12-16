@@ -42,7 +42,6 @@ namespace flashgg {
             }
         }
         if (cfg.exists( "dumpLHEInfo" ) ) {
-            std::cout << "Parameter dumpLHEInfo exists..." << std::endl;
             lheTableTag_  = cfg.getParameter<InputTag>("lheTable");
             lhePartTableTag_  = cfg.getParameter<InputTag>("lhePartTable");
         }
@@ -88,7 +87,7 @@ namespace flashgg {
             }
         }
         m_tables.clear();
-        if (cfg.exists( "dumpLHEInfo" ) ) {
+        if (cfg.exists( "dumpLHEInfo" ) && cfg.getParameter<bool>( "dumpLHEInfo" )) {
             lheTableTag_  = cfg.getParameter<InputTag>( "lheTable");
             lheTableToken_ = cc.consumes<nanoaod::FlatTable>( lheTableTag_ );
             lhePartTableTag_  = cfg.getParameter<InputTag>( "lhePartTable");
@@ -96,7 +95,7 @@ namespace flashgg {
             m_tables.emplace_back("nanoaod::FlatTable", lheTableToken_);
             m_tables.emplace_back("nanoaod::FlatTable", lhePartTableToken_);
         }
-        if (cfg.exists( "dumpMelaWeightsInfo" )) {
+        if (cfg.exists( "dumpMelaWeightsInfo" ) && cfg.getParameter<bool>( "dumpMelaWeightsInfo" )) {
             melaTablesTag_ = cfg.getParameter<std::vector<InputTag> >("melaTables");
             for (unsigned i = 0; i<melaTablesTag_.size(); ++i) {
                 melaTablesTokens_.emplace_back(cc.consumes<nanoaod::FlatTable>( melaTablesTag_[i] ));

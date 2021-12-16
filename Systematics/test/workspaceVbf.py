@@ -248,7 +248,6 @@ if dropVBFInNonGold:
     process.flashggVBFTag.DropNonGoldData = True
 modifyTagSequenceForSystematics(process,jetSystematicsInputTags)
 
-
 print "Printing options"
 print 'acceptance '+str(customize.acceptance)
 print 'tthTagsOnly '+str(customize.tthTagsOnly)
@@ -264,9 +263,6 @@ if customize.tthTagsOnly:
     process.flashggDiPhotons.useZerothVertexFromMicro = cms.bool(True)
     process.flashggDiPhotons.vertexIdMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexIdMVAweightfile'].encode("ascii")
     process.flashggDiPhotons.vertexProbMVAweightfile = customize.metaConditions['flashggDiPhotons']['vertexProbMVAweightfile'].encode("ascii")
-
-if customize.vbfTagsOnly:
-    process.flashggSystTagMerger = cms.EDProducer("VBFTagMerger",src=cms.VInputTag("flashggVBFTag"))
 
 print 'here we print the tag sequence before'
 print process.flashggTagSequence
@@ -295,10 +291,14 @@ if customize.vbfTagsOnly:
     process.flashggTagSequence.remove(process.flashggTTHDiLeptonTag)
     process.flashggTagSequence.remove(process.flashggTHQLeptonicTag)
 
-
 else:
     if not customize.doSystematics: # allow memory-intensive ttH MVAs if we are not running systematics
         allowLargettHMVAs(process)
+
+# Only run systematics for signal events
+# convention: ggh vbf wzh (wh zh) tth
+signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh"]
+is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 
 if customize.doDoubleHTag:
     import flashgg.Systematics.doubleHCustomize 
@@ -315,8 +315,8 @@ if customize.doStageOne:
 
 if customize.vbfTagsOnly:
     from flashgg.Systematics.anomalousCouplingsCustomize import AnomalousCouplingsCustomize
-    acc = AnomalousCouplingsCustomize(process, customize, customize.metaConditions) ### here
-    minimalVariables = acc.variablesToDump()
+    acc = AnomalousCouplingsCustomize(process, customize, customize.metaConditions)
+    minimalVariables = acc.variablesToDump(is_signal)
     systematicVariables = acc.systematicVariables()
 
 process.flashggTHQLeptonicTag.processId = cms.string(str(customize.processId))
@@ -349,8 +349,6 @@ if customize.vbfTagsOnly:
         cms.PSet(TagName = cms.InputTag('flashggVBFTag'))
     )
 
-process.flashggTagSorter.AddTruthInfo = cms.bool(False)
-
 print "customize.processId:",customize.processId
 # load appropriate scale and smearing bins here
 # systematics customization scripts will take care of adjusting flashggDiPhotonSystematics
@@ -358,11 +356,6 @@ print "customize.processId:",customize.processId
 
 # Or use the official tool instead
 useEGMTools(process)
-
-# Only run systematics for signal events
-# convention: ggh vbf wzh (wh zh) tth
-signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh"]
-is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 
 applyL1Prefiring = customizeForL1Prefiring(process, customize.metaConditions, customize.processId)
 
@@ -373,16 +366,6 @@ if is_signal:
         variablesToUse = minimalVariablesHTXS
     else:
         variablesToUse = minimalVariables
-        if customize.dumpLHE:
-            variablesToUse.append("nLHEPart")
-            variablesToUse.append("LHEPart_pt")
-            variablesToUse.append("LHEPart_eta")
-            variablesToUse.append("LHEPart_phi")
-            variablesToUse.append("LHEPart_mass")
-            if customize.melaEFT:
-                from flashgg.Taggers.melaTables_cff import getMelaEFT_variables
-                melaVariables = getMelaEFT_variables("any")
-                variablesToUse += melaVariables
 
     if customize.doSystematics:
         for direction in ["Up","Down"]:
@@ -443,6 +426,7 @@ if is_signal:
 elif customize.processId == "Data":
     print "Data, so turn off all shifts and systematics, with some exceptions"
     variablesToUse = minimalNonSignalVariables
+    variablesToUse += acc.variablesToDump(is_signal=False)
     customizeSystematicsForData(process)
 else:
     print "Background MC, so store mgg and central only"
@@ -468,16 +452,14 @@ print "------------------------------------------------------------"
 #from flashgg.Taggers.globalVariables_cff import globalVariables
 #globalVariables.extraFloats.rho = cms.InputTag("rhoFixedGridAll")
 
-
 #cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,jetsystlabels,jetSystematicsInputTags)
-cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags,ZPlusJetMode=2)
+cloneTagSequenceForEachSystematic(process,systlabels,phosystlabels,metsystlabels,jetsystlabels,jetSystematicsInputTags)
 
 # Dump an object called NoTag for untagged events in order to track QCD weights
 # Will be broken if it's done for non-central values, so turn this on only for the non-syst tag sorter
 process.flashggTagSorter.CreateNoTag = True # MUST be after tag sequence cloning
 process.flashggTagSorter.isGluonFusion = cms.bool(bool(customize.processId.count("ggh")))
 process.flashggTagSorter.applyNNLOPSweight = cms.bool(customize.applyNNLOPSweight)
-process.flashggTagSorter.AddTruthInfo = cms.bool(False)
 
 ###### Dumper section
 
@@ -497,17 +479,8 @@ process.TFileService = cms.Service("TFileService",
 
 process.extraDumpers = cms.Sequence()
 
-#from flashgg.Taggers.TagsDumperCustomize import customizeTagsDumper
-#customizeTagsDumper(process, customize) ## move all the default tags dumper configuration to this function
-
-import flashgg.Taggers.dumperConfigTools as cfgTools
-from   flashgg.Taggers.tagsDumpers_cfi   import createTagDumper
-
-process.vbfTagDumper = createTagDumper("VBFTag")
-process.vbfTagDumper.dumpTrees     = True
-process.vbfTagDumper.dumpHistos    = True
-process.vbfTagDumper.dumpWorkspace = False
-process.vbfTagDumper.src = "flashggSystTagMerger"
+from flashgg.Taggers.TagsDumperCustomize import customizeTagsDumper
+customizeTagsDumper(process, customize) ## move all the default tags dumper configuration to this function
 
 process.lheInfosSeq = cms.Sequence()
 if customize.processId != "Data":
@@ -519,7 +492,7 @@ if customize.processId != "Data":
         process.lheInfosSeq += process.genParticleSequence
         process.lheInfosSeq += process.particleLevelSequence
         process.lheInfosSeq += process.lheInfoTable
-        process.vbfTagDumper.globalVariables.dumpLHEInfo = True 
+        process.tagsDumper.globalVariables.dumpLHEInfo = True 
         print '-------------------------------------------------------------'
         
         if customize.melaEFT:
@@ -527,8 +500,8 @@ if customize.processId != "Data":
             addMelaTable_ACJHU(process)
             addMelaTables_EFT(process,"any")
             process.lheInfosSeq += process.tables
-            process.vbfTagDumper.globalVariables.dumpMelaWeightsInfo = True
-            process.vbfTagDumper.globalVariables.melaTables = cms.VInputTag('melaGenMatrixElementHiggsTable',
+            process.tagsDumper.globalVariables.dumpMelaWeightsInfo = True
+            process.tagsDumper.globalVariables.melaTables = cms.VInputTag('melaGenMatrixElementHiggsTable',
                                                                             #'melaGenMatrixElementHELFlipTable',
                                                                             #'melaGenMatrixElementHELFlipEffTable',
                                                                             #'melaGenMatrixElementHELNoGTable',
@@ -540,7 +513,6 @@ if customize.processId != "Data":
                                                                             'melaGenMatrixElementWarNoGTable',
                                                                             'melaGenMatrixElementACTableJHU'
                                                                             )
-        
 
 if customize.processId == "tHq":
     import flashgg.Taggers.THQLeptonicTagVariables as var
@@ -592,13 +564,13 @@ else:
         ]
 
 definedSysts=set()
-process.vbfTagDumper.classifierCfg.remap=cms.untracked.VPSet()
+process.tagsDumper.classifierCfg.remap=cms.untracked.VPSet()
 import flashgg.Taggers.dumperConfigTools as cfgTools
 for tag in tagList: 
   tagName=tag[0]
   tagCats=tag[1]
   # remap return value of class-based classifier
-  process.vbfTagDumper.classifierCfg.remap.append( cms.untracked.PSet( src=cms.untracked.string("flashgg%s"%tagName), dst=cms.untracked.string(tagName) ) )
+  process.tagsDumper.classifierCfg.remap.append( cms.untracked.PSet( src=cms.untracked.string("flashgg%s"%tagName), dst=cms.untracked.string(tagName) ) )
   for systlabel in systlabels:
       if not systlabel in definedSysts:
           # the cut corresponding to the systematics can be defined just once
@@ -638,7 +610,10 @@ for tag in tagList:
       if systlabel == "":
          if tagName in tag_only_variables.keys():
             currentVariables += tag_only_variables[tagName]
-      cfgTools.addCategory(process.vbfTagDumper,
+        
+      print "SYSTLABEL = ",systlabel,"  ; variables to dump = ", currentVariables
+
+      cfgTools.addCategory(process.tagsDumper,
                            systlabel,
                            classname=tagName,
                            cutbased=cutstring,
@@ -712,7 +687,6 @@ else:
 process.flashggMetFilters.requiredFilterNames = cms.untracked.vstring([filter.encode("ascii") for filter in customize.metaConditions["flashggMetFilters"][metFilterSelector]])
 process.flashggMetFilters.filtersInputTag = filtersInputTag
 
-
 if customize.tthTagsOnly:
     process.p = cms.Path(process.dataRequirements*
                          process.flashggMetFilters*
@@ -721,16 +695,13 @@ if customize.tthTagsOnly:
                          process.flashggDifferentialPhoIdInputsCorrection*
                          process.flashggDiPhotonSystematics*
                          process.flashggMetSystematics*
-                         process.flashggMuonSystematics* 
-                         process.flashggElectronSystematics*
-                         (process.flashggUnpackedJets*
-                          process.jetSystematicsSequence)*
-                         (process.flashggTagSequence 
-                          + process.systematicsTagSequences)*
+                         process.flashggMuonSystematics*process.flashggElectronSystematics*
+                         (process.flashggUnpackedJets*process.jetSystematicsSequence)*
+                         (process.flashggTagSequence*process.systematicsTagSequences)*
                          process.flashggSystTagMerger*
                          process.penultimateFilter*
                          process.finalFilter*
-                         process.vbfTagDumper)
+                         process.tagsDumper)
     # Now, we put the ttH tags back in the sequence with modified systematics workflow
     modifySystematicsWorkflowForttH(process, systlabels, phosystlabels, metsystlabels, jetsystlabels)
 
@@ -751,7 +722,7 @@ else:
                          process.flashggSystTagMerger*
                          process.penultimateFilter*
                          process.finalFilter*
-                         process.vbfTagDumper)
+                         process.tagsDumper)
     if customize.doStageOne: 
         if soc.modifyForttH: soc.modifyWorkflowForttH(systlabels, phosystlabels, metsystlabels, jetsystlabels)
 

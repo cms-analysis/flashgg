@@ -23,7 +23,7 @@ class AnomalousCouplingsCustomize():
         self.customizeTagSequence()
 
 
-    def variablesToDump(self):
+    def variablesToDump(self,is_signal):
         ws_variables = []
         ws_variables += self.acVariable 
         ws_variables += [
@@ -59,9 +59,9 @@ class AnomalousCouplingsCustomize():
             "vbfDnnResult_prob_VBF := VBFMVA.vbfDnnResult_prob_VBF()",
         ]
 
-        all_variables = var.dipho_variables + var.dijet_variables + more_jet_vars + VBF_mva_probs
+        allNonSigVariables = var.dipho_variables + var.dijet_variables + more_jet_vars + VBF_mva_probs
 
-        ntup_variables = ws_variables + all_variables
+        ntup_variables = ws_variables + allNonSigVariables if is_signal else allNonSigVariables
     
         if self.customize.dumpWorkspace:
             return ws_variables
