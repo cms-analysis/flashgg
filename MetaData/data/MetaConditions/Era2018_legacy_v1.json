@@ -1,8 +1,8 @@
 {
     "globalTags" :
     {
-        "data" : "106X_dataRun2_v28",
-        "MC" : "106X_upgrade2018_realistic_v11_L1v1"
+        "data" : "106X_dataRun2_v35",
+        "MC" : "106X_upgrade2018_realistic_v16_L1v1"
     },
 
     "flashggMETsFunction" : "runMETs2016",
@@ -80,6 +80,25 @@
 
 
     "sigmaM_M_decorr" : "flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_2018_Mgg100to180.root",
+
+
+    "JetCorrectorParametersCollection_version" :
+    {
+        "data" : "JetCorrectorParametersCollection_Summer19UL18_V5_DATA_AK4PFchs",
+        "data_db" : "flashgg/Systematics/data/JEC/Summer19UL18_V5_DATA.db",
+        "MC" : "JetCorrectorParametersCollection_Summer19UL18_V5_MC_AK4PFchs",
+        "MC_db" : "flashgg/Systematics/data/JEC/Summer19UL18_V5_MC.db"
+    },
+
+    "JetResolutionParametersCollection_version" :
+    {
+        "data_res" : "JR_Summer19UL18_JRV2_DATA_PtResolution_AK4PFchs",
+        "data_sf" : "JR_Summer19UL18_JRV2_DATA_SF_AK4PFchs",
+        "data_db" : "flashgg/Systematics/data/JER/Summer19UL18_JRV2_DATA.db",
+        "MC_res" : "JR_Summer19UL18_JRV2_MC_PtResolution_AK4PFchs",
+        "MC_sf" : "JR_Summer19UL18_JRV2_MC_SF_AK4PFchs",
+        "MC_db" : "flashgg/Systematics/data/JER/Summer19UL18_JRV2_MC.db"
+    },
 
     "flashggDiPhotonMVA" :
     {

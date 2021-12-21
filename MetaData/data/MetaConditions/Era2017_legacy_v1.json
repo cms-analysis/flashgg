@@ -1,8 +1,8 @@
 {
     "globalTags" :
     {
-        "data" : "106X_dataRun2_v28",
-        "MC" : "106X_mc2017_realistic_v7"
+        "data" : "106X_dataRun2_v35",
+        "MC" : "106X_mc2017_realistic_v9"
     },
 
     "flashggMETsFunction" : "runMETs2017",
