@@ -292,7 +292,11 @@
     "VBFHToGG_M124_13TeV_amcatnlo_pythia8"                          : { "xs" : 3.8120,   "br" : 0.002266, "kf" : 1.06, "itype":-124100 },
     "VBFHToGG_M-124_13TeV_powheg_pythia8"                          : { "xs" : 3.8120,   "br" : 0.002266, "kf" : 1.06, "itype":-124100 },
     "VBFHToGG_M125_13TeV_amcatnlo_pythia8"                          : { "xs" : 3.7820,   "br" : 0.00227, "kf" : 1.06, "itype":-125100 },
+
     "VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"        : { "xs" : 3.7820,   "br" : 0.00227, "kf" : 1.06, "itype":-125100 },
+    "VBFHiggs0PMToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"        : { "xs" : 3.7820,   "br" : 0.00227, "kf" : 1.06, "itype":-125100 },
+    "VBFHiggs0PHToGG_M-125_13TeV-JHUGenV6_pythia8"                  : { "xs" : 3.7820,   "br" : 0.00227, "kf" : 1.06, "itype":-125100 },
+    "VBFHiggs0PMToGG_M-125_13TeV-JHUGenV6_pythia8"                  : { "xs" : 3.7820,   "br" : 0.00227, "kf" : 1.06, "itype":-125100 },
     "VBFHiggs0L1ToGG_M125_13TeV_JHUGenV7011_pythia8"               : { "xs" : 3.7820,   "br" : 0.00227, "kf" : 1.06, "itype":-125100 },
     "VBFHiggs0L1ZgToGG_M125_13TeV_JHUGenV7011_pythia8"               : { "xs" : 3.7820,   "br" : 0.00227, "kf" : 1.06, "itype":-125100 },
     "VBFHiggs0L1Zgf05ph0ToGG_M125_13TeV_JHUGenV7011_pythia8"               : { "xs" : 3.7820,   "br" : 0.00227, "kf" : 1.06, "itype":-125100 },
