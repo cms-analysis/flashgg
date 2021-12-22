@@ -2,12 +2,12 @@
     "cmdLine"  : "metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2017_RR-31Mar2018_v1.json campaign=Era2017_RR-31Mar2018_v2 useAAA=True lumiMask=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt ",
     "processes": {
 	"ggh_125"   : [
-            "/GluGluHToGG_M120_TuneCP5_13TeV-amcatnloFXFX-pythia8",
-	    "/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8",
-            "/GluGluHToGG_M130_TuneCP5_13TeV-amcatnloFXFX-pythia8",
-            "/GluGluHToGG_M-120_TuneCP5_13TeV-powheg-pythia8",
-	    "/GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8",
-            "/GluGluHToGG_M-130_TuneCP5_13TeV-powheg-pythia8"
+            "/GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8",
+	    "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8",
+            "/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8",
+            "/GluGluHToGG_M-120_13TeV_powheg_pythia8",
+	    "/GluGluHToGG_M-125_13TeV_powheg_pythia8",
+            "/GluGluHToGG_M-130_13TeV_powheg_pythia8"
         ],
 	"vbf_125"   : [
             "/VBFHiggs0L1f05ph0ToGG_M125_13TeV_JHUGenV7011_pythia8",
