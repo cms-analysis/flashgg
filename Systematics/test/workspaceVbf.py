@@ -495,7 +495,7 @@ if customize.processId != "Data":
         process.tagsDumper.globalVariables.dumpLHEInfo = True 
         print '-------------------------------------------------------------'
         
-        if customize.melaEFT:
+        if customize.melaEFT and customize.processId.count("vbf_"):
             from flashgg.Taggers.melaTables_cff import addMelaTable_ACJHU, addMelaTables_EFT
             addMelaTable_ACJHU(process)
             addMelaTables_EFT(process,"any")
@@ -593,8 +593,11 @@ for tag in tagList:
           else:
               currentVariables = []
       isBinnedOnly = (systlabel !=  "")
+
+      print "============================>>>>>>>>>>>> datasetname =>>>>>>>>>>>>>>>>>>>>>>>> ",customize.datasetName()
+
       is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
-      if ( customize.doPdfWeights and customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId.count("bbh_") or customize.processId.count("thw_") or customize.processId.count("thq_")):
+      if ( customize.doPdfWeights and customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId.count("bbh_") or customize.processId.count("thw_") or customize.processId.count("thq_")) and ( customize.datasetName() and not customize.datasetName().count("JHU")):
           #print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
@@ -612,6 +615,7 @@ for tag in tagList:
             currentVariables += tag_only_variables[tagName]
         
       print "SYSTLABEL = ",systlabel,"  ; variables to dump = ", currentVariables
+      print "DUMP PDFs = ",dumpPdfWeights  
 
       cfgTools.addCategory(process.tagsDumper,
                            systlabel,
@@ -782,7 +786,7 @@ printSystematicInfo(process)
 ### Rerun microAOD sequence on top of microAODs using the parent dataset
 if customize.useParentDataset:
     runRivetSequence(process, customize.metaConditions, customize.processId)
-    if customize.recalculatePDFWeights and is_signal and not (customize.processId.count("th_") or customize.processId.count("bbh_") or customize.processId.count("thw_") or customize.processId.count("thq_")):
+    if customize.recalculatePDFWeights and is_signal and not (customize.processId.count("th_") or customize.processId.count("bbh_") or customize.processId.count("thw_") or customize.processId.count("thq_") or customize.datasetName().count("JHU")):
         recalculatePDFWeights(process, customize.metaConditions)
 
 #### BELOW HERE IS MOSTLY DEBUGGING STUFF
