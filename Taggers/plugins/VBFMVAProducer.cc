@@ -12,6 +12,8 @@
 #include "flashgg/DataFormats/interface/VBFMVAResult.h"
 
 #include "TMVA/Reader.h"
+#include "PhysicsTools/TensorFlow/interface/TensorFlow.h"
+#include "flashgg/Taggers/interface/TensorFlowInterface.h"
 #include "TMath.h"
 #include "DataFormats/Math/interface/deltaR.h"
 #include "DataFormats/Math/interface/deltaPhi.h"
@@ -37,6 +39,10 @@ namespace flashgg {
 
         unique_ptr<TMVA::Reader>VbfMva_;
         FileInPath vbfMVAweightfile_;
+        FileInPath vbfDNNpbfile_;
+        std::vector<std::string> dnn_variables_;
+        std::vector<std::string> dnn_classes_;
+        unique_ptr<TensorFlowInterface> tfTool_;
         string     _MVAMethod;
         bool       _usePuJetID;
         bool       _useJetID;
@@ -72,7 +78,15 @@ namespace flashgg {
         float dijet_leady_    ;
         float dijet_subleady_ ;
         float dijet_dipho_pt_ ;
-        
+
+        float dipho_cosphi_;
+        float dipho_leadEta_;
+        float dipho_subleadEta_;
+        float dipho_sumpt_;
+        float dipho_leadPt_;
+        float dipho_subleadPt_;
+        float dipho_leadPhi_;
+        float dipho_subleadPhi_;
         float dipho_PToM_  ;
         float leadPho_PToM_;
         float sublPho_PToM_;
@@ -96,6 +110,7 @@ namespace flashgg {
         _pujid_wp_pt_bin_2  ( iConfig.getParameter<std::vector<double> > ( "pujidWpPtBin2" ) )
     {
         vbfMVAweightfile_ = iConfig.getParameter<edm::FileInPath>( "vbfMVAweightfile" );
+        vbfDNNpbfile_ = iConfig.getParameter<edm::FileInPath>( "vbfDNNpbfile" );
         
         dijet_leadEta_    = -999.;
         dijet_subleadEta_ = -999.;
@@ -148,7 +163,7 @@ namespace flashgg {
             
             VbfMva_->BookMVA( _MVAMethod.c_str() , vbfMVAweightfile_.fullPath() );
         }
-        else if (_MVAMethod == "Multi"){
+        else if (_MVAMethod == "Multi" || _MVAMethod == "DNNMulti"){
             VbfMva_.reset( new TMVA::Reader( "!Color:Silent" ) );
             VbfMva_->AddVariable( "dipho_lead_ptoM"        , &leadPho_PToM_        );
             VbfMva_->AddVariable( "dipho_sublead_ptoM"     , &sublPho_PToM_        );
@@ -161,7 +176,28 @@ namespace flashgg {
             VbfMva_->AddVariable( "dijet_minDRJetPho"      , &dijet_minDRJetPho_   );
             VbfMva_->AddVariable( "dijet_dipho_dphi_trunc" , &dijet_dphi_trunc_    );
             
-            VbfMva_->BookMVA( _MVAMethod.c_str() , vbfMVAweightfile_.fullPath() );
+            VbfMva_->BookMVA( "Multi" , vbfMVAweightfile_.fullPath() );
+        }
+        if (_MVAMethod == "DNNMulti"){
+            dnn_variables_.push_back( "leadJPt" );
+            dnn_variables_.push_back( "leadJEta" );
+            dnn_variables_.push_back( "subJPt"  );
+            dnn_variables_.push_back( "subJEta"  );
+            dnn_variables_.push_back( "leadGPtOverM"); 
+            dnn_variables_.push_back( "subGPtOverM"); 
+            dnn_variables_.push_back( "mJJ" );
+            dnn_variables_.push_back( "centrality" );
+            dnn_variables_.push_back( "dijet_dipho_dphi_trunc" );
+            dnn_variables_.push_back( "dijet_abs_dEta" );
+            dnn_variables_.push_back( "dijet_dphi" );
+            dnn_variables_.push_back( "dijet_minDRJetPho" );            
+            dnn_variables_.push_back( "dipho_PToM" );
+
+            dnn_classes_.push_back( "vbfH"  );
+            dnn_classes_.push_back( "ggH"   );
+            dnn_classes_.push_back( "other" );
+
+            tfTool_.reset( new  TensorFlowInterface(vbfDNNpbfile_.fullPath(), dnn_variables_, dnn_classes_) );
         }
         for (unsigned i = 0 ; i < inputTagJets_.size() ; i++) {
             auto token = consumes<View<flashgg::Jet> >(inputTagJets_[i]);
@@ -195,6 +231,7 @@ namespace flashgg {
             dijet_Zep_        = -999.;
             dijet_dphi_trunc_ = -999.;
             dijet_dipho_dphi_ = -999.;
+            dipho_cosphi_     = -999.;
             dijet_dphi_       = -999.;
             dijet_Mjj_        = -999.;
             dijet_dy_         = -999.;
@@ -206,6 +243,13 @@ namespace flashgg {
             dijet_centrality_j3_ = -999.;
             dijet_centrality_g_  = -999.;
             dipho_PToM_       = -999.;
+            dipho_leadEta_    = -999.;
+            dipho_subleadEta_ = -999.;
+            dipho_sumpt_      = -999.;
+            dipho_leadPt_     = -999.;
+            dipho_subleadPt_  = -999.;
+            dipho_leadPhi_    = -999.;
+            dipho_subleadPhi_ = -999.;
             leadPho_PToM_     = -999.;
             sublPho_PToM_     = -999.;
            
@@ -390,6 +434,14 @@ namespace flashgg {
                 dijet_Mjj_           = (dijetP4s.first + dijetP4s.second).M();
 
                 dipho_PToM_       = (diPhotonP4s[0] + diPhotonP4s[1]).Pt()/(diPhotonP4s[0] + diPhotonP4s[1]).M();
+                dipho_cosphi_     = fabs(TMath::Cos(diPhotonP4s[0].Phi() - diPhotonP4s[1].Phi()));
+                dipho_leadEta_    = diPhotonP4s[0].Eta();
+                dipho_subleadEta_ = diPhotonP4s[1].Eta();
+                dipho_sumpt_      = diPhotons->ptrAt( candIndex )->sumPt();
+                dipho_leadPt_     = diPhotonP4s[0].Pt();
+                dipho_subleadPt_  = diPhotonP4s[1].Pt();
+                dipho_leadPhi_    = diPhotonP4s[0].Phi();
+                dipho_subleadPhi_ = diPhotonP4s[1].Phi();
                 leadPho_PToM_     = diPhotonP4s[0].pt()/(diPhotonP4s[0] + diPhotonP4s[1]).M();
                 sublPho_PToM_     = diPhotonP4s[1].pt()/(diPhotonP4s[0] + diPhotonP4s[1]).M();
                 
@@ -437,10 +489,38 @@ namespace flashgg {
                 mvares.vbfMvaResult_value = VbfMva_->EvaluateMVA( _MVAMethod.c_str() );
                 //mvares.vbfMvaResult_value = VbfMva_->GetProba( _MVAMethod.c_str() );
             }
-            else if (_MVAMethod == "Multi") {
-                mvares.vbfMvaResult_prob_bkg = VbfMva_->EvaluateMulticlass( 0, _MVAMethod.c_str() );
-                mvares.vbfMvaResult_prob_ggH = VbfMva_->EvaluateMulticlass( 1, _MVAMethod.c_str() );
-                mvares.vbfMvaResult_prob_VBF = VbfMva_->EvaluateMulticlass( 2, _MVAMethod.c_str() );
+            else if (_MVAMethod == "Multi" || _MVAMethod == "DNNMulti") {
+                mvares.vbfMvaResult_prob_bkg = VbfMva_->EvaluateMulticlass( 0, "Multi" );
+                mvares.vbfMvaResult_prob_ggH = VbfMva_->EvaluateMulticlass( 1, "Multi" );
+                mvares.vbfMvaResult_prob_VBF = VbfMva_->EvaluateMulticlass( 2, "Multi" );
+            }
+            if (_MVAMethod == "DNNMulti") {
+                std::map<std::string, double> mvaInputs;
+
+                mvaInputs["leadJPt"] = dijet_LeadJPt_;
+                mvaInputs["leadJEta"] = fabs(dijet_leadEta_); 
+                mvaInputs["subJPt"]  = dijet_SubJPt_;
+                mvaInputs["subJEta"] = fabs(dijet_subleadEta_);
+                mvaInputs["leadGPtOverM"] = leadPho_PToM_;
+                mvaInputs["subGPtOverM"] = sublPho_PToM_;
+                mvaInputs["mJJ"] = dijet_Mjj_;
+                mvaInputs["centrality"] = dijet_centrality_gg_;
+                mvaInputs["dijet_dipho_dphi_trunc"] = dijet_dphi_trunc_;
+                mvaInputs["dijet_abs_dEta"] = dijet_abs_dEta_;
+                mvaInputs["dijet_dphi"] = dijet_dphi_;
+                mvaInputs["dijet_minDRJetPho"] = dijet_minDRJetPho_;
+                mvaInputs["dipho_PToM"] = dipho_PToM_;
+
+                std::map<std::string, double> res = (*tfTool_)(mvaInputs);
+
+                mvares.vbfDnnResult_prob_VBF = res["vbfH"];
+                mvares.vbfDnnResult_prob_ggH = res["ggH"];
+                mvares.vbfDnnResult_prob_bkg = res["other"];
+
+                // std::cout << "\t==> DNN Multiclass, n. classes = " << dnn_classes_.size() << std::endl;
+                // for (unsigned i = 0; i < dnn_classes_.size(); i++) {
+                //     std::cout << "class = " << dnn_classes_[i] << " ;\t  result = " << res[dnn_classes_[i]] << std::endl;
+                // }
             }
             
             mvares.dijet_leadEta     = dijet_leadEta_ ;

@@ -23,5 +23,7 @@ tagsDumpConfig = cms.PSet(
     
     quietRooFit = cms.untracked.bool(False),
     dumpGlobalVariables = cms.untracked.bool(True),
+    #dumpLHEInfo = True,
+    #lheInfo = cms.InputTag("flashggLHEInfos"),
     globalVariables = globalVariables
 )

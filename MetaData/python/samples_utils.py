@@ -875,8 +875,8 @@ class SamplesManager(object):
                     raise Exception("More then one dataset matched the request: /%s/%s" % ( primary, str(secondary) ))
                 found = dataset
                 if prim in self.cross_sections_:
-                    xsec = self.cross_sections_[prim]
-                if "weights" in xsec and weightName:
+                    xsec = self.cross_sections_[prim]                    
+                if xsec != None and "weights" in xsec and weightName:                    
                     if weightName not in xsec["weights"].split(","):
                         print weightName, " is not available in ", primary 
                         weightName = None

@@ -74,6 +74,11 @@ namespace flashgg {
         float prob_bkg_value() const {return vbfMvaResult_prob_bkg;}
         // needed to go to native XGBoost score from TMVA version, inverting this https://github.com/jpata/mlglue/blob/master/mlglue/tree.py#L400-L409
         float transformedMvaValue(float result) const {return 1. / ( 1. + exp( 0.5*log( 2./(result+1.) - 1 ) ) );} 
+
+        // DNN for VBF anomalous couplings 
+        float dnnprob_VBF_value() const {return vbfDnnResult_prob_VBF;}
+        float dnnprob_ggH_value() const {return vbfDnnResult_prob_ggH;}
+        float dnnprob_bkg_value() const {return vbfDnnResult_prob_bkg;}
         
         // Output
         float vbfMvaResult_value;
@@ -82,6 +87,10 @@ namespace flashgg {
         float vbfMvaResult_prob_VBF;
         float vbfMvaResult_prob_ggH;
         float vbfMvaResult_prob_bkg;
+
+        float vbfDnnResult_prob_VBF;
+        float vbfDnnResult_prob_ggH;
+        float vbfDnnResult_prob_bkg;
     };
     
     typedef std::map<edm::Ptr<DiPhotonCandidate>, VBFMVAResult> VBFMVAResultMap;

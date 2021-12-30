@@ -64,7 +64,6 @@ namespace  {
         std::vector<flashgg::PDFWeightObject>                             vec_fgg_pobj;
         edm::Wrapper<std::vector<flashgg::PDFWeightObject> >               wrp_vec_fgg_pobj;
 
-
         flashgg::Photon                                                   fgg_pho;
         edm::Ptr<flashgg::Photon>                                     ptr_fgg_pho;
         edm::Wrapper<flashgg::Photon>                                 wrp_fgg_pho;

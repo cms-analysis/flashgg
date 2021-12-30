@@ -76,6 +76,7 @@ else: process.GlobalTag.globaltag = str(customize.metaConditions['globalTags']['
 
 #Systematics customize
 from flashgg.Systematics.SystematicsCustomize import *
+#jetSystematicsInputTags = None
 jetSystematicsInputTags = createStandardSystematicsProducers(process,customize)
 modifyTagSequenceForSystematics(process,jetSystematicsInputTags,2)
 
@@ -358,11 +359,12 @@ if customize.processId == "Data":
 
 # Split WH and ZH
 process.genFilter = cms.Sequence()
-if (customize.processId.count("wh") or customize.processId.count("zh")) and not customize.processId.count("wzh"):
-    process.load("flashgg/Systematics/VHFilter_cfi")
-    process.genFilter += process.VHFilter
-    process.VHFilter.chooseW = bool(customize.processId.count("wh"))
-    process.VHFilter.chooseZ = bool(customize.processId.count("zh"))
+if customize.processId != "Data":
+    if (customize.processId.count("wh") or customize.processId.count("zh")) and not customize.processId.count("wzh"):
+        process.load("flashgg/Systematics/VHFilter_cfi")
+        process.genFilter += process.VHFilter
+        process.VHFilter.chooseW = bool(customize.processId.count("wh"))
+        process.VHFilter.chooseZ = bool(customize.processId.count("zh"))
 
 # Split out prompt-fake or fake-fake
 process.finalFilter = cms.Sequence()
@@ -414,7 +416,7 @@ print
 printSystematicInfo(process)
 
 ## rerun rivet for stage 1p1 info
-if customize.useParentDataset:
+if customize.useParentDataset and not customize.processId == "Data":
     runRivetSequence(process, customize.metaConditions, customize.processId)
 
 # call the customization

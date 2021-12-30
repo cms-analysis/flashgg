@@ -549,7 +549,7 @@ namespace flashgg {
                 }
                 truth_obj.setClosestParticleToLeadingPhoton(genParticles->ptrAt(gpIndex1));
                 truth_obj.setClosestParticleToSubLeadingPhoton(genParticles->ptrAt(gpIndex2));
-            }            
+            }
 
             bool VBFpresel = 1;
             if ( requireVBFPreselection_ ) {

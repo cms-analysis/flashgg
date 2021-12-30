@@ -4,9 +4,11 @@
 <use   name="flashgg/DataFormats"/>
 <use   name="flashgg/MicroAOD"/>
 <use   name="DataFormats/VertexReco"/>
+<use   name="DataFormats/NanoAOD"/>
 <use   name="FWCore/Utilities"/>
 <use   name="FWCore/Common"/>
 <use   name="CommonTools/Utils"/>
+<use   name="PhysicsTools/TensorFlow"/>
 <use   name="rootcore"/>
 <use   name="rootrflx"/>
 <use   name="roofit"/>

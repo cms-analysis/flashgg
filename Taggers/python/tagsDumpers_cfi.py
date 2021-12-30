@@ -10,6 +10,7 @@ def createTagDumper (tagName):
     tagDumper.processId = cms.string(dict[tagName])
     # split tree, histogram and datasets 
     tagDumper.nameTemplate = "$PROCESS_$SQRTS_$LABEL_$SUBCAT"
+    
 
     return tagDumper
 
