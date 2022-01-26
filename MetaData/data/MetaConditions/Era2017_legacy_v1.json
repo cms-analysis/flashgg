@@ -30,7 +30,7 @@
         ]
     },
 
-    "DeepJet" : "rerun",
+    "DeepJet" : "read",
 
     "flashggPhotons" :
     {
