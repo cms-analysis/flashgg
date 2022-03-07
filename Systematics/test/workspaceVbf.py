@@ -297,7 +297,7 @@ else:
 
 # Only run systematics for signal events
 # convention: ggh vbf wzh (wh zh) tth
-signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh"]
+signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh","VBFHiggs"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 
 if customize.doDoubleHTag:
@@ -431,6 +431,7 @@ elif customize.processId == "Data":
 else:
     print "Background MC, so store mgg and central only"
     variablesToUse = minimalNonSignalVariables
+    variablesToUse += acc.variablesToDump(is_signal=False)
     customizeSystematicsForBackground(process)
 
 if customize.doubleHTagsOnly:
@@ -484,7 +485,7 @@ customizeTagsDumper(process, customize) ## move all the default tags dumper conf
 
 process.lheInfosSeq = cms.Sequence()
 if customize.processId != "Data":
-    if is_signal:
+    if is_signal and customize.dumpLHE:
         print '-------------------------------------------------------------'
         print ' Running on signal, so adding the sequence to store LHE info '
         customize.options.useParentDataset = True
@@ -785,7 +786,7 @@ printSystematicInfo(process)
 
 ### Rerun microAOD sequence on top of microAODs using the parent dataset
 if customize.useParentDataset:
-    runRivetSequence(process, customize.metaConditions, customize.processId)
+    #runRivetSequence(process, customize.metaConditions, customize.processId)
     if customize.recalculatePDFWeights and is_signal and not (customize.processId.count("th_") or customize.processId.count("bbh_") or customize.processId.count("thw_") or customize.processId.count("thq_") or customize.datasetName().count("JHU")):
         recalculatePDFWeights(process, customize.metaConditions)
 
