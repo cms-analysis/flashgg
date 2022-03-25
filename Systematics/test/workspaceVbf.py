@@ -297,7 +297,7 @@ else:
 
 # Only run systematics for signal events
 # convention: ggh vbf wzh (wh zh) tth
-signal_processes = ["ggh_","vbf_","wzh_","wh_","zh_","bbh_","thq_","thw_","tth_","ggzh_","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh","VBFHiggs"]
+signal_processes = ["ggh","vbfh","wzh","wh","zh","bbh","thq","thw","tth","ggzh","HHTo2B2G","GluGluHToGG","VBFHToGG","VHToGG","ttHToGG","Acceptance","hh","vbfhh","qqh","ggh","tth","vh","VBFHiggs"]
 is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
 
 if customize.doDoubleHTag:
@@ -496,7 +496,7 @@ if customize.processId != "Data":
         process.tagsDumper.globalVariables.dumpLHEInfo = True 
         print '-------------------------------------------------------------'
         
-        if customize.melaEFT and customize.processId.count("vbf_"):
+        if customize.melaEFT and customize.processId.count("vbf"):
             from flashgg.Taggers.melaTables_cff import addMelaTable_ACJHU, addMelaTables_EFT
             addMelaTable_ACJHU(process)
             addMelaTables_EFT(process,"any")
@@ -598,7 +598,7 @@ for tag in tagList:
       print "============================>>>>>>>>>>>> datasetname =>>>>>>>>>>>>>>>>>>>>>>>> ",customize.datasetName()
 
       is_signal = reduce(lambda y,z: y or z, map(lambda x: customize.processId.count(x), signal_processes))
-      if ( customize.doPdfWeights and customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h_") or customize.processId.count("vbf_") or is_signal ) and (systlabel ==  "") and not (customize.processId.count("bbh_") or customize.processId.count("thw_") or customize.processId.count("thq_")) and ( customize.datasetName() and not customize.datasetName().count("JHU")):
+      if ( customize.doPdfWeights and customize.doSystematics ) and ( (customize.datasetName() and customize.datasetName().count("HToGG")) or customize.processId.count("h") or customize.processId.count("vbfh") or is_signal ) and (systlabel ==  "") and not (customize.processId.count("bbh") or customize.processId.count("thw") or customize.processId.count("thq")) and ( customize.datasetName() and not customize.datasetName().count("JHU")):
           #print "Signal MC central value, so dumping PDF weights"
           dumpPdfWeights = True
           nPdfWeights = 60
@@ -786,8 +786,8 @@ printSystematicInfo(process)
 
 ### Rerun microAOD sequence on top of microAODs using the parent dataset
 if customize.useParentDataset:
-    #runRivetSequence(process, customize.metaConditions, customize.processId)
-    if customize.recalculatePDFWeights and is_signal and not (customize.processId.count("th_") or customize.processId.count("bbh_") or customize.processId.count("thw_") or customize.processId.count("thq_") or customize.datasetName().count("JHU")):
+    runRivetSequence(process, customize.metaConditions, customize.processId)
+    if customize.recalculatePDFWeights and is_signal and not (customize.processId.count("th") or customize.processId.count("bbh") or customize.processId.count("thw") or customize.processId.count("thq") or customize.datasetName().count("JHU")):
         recalculatePDFWeights(process, customize.metaConditions)
 
 #### BELOW HERE IS MOSTLY DEBUGGING STUFF

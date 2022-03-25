@@ -1,7 +1,7 @@
 {
     "cmdLine"  : "metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2018_RR-17Sep2018_v1.json campaign=Era2018_RR-17Sep2018_v2 useAAA=True lumiMask=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt ",
     "processes": {
-	"ggh_125"   : [
+	"ggh"   : [
            "/GluGluHToGG_M120_TuneCP5_13TeV-amcatnloFXFX-pythia8",
            "/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8",
            "/GluGluHToGG_M130_TuneCP5_13TeV-amcatnloFXFX-pythia8",
@@ -9,7 +9,7 @@
            "/GluGluHToGG_M-125_13TeV_powheg_pythia8",
            "/GluGluHToGG_M-130_13TeV_powheg_pythia8"
         ],
-	"vbf_125"   : [          
+	"vbfh"   : [          
             "/VBFHToGG_M125_13TeV_amcatnlo_pythia8",
             "/VBFHToGG_M-125_13TeV_powheg_pythia8",
             "/VBFHiggs0L1f05ph0ToGG_M125_13TeV_JHUGenV7011_pythia8",
