@@ -16,8 +16,8 @@ flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
                                DiPhotonTag=cms.InputTag('flashggPreselectedDiPhotons'),
                                #JetTag=cms.InputTag('flashggSelectedJets'),
                                inputTagJets= UnpackedJetCollectionVInputTag,
-                               #MVAMethod = cms.string("BDTG"),
-                               MVAMethod = cms.string("Multi"),
+                               #MVAMethod = cms.string("Multi"),
+                               MVAMethod = cms.string("DNNMulti"),
                                UsePuJetID  = cms.bool(False),
                                UseJetID    = cms.bool(True),
                                merge3rdJet = cms.bool(False),
@@ -31,7 +31,7 @@ flashggVBFMVA = cms.EDProducer('FlashggVBFMVAProducer',
                                MinDijetMinv  = cms.double(0.0),
                                DrJetPhoton   = cms.double(0.4), # Keep the same value for now, should be set later to 0.4
                                vbfMVAweightfile = cms.FileInPath("flashgg/Taggers/data/dijet-2017-10Jul.xml"),
-                               vbfDNNpbfile = cms.FileInPath("flashgg/Taggers/data/vbfdnn_smAndCPodd_2021-08-31.pb")
+                               vbfDNNpbfile = cms.FileInPath("flashgg/Taggers/data/vbfdnn_3classes_smAndCPoddAndL1_2021-09-08.pb")
 )
 
 # Legacy DiPhoDiJet MVA
