@@ -357,6 +357,12 @@
 <class name="edm::Ptr<flashgg::Muon>"/>
 <class name="std::vector<flashgg::Muon>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Muon> >"/>
+<class name="flashgg::SecondaryVertex" ClassVersion="10">
+ <version ClassVersion="10" checksum="794927205"/>
+</class>
+<class name="edm::Ptr<flashgg::SecondaryVertex>"/>
+<class name="std::vector<flashgg::SecondaryVertex>"/>
+<class name="edm::Wrapper<std::vector<flashgg::SecondaryVertex> >"/>
 <class name="flashgg::TagTruthBase" ClassVersion="15">
  <version ClassVersion="15" checksum="615975089"/>
  <version ClassVersion="14" checksum="2420283393"/>

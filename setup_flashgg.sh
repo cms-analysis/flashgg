@@ -76,6 +76,14 @@ cp XGBoostCMSSW/XGBoostInterface/toolbox/*xml $CMSSW_BASE/config/toolbox/$SCRAM_
 scram setup rabit
 scram setup xgboost
 
+echo "setting up ONNXRuntime"
+scram setup /cvmfs/cms.cern.ch/$SCRAM_ARCH/cms/cmssw/CMSSW_10_6_16/config/toolbox/$SCRAM_ARCH/tools/selected/onnxruntime.xml
+git cms-addpkg PhysicsTools/ONNXRuntime
+git cms-addpkg RecoBTag/FeatureTools
+# update files with the CMSSW_10_6_16 version
+rsync -a /cvmfs/cms.cern.ch/$SCRAM_ARCH/cms/cmssw/CMSSW_10_6_16/src/PhysicsTools/ONNXRuntime $CMSSW_BASE/src/PhysicsTools
+rsync -a /cvmfs/cms.cern.ch/$SCRAM_ARCH/cms/cmssw/CMSSW_10_6_16/src/RecoBTag/FeatureTools/interface/deep_helpers.h $CMSSW_BASE/src/RecoBTag/FeatureTools/interface/deep_helpers.h
+
 # Patch IOPool to avoid Run and Lumi trees being dropped when loading a parent dataset
 git cms-addpkg IOPool/Input
 git apply flashgg/LoadRunAndLumis.patch

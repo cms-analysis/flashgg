@@ -15,6 +15,7 @@
 <use name="root"/>
 <lib name="Geom" />
 <use name="XGBoostCMSSW/XGBoostInterface"/>
+<use name="DataFormats/BTauReco"/>
 <!-- Flags CXXFLAGS="-ggdb"/ -->
 <export>
   <lib   name="1"/>
