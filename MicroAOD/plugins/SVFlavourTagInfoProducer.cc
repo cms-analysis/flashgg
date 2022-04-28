@@ -48,7 +48,6 @@ private:
   void matchSVWithPFCands(std::unique_ptr<JetCollection> &svPhantomJets);
 
   const double deltar_match_sv_pfcand_;
-  const bool is_mc_;
 
   edm::EDGetTokenT<VertexCollection> vtx_token_;
   edm::EDGetTokenT<SVCollection> sv_token_;
@@ -84,7 +83,6 @@ const std::vector<std::string> SVFlavourTagInfoProducer::particle_features_{
 
 SVFlavourTagInfoProducer::SVFlavourTagInfoProducer(const edm::ParameterSet &iConfig)
     : deltar_match_sv_pfcand_(iConfig.getParameter<double>("deltar_match_sv_pfcand")),
-      is_mc_(iConfig.getParameter<bool>("is_mc")),
       vtx_token_(consumes<VertexCollection>(iConfig.getParameter<edm::InputTag>("vertices"))),
       sv_token_(consumes<SVCollection>(iConfig.getParameter<edm::InputTag>("secondary_vertices"))),
       pfcand_token_(consumes<CandidateView>(iConfig.getParameter<edm::InputTag>("pf_candidates"))),
@@ -101,7 +99,6 @@ void SVFlavourTagInfoProducer::fillDescriptions(edm::ConfigurationDescriptions &
   // pfSVFlavourTagInfos
   edm::ParameterSetDescription desc;
   desc.add<double>("deltar_match_sv_pfcand", 0.4);
-  desc.add<bool>("is_mc", true);
   desc.add<edm::InputTag>("vertices", edm::InputTag("offlinePrimaryVertices"));
   desc.add<edm::InputTag>("secondary_vertices", edm::InputTag("inclusiveCandidateSecondaryVertices"));
   desc.add<edm::InputTag>("pf_candidates", edm::InputTag("particleFlow"));
@@ -124,7 +121,6 @@ void SVFlavourTagInfoProducer::produce(edm::Event &iEvent, const edm::EventSetup
 
   iEvent.getByToken(sv_token_, svs_);
   iEvent.getByToken(pfcand_token_, pfcands_);
-  iEvent.getByToken(genpart_token_, genparts_);
 
   iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder", track_builder_);
 
@@ -136,7 +132,8 @@ void SVFlavourTagInfoProducer::produce(edm::Event &iEvent, const edm::EventSetup
   }
 
   // SV truth matching
-  if (is_mc_) {
+  if (!iEvent.isRealData()) {
+    iEvent.getByToken(genpart_token_, genparts_);
     matchSVWithPFCands(svPhantomJets);
   }
 
@@ -502,3 +499,10 @@ void SVFlavourTagInfoProducer::matchSVWithPFCands(std::unique_ptr<JetCollection>
 
 // define this as a plug-in
 DEFINE_FWK_MODULE(SVFlavourTagInfoProducer);
+// Local Variables:
+// mode:c++
+// indent-tabs-mode:nil
+// tab-width:4
+// c-basic-offset:4
+// End:
+// vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4

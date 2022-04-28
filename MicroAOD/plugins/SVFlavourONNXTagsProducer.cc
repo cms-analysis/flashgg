@@ -225,7 +225,7 @@ void SVFlavourONNXTagsProducer::produce(edm::Event &iEvent, const edm::EventSetu
       probs.push_back(outputs[flav_n]);
     }
     sv.setSvTagProbs(probs);
-    sv.setSvGenFlav(jets->at(sv_n).userFloat("gen_flavour"));
+    sv.setSvGenFlav(jets->at(sv_n).hasUserFloat("gen_flavour") ? jets->at(sv_n).userFloat("gen_flavour") : -1);
   }
 
   if (debug_) {
