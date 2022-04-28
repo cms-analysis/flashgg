@@ -64,6 +64,12 @@ const reco::Candidate::LorentzVector  VBFTag::subSubLeadingJet() const
     return vbfDiPhoDiJet_mva_result_.vbfMvaResult.subsubleadJet;
 }
 
+const reco::Candidate::LorentzVector  VBFTag::fourthJet() const
+{
+    //! adding a fourth jets for the VBF studies
+    return vbfDiPhoDiJet_mva_result_.vbfMvaResult.fourthJet;
+}
+
 const edm::Ptr<Jet> VBFTag::leadingJet_ptr() const
 {
     return vbfDiPhoDiJet_mva_result_.vbfMvaResult.leadJet_ptr;
@@ -80,9 +86,20 @@ const edm::Ptr<Jet> VBFTag::subSubLeadingJet_ptr() const
     return vbfDiPhoDiJet_mva_result_.vbfMvaResult.subsubleadJet_ptr;
 }
 
+const edm::Ptr<Jet> VBFTag::fourthJet_ptr() const
+{
+    //! adding a fourth jets for the VBF studies
+    return vbfDiPhoDiJet_mva_result_.vbfMvaResult.fourthJet_ptr;
+}
+
 const bool VBFTag::hasValidVBFTriJet() const
 {
     return vbfDiPhoDiJet_mva_result_.vbfMvaResult.hasValidVBFTriJet;
+}
+
+const bool VBFTag::hasValidVBFTetraJet() const
+{
+    return vbfDiPhoDiJet_mva_result_.vbfMvaResult.hasValidVBFTetraJet;
 }
 
 const float VBFTag::ptHjj() const {

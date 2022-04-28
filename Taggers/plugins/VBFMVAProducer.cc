@@ -259,6 +259,8 @@ namespace flashgg {
             std::pair <float, float> dijet_pts( -1., -1. );
             int jet_3_index = -1;
             int jet_3_pt    = -1;
+            int jet_4_index = -1;
+            int jet_4_pt    = -1;
                         
             float phi1 = diPhotons->ptrAt( candIndex )->leadingPhoton()->phi();
             float eta1 = diPhotons->ptrAt( candIndex )->leadingPhoton()->eta();
@@ -267,6 +269,7 @@ namespace flashgg {
             
             bool hasValidVBFDiJet  = 0;
             bool hasValidVBFTriJet = 0;
+            bool hasValidVBFTetraJet = 0;
             
             int  n_jets_count = 0;
             // take the jets corresponding to the diphoton candidate
@@ -353,11 +356,15 @@ namespace flashgg {
                 }else if( jet->pt() > jet_3_pt ){//&& dijet_indices.first != int(jetLoop) && dijet_indices.second != int(jetLoop)){
                     jet_3_index = jetLoop;
                     jet_3_pt    = jet->pt();
+                }else if( jet->pt() > jet_4_pt ){
+                    jet_4_index = jetLoop;
+                    jet_4_pt    = jet->pt();                    
                 }
                 if( jet->pt() > 30.0 ) n_jets_count++;
                 // if the jet's pt is neither higher than the lead jet or sublead jet, then forget it!
                 if( dijet_indices.first != -1 && dijet_indices.second != -1 ) {hasValidVBFDiJet  = 1;}
                 if( hasValidVBFDiJet          && jet_3_index != -1          ) {hasValidVBFTriJet = 1;}
+                if( hasValidVBFTriJet         && jet_4_index != -1          ) {hasValidVBFTetraJet = 1;}
             }
 
             //Third jet deltaR cut and merge index finding
@@ -395,6 +402,11 @@ namespace flashgg {
                 //std::cout << setw(12) << dR_13 << setw(12) << dR_23 << setw(12) << indexToMergeWithJ3 << std::endl;
             }
            
+            if ( hasValidVBFTetraJet ) {
+                // NB merge with others not done here (to be done?)
+                jetP4s.push_back(Jets[jetCollectionIndex]->ptrAt(jet_4_index)->p4());
+            }
+
             if( hasValidVBFDiJet ) {
                 std::pair<reco::Candidate::LorentzVector,reco::Candidate::LorentzVector> dijetP4s;
                 
@@ -482,6 +494,14 @@ namespace flashgg {
                 mvares.hasValidVBFTriJet = 1;
             }else{
                 mvares.subsubleadJet_ptr =  edm::Ptr<flashgg::Jet>();
+            }
+
+            if ( hasValidVBFDiJet && hasValidVBFTriJet && hasValidVBFTetraJet){
+                mvares.fourthJet     = Jets[jetCollectionIndex]->ptrAt( jet_4_index )->p4();
+                mvares.fourthJet_ptr = Jets[jetCollectionIndex]->ptrAt( jet_4_index );
+                mvares.hasValidVBFTetraJet = 1;
+            }else{
+                mvares.fourthJet_ptr =  edm::Ptr<flashgg::Jet>();
             }
             
 

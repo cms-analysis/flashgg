@@ -6,10 +6,13 @@ namespace flashgg {
         leadJet                (),
         subleadJet             (),
         subsubleadJet          (),
+        fourthJet              (),
         leadJet_ptr            (),
         subleadJet_ptr         (),
         subsubleadJet_ptr      (),
+        fourthJet_ptr          (),
         hasValidVBFTriJet      (  0),
+        hasValidVBFTetraJet    (  0),
         n_rec_jets             ( -1),
         n_gen_jets             ( -1),
         n_diphotons            ( -1),
@@ -54,6 +57,11 @@ namespace flashgg {
         subsubleadJet     = x->subsubleadJet;
         subsubleadJet_ptr = x->subsubleadJet_ptr;
         hasValidVBFTriJet = x->hasValidVBFTriJet;
+
+        // 4th jet additional variables
+        fourthJet         = x->fourthJet;
+        fourthJet_ptr     = x->fourthJet_ptr;
+        hasValidVBFTetraJet = x->hasValidVBFTetraJet;
         
         n_rec_jets       = x->n_rec_jets;
         n_gen_jets       = x->n_gen_jets;
