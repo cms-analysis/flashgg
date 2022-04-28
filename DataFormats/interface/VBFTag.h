@@ -27,14 +27,17 @@ namespace flashgg {
         const reco::Candidate::LorentzVector leadingJet() const; //needs to be validated
         const reco::Candidate::LorentzVector subLeadingJet() const; //needs to be validated
         const reco::Candidate::LorentzVector subSubLeadingJet() const; //needs to be validated // 3rd Jet needed for VBF studies
+        const reco::Candidate::LorentzVector fourthJet() const; //needs to be validated // 4th Jet needed for VBF studies
         
         const edm::Ptr<flashgg::Jet> leadingJet_ptr() const; //needs to be validated
         const edm::Ptr<flashgg::Jet> subLeadingJet_ptr() const; //needs to be validated
         const edm::Ptr<flashgg::Jet> subSubLeadingJet_ptr() const; //needs to be validated // 3rd Jet needed for VBF studies
+        const edm::Ptr<flashgg::Jet> fourthJet_ptr() const; //needs to be validated // 4th Jet needed for VBF studies
 
         const bool leadingJet_match()       const { return hasValidVBFDiJet() ? (leadingJet_ptr()->genJet()!=0)      : false;}
         const bool subLeadingJet_match()    const { return hasValidVBFDiJet() ? (subLeadingJet_ptr()->genJet()!=0)   : false;}
-        const bool subSubLeadingJet_match() const { return hasValidVBFDiJet() ? (subSubLeadingJet_ptr()->genJet()!=0): false;}
+        const bool subSubLeadingJet_match() const { return hasValidVBFTriJet() ? (subSubLeadingJet_ptr()->genJet()!=0): false;}
+        const bool fourthJet_match()        const { return hasValidVBFTetraJet() ? (fourthJet_ptr()->genJet()!=0): false;}
 
         const float leading_pujidMVA   () const { return  hasValidVBFDiJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.leadJet_ptr->puJetIdMVA() : -9999.;}
         const float subleading_pujidMVA() const { return  hasValidVBFDiJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.subleadJet_ptr->puJetIdMVA() : -9999.;}
@@ -43,6 +46,14 @@ namespace flashgg {
         const float subLeading_rms() const { return  hasValidVBFDiJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.subleadJet_ptr->rms() : -9999.;}
         const float leading_QGL   () const { return  hasValidVBFDiJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.leadJet_ptr->QGL() : -9999.;}
         const float subLeading_QGL() const { return  hasValidVBFDiJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.subleadJet_ptr->QGL() : -9999.;}
+        const float subSubLeading_QGL() const { return  hasValidVBFTriJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.subsubleadJet_ptr->QGL() : -9999.;}
+        const float fourth_QGL() const { return  hasValidVBFTetraJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.fourthJet_ptr->QGL() : -9999.;}
+
+        const float leading_BTag   () const { return  hasValidVBFDiJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.leadJet_ptr->bDiscriminator("pfDeepCSVJetTags:probb")+vbfDiPhoDiJet_mva_result_.vbfMvaResult.leadJet_ptr->bDiscriminator("pfDeepCSVJetTags:probbb") : -9999.;}
+        const float subLeading_BTag   () const { return  hasValidVBFDiJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.subleadJet_ptr->bDiscriminator("pfDeepCSVJetTags:probb")+vbfDiPhoDiJet_mva_result_.vbfMvaResult.subleadJet_ptr->bDiscriminator("pfDeepCSVJetTags:probbb") : -9999.;}
+        const float subSubLeading_BTag   () const { return  hasValidVBFTriJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.subsubleadJet_ptr->bDiscriminator("pfDeepCSVJetTags:probb")+vbfDiPhoDiJet_mva_result_.vbfMvaResult.subsubleadJet_ptr->bDiscriminator("pfDeepCSVJetTags:probbb") : -9999.;}
+        const float fourth_BTag   () const { return  hasValidVBFTetraJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.fourthJet_ptr->bDiscriminator("pfDeepCSVJetTags:probb")+vbfDiPhoDiJet_mva_result_.vbfMvaResult.fourthJet_ptr->bDiscriminator("pfDeepCSVJetTags:probbb") : -9999.;}
+
         const float leading_rawPt   () const { return  hasValidVBFDiJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.leadJet_ptr->correctedJet("Uncorrected").pt() : -9999.;}
         const float subLeading_rawPt() const { return  hasValidVBFDiJet() ? vbfDiPhoDiJet_mva_result_.vbfMvaResult.subleadJet_ptr->correctedJet("Uncorrected").pt() : -9999.;}
         
@@ -63,6 +74,7 @@ namespace flashgg {
             return (vbfDiPhoDiJet_mva_result_.vbfMvaResult.leadJet_ptr.isNonnull() && vbfDiPhoDiJet_mva_result_.vbfMvaResult.subleadJet_ptr.isNonnull()); 
         };
         const bool hasValidVBFTriJet() const; 
+        const bool hasValidVBFTetraJet() const; 
 
         const float ptHjj() const;
 

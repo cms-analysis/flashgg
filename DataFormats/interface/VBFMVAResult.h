@@ -22,15 +22,18 @@ namespace flashgg {
         reco::Candidate::LorentzVector leadJet;
         reco::Candidate::LorentzVector subleadJet;
         reco::Candidate::LorentzVector subsubleadJet;
+        reco::Candidate::LorentzVector fourthJet;
         
         edm::Ptr<flashgg::Jet> leadJet_ptr;
         edm::Ptr<flashgg::Jet> subleadJet_ptr;
-        // 3rd jet
+        // 3rd and 4th jet
         edm::Ptr<flashgg::Jet> subsubleadJet_ptr; 
+        edm::Ptr<flashgg::Jet> fourthJet_ptr; 
         // 4-vec of the 3 jets
         
         
         bool hasValidVBFTriJet;
+        bool hasValidVBFTetraJet;
         
         // di-photon info 
         // flashgg::DiPhotonCandidate diphoton;
