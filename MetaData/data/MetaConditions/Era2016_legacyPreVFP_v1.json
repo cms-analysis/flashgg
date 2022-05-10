@@ -82,17 +82,17 @@
     
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
-    "MUON_ID_JSON_FileName" : "flashgg/Systematics/data/Muon2016_RunBCDEFGH_SF_ID.json",
-    "MUON_ID_JSON_FileName_LowPt" : "",
-    "MUON_ISO_JSON_FileName" : "flashgg/Systematics/data/Muon2016_RunBCDEFGH_SF_ISO.json",
-    "MUON_ID_RefTracks" : "genTracks",
-    "MUON_ID_RefTracks_LowPt" : "genTracks",
+    "MUON_ID_JSON_FileName" : "flashgg/Systematics/data/Muon_UL2016preVFP_RunBCDEF_SF_ID.json",
+    "MUON_ID_JSON_FileName_LowPt" : "flashgg/Systematics/data/Muon_UL2016preVFP_RunBCDEF_SF_ID_lowPt.json",
+    "MUON_ISO_JSON_FileName" : "flashgg/Systematics/data/Muon_UL2016preVFP_RunBCDEF_SF_ISO.json",
+    "MUON_ID_RefTracks" : "TrackerMuons",
+    "MUON_ID_RefTracks_LowPt" : "TrackerMuons",
 
 
-    "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_eleIDSFs_2016LegacyReReco.json",
-    "Ele_ID_version" : "mvaEleID-Fall17-iso-V2-wp90",
+    "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_eleIDSFs_UL_2016_preVFP.json",
+    "Ele_ID_version" : "mvaBasedElectronID-UL16-preVFP-wp90iso",
 
-    "Ele_reco_SF_FileName" : "flashgg/Systematics/data/2016_reco-eff.json",
+    "Ele_reco_SF_FileName" : "flashgg/Systematics/data/2016preVFP_UL_reco-eff.json",
 
     "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2016_cfi",
     

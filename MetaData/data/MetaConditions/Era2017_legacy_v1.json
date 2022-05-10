@@ -212,10 +212,10 @@
     "MUON_ISO_JSON_FileName" : "flashgg/Systematics/data/Muon_UL2017_RunBCDEF_SF_ISO.json",
 
     "MUON_ID_RefTracks" :  "TrackerMuons",
-    "MUON_ID_RefTracks_LowPt" : "genTracks",
+    "MUON_ID_RefTracks_LowPt" : "TrackerMuons",
 
-    "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_MVA_eleIDSFs_UL_2017.json",
-    "Ele_ID_version" : "mvaEleID-Fall17-iso-V2-wp90",
+    "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_eleIDSFs_UL_2017.json",
+    "Ele_ID_version" : "mvaBasedElectronID-UL17-wp90iso",
 
     "Ele_reco_SF_FileName" : "flashgg/Systematics/data/2017_UL_reco-eff.json",
 

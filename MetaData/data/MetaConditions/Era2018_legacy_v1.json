@@ -212,7 +212,7 @@
     "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_eleIDSFs_UL_2018.json",
     "Ele_ID_version" : "mvaBasedElectronID-UL18-wp90iso",
 
-    "Ele_reco_SF_FileName" : "flashgg/Systematics/data/2018_reco-eff.json",
+    "Ele_reco_SF_FileName" : "flashgg/Systematics/data/2018_UL_reco-eff.json",
 
     "bTagSystematics" :
     {
