@@ -99,6 +99,24 @@
 
     "sigmaM_M_decorr" : "flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_2016_Mgg100to180.root",
 
+    "JetCorrectorParametersCollection_version" :
+    {
+        "data" : "JetCorrectorParametersCollection_Summer19UL16_RunBCDEFGH_Combined_V7_DATA_AK4PFchs",
+        "data_db" : "flashgg/Systematics/data/JEC/Summer19UL16_RunBCDEFGH_Combined_V7_DATA.db",
+        "MC" : "JetCorrectorParametersCollection_Summer19UL16_V7_MC_AK4PFchs",
+        "MC_db" : "flashgg/Systematics/data/JEC/Summer19UL16_V7_MC.db"
+    },
+
+    "JetResolutionParametersCollection_version" :
+    {
+        "data_res" : "JR_Summer20UL16_JRV3_DATA_PtResolution_AK4PFchs",
+        "data_sf" : "JR_Summer20UL16_JRV3_DATA_AK4PFchs",
+        "data_db" : "flashgg/Systematics/data/JER/Summer20UL16_JRV3_DATA.db",
+        "MC_res" : "JR_Summer20UL16_JRV3_MC_PtResolution_AK4PFchs",
+        "MC_sf" : "JR_Summer20UL16_JRV3_MC_SF_AK4PFchs",
+        "MC_db" : "flashgg/Systematics/data/JER/Summer20UL16_JRV3_MC.db"
+    },
+
     "flashggDiPhotonMVA" : 
     {  
         "weightFile" : "flashgg/Taggers/data/STXSmodels/altDiphoModel_IncUL2017.xml",
@@ -108,19 +126,19 @@
     "flashggJetSystematics" : 
     {  
         "doHEMuncertainty" : false,
-        "textFileName" : "flashgg/Systematics/data/JEC/RegroupedV2_Summer16_07Aug2017_V11_MC_UncertaintySources_AK4PFchs.txt",
+        "textFileName" : "flashgg/Systematics/data/JEC/RegroupedV2_Summer19UL16_V7_MC_UncertaintySources_AK4PFchs.txt",
         "listOfSources" : [
                            "Absolute",
-                           "Absolute2016",
+                           "Absolute_2016",
                            "BBEC1",
-                           "BBEC12016",
+                           "BBEC1_2016",
                            "EC2",
-                           "EC22016",
+                           "EC2_2016",
                            "FlavorQCD",
                            "HF",
-                           "HF2016",
+                           "HF_2016",
                            "RelativeBal",
-                           "RelativeSample2016"
+                           "RelativeSample_2016"
                           ]
     },
     "flashggVBFMVA" : 
