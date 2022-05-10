@@ -220,17 +220,17 @@
         
 	"bTagger" : "pfDeepJet",
 
-    "isNewCSVFormat" : false,
+    "isNewCSVFormat" : true,
 
-	"bDiscriminatorValue_pfDeepCSV" : 0.6321,
-	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_2016LegacySF_V1.csv",
-	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_2016LegacySF_WP_V1.csv",
+	"bDiscriminatorValue_pfDeepCSV" : 0.5847,
+	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/reshaping_deepCSV_106XUL16postVFP_v3.csv",
+	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/wp_deepCSV_106XUL16postVFP_v3.csv",
 
-	"bDiscriminatorValue_pfDeepJet" : 0.3093,
-	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepJet_2016LegacySF_V1.csv",
-	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepJet_2016LegacySF_WP_V1.csv",
+	"bDiscriminatorValue_pfDeepJet" : 0.2489,
+	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/reshaping_deepJet_106XUL16postVFP_v3.csv",
+	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/wp_deepJet_106XUL16postVFP_v3.csv",
 
-	"eta" : 2.4
+	"eta" : 2.5
     },
 
     "mc2hessianCSV" : "PhysicsTools/HepMCCandAlgos/data/NNPDF30_nlo_as_0118_hessian_60.csv",
