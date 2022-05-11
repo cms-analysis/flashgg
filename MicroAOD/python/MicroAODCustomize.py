@@ -70,12 +70,6 @@ class MicroAODCustomize(object):
                                VarParsing.VarParsing.varType.bool,
                                'runDec2016Regression'
                                )
-        self.options.register('runEGMEleID',
-                              True,
-                              VarParsing.VarParsing.multiplicity.singleton,
-                              VarParsing.VarParsing.varType.bool,
-                              'runEGMEleID'
-                              )
         self.options.register('runEGMPhoID',
                               True,
                                VarParsing.VarParsing.multiplicity.singleton,
@@ -177,20 +171,9 @@ class MicroAODCustomize(object):
             raise Exception, "Only bunchSpacing=25 and bunchSpacing=50 are supported"
         if self.runDec2016Regression:
             self.customizeDec2016Regression(process)
-        if self.runEGMEleID:
-            if 'eleIdVersion' in self.metaConditions.keys():
-                getattr(self, 'customize'+self.metaConditions['eleIdVersion'])(process)            
-            else:
-                getattr(self,'customizeRunIIEleID')(process)
-        if self.runEGMPhoID:
-            if 'phoIdVersion' in self.metaConditions.keys():
-                getattr(self, 'customize'+self.metaConditions['phoIdVersion'])(process)            
-            else:
-                getattr(self,'customizeRunIIEGMPhoID')(process)
-            # check if ok for 2016
-            self.insertEGMSequence( process ) 
+        self.insertTaskToProcess( process )
         print "Final customized process:",process.p
-            
+
     # signal specific customization
     def customizeSignal(self,process):
         print "customizeSignal"
@@ -279,7 +262,7 @@ class MicroAODCustomize(object):
         if "flashggMETsCorrections" in self.metaConditions.keys() and self.metaConditions["flashggMETsCorrections"] != "":
             setMetCorr = getattr(flashgg.MicroAOD.flashggMETs_cff.setMetCorr, self.metaConditions["flashggMETsCorrections"])
             setMetCorr(process)
-            
+
         process.p *=process.flashggMetSequence
         for pathName in process.paths:
             path = getattr(process,pathName)
@@ -291,6 +274,9 @@ class MicroAODCustomize(object):
         delattr(process,"flashggPrunedGenParticles") # will be run due to unscheduled mode unless deleted
         delattr(process,"flashggGenPhotons") # will be run due to unscheduled mode unless deleted
         delattr(process,"flashggGenPhotonsExtra") # will be run due to unscheduled mode unless deleted
+        delattr(process,"flashggGenLeptons") # will be run due to unscheduled mode unless deleted
+        delattr(process,"flashggGenLeptonsExtra") # will be run due to unscheduled mode unless deleted
+        delattr(process,"flashggGenJetsExtra") # will be run due to unscheduled mode unless deleted
         delattr(process,"flashggGenNeutrinos") # will be run due to unscheduled mode unless deleted
         from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
         for vtx in range(0,maxJetCollections):
@@ -324,108 +310,6 @@ class MicroAODCustomize(object):
         process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag("slimmedElectrons")
         process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag("slimmedPhotons")
         process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag("slimmedPhotons")
-
-    # For the whole RunII use the V2 ID, as explained here  https://indico.cern.ch/event/777545/contributions/3234587/attachments/1766655/2868714/micheli_EG_cmsweek_20181206_4.pdf
-    # Methods for customizing single years, are kept below
-    def customizeRunIIEleID(self, process):
-        from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDElectronIdProducer,setupAllVIDIdsInModule,setupVIDElectronSelection
-        dataFormat = DataFormat.MiniAOD
-        switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
-        my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V2_cff',
-                         'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Fall17_94X_V2_cff',
-                         'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV70_cff'] 
-        for idmod in my_id_modules:
-            setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
-        process.flashggElectrons.eleVetoIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V2-veto")  
-        process.flashggElectrons.eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V2-loose")
-        process.flashggElectrons.eleMediumIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V2-medium")
-        process.flashggElectrons.eleTightIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V2-tight")
-        process.flashggElectrons.eleMVALooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V2-wpLoose")
-        process.flashggElectrons.eleMVAMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V2-wp90")
-        process.flashggElectrons.eleMVATightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V2-wp80")
-        process.flashggElectrons.mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV2Values")
-        process.flashggElectrons.effAreasConfigFile = cms.FileInPath("RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt")#check what this file is used for
-
-    def customizeRunIIEGMPhoID(self,process):
-        from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDPhotonIdProducer,setupAllVIDIdsInModule,setupVIDPhotonSelection
-        dataFormat = DataFormat.MiniAOD
-        switchOnVIDPhotonIdProducer(process, DataFormat.MiniAOD)
-        my_id_modules = ['RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Fall17_94X_V2_cff']
-        for idmod in my_id_modules:
-            setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
-        process.flashggPhotons.effAreasConfigFile = cms.FileInPath("RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_TrueVtx.txt")#check what this file is used for
-        process.flashggPhotons.egmMvaValuesMap = cms.InputTag("photonMVAValueMapProducer:PhotonMVAEstimatorRunIIFall17v2Values")
-
-    def customizeSpring15EleID(self,process):
-        from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDElectronIdProducer,setupAllVIDIdsInModule,setupVIDElectronSelection
-        dataFormat = DataFormat.MiniAOD
-        switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
-        my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring15_25ns_nonTrig_V1_cff',
-                         'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Spring15_25ns_V1_cff',
-                         'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV60_cff']
-        for idmod in my_id_modules:
-            setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
-            
-        
-    def customizeSummer16EGMEleID(self,process):
-        from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDElectronIdProducer,setupAllVIDIdsInModule,setupVIDElectronSelection
-        dataFormat = DataFormat.MiniAOD
-        switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
-        my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_GeneralPurpose_V1_cff',
-                         'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff',
-                         'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV60_cff']
-        for idmod in my_id_modules:
-            setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
-        process.flashggElectrons.effAreasConfigFile = cms.FileInPath("RecoEgamma/ElectronIdentification/data/Summer16/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_80X.txt")
-        process.flashggElectrons.eleVetoIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-veto")  
-        process.flashggElectrons.eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-loose")
-        process.flashggElectrons.eleMediumIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium")
-        process.flashggElectrons.eleTightIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight")
-        process.flashggElectrons.eleMVAMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring16-GeneralPurpose-V1-wp90")
-        process.flashggElectrons.eleMVATightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring16-GeneralPurpose-V1-wp80")
-        process.flashggElectrons.mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values")
-
-    def customizeFall17EGMEleID(self,process):
-        from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDElectronIdProducer,setupAllVIDIdsInModule,setupVIDElectronSelection
-        dataFormat = DataFormat.MiniAOD
-        switchOnVIDElectronIdProducer(process, DataFormat.MiniAOD)
-        my_id_modules = ['RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V1_cff',
-                         'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Fall17_94X_V1_cff',
-                         'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV70_cff']
-        for idmod in my_id_modules:
-            setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
-        process.flashggElectrons.effAreasConfigFile = cms.FileInPath("RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt")
-        process.flashggElectrons.eleVetoIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-veto")  
-        process.flashggElectrons.eleLooseIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-loose")
-        process.flashggElectrons.eleMediumIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-medium")
-        process.flashggElectrons.eleTightIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-tight")
-        process.flashggElectrons.eleMVALooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wpLoose")
-        process.flashggElectrons.eleMVAMediumIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp90")
-        process.flashggElectrons.eleMVATightIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp80")
-        # process.flashggElectrons.eleMVALooseNoIsoIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wpLoose")
-        # process.flashggElectrons.eleMVAMediumNoIsoIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp90")
-        # process.flashggElectrons.eleMVATightNoIsoIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp80")
-        process.flashggElectrons.mvaValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values")
-        # process.flashggElectrons.mvaNoIsoValuesMap = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Values")
-
-    def customizeSummer16EGMPhoID(self,process):
-        from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDPhotonIdProducer,setupAllVIDIdsInModule,setupVIDPhotonSelection
-        dataFormat = DataFormat.MiniAOD
-        switchOnVIDPhotonIdProducer(process, DataFormat.MiniAOD)
-        my_id_modules = ['RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Spring16_nonTrig_V1_cff']
-        for idmod in my_id_modules:
-            setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
-
-    def customizeFall17EGMPhoID(self,process):
-        from PhysicsTools.SelectorUtils.tools.vid_id_tools import DataFormat,switchOnVIDPhotonIdProducer,setupAllVIDIdsInModule,setupVIDPhotonSelection
-        dataFormat = DataFormat.MiniAOD
-        switchOnVIDPhotonIdProducer(process, DataFormat.MiniAOD)
-        my_id_modules = ['RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Fall17_94X_V1_cff']
-        for idmod in my_id_modules:
-            setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
-        process.flashggPhotons.effAreasConfigFile = cms.FileInPath("RecoEgamma/PhotonIdentification/data/Fall17/effAreaPhotons_cone03_pfPhotons_90percentBased_TrueVtx.txt")
-        process.flashggPhotons.egmMvaValuesMap = cms.InputTag("photonMVAValueMapProducer:PhotonMVAEstimatorRunIIFall17v1Values")
-
 
     def customizeDataMuons(self,process):
         process.diPhotonFilter.src = "flashggSelectedMuons"
@@ -574,7 +458,7 @@ class MicroAODCustomize(object):
                 setattr(process.flashggDiPhotons, opt, str(value))
             else:
                 setattr(process.flashggDiPhotons, opt, value)
-                
+
     def customizeGlobalTag(self,process):
         from Configuration.AlCa.GlobalTag import GlobalTag
         process.GlobalTag = GlobalTag(process.GlobalTag, self.globalTag, '')
@@ -587,7 +471,7 @@ class MicroAODCustomize(object):
         TimeMemoryCustomize(process)
         process.MessageLogger.cerr.threshold = 'WARNING'
 
-    def customizePFCHS(self,process):    
+    def customizePFCHS(self,process):
         # need to allow unscheduled processes otherwise reclustering function will fail
         if not hasattr(process,"options"):
             process.options = cms.untracked.PSet()
@@ -601,7 +485,7 @@ class MicroAODCustomize(object):
                                  vertexIndex =vtx,
                                  #doQGTagging = True,
                                  label = '' + str(vtx))
-            
+
     def customizePuppi(self,process):
         # need to allow unscheduled processes otherwise reclustering function will fail                                                            
         if not hasattr(process,"options"):
@@ -610,7 +494,7 @@ class MicroAODCustomize(object):
         from flashgg.MicroAOD.flashggJets_cfi import addFlashggPuppiJets
         from flashgg.MicroAOD.flashggJets_cfi import maxJetCollections
         for vtx in range(0,maxJetCollections):
-            addFlashggPuppiJets (process     = process,                                                                                           \
+            addFlashggPuppiJets (process     = process,
                                  vertexIndex = vtx,
                                  debug       = False,
                                  label = '' + str(vtx))
@@ -633,20 +517,12 @@ class MicroAODCustomize(object):
         process.flashggPhotons.photonIdMVAweightfile_EB = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_Spring15_50ns_barrel.xml")
         process.flashggPhotons.photonIdMVAweightfile_EE = cms.FileInPath("flashgg/MicroAOD/data/MVAweights_Spring15_50ns_endcap.xml")
 
-    def insertEGMSequence(self,process):
-        print "Replace flashggPrePhotonSequence80X with egmPhotonIDSequence"
-        print process.p
-
-        #Hack for EGM
-        hack_modifier = cms.Modifier()
-        hack_modifier._setChosen()
-        hack_modifier.toReplaceWith(process.flashggPrePhotonSequence80X,process.egmPhotonIDSequence)
+    def insertTaskToProcess(self,process):
 
         # Hack for Jets
         process.task = createTaskWithAllProducersAndFilters(process)
         process.p.associate(process.task)
 
-        
 def createTaskWithAllProducersAndFilters(process):
    from FWCore.ParameterSet.Config import Task
    l = [ p for p in process.producers.itervalues()]
