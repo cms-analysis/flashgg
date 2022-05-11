@@ -382,8 +382,8 @@ def filterHLTrigger(process, options):
     import re
     from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
     hlt_paths = []
-    for dset in options.metaConditions["TriggerPaths"]:
-        regDset = re.compile(dset)
-        if re.match(regDset, options.datasetName()):
+    for dset, analysisType in options.metaConditions["TriggerPaths"].items():
+        if re.match(str(dset), options.datasetName()):
             hlt_paths.extend([str(x) for x in options.metaConditions["TriggerPaths"][dset][options.analysisType]])
+    print 'Only events with {} paths will be processed.'.format(hlt_paths)
     process.hltHighLevel = hltHighLevel.clone(HLTPaths=cms.vstring(hlt_paths))
