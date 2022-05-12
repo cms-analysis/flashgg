@@ -5,10 +5,8 @@
         "MC" : "106X_upgrade2018_realistic_v16_L1v1"
     },
 
-    "flashggMETsFunction" : "runMETs2016",
     "flashggMetFilters" :
     {
-        "rerun_ecal_calib_filter" : true,
         "data" :
         [
             "Flag_goodVertices",
@@ -17,7 +15,8 @@
             "Flag_HBHENoiseIsoFilter",
             "Flag_EcalDeadCellTriggerPrimitiveFilter",
             "Flag_BadPFMuonFilter",
-            "Flag_eeBadScFilter"
+            "Flag_eeBadScFilter",
+            "Flag_ecalBadCalibFilter"
         ],
         "mc" :
         [
@@ -26,7 +25,9 @@
             "Flag_HBHENoiseFilter",
             "Flag_HBHENoiseIsoFilter",
             "Flag_EcalDeadCellTriggerPrimitiveFilter",
-            "Flag_BadPFMuonFilter"
+            "Flag_BadPFMuonFilter",
+            "Flag_eeBadScFilter",
+            "Flag_ecalBadCalibFilter"
         ]
     },
 

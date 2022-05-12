@@ -5,10 +5,8 @@
         "MC" : "106X_mcRun2_asymptotic_v17"
     },
 
-    "flashggMETsFunction" : "runMETs2016",
     "flashggMetFilters" :
     {
-        "rerun_ecal_calib_filter" : false,
         "data" :
         [
             "Flag_goodVertices",
@@ -26,7 +24,8 @@
             "Flag_HBHENoiseFilter",
             "Flag_HBHENoiseIsoFilter",
             "Flag_EcalDeadCellTriggerPrimitiveFilter",
-            "Flag_BadPFMuonFilter"
+            "Flag_BadPFMuonFilter",
+            "Flag_eeBadScFilter"
         ]
     },
 
@@ -233,7 +232,7 @@
 	"eta" : 2.5
     },
 
-    "mc2hessianCSV" : "PhysicsTools/HepMCCandAlgos/data/NNPDF30_nlo_as_0118_hessian_60.csv",
+    "mc2hessianCSV" : "",
 
     "bRegression" :
     {
@@ -339,7 +338,7 @@
                           "f1 := superCluster.eta",
                           "f2 := phi",
                           "f3 := global.rho",
-			  "f4 := superCluster.phiWidth",
+                          "f4 := superCluster.phiWidth",
                           "f5 := sieip",
                           "f6 := s4",
                           "f7 := full5x5_r9",
