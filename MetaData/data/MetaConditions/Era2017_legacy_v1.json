@@ -341,12 +341,12 @@
 
     "L1Prefiring" :
     {
-        "isRelevant" : true,
+        "isECALRelevant" : true,
         "applyToCentral" : false,
-        "photonFileName" : "flashgg/Taggers/data/L1prefiring_photonpt_2017BtoF.root",
-        "photonHistName" : "L1prefiring_photonpt_2017BtoF",
-        "jetFileName"    : "flashgg/Taggers/data/L1prefiring_jetpt_2017BtoF.root",
-        "jetHistName"    : "L1prefiring_jetpt_2017BtoF"
+        "ECALFileName"   : "flashgg/Taggers/data/L1PrefiringMaps.root",
+        "dataeraEcal"    : "UL2017BtoF",
+        "MuonFileName"   : "flashgg/Taggers/data/L1MuonPrefiringParametriations.root",
+        "dataeraMuon"    : "20172018"
     },
 
     "THQLeptonicTag":

@@ -341,22 +341,23 @@ def runRivetSequence(process, options, processId):
     process.p.insert(0, process.mergedGenParticles*process.myGenerator*process.rivetProducerHTXS)
 
 def customizeForL1Prefiring(process, options, processId):
-    print "Here we account for L1 pre-firing. We will only change the central diphoton weight if it is an appropriate year (2016 or 2017), an appropriate sample (only MC, not data), and the applyToCentral flag is set to true"
-    isRelevant = bool(options["L1Prefiring"]["isRelevant"])
-    getattr(process, "flashggPrefireDiPhotons").isRelevant = cms.bool(isRelevant)
+    print "Here we account for L1 pre-firing. We will only change the central diphoton weight if it is an appropriate sample (only MC, not data), and the applyToCentral flag is set to true"
+    isECALRelevant = bool(options["L1Prefiring"]["isECALRelevant"])
+    getattr(process, "flashggPrefireDiPhotons").isECALRelevant = cms.bool(isECALRelevant)
 
-    if isRelevant:
-        getattr(process, "flashggPrefireDiPhotons").photonFileName = options["L1Prefiring"]["photonFileName"].encode("ascii")
-        getattr(process, "flashggPrefireDiPhotons").photonHistName = cms.untracked.string(options["L1Prefiring"]["photonHistName"].encode("ascii"))
-        getattr(process, "flashggPrefireDiPhotons").jetFileName = options["L1Prefiring"]["jetFileName"].encode("ascii")
-        getattr(process, "flashggPrefireDiPhotons").jetHistName = cms.untracked.string(options["L1Prefiring"]["jetHistName"].encode("ascii"))
+    if isECALRelevant:
+        print "L1 pre-firing is relevant to ECAL (photons, jets)"
+        getattr(process, "flashggPrefireDiPhotons").ECALFileName = cms.FileInPath(options["L1Prefiring"]["ECALFileName"].encode("ascii"))
+        getattr(process, "flashggPrefireDiPhotons").dataeraEcal  = cms.string(options["L1Prefiring"]["dataeraEcal"].encode("ascii"))
+    getattr(process, "flashggPrefireDiPhotons").MuonFileName = cms.FileInPath(options["L1Prefiring"]["MuonFileName"].encode("ascii"))
+    getattr(process, "flashggPrefireDiPhotons").dataeraMuon  = cms.string(options["L1Prefiring"]["dataeraMuon"].encode("ascii"))
 
-        applyToCentral = bool(options["L1Prefiring"]["applyToCentral"])
-        if processId == "Data":
-            applyToCentral = False
+    applyToCentral = bool(options["L1Prefiring"]["applyToCentral"])
+    if processId == "Data":
+        applyToCentral = False
 
-        getattr(process, "flashggPrefireDiPhotons").applyToCentral = cms.bool(applyToCentral)
-    return isRelevant and applyToCentral
+    getattr(process, "flashggPrefireDiPhotons").applyToCentral = cms.bool(applyToCentral)
+    return applyToCentral
 
 def recalculatePDFWeights(process, options):
     print "Recalculating PDF weights"
