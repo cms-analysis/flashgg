@@ -201,6 +201,8 @@
 
 	"bTagger" : "pfDeepJet",
 
+    "isNewCSVFormat" : false,
+
 	"bDiscriminatorValue_pfDeepCSV" : 0.4184,
 	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_102XSF_V1.csv",
 	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_102XSF_WP_V1.csv",
@@ -212,7 +214,7 @@
 	"eta" : 2.5
     },
 
-    "mc2hessianCSV" : "PhysicsTools/HepMCCandAlgos/data/NNPDF30_lo_as_0130_hessian_60.csv",
+    "mc2hessianCSV" : "",
 
     "bRegression" :
     {

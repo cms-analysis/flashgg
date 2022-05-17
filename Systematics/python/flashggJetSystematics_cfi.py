@@ -197,6 +197,7 @@ class jetSystematicsCustomize:
                                         #bTag = cms.string(flashggBTag),
                                         bTag = cms.string(str(bTagger)),
                                         bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagSystematics']['bTagCalibrationFile_WPCut_'+ str(bTagger)])),
+                                        isNewCSVFormat = cms.bool(self.metaConditions['bTagSystematics']['isNewCSVFormat']),
                                         bDiscriminator = cms.double(self.metaConditions['bTagSystematics']['bDiscriminatorValue_'+ str(bTagger)]),
                                         Debug = cms.untracked.bool(False),
                                         ApplyCentralValue = cms.bool(True)
@@ -209,6 +210,7 @@ class jetSystematicsCustomize:
                                         #                                                          bTag = cms.string(flashggBTag),
                                         bTag = cms.string(str(bTagger)), 
                                         bTagCalibrationFile = cms.FileInPath(str(self.metaConditions['bTagSystematics']['bTagCalibrationFile_Reshape_'+ str(bTagger)])),
+                                        isNewCSVFormat = cms.bool(self.metaConditions['bTagSystematics']['isNewCSVFormat']),
                                         bTagReshapeSystOption = cms.int32(1),#For changing the source of uncertainty
                                         Debug = cms.untracked.bool(False),
                                         ApplyCentralValue = cms.bool(True)

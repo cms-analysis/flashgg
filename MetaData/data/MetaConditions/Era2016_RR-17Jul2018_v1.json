@@ -83,7 +83,7 @@
     "MUON_ID" : "Medium",
     "MUON_ISO" : "LooseRel",
     "MUON_ID_JSON_FileName" : "flashgg/Systematics/data/Muon2016_RunBCDEFGH_SF_ID.json",
-    "MUON_ID_JSON_FileName_LowPt" : "",
+    "MUON_ID_JSON_FileName_LowPt" : "flashgg/Systematics/data/Muon2016_RunBCDEFGH_SF_ID_lowPt_finerEtaBin.json",
     "MUON_ISO_JSON_FileName" : "flashgg/Systematics/data/Muon2016_RunBCDEFGH_SF_ISO.json",
     "MUON_ID_RefTracks" : "genTracks",
     "MUON_ID_RefTracks_LowPt" : "genTracks",
@@ -200,8 +200,10 @@
 
 	"bTagEffBins" : "bTagEffBins2016",
         
-	"bTagger" : "pfDeepJet",  
-        
+	"bTagger" : "pfDeepJet",
+
+    "isNewCSVFormat" : false,
+
 	"bDiscriminatorValue_pfDeepCSV" : 0.6321,
 	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_2016LegacySF_V1.csv",
 	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_2016LegacySF_WP_V1.csv",
@@ -213,7 +215,7 @@
 	"eta" : 2.4
     },
 
-    "mc2hessianCSV" : "PhysicsTools/HepMCCandAlgos/data/NNPDF30_lo_as_0130_hessian_60.csv",
+    "mc2hessianCSV" : "PhysicsTools/HepMCCandAlgos/data/NNPDF30_nlo_as_0118_hessian_60.csv",
 
     "bRegression" :
     {

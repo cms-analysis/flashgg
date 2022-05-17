@@ -190,12 +190,14 @@ class JobConfig(object):
         try:
             from flashgg.MetaData.mix_2017_25ns_UltraLegacy_PoissonOOTPU_cfi import mix as mix_UL17
             self.pu_distribs["Summer19UL17"] = mix_UL17.input.nbPileupEvents
+            self.pu_distribs["Summer20UL17"] = mix_UL17.input.nbPileupEvents
         except Exception:
             print "Failed to load UL17 mixing"
 
         try:
             from flashgg.MetaData.mix_2018_25ns_UltraLegacy_PoissonOOTPU_cfi import mix as mix_UL18
             self.pu_distribs["Summer19UL18"] = mix_UL18.input.nbPileupEvents
+            self.pu_distribs["Summer20UL18"] = mix_UL18.input.nbPileupEvents
         except Exception:
             print "Failed to load UL18 mixing"
 

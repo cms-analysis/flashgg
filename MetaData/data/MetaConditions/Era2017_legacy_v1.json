@@ -1,8 +1,8 @@
 {
     "globalTags" :
     {
-        "data" : "106X_dataRun2_v28",
-        "MC" : "106X_mc2017_realistic_v7"
+        "data" : "106X_dataRun2_v35",
+        "MC" : "106X_mc2017_realistic_v9"
     },
 
     "flashggMETsFunction" : "runMETs2017",
@@ -30,7 +30,7 @@
         ]
     },
 
-    "DeepJet" : "rerun",
+    "DeepJet" : "read",
 
     "flashggPhotons" :
     {
@@ -226,18 +226,20 @@
 
 	"bTagger" : "pfDeepJet",
 
+    "isNewCSVFormat" : true,
+
 	"bDiscriminatorValue_pfDeepCSV" : 0.4506,
-	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_106XUL17SF.csv",
-	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/DeepCSV_106XUL17SF_WPonly.csv",
+	"bTagCalibrationFile_Reshape_pfDeepCSV" : "flashgg/Systematics/data/reshaping_deepCSV_106XUL17_v3.csv",
+	"bTagCalibrationFile_WPCut_pfDeepCSV" : "flashgg/Systematics/data/wp_deepCSV_106XUL17_v3.csv",
 
 	"bDiscriminatorValue_pfDeepJet" : 0.3040,
-	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/DeepJet_106XUL17SF.csv",
-	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/DeepJet_106XUL17SF_WPonly.csv",
+	"bTagCalibrationFile_Reshape_pfDeepJet" : "flashgg/Systematics/data/reshaping_deepJet_106XUL17_v3.csv",
+	"bTagCalibrationFile_WPCut_pfDeepJet" : "flashgg/Systematics/data/wp_deepJet_106XUL17_v3.csv",
 
 	"eta" : 2.5
     },
 
-    "mc2hessianCSV" : "PhysicsTools/HepMCCandAlgos/data/NNPDF30_lo_as_0130_hessian_60.csv",
+    "mc2hessianCSV" : "",
 
     "bRegression" :
     {
