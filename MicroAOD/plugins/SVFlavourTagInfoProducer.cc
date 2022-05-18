@@ -37,6 +37,7 @@ private:
   typedef reco::VertexCompositePtrCandidate SV;
   typedef reco::VertexCollection VertexCollection;
   typedef reco::GenParticleCollection GenParticleCollection;
+  typedef reco::GenParticleRefVector GenParticleRefVector;
   typedef edm::View<reco::Candidate> CandidateView;
   typedef std::vector<pat::Jet> JetCollection;
 
@@ -53,11 +54,15 @@ private:
   edm::EDGetTokenT<SVCollection> sv_token_;
   edm::EDGetTokenT<CandidateView> pfcand_token_;
   edm::EDGetTokenT<GenParticleCollection> genpart_token_;
+  edm::EDGetTokenT<GenParticleRefVector> bhadron_token_;
+  edm::EDGetTokenT<GenParticleRefVector> chadron_token_;
 
   edm::Handle<VertexCollection> vtxs_;
   edm::Handle<SVCollection> svs_;
   edm::Handle<CandidateView> pfcands_;
   edm::Handle<GenParticleCollection> genparts_;
+  edm::Handle<GenParticleRefVector> bhadrons_;
+  edm::Handle<GenParticleRefVector> chadrons_;
   edm::ESHandle<TransientTrackBuilder> track_builder_;
 
   const static std::vector<std::string> particle_features_;
@@ -68,7 +73,7 @@ private:
 };
 
 const std::vector<std::string> SVFlavourTagInfoProducer::particle_features_{
-    "pfcand_hcalFrac",      "pfcand_VTX_ass",        "pfcand_lostInnerHits",
+    "pfcand_puppiw",        "pfcand_hcalFrac",       "pfcand_VTX_ass",      "pfcand_lostInnerHits",
     "pfcand_quality",       "pfcand_charge",         "pfcand_isEl",         "pfcand_isMu",
     "pfcand_isChargedHad",  "pfcand_isGamma",        "pfcand_isNeutralHad", "pfcand_phirel",
     "pfcand_etarel",        "pfcand_deltaR",         "pfcand_abseta",       "pfcand_ptrel_log",
@@ -87,6 +92,8 @@ SVFlavourTagInfoProducer::SVFlavourTagInfoProducer(const edm::ParameterSet &iCon
       sv_token_(consumes<SVCollection>(iConfig.getParameter<edm::InputTag>("secondary_vertices"))),
       pfcand_token_(consumes<CandidateView>(iConfig.getParameter<edm::InputTag>("pf_candidates"))),
       genpart_token_(consumes<GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genparticles"))),
+      bhadron_token_(consumes<GenParticleRefVector>(iConfig.getParameter<edm::InputTag>("bHadrons"))),
+      chadron_token_(consumes<GenParticleRefVector>(iConfig.getParameter<edm::InputTag>("cHadrons"))),
       debug_(iConfig.getUntrackedParameter<bool>("debugMode", false)) {
 
   produces<DeepBoostedJetTagInfoCollection>();
@@ -103,6 +110,8 @@ void SVFlavourTagInfoProducer::fillDescriptions(edm::ConfigurationDescriptions &
   desc.add<edm::InputTag>("secondary_vertices", edm::InputTag("inclusiveCandidateSecondaryVertices"));
   desc.add<edm::InputTag>("pf_candidates", edm::InputTag("particleFlow"));
   desc.add<edm::InputTag>("genparticles", edm::InputTag("prunedGenParticles"));
+  desc.add<edm::InputTag>("bHadrons", edm::InputTag("patJetPartons", "bHadrons"));
+  desc.add<edm::InputTag>("cHadrons", edm::InputTag("patJetPartons", "cHadrons"));
   desc.addOptionalUntracked<bool>("debugMode", false);
   descriptions.add("pfSVFlavourTagInfos", desc);
 }
@@ -134,6 +143,8 @@ void SVFlavourTagInfoProducer::produce(edm::Event &iEvent, const edm::EventSetup
   // SV truth matching
   if (!iEvent.isRealData()) {
     iEvent.getByToken(genpart_token_, genparts_);
+    iEvent.getByToken(bhadron_token_, bhadrons_);
+    iEvent.getByToken(chadron_token_, chadrons_);
     matchSVWithPFCands(svPhantomJets);
   }
 
@@ -157,6 +168,9 @@ void SVFlavourTagInfoProducer::produce(edm::Event &iEvent, const edm::EventSetup
         matched_cands.push_back(cand);
       }
     }
+    std::sort(matched_cands.begin(), matched_cands.end(), [](const reco::CandidatePtr a, const reco::CandidatePtr b) {
+      return a->pt() > b->pt();
+    });
 
     // fill particle features
     fillParticleFeatures(features, sv, matched_cands);
@@ -218,6 +232,7 @@ void SVFlavourTagInfoProducer::fillParticleFeatures(DeepBoostedJetFeatures &fts,
     fts.fill("pfcand_lostInnerHits", packed_cand->lostInnerHits());
     fts.fill("pfcand_quality", packed_cand->bestTrack() ? packed_cand->bestTrack()->qualityMask() : 0);
 
+    fts.fill("pfcand_puppiw", packed_cand->puppiWeight());
     fts.fill("pfcand_charge", packed_cand->charge());
     fts.fill("pfcand_isEl", std::abs(packed_cand->pdgId()) == 11);
     fts.fill("pfcand_isMu", std::abs(packed_cand->pdgId()) == 13);
@@ -494,7 +509,19 @@ void SVFlavourTagInfoProducer::matchSVWithPFCands(std::unique_ptr<JetCollection>
 
   for (std::size_t sv_n = 0; sv_n < svs_->size(); sv_n++) {
     svPhantomJets->at(sv_n).addUserFloat("gen_flavour", matchedIDs[sv_n]);
+
+    auto sv = svs_->at(sv_n);
+    int n_b = 0, n_c = 0;
+    for (std::size_t had_n = 0; had_n < bhadrons_->size(); had_n++) {
+      if (reco::deltaR(*bhadrons_->at(had_n), sv) < deltar_match_sv_pfcand_) n_b++;
+    }
+    for (std::size_t had_n = 0; had_n < chadrons_->size(); had_n++) {
+      if (reco::deltaR(*chadrons_->at(had_n), sv) < deltar_match_sv_pfcand_) n_c++;
+    }
+    svPhantomJets->at(sv_n).addUserFloat("n_bhadrons", n_b);
+    svPhantomJets->at(sv_n).addUserFloat("n_chadrons", n_c);
   }
+  
 }
 
 // define this as a plug-in

@@ -226,13 +226,17 @@ void SVFlavourONNXTagsProducer::produce(edm::Event &iEvent, const edm::EventSetu
     }
     sv.setSvTagProbs(probs);
     sv.setSvGenFlav(jets->at(sv_n).hasUserFloat("gen_flavour") ? jets->at(sv_n).userFloat("gen_flavour") : -1);
+    sv.setSvNBHadrons(jets->at(sv_n).hasUserFloat("n_bhadrons") ? jets->at(sv_n).userFloat("n_bhadrons") : -1);
+    sv.setSvNCHadrons(jets->at(sv_n).hasUserFloat("n_chadrons") ? jets->at(sv_n).userFloat("n_chadrons") : -1);
   }
 
   if (debug_) {
     std::cout << "=== " << iEvent.id().run() << ":" << iEvent.id().luminosityBlock() << ":" << iEvent.id().event()
               << " ===" << std::endl;
     for (unsigned sv_n = 0; sv_n < tag_infos->size(); ++sv_n) {
-      std::cout << " - SV #" << sv_n << ", gen_flavour=" << outSVs->at(sv_n).svGenFlav() << std::endl;
+      std::cout << " - SV #" << sv_n << ", gen_flavour=" << outSVs->at(sv_n).svGenFlav() 
+                << ", n_b=" << outSVs->at(sv_n).svNBHadrons()
+                << ", n_c=" << outSVs->at(sv_n).svNCHadrons() << std::endl;
       for (std::size_t flav_n = 0; flav_n < flav_names_.size(); ++flav_n) {
         std::cout << "    " << flav_names_.at(flav_n) << " = " << outSVs->at(sv_n).svTagProbs()[flav_n] << std::endl;
       }
