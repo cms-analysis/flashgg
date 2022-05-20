@@ -43,7 +43,9 @@ microAODDefaultOutputCommand = cms.untracked.vstring("drop *",
                                                      "keep *_particleFlowEGammaGSFixed_dupECALClusters_*",
                                                      "keep *_ecalMultiAndGSGlobalRecHitEB_hitsNotReplaced_*",
 #                                                     "keep *_slimmedJets_*_*"
-                                                     "keep *_flashggGenJetsExtra_*_*"
+                                                     "keep *_flashggGenJetsExtra_*_*",
+                                                     "keep *_flashggSVs_*_*",
+                                                     "drop *_flashggSVFlavourTagInfos_*_*"
                                                      )
 
 # Should be included for now for ongoing studies, but to be removed some day

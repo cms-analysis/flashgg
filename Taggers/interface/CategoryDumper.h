@@ -519,7 +519,9 @@ namespace flashgg {
             nbins=1;
         }
         if(!unbinnedSystematics_){
-            if( nbins > 0 ) { 
+            if( nbins > 0 ) {
+                rooVar.setMin( vmin );
+                rooVar.setMax( vmax );
                 rooVar.setBins( nbins );
             }
             if(nbins == -1){

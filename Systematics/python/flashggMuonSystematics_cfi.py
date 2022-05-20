@@ -31,7 +31,7 @@ class MuonSF_JSONReader :
                     if pt_from < minPt :
                         minPt = pt_from
             
-        if lowPt_file_name!="" and lowPt_sf_name!="NUM_HighPtID_DEN_genTracks" and lowPt_sf_name!="NUM_MediumPromptID_DEN_genTracks" and lowPt_sf_name!="NUM_TrkHighPtID_DEN_genTracks" :
+        if lowPt_file_name!="" and lowPt_sf_name!="NUM_HighPtID_DEN_TrackerMuons" and lowPt_sf_name!="NUM_MediumPromptID_DEN_TrackerMuons" and lowPt_sf_name!="NUM_TrkHighPtID_DEN_TrackerMuons" :
             self.JSONFileNameForLowPt = os.path.expanduser( os.path.expandvars(str('$CMSSW_BASE/src/')+lowPt_file_name) )
             with open( self.JSONFileNameForLowPt , 'r' ) as f_lowPt :
                 j_lowPt = json.load( f_lowPt ) 
