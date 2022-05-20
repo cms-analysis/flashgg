@@ -1,4 +1,4 @@
-{
+ {
     "cmdLine"  : "metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2017_legacy_v1.json campaign=Era2017_legacy_v1_Summer19UL useAAA=True lumiMask=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/Legacy_2017/Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt ",
     "processes": {
         "ggh"   : [
@@ -16,6 +16,8 @@
             "/VBFHToGG_M120_TuneCP5_13TeV-amcatnlo-pythia8",
             "/VBFHToGG_M125_TuneCP5_13TeV-amcatnlo-pythia8_storeWeights",
             "/VBFHToGG_M130_TuneCP5_13TeV-amcatnlo-pythia8",
+        ]
+        "vbfhALT" : [
             "/VBFHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
             "/VBFHiggs0L1ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
             "/VBFHiggs0L1Zgf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
@@ -28,6 +30,20 @@
             "/VHToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8",
             "/VHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8",
             "/VHToGG_M130_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8"
+        ],
+        "zh" : [
+            "/ggZH_HToGG_ZToQQ_M120_TuneCP5_13TeV-powheg-pythia8",
+            "/ggZH_HToGG_ZToQQ_M125_TuneCP5_13TeV-powheg-pythia8",
+            "/ggZH_HToGG_ZToQQ_M130_TuneCP5_13TeV-powheg-pythia8"
+        ],
+        "wh" : [
+            "/WminusH_HToGG_WToAll_M120_TuneCP5_13TeV-powheg-pythia8",
+            "/WminusH_HToGG_WToAll_M125_TuneCP5_13TeV-powheg-pythia8",
+            "/WminusH_HToGG_WToAll_M130_TuneCP5_13TeV-powheg-pythia8",
+            "/WplusH_HToGG_WToAll_M120_TuneCP5_13TeV-powheg-pythia8",
+            "/WplusH_HToGG_WToAll_M125_TuneCP5_13TeV-powheg-pythia8",
+            "/WplusH_HToGG_WToAll_M130_TuneCP5_13TeV-powheg-pythia8"
+
         ],
         "tth" : [
             "/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8",
