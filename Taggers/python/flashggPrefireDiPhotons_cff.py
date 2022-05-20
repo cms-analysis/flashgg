@@ -5,11 +5,12 @@ from flashgg.Taggers.flashggTags_cff import UnpackedJetCollectionVInputTag
 # prefire weight calculator
 flashggPrefireDiPhotons = cms.EDProducer('FlashggPrefireDiPhotonProducer',
                                DiPhotonTag=cms.InputTag('flashggDifferentialPhoIdInputsCorrection'),
+                               MuonTag=cms.InputTag('flashggSelectedMuons'),
                                inputTagJets= UnpackedJetCollectionVInputTag,
-                               photonFileName = cms.FileInPath("flashgg/Taggers/data/L1prefiring_photonpt_2017BtoF.root"),
-                               photonHistName = cms.untracked.string(""),
-                               jetFileName = cms.FileInPath("flashgg/Taggers/data/L1prefiring_jetpt_2017BtoF.root"),
-                               jetHistName = cms.untracked.string(""),
-                               isRelevant = cms.bool(True),
+                               ECALFileName = cms.FileInPath("flashgg/Taggers/data/L1PrefiringMaps.root"),
+                               dataeraEcal = cms.string(""),
+                               MuonFileName = cms.FileInPath("flashgg/Taggers/data/L1MuonPrefiringParametriations.root"),
+                               dataeraMuon = cms.string(""),
+                               isECALRelevant = cms.bool(True),
                                applyToCentral = cms.bool(False)
 )

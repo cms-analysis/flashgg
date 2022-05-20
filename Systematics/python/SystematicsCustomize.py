@@ -341,22 +341,23 @@ def runRivetSequence(process, options, processId):
     process.p.insert(0, process.mergedGenParticles*process.myGenerator*process.rivetProducerHTXS)
 
 def customizeForL1Prefiring(process, options, processId):
-    print "Here we account for L1 pre-firing. We will only change the central diphoton weight if it is an appropriate year (2016 or 2017), an appropriate sample (only MC, not data), and the applyToCentral flag is set to true"
-    isRelevant = bool(options["L1Prefiring"]["isRelevant"])
-    getattr(process, "flashggPrefireDiPhotons").isRelevant = cms.bool(isRelevant)
+    print "Here we account for L1 pre-firing. We will only change the central diphoton weight if it is an appropriate sample (only MC, not data), and the applyToCentral flag is set to true"
+    isECALRelevant = bool(options["L1Prefiring"]["isECALRelevant"])
+    getattr(process, "flashggPrefireDiPhotons").isECALRelevant = cms.bool(isECALRelevant)
 
-    if isRelevant:
-        getattr(process, "flashggPrefireDiPhotons").photonFileName = options["L1Prefiring"]["photonFileName"].encode("ascii")
-        getattr(process, "flashggPrefireDiPhotons").photonHistName = cms.untracked.string(options["L1Prefiring"]["photonHistName"].encode("ascii"))
-        getattr(process, "flashggPrefireDiPhotons").jetFileName = options["L1Prefiring"]["jetFileName"].encode("ascii")
-        getattr(process, "flashggPrefireDiPhotons").jetHistName = cms.untracked.string(options["L1Prefiring"]["jetHistName"].encode("ascii"))
+    if isECALRelevant:
+        print "L1 pre-firing is relevant to ECAL (photons, jets)"
+        getattr(process, "flashggPrefireDiPhotons").ECALFileName = cms.FileInPath(options["L1Prefiring"]["ECALFileName"].encode("ascii"))
+        getattr(process, "flashggPrefireDiPhotons").dataeraEcal  = cms.string(options["L1Prefiring"]["dataeraEcal"].encode("ascii"))
+    getattr(process, "flashggPrefireDiPhotons").MuonFileName = cms.FileInPath(options["L1Prefiring"]["MuonFileName"].encode("ascii"))
+    getattr(process, "flashggPrefireDiPhotons").dataeraMuon  = cms.string(options["L1Prefiring"]["dataeraMuon"].encode("ascii"))
 
-        applyToCentral = bool(options["L1Prefiring"]["applyToCentral"])
-        if processId == "Data":
-            applyToCentral = False
+    applyToCentral = bool(options["L1Prefiring"]["applyToCentral"])
+    if processId == "Data":
+        applyToCentral = False
 
-        getattr(process, "flashggPrefireDiPhotons").applyToCentral = cms.bool(applyToCentral)
-    return isRelevant and applyToCentral
+    getattr(process, "flashggPrefireDiPhotons").applyToCentral = cms.bool(applyToCentral)
+    return applyToCentral
 
 def recalculatePDFWeights(process, options):
     print "Recalculating PDF weights"
@@ -370,10 +371,10 @@ def recalculatePDFWeights(process, options):
                                                     mc2hessianCSV = cms.untracked.string(options["mc2hessianCSV"].encode("ascii")),
                                                     LHERunLabel = cms.string("externalLHEProducer"),
                                                     Debug = cms.bool(False),
-                                                    PDFmap = cms.PSet(#see here https://lhapdf.hepforge.org/pdfsets.html to update the map if needed
-                                                        NNPDF30_lo_as_0130_nf_4 = cms.untracked.uint32(263400),
-                                                        NNPDF31_nnlo_as_0118_nf_4 = cms.untracked.uint32(320900)
-                                                    )
+                                                    #PDFmap = cms.PSet(#see here https://lhapdf.hepforge.org/pdfsets.html to update the map if needed
+                                                    #    NNPDF30_lo_as_0130_nf_4 = cms.untracked.uint32(263400),
+                                                    #    NNPDF31_nnlo_as_0118_nf_4 = cms.untracked.uint32(320900)
+                                                    #)
                                                 ) 
     process.p.insert(0, process.flashggPDFWeightObject)
 
@@ -382,8 +383,8 @@ def filterHLTrigger(process, options):
     import re
     from HLTrigger.HLTfilters.hltHighLevel_cfi import hltHighLevel
     hlt_paths = []
-    for dset in options.metaConditions["TriggerPaths"]:
-        regDset = re.compile(dset)
-        if re.match(regDset, options.datasetName()):
+    for dset, analysisType in options.metaConditions["TriggerPaths"].items():
+        if re.match(str(dset), options.datasetName()):
             hlt_paths.extend([str(x) for x in options.metaConditions["TriggerPaths"][dset][options.analysisType]])
+    print 'Only events with {} paths will be processed.'.format(hlt_paths)
     process.hltHighLevel = hltHighLevel.clone(HLTPaths=cms.vstring(hlt_paths))

@@ -14,6 +14,7 @@
 <use   name="roofit"/>
 <use   name="roofitcore"/>
 <use   name="boost_python"/>
+<use   name="JHUGenMELA/MELA"/>
 <!-- Flags CXXFLAGS="-ggdb"/ -->
 <export>
   <lib   name="1"/>

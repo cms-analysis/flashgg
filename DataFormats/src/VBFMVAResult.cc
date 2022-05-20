@@ -42,7 +42,13 @@ namespace flashgg {
         
         vbfMvaResult_value     ( -9999. ),
         vbfMvaResult_value_bdt ( -9999. ),
-        vbfMvaResult_value_bdtg( -9999. )
+        vbfMvaResult_value_bdtg( -9999. ),
+        
+        vbfDnnResult_prob_bkg  ( -9999. ),
+        vbfDnnResult_prob_sm   ( -9999. ),
+        vbfDnnResult_prob_bsm  ( -9999. ),
+        
+        D0minus                ( -9999. )
     {}
     
     VBFMVAResult::VBFMVAResult( edm::Ptr<VBFMVAResult> x )
@@ -100,6 +106,12 @@ namespace flashgg {
         vbfMvaResult_value      = x->vbfMvaResult_value;
         vbfMvaResult_value_bdt  = x->vbfMvaResult_value_bdt;
         vbfMvaResult_value_bdtg = x->vbfMvaResult_value_bdtg;
+
+        vbfDnnResult_prob_bkg   = x->vbfDnnResult_prob_bkg;
+        vbfDnnResult_prob_sm    = x->vbfDnnResult_prob_sm;
+        vbfDnnResult_prob_bsm   = x->vbfDnnResult_prob_bsm;
+
+        D0minus                 = x->D0minus;
     }
 }
 // Local Variables:

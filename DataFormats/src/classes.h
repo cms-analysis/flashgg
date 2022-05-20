@@ -12,6 +12,7 @@
 #include "flashgg/DataFormats/interface/SigmaMpTTag.h"
 #include "flashgg/DataFormats/interface/Electron.h"
 #include "flashgg/DataFormats/interface/Muon.h"
+#include "flashgg/DataFormats/interface/SecondaryVertex.h"
 #include "flashgg/DataFormats/interface/GenPhotonExtra.h"
 #include "flashgg/DataFormats/interface/GenLeptonExtra.h"
 #include "flashgg/DataFormats/interface/GenJetExtra.h"
@@ -146,6 +147,11 @@ namespace  {
         edm::Wrapper<flashgg::Muon>				                        wrp_fgg_mu;
         std::vector<flashgg::Muon>				                        vec_fgg_mu;
         edm::Wrapper<std::vector<flashgg::Muon> >                   wrp_vec_fgg_mu;
+        flashgg::SecondaryVertex						                    fgg_sv;
+        edm::Ptr<flashgg::SecondaryVertex> 					            ptr_fgg_sv;
+        edm::Wrapper<flashgg::SecondaryVertex>				            wrp_fgg_sv;
+        std::vector<flashgg::SecondaryVertex>				            vec_fgg_sv;
+        edm::Wrapper<std::vector<flashgg::SecondaryVertex> >        wrp_vec_fgg_sv;
 
         std::map<edm::Ptr<reco::Vertex>, float>                    map_ptr_vtx_flo;
         std::pair<edm::Ptr<reco::Vertex>, float>                   pai_ptr_vtx_flo;
