@@ -547,7 +547,7 @@ elif customize.doStageOne:
     tagList = soc.tagList
 elif customize.vbfTagsOnly:
     tagList=[
-        ["VBFTag",0]
+        ["VBFTag",8]
         ]
 else:
     tagList=[
