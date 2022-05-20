@@ -54,10 +54,10 @@ class AnomalousCouplingsCustomize():
             "vbfMvaResult_prob_bkg := VBFMVA.vbfMvaResult_prob_bkg()",
             "vbfMvaResult_prob_ggH := VBFMVA.vbfMvaResult_prob_ggH()",
             "vbfMvaResult_prob_VBF := VBFMVA.vbfMvaResult_prob_VBF()",
-            "vbfDnnResult_prob_bkg := VBFMVA.vbfDnnResult_prob_bkg()",
-            "vbfDnnResult_prob_sm  := VBFMVA.vbfDnnResult_prob_sm()",
-            "vbfDnnResult_prob_bsm := VBFMVA.vbfDnnResult_prob_bsm()",
-            "mela_D0minus          := VBFMVA.D0minus()",
+            "vbfDNN_pbkg := VBFMVA.vbfDnnResult_prob_bkg()",
+            "vbfDNN_psm  := VBFMVA.vbfDnnResult_prob_sm()",
+            "vbfDNN_pbsm := VBFMVA.vbfDnnResult_prob_bsm()",
+            "D0minus     := VBFMVA.D0minus()",
         ]
 
         allNonSigVariables = var.dipho_variables + var.dijet_variables + more_jet_vars + VBF_mva_probs
