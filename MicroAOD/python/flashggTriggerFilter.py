@@ -3,19 +3,19 @@ import re
 import FWCore.ParameterSet.Config as cms
 
 
-def getMicroAODHLTFilter(datasetName, options):    
+def getMicroAODHLTFilter(datasetName, options):
     """
     Return a TriggerResultsFilter customized accordingly to the data-taking period.
-    The returned module is inteded to be used as first step in the MicroAOD production sequence
+    The returned module is intended to be used as first step in the MicroAOD production sequence
     """
 
-    for tag, trgs in options["TriggerPaths"].items():
-        triggerConditions = cms.vstring()
-        for trg in trgs:
-            triggerConditions.append(str(trg))
-        if re.search(str(tag), datasetName):
-            print 'Only events from these path will be processed: '
-            print triggerConditions
+    for dset, analysisType in options["TriggerPaths"].items():
+        hlt_paths = []
+        for an in analysisType:
+            hlt_paths.extend(  [str(trg) for trg in options["TriggerPaths"][dset][an]] )
+        triggerConditions = cms.vstring(hlt_paths)
+        if re.search(str(dset), datasetName):
+            print 'Only events with {} paths will be processed.'.format(hlt_paths)
             triggerSelectionModule = cms.EDFilter("TriggerResultsFilter",
                                                   triggerConditions = triggerConditions,
                                                   hltResults = cms.InputTag( "TriggerResults", "", "HLT" ),

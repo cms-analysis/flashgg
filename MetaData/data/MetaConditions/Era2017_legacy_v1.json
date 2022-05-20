@@ -5,10 +5,8 @@
         "MC" : "106X_mc2017_realistic_v9"
     },
 
-    "flashggMETsFunction" : "runMETs2017",
     "flashggMetFilters" :
     {
-        "rerun_ecal_calib_filter" : true,
         "data" : 
         [
             "Flag_goodVertices", 
@@ -17,7 +15,8 @@
             "Flag_HBHENoiseIsoFilter", 
             "Flag_EcalDeadCellTriggerPrimitiveFilter",
             "Flag_BadPFMuonFilter", 
-            "Flag_eeBadScFilter"
+            "Flag_eeBadScFilter",
+            "Flag_ecalBadCalibFilter"
         ],
         "mc" : 
         [
@@ -26,7 +25,9 @@
             "Flag_HBHENoiseFilter",
             "Flag_HBHENoiseIsoFilter",
             "Flag_EcalDeadCellTriggerPrimitiveFilter",
-            "Flag_BadPFMuonFilter"
+            "Flag_BadPFMuonFilter",
+            "Flag_eeBadScFilter",
+            "Flag_ecalBadCalibFilter"
         ]
     },
 
@@ -116,19 +117,19 @@
     "flashggJetSystematics" : 
     {  
         "doHEMuncertainty" : false,
-        "textFileName" : "flashgg/Systematics/data/JEC/RegroupedV2_Fall17_17Nov2017_V32_MC_UncertaintySources_AK4PFchs.txt",
+        "textFileName" : "flashgg/Systematics/data/JEC/RegroupedV2_Summer19UL17_V5_MC_UncertaintySources_AK4PFchs.txt",
         "listOfSources" : [
                            "Absolute",
-                           "Absolute2017",
+                           "Absolute_2017",
                            "BBEC1",
-                           "BBEC12017",
+                           "BBEC1_2017",
                            "EC2",
-                           "EC22017",
+                           "EC2_2017",
                            "FlavorQCD",
                            "HF",
-                           "HF2017",
+                           "HF_2017",
                            "RelativeBal",
-                           "RelativeSample2017"
+                           "RelativeSample_2017"
                           ]
     },
 
@@ -208,16 +209,16 @@
     "MUON_ISO" : "LooseRel",
 
     "MUON_ID_JSON_FileName" : "flashgg/Systematics/data/Muon_UL2017_RunBCDEF_SF_ID.json",
-    "MUON_ID_JSON_FileName_LowPt" : "flashgg/Systematics/data/Muon_UL2017_RunBCDEF_SF_ID_lowPt.json",
+    "MUON_ID_JSON_FileName_LowPt" : "flashgg/Systematics/data/Muon_UL2017_RunBCDEF_SF_ID_lowPt_new.json",
     "MUON_ISO_JSON_FileName" : "flashgg/Systematics/data/Muon_UL2017_RunBCDEF_SF_ISO.json",
 
     "MUON_ID_RefTracks" :  "TrackerMuons",
-    "MUON_ID_RefTracks_LowPt" : "genTracks",
+    "MUON_ID_RefTracks_LowPt" : "TrackerMuons",
 
-    "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_MVA_eleIDSFs_UL_2017.json",
-    "Ele_ID_version" : "mvaEleID-Fall17-iso-V2-wp90",
+    "Ele_ID_SF_FileName" : "flashgg/Systematics/data/combined_eleIDSFs_UL_2017.json",
+    "Ele_ID_version" : "mvaBasedElectronID-UL17-wp90iso",
 
-    "Ele_reco_SF_FileName" : "flashgg/Systematics/data/2017_UL_reco-eff.json",
+    "Ele_reco_SF_FileName" : "flashgg/Systematics/data/2017_UL_reco-eff_new.json",
 
     "bTagSystematics" :
     {
@@ -340,12 +341,12 @@
 
     "L1Prefiring" :
     {
-        "isRelevant" : true,
+        "isECALRelevant" : true,
         "applyToCentral" : false,
-        "photonFileName" : "flashgg/Taggers/data/L1prefiring_photonpt_2017BtoF.root",
-        "photonHistName" : "L1prefiring_photonpt_2017BtoF",
-        "jetFileName"    : "flashgg/Taggers/data/L1prefiring_jetpt_2017BtoF.root",
-        "jetHistName"    : "L1prefiring_jetpt_2017BtoF"
+        "ECALFileName"   : "flashgg/Taggers/data/L1PrefiringMaps.root",
+        "dataeraEcal"    : "UL2017BtoF",
+        "MuonFileName"   : "flashgg/Taggers/data/L1MuonPrefiringParametriations.root",
+        "dataeraMuon"    : "20172018"
     },
 
     "THQLeptonicTag":
