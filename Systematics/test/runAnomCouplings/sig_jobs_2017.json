@@ -15,8 +15,8 @@
             "/VBFHToGG_M-130_TuneCP5_13TeV-powheg-pythia8",
             "/VBFHToGG_M120_TuneCP5_13TeV-amcatnlo-pythia8",
             "/VBFHToGG_M125_TuneCP5_13TeV-amcatnlo-pythia8_storeWeights",
-            "/VBFHToGG_M130_TuneCP5_13TeV-amcatnlo-pythia8",
-        ]
+            "/VBFHToGG_M130_TuneCP5_13TeV-amcatnlo-pythia8"
+        ],
         "vbfhALT" : [
             "/VBFHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
             "/VBFHiggs0L1ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
