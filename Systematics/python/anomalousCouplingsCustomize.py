@@ -27,7 +27,10 @@ class AnomalousCouplingsCustomize():
         ws_variables = []
         ws_variables += self.acVariable 
         ws_variables += [
-            "CMS_hgg_mass[160,100,180]:=diPhoton().mass",
+            "CMS_hgg_mass[160,100,180]:=diPhoton().mass"
+        ]
+        if is_signal: 
+            ws_variables += [
             "dZ[40,-20.,20.]:=(tagTruth().genPV().z-diPhoton().vtx().z)",
             "NNLOPSweight[1,-999999.,999999.] := tagTruth().weight(\"NNLOPSweight\")",
             "btagReshapeNorm_TTH_LEP[1,-999999.,999999.] := weight(\"btagReshapeNorm_TTH_LEP\")",
@@ -61,9 +64,8 @@ class AnomalousCouplingsCustomize():
         ]
 
         allNonSigVariables = var.dipho_variables + var.dijet_variables + more_jet_vars + VBF_mva_probs
+        ntup_variables = ws_variables + allNonSigVariables
 
-        ntup_variables = ws_variables + allNonSigVariables if is_signal else allNonSigVariables
-    
         if self.customize.dumpWorkspace:
             return ws_variables
         else:
