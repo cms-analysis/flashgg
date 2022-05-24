@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from os import listdir,popen,access,F_OK,getcwd
 from sys import argv
 
