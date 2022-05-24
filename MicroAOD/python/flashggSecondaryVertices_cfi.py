@@ -6,18 +6,20 @@ from flashgg.MicroAOD.pfSVFlavourONNXTagsProducer_cfi import pfSVFlavourONNXTags
 
 flashggSVFlavourTagInfos = pfSVFlavourTagInfos.clone(
     deltar_match_sv_pfcand = 0.4,
-    pf_candidates = "packedPFCandidates",
-    secondary_vertices = "slimmedSecondaryVertices",
-    vertices = "offlineSlimmedPrimaryVertices",
+    pf_candidates = cms.InputTag("packedPFCandidates"),
+    secondary_vertices = cms.InputTag("slimmedSecondaryVertices"),
+    vertices = cms.InputTag("offlineSlimmedPrimaryVertices"),
+    bHadrons = cms.InputTag("flashggGenBCHadrons", "bHadrons"),
+    cHadrons = cms.InputTag("flashggGenBCHadrons", "cHadrons"),
     debugMode = False,
 )
 
 flashggSVs =  pfSVFlavourONNXTagsProducer.clone(
-    src = 'flashggSVFlavourTagInfos',
+    src = cms.InputTag('flashggSVFlavourTagInfos'),
     phantom_jets = cms.InputTag('flashggSVFlavourTagInfos', 'svPhantomJets'), # a dummy jet selection for easy implementation
-    secondary_vertices = 'slimmedSecondaryVertices',
-    preprocess_json = 'flashgg/MicroAOD/data/ParticleNetSV/V01/preprocess_corr.json',
-    model_path = 'flashgg/MicroAOD/data/ParticleNetSV/V01/model.onnx',
-    flav_names = ['probb', 'probc', 'probcfromb', 'probl'],
+    secondary_vertices = cms.InputTag('slimmedSecondaryVertices'),
+    preprocess_json = 'flashgg/MicroAOD/data/ParticleNetSV/V02/preprocess_corr.json',
+    model_path = 'flashgg/MicroAOD/data/ParticleNetSV/V02/model.onnx',
+    flav_names = ['probb', 'probbb', 'probc', 'probcc', 'probunmat'],
     debugMode = False,
 )

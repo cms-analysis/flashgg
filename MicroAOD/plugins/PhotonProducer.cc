@@ -88,7 +88,7 @@ namespace flashgg {
         vector<double> _phoIsoPtScalingCoeff;
         double _phoIsoCutoff;
 
-        edm::EDGetTokenT<edm::ValueMap<float> > egmMvaValuesMapToken_;
+        std::string egmMvaValuesInfo_;
     };
 
 
@@ -108,7 +108,7 @@ namespace flashgg {
         _effectiveAreas((iConfig.getParameter<edm::FileInPath>("effAreasConfigFile")).fullPath()),
         _phoIsoPtScalingCoeff(iConfig.getParameter<std::vector<double >>("phoIsoPtScalingCoeff")),
         _phoIsoCutoff(iConfig.getParameter<double>("phoIsoCutoff")),
-        egmMvaValuesMapToken_( consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("egmMvaValuesMap")) )
+        egmMvaValuesInfo_( iConfig.getParameter<string>("egmMvaValuesInfo"))
     {
         is2017_ = iConfig.getParameter<bool>( "is2017" );
         
@@ -179,9 +179,6 @@ namespace flashgg {
 
         const reco::BeamSpot &beamspot = *recoBeamSpotHandle.product();
 
-        edm::Handle<edm::ValueMap<float> > egmMvaValues;
-        evt.getByToken(egmMvaValuesMapToken_,egmMvaValues);
-
         // const PtrVector<pat::Photon>& photonPointers = photons->ptrVector();
         // const PtrVector<pat::PackedCandidate>& pfcandidatePointers = pfcandidates->ptrVector();
         // const PtrVector<reco::Vertex>& vertexPointers = vertices->ptrVector();
@@ -202,8 +199,7 @@ namespace flashgg {
             Ptr<pat::Photon> pp = photons->ptrAt( i );
             flashgg::Photon fg = flashgg::Photon( *pp );
 
-            double egmMvaValue = (*egmMvaValues)[pp];
-            fg.addUserFloat("EGMPhotonMVA", (float) egmMvaValue);
+            fg.addUserFloat("EGMPhotonMVA", pp->userFloat(egmMvaValuesInfo_));
 
             // Get electron veto flag value from miniAOD PAT photons
             fg.setPassElectronVeto(pp->passElectronVeto());

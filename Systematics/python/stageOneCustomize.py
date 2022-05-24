@@ -133,8 +133,7 @@ class StageOneCustomize():
         self.process.flashggStageOneCombinedTag.rawVhHadBounds = cms.vdouble( self.metaConditions["stageOneCombinedTag"]["rawVhHadBounds"] )
 
         ## set the pre-firing to be applied
-        if bool(self.metaConditions["L1Prefiring"]["isRelevant"]):
-            self.metaConditions["L1Prefiring"]["applyToCentral"] = "true"
+        self.metaConditions["L1Prefiring"]["applyToCentral"] = True
 
         ## set tag priorities
         self.process.flashggTagSorter.TagPriorityRanges = self.tagPriorityRanges

@@ -17,6 +17,12 @@ namespace flashgg {
         int svGenFlav() const {return svGenFlav_;}
         void setSvGenFlav( int val ) { svGenFlav_ = val; }
 
+        int svNBHadrons() const {return svNBHadrons_;}
+        void setSvNBHadrons( int val ) { svNBHadrons_ = val; }
+
+        int svNCHadrons() const {return svNCHadrons_;}
+        void setSvNCHadrons( int val ) { svNCHadrons_ = val; }
+
         std::vector<float> svTagProbs() const {return svTagProbs_;}
         void setSvTagProbs( std::vector<float> val ) { svTagProbs_ = val; }
 
@@ -24,6 +30,8 @@ namespace flashgg {
 
     private:
         int svGenFlav_;
+        int svNBHadrons_;
+        int svNCHadrons_;
         vector<float> svTagProbs_;
     };
 }

@@ -201,10 +201,15 @@ class JobConfig(object):
         except Exception:
             print "Failed to load UL18 mixing"
 
-            
+        try:
+            from flashgg.MetaData.mix_2016_25ns_UltraLegacy_PoissonOOTPU_cfi import mix as mix_UL16
+            self.pu_distribs["Summer20UL16"] = mix_UL16.input.nbPileupEvents
+        except Exception:
+            print "Failed to load UL16 mixing"
+
         #self.pu_distribs_hack_2017 = {  }
 
-        
+
         # try:
         #     import importlib
         #     from os import listdir,environ

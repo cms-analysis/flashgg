@@ -310,7 +310,8 @@
 <class name="std::vector<flashgg::Jet>"/>
 <class name="edm::Ptr<flashgg::Jet>"/>
 
-<class name="flashgg::Met" ClassVersion="12">
+<class name="flashgg::Met" ClassVersion="13">
+ <version ClassVersion="13" checksum="2738990724"/>
   <version ClassVersion="10" checksum="2272826605"/>
   <version ClassVersion="11" checksum="1231550995"/>
   <version ClassVersion="12" checksum="597961085"/>
@@ -343,7 +344,8 @@
 <class name="edm::Ptr<flashgg::Electron>"/>
 <class name="std::vector<flashgg::Electron>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Electron> >"/>
-<class name="flashgg::Muon" ClassVersion="18">
+<class name="flashgg::Muon" ClassVersion="19">
+ <version ClassVersion="19" checksum="210848215"/>
  <version ClassVersion="18" checksum="3175653636"/>
  <version ClassVersion="17" checksum="851705294"/>
   <version ClassVersion="16" checksum="3256886890"/>
@@ -357,7 +359,8 @@
 <class name="edm::Ptr<flashgg::Muon>"/>
 <class name="std::vector<flashgg::Muon>"/>
 <class name="edm::Wrapper<std::vector<flashgg::Muon> >"/>
-<class name="flashgg::SecondaryVertex" ClassVersion="10">
+<class name="flashgg::SecondaryVertex" ClassVersion="11">
+ <version ClassVersion="11" checksum="809561912"/>
  <version ClassVersion="10" checksum="794927205"/>
 </class>
 <class name="edm::Ptr<flashgg::SecondaryVertex>"/>
