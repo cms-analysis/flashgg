@@ -18,32 +18,32 @@ parser = OptionParser(option_list=[
         make_option("-V","--flashggVersion",
                     action="store", dest="flashggVersion", type="string",
                     default=None,
-                    help="FLASHgg version to use. default: %default", 
+                    help="FLASHgg version to use. default: %default",
                     ),
         make_option("--label",
                     action="store", dest="label", type="string",
                     default=None,
-                    help="Extra label to add to dataset name (if none take input dataset). default: %default", 
+                    help="Extra label to add to dataset name (if none take input dataset). default: %default",
                     ),
         make_option("-p","--pset",
                     action="store", dest="parameterSet", type="string",
                     default="../../MicroAOD/test/microAODstd.py", # FIXME should move it to production eventually
-                    help="CMSSW parameter set. default: %default", 
+                    help="CMSSW parameter set. default: %default",
                     ),
         make_option("--meta-conditions",
                     action="store", dest="metaConditions", type="string",
                     default="", # FIXME should move it to production eventually
-                    help="FLASHgg meta conditions file. default: %default", 
+                    help="FLASHgg meta conditions file. default: %default",
                     ),
         make_option("-t","--crabTemplate",
                     action="store", dest="crabTemplate", type="string",
-                    default="crabConfig_TEMPLATE.py", 
-                    help="CRAB configuration template. default: %default", 
+                    default="crabConfig_TEMPLATE.py",
+                    help="CRAB configuration template. default: %default",
                     ),
         make_option("-c","--createCrabConfig",
                     action="store_true", dest="createCrabConfig",
                     default=True,
-                    help="Generate crab configuration. default: %default", 
+                    help="Generate crab configuration. default: %default",
                     ),
         make_option("--skipCreateCrabConfig",
                     action="store_false", dest="createCrabConfig"
@@ -51,27 +51,27 @@ parser = OptionParser(option_list=[
         make_option("--checkIfOnT2",
                     action="store_true", dest="checkIfOnT2",
                     default=False,
-                    help="default: %default", 
+                    help="default: %default",
                     ),
         make_option("-n","--checkNFiles",
                     action="store_true", dest="checkNFiles",
                     default=False,
-                    help="default: %default", 
+                    help="default: %default",
                     ),
         make_option("-U","--unitsPerJob",
                     action="store", dest="unitsPerJob", type="int",
                     default=25000,
-                    help="default: %default", 
+                    help="default: %default",
                     ),
         make_option("-L","--lumisPerJob",
                     action="store", dest="lumisPerJob", type="int",
                     default=10,
-                    help="default: %default", 
+                    help="default: %default",
                     ),
         make_option("--lumiMask",
                     action="store", dest="lumiMask", type="string",
                     default=None,
-                    help="default: %default", 
+                    help="default: %default",
                     ),
         make_option("-s","--samples",
                     dest="samples",action="callback",callback=Load(),type="string",
@@ -115,7 +115,7 @@ parser = OptionParser(option_list=[
                     action="store_true", dest="verbose",
                     default=False,
                     help="default: %default"),
-        
+
         # include additional parameters for cmsRun, such as the parameters from microAODCustomize
         # the default here is puppi=0 (as an example) see microAODCustomize_cfg.py for more detail
         make_option("-e","--extraPyCfgParam",
@@ -123,7 +123,7 @@ parser = OptionParser(option_list=[
                     action="store",type="string",
                     default=None,
                     help="Extra python config parameters. The arguments must be : -e 'arg1 arg2 ...' ")
-        
+
         ]
                       )
 # parse the command line
@@ -160,17 +160,17 @@ if len(options.samples) == 0:
     sig.append("/WH_ZH_HToGG_M-125_13TeV_pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v2/MINIAODSIM")
     sig.append("/TTbarH_HToGG_M-125_13TeV_pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
     sig.append("/TTbarH_HToGG_M-125_13TeV_amcatnlo-pythia8-tauola/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
-    
+
     ##### SM diHiggs samples
     sig.append("/GluGluToHHTo2B2G_M-125_13TeV-madgraph-pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
-    
+
     ##### Diphoton backgrounds
     bkg.append("/GJet_Pt20to40_doubleEMEnriched_TuneZ2star_13TeV-pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
     bkg.append("/GJet_Pt40_doubleEMEnriched_TuneZ2star_13TeV-pythia6/Spring14miniaod-PU20bx25_POSTLS170_V5-v2/MINIAODSIM")
 
     ##### DY data and MC for validation
     bkg.append("/DYJetsToLL_M-50_13TeV-madgraph-pythia8-tauola_v2/Spring14miniaod-PU20bx25_POSTLS170_V5-v1/MINIAODSIM")
-    
+
     #data.append("/DoubleElectron/CMSSW_7_0_6_patch1-GR_70_V2_AN1_RelVal_zEl2012D-v1/MINIAOD")
 else:
     sig  = options.samples["sig"]
@@ -181,8 +181,8 @@ if options.lumiMask: options.lumiMask = os.path.abspath(options.lumiMask)
 lumiMasks = {}
 datasamples = []
 for sample in data:
-    if type(sample) == list: 
-        if len(sample) != 2: 
+    if type(sample) == list:
+        if len(sample) != 2:
             print "ERROR: I think that you tried to specify a sample-specific lumi mask, but the format is incorrect."
             print "       Valid format is [<sample_name>,<lumi_mask>]"
             print "%s" % sample
@@ -253,7 +253,7 @@ if options.createCrabConfig:
         ###     if ProcessedDataset.count("201"):
         ###         position = ProcessedDataset.find("201")
         ###         PrimaryDataset = PrimaryDataset +"-"+ ProcessedDataset[position:]
-            
+
         jobname = "_".join([flashggVersion, PrimaryDataset, ProcessedDataset])
         orig_jobname = jobname
         while os.path.isdir("crab_" + jobname):
@@ -312,7 +312,10 @@ if options.createCrabConfig:
             ("RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3_ext2-v1", "Summer16"),
             ("RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1", "Autumn18"),
             ("RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3", "Summer16"),
-            ("RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15", "Fall18")
+            ("RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15", "Fall18"),
+            ("-UL2018_MiniAODv2-v1","UL18"),
+            ("RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1","UL18"),
+            ("RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1","UL18")
         ]
 
         for orig, replacement in replacements:
@@ -328,7 +331,7 @@ if options.createCrabConfig:
         #    print "jobname length: %d " % len(jobname)
         #    jobname = jobname[:97]
         jobname0 = jobname.rstrip("-").rstrip("-v")
-        
+
         # Increment flashgg- processing index if job has been launched before (ie if crab dir already exists)
         itry = 0
         jobname = jobname0+"_%s" % ( str(itry).zfill(2) )
@@ -351,15 +354,15 @@ if options.createCrabConfig:
                        }
 
         # remove the processing version number from the ProcessedDataset
-        PrimaryDataset, ProcessedDataset, DataTier = filter(None, sample.split("/")) 
+        PrimaryDataset, ProcessedDataset, DataTier = filter(None, sample.split("/"))
         position = ProcessedDataset.find("-v")
         processedLabel = ProcessedDataset[:position]
         # print processedLabel
-        
+
         # apprend extra parameters
         if options.extraPyCfgParam:
             replacements["PYCFG_PARAMS"].extend(map( lambda x: '"%s"' % x, options.extraPyCfgParam.split(" ") ))
-                        
+
         # specific replacements for data and MC
         if sample in data:
             replacements["SPLITTING"]   = "LumiBased"
@@ -375,9 +378,9 @@ if options.createCrabConfig:
 
         # add the meta conditions
         replacements["PYCFG_PARAMS"].append("conditionsJSON="+options.metaConditions)
-            
+
         replacements["PYCFG_PARAMS"] = str(replacements["PYCFG_PARAMS"])
-        
+
         # open output file
         outfiles = [ open(crabConfigFile, 'w') ]
         pilotFile = None
@@ -391,19 +394,19 @@ if options.createCrabConfig:
                 oline = oline.replace(src, target)
             for outfile in outfiles:
                 outfile.write(oline)
-                
+
         if sample in data:
             lumiMask = lumiMasks.get(sample,options.lumiMask)
             if lumiMask:
                 for outfile in outfiles:
                     outfile.write('config.Data.lumiMask = "%s"\n' % (lumiMask))
             else:
-                print 
+                print
                 print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
                 print "WARNING: you are running on data withut specifying a lumi mask"
                 print "         please make sure that you know what you are doing"
                 print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-                print 
+                print
 
         if pilotFile:
             pilotFile.write("config.Data.totalUnits = %d\n" % (options.unitsPerJob))
@@ -414,4 +417,4 @@ if options.createCrabConfig:
             outfile.close()
 
 
-        
+
