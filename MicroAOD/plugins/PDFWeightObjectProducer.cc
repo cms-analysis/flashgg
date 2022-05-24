@@ -103,7 +103,7 @@ namespace flashgg {
         typedef vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
         
         iRun.getByLabel( runLabel_, run );
-		LHERunInfoProduct myLHERunInfoProduct = *( run.product() );
+        LHERunInfoProduct myLHERunInfoProduct = *( run.product() );
 
         //--- get info from LHERunInfoProduct
         vector<string> weight_lines;
@@ -182,7 +182,7 @@ namespace flashgg {
 
         for (auto& it : weight_lines) {
 
-            if (it.find("<weight ") != std::string::npos) {
+            if (it.find("<weight MUF") != std::string::npos || it.find("<weight id") != std::string::npos) {
 
                 std::istringstream line(it);
                 boost::property_tree::ptree pt;
