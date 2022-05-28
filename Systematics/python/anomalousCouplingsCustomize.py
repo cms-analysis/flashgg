@@ -66,10 +66,7 @@ class AnomalousCouplingsCustomize():
         allNonSigVariables = var.dipho_variables + var.dijet_variables + more_jet_vars + VBF_mva_probs
         ntup_variables = ws_variables + allNonSigVariables
 
-        if self.customize.dumpWorkspace:
-            return ws_variables
-        else:
-            return ntup_variables
+        return ntup_variables
 
 
     def systematicVariables(self):
@@ -132,15 +129,9 @@ class AnomalousCouplingsCustomize():
         self.process.flashggVBFMVA.UseJetID      = cms.bool(True) #fixme
         self.process.flashggVBFMVA.JetIDLevel    = cms.string("Tight2017") #cms.string("Loose")
         self.process.flashggVBFMVA.DrJetPhoton   = cms.double(0.4) # this is the right number
-        # Relax all selection on VBF tag
-        self.process.flashggVBFTag.Boundaries             = cms.vdouble(-2.0,2.0)
-        self.process.flashggVBFTag.SetArbitraryNonGoldMC  = cms.bool(False)
-        self.process.flashggVBFTag.DropNonGoldData        = cms.bool(False)
-        self.process.flashggVBFTag.RequireVBFPreselection = cms.bool(False)
         #OPtions for MVA
         self.process.flashggVBFMVA.rmsforwardCut = cms.double(self.customize.forwardJetRMSCut)
         self.process.flashggVBFMVA.pujidWpPtBin1 = cms.vdouble(mva_wp[self.customize.pujidWP][0])
         self.process.flashggVBFMVA.pujidWpPtBin2 = cms.vdouble(mva_wp[self.customize.pujidWP][1])
         # MVA method
         self.process.flashggVBFMVA.MVAMethod = cms.string("DNNMulti")
-        self.process.flashggVBFMVA.vbfDNNpbfile = cms.FileInPath("flashgg/Taggers/data/vbfdnn_3classes_smAndCPoddAndL1_2021-09-08.pb")

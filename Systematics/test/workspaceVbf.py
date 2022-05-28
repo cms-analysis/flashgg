@@ -441,6 +441,21 @@ if customize.doubleHTagsOnly:
   
 if customize.doDoubleHTag:
    systlabels,jetsystlabels,metsystlabels = hhc.customizeSystematics(systlabels,jetsystlabels,metsystlabels)
+
+# nominal weights
+variablesToUse.append("LooseMvaSF[1,-999999.,999999.] := weight(\"LooseMvaSFCentral\")")
+variablesToUse.append("PreselSF[1,-999999.,999999.] := weight(\"PreselSFCentral\")")
+variablesToUse.append("electronVetoSF[1,-999999.,999999.] := weight(\"electronVetoSFCentral\")")
+variablesToUse.append("TriggerWeight[1,-999999.,999999.] := weight(\"TriggerWeightCentral\")")
+variablesToUse.append("FracRVWeight[1,-999999.,999999.] := weight(\"FracRVWeightCentral\")")
+variablesToUse.append("MuonIDWeight[1,-999999.,999999.] := getObjectWeight(\"Muon%sIDWeightCentral\")")
+variablesToUse.append("ElectronIDWeight[1,-999999.,999999.] := getObjectWeight(\"ElectronIDWeightCentral\")")
+variablesToUse.append("ElectronRecoWeight[1,-999999.,999999.] := getObjectWeight(\"ElectronRecoWeightCentral\")")
+variablesToUse.append("MuonIsoWeight[1,-999999.,999999.] := getObjectWeight(\"Muon%sISOWeightCentral\")" % str(customize.metaConditions['MUON_ISO']))
+variablesToUse.append("JetBTagCutWeight[1,-999999.,999999.] := getObjectWeight(\"JetBTagCutWeightCentral\")")
+variablesToUse.append("JetBTagReshapeWeight[1,-999999.,999999.] := getObjectWeight(\"JetBTagReshapeWeightCentral\")")
+if applyL1Prefiring:
+    variablesToUse.append("prefireWeight[1,-999999.,999999.] := weight(\"prefireWeightCentral\")")
            
 
 print "--- Systematics  with independent collections ---"
