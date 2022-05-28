@@ -68,7 +68,7 @@ if __name__ == "__main__":
     from optparse import OptionParser
     parser = OptionParser(usage="%prog [options] treedir jobdir")
     parser.add_option("-d", "--dryRun",  dest="dryRun",  action="store_true", default=False, help="do not submit jobs, just write the config files");
-    parser.add_option("-q", "--queue",   dest="queue",  type="string", default="espresso", help="condor queue to be used");
+    parser.add_option("-q", "--queue",   dest="queue",  type="string", default="workday", help="condor queue to be used");
     (options, args) = parser.parse_args()
     
     if len(args)<2:
