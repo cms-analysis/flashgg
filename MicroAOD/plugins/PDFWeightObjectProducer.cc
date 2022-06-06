@@ -77,14 +77,13 @@ namespace flashgg {
     {
         tag_ = iConfig.getUntrackedParameter<string>( "tag", "initrwgt" );
         doScaleWeights_ = iConfig.getUntrackedParameter<bool>("doScaleWeights", true); 
+        doAlphasWeights_= iConfig.getUntrackedParameter<bool>("doAlphasWeights", true);
         nPdfEigWeights_ = iConfig.getParameter<unsigned int>("nPdfEigWeights");
         mc2hessianCSV_ = iConfig.getUntrackedParameter<string>("mc2hessianCSV");
         //std::vector<std::string> parameterNames = PDFmap_.getParameterNames();
         //for ( std::vector<std::string>::iterator iter = parameterNames.begin();iter != parameterNames.end(); ++iter ){
         //    PDFmapString_[*iter]=PDFmap_.getUntrackedParameter<unsigned int>(*iter);
         //}
-
-        doAlphasWeights_=true;
 
         consumes<LHERunInfoProduct,edm::InRun> (edm::InputTag(runLabel_));
         produces<vector<flashgg::PDFWeightObject> >();
