@@ -31894,9 +31894,26 @@
                 "weights": 9668
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 8629, 
+                "lumis": {
+                    "278509": [
+                        134, 
+                        284, 
+                        286, 
+                        288, 
+                        487, 
+                        324, 
+                        325, 
+                        1210, 
+                        456, 
+                        457
+                    ]
+                }, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL16preVFP/legacyRunII/DoubleEG/RunIISummer20UL16preVFP-legacyRunII-v0-Run2016F-HIPM_UL2016_MiniAODv2-v1/220531_225035/0001/myMicroAODOutputFile_1360.root", 
-                "nevents": 8629
+                "nevents": 8629, 
+                "totEvents": 8629, 
+                "weights": 8629
             }, 
             {
                 "bad": false, 
