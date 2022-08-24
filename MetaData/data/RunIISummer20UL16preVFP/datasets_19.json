@@ -26817,6 +26817,14 @@
                 "nevents": 24798, 
                 "totEvents": 24798, 
                 "weights": 423756256.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24822, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL16preVFP/legacyRunII/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL16preVFP-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v1/220613_100236/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 24822, 
+                "totEvents": 24822, 
+                "weights": 417542400.0
             }
         ], 
         "parent_n_units": null, 
