@@ -276,7 +276,8 @@ sigmaEOverEShiftBins = cms.PSet(
                      cms.PSet( lowBounds = cms.vdouble(0.000), upBounds = cms.vdouble(999.), values = cms.vdouble( 0.0 ), uncertainties = cms.vdouble( 0.05 ))
                      )
     )
-#from You-Ying's slides page 5 in https://indico.cern.ch/event/996868/contributions/4198278/attachments/2177607/3677444/HggMeeting_25012021.pdf
+
+#Diphoton vertex ID SF (You-Ying's slides page 5 in https://indico.cern.ch/event/996868/contributions/4198278/attachments/2177607/3677444/HggMeeting_25012021.pdf)
 RVBins = cms.PSet(
     variables = cms.vstring("pt"),
     bins = cms.VPSet(
