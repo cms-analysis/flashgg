@@ -115,9 +115,16 @@ namespace flashgg {
         for( o = 0 ; o < (int)boundaries_d0m.size() ; o++ ) {
             if( (double)d0m > boundaries_d0m[boundaries_d0m.size() - o - 1] ) break;
         }
-        return (int)(boundaries_d0m.size() * boundaries_pbsm.size() * m +
-                     boundaries_pbsm.size() * o +
-                     n);
+
+        int CAT = (int)((boundaries_d0m.size()+1) * (boundaries_pbsm.size()+1) * m +
+                        (boundaries_pbsm.size()+1) * o +
+                        n);
+
+        // std::cout << "pbkg = " << pbkg << "\td0m = " << d0m << "\tpbsm = " << pbsm
+        //           << "m = " << m << "\to = " << o << "\tn = " << n 
+        //           << " CAT = " << CAT << std::endl;
+
+        return CAT;
     }
     
     void VBFTagProducer::produce( Event &evt, const EventSetup & )

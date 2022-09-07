@@ -208,7 +208,7 @@ def SetupMuonScaleFactors( process , id_file_name, id_lowpt_file_name, iso_file_
         extendPtValID = minAnaPt 
 
     MUON_ID_ScaleFactors = {}
-    for mu_id in ["Tight", "Medium" , "Loose", "HighPt"] :
+    for mu_id in ["Tight", "Medium" , "Loose"]:#, "HighPt"] :
         MUON_ID_ScaleFactors[mu_id] = MuonSF_JSONReader( id_file_name ,  "NUM_%sID_DEN_%s"%(mu_id,id_ref_tracks) , id_lowpt_file_name, "NUM_%sID_DEN_%s"%(mu_id,id_lowpt_ref_tracks), extendPtValID )
     MUON_ISO_ScaleFactors = {}
     for iso in ["LooseRelIso_DEN_LooseID", "LooseRelIso_DEN_MediumID", "TightRelIso_DEN_MediumID", "LooseRelIso_DEN_TightIDandIPCut", "TightRelIso_DEN_TightIDandIPCut", "LooseRelTkIso_DEN_HighPtIDandIPCut"] :
