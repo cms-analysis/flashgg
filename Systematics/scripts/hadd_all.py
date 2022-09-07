@@ -1,9 +1,11 @@
-from os import listdir,popen,access,F_OK,getcwd
+#!/usr/bin/env python
+from os import listdir,popen,access,F_OK,getcwd,system
 from sys import argv
 
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option('--doBigData', default=False, action='store_true', help='Make one big data file')
+parser.add_option('--doBigDataThreeYears', default=False, action='store_true', help='Make one big data file for the whole Run2')
 parser.add_option('--doEGamma', default=False, action='store_true', help='use EGamma rather than DoubleEG (2018 data)')
 parser.add_option('--targetString', default=None, help='String to match to include')
 parser.add_option('--skipString', default=None, help='Strong to match to skip')
@@ -20,6 +22,7 @@ if opts.skipString is not None:
 dobig = False
 dobigsig = False
 dobigdata = opts.doBigData
+dobigdata3y = opts.doBigDataThreeYears
 doegamma = opts.doEGamma
 
 filelist = {}
@@ -33,6 +36,7 @@ def printAndExec(cmd):
 
 print listdir(".")
 print getcwd()
+system("mkdir -p Chunks")
 for fn in listdir("."):
     if fn.count(".root") and fn.count(targetstring) and (not skipstring or not fn.count(skipstring)):
         fnr = "_".join(fn[:-5].split("_")[:-1])+"_%i.root"
@@ -50,7 +54,7 @@ for fn in listdir("."):
 for fnr in filelist.keys():
     result = sorted(filelist[fnr])
     print fnr,result
-    assert(result[-1]+1 == len(result)) #FIXME
+    #assert(result[-1]+1 == len(result)) #FIXME
     bigfile = fnr.replace("_%i","")
     bigfiles.append(bigfile)
     if bigfile.count("HToGG") or bigfile.count("ttHJetToGG"):
@@ -79,6 +83,9 @@ for fnr in filelist.keys():
     else:    
         cmd = "hadd_workspaces %s %s" % (bigfile," ".join([fnr%fnn for fnn in result]))
         printAndExec(cmd)
+    print "Now moving all the chunks files in Chunks and remove the intermediate files..."
+    system("mv %s Chunks" % " ".join([fnr%fnn for fnn in result]))
+    system("rm *intermediate*root")
 
 print
 if not access("everything.root",F_OK) and dobig:
@@ -96,6 +103,12 @@ else:
 if not access("allData.root",F_OK) and dobigdata:
     if doegamma: cmd = "hadd_workspaces allData.root *EGamma*USER.root"
     else: cmd = "hadd_workspaces allData.root *DoubleEG*USER.root"
+    printAndExec(cmd)
+else:
+    print "skipping allData.root"
+
+if not access("allDataThreeYears.root",F_OK) and dobigdata3y:
+    cmd = "hadd_workspaces allData.root *USER.root"
     printAndExec(cmd)
 else:
     print "skipping allData.root"

@@ -10,8 +10,13 @@
            "/GluGluHToGG_M-130_13TeV_powheg_pythia8"
         ],
 	"vbfh"   : [          
+            "/VBFHToGG_M120_13TeV_amcatnlo_pythia8",
             "/VBFHToGG_M125_13TeV_amcatnlo_pythia8",
-            "/VBFHToGG_M-125_13TeV_powheg_pythia8",
+            "/VBFHToGG_M130_13TeV_amcatnlo_pythia8",
+            "/VBFHToGG_M-120_TuneCP5_13TeV-powheg-pythia8",
+            "/VBFHToGG_M-125_13TeV_powheg_pythia8"
+        ],
+        "vbfhALT" : [
             "/VBFHiggs0L1f05ph0ToGG_M125_13TeV_JHUGenV7011_pythia8",
             "/VBFHiggs0L1ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8",
             "/VBFHiggs0L1Zgf05ph0ToGG_M125_13TeV_JHUGenV7011_pythia8",
@@ -21,6 +26,26 @@
             "/VBFHiggs0PHf05ph0ToGG_M125_13TeV_JHUGenV7011_pythia8",
             "/VBFHiggs0PHToGG_M125_13TeV_JHUGenV7011_pythia8",
             "/VBFHiggs0PMToGG_M125_13TeV_JHUGenV7011_pythia8"
+        ],
+        "wzh" : [
+            "/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8",
+            "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8",
+            "/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8"
+        ],
+        "zh" : [
+            "/ggZH_HToGG_ZToQQ_M120_TuneCP5_13TeV-powheg-pythia8",
+            "/ggZH_HToGG_ZToQQ_M125_13TeV_powheg_pythia8"
+        ],
+        "wh" : [
+            "/WminusH_HToGG_WToAll_M120_13TeV_powheg_pythia8",
+            "/WminusH_HToGG_WToAll_M125_TuneCP5_13TeV-powheg-pythia8",
+            "/WplusH_HToGG_WToAll_M125_13TeV_powheg_pythia8",
+            "/WplusH_HToGG_WToAll_M130_13TeV_powheg_pythia8"
+        ],
+        "tth" : [
+            "/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8",
+            "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8",
+            "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8"
         ]
     }
 }

@@ -14,8 +14,10 @@
             "/VBFHToGG_M-125_13TeV_powheg_pythia8",
             "/VBFHToGG_M-130_13TeV_powheg_pythia8",
             "/VBFHToGG_M120_13TeV_amcatnlo_pythia8",
-            "/VBFHToGG_M125_13TeV_amcatnlo_pythia8",
-            "/VBFHToGG_M130_13TeV_amcatnlo_pythia8",
+            "/VBFHToGG_M125_13TeV_amcatnlo_pythia8_v2",
+            "/VBFHToGG_M130_13TeV_amcatnlo_pythia8"
+        ],
+        "vbfhALT" : [
             "/VBFHiggs0PHToGG_M-125_13TeV-JHUGenV6_pythia8",
             "/VBFHiggs0PMToGG_M-125_13TeV-JHUGenV6_pythia8"
         ],
@@ -23,6 +25,17 @@
             "/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8",
             "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8",
             "/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8"
+        ],
+        "zh" : [
+            "/ZH_HToGG_ZToAll_M125_13TeV_powheg_pythia8"
+        ],
+        "wh" : [
+            "/WminusH_HToGG_WToAll_M120_13TeV_powheg_pythia8",
+            "/WminusH_HToGG_WToAll_M125_13TeV_powheg_pythia8",
+            "/WminusH_HToGG_WToAll_M130_13TeV_powheg_pythia8",
+            "/WplusH_HToGG_WToAll_M120_13TeV_powheg_pythia8",
+            "/WplusH_HToGG_WToAll_M125_13TeV_powheg_pythia8",
+            "/WplusH_HToGG_WToAll_M130_13TeV_powheg_pythia8"
         ],
         "tth" : [
             "/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8_v2",
