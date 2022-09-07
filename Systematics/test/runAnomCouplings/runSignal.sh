@@ -1,6 +1,6 @@
 #!/bin/bash
 
-storageDir="/eos/cms/store/group/dpg_ecal/comm_ecal/localreco/vbfhgg/HiggsCouplings/Trees_21032022"
+storageDir="/eos/cms/store/group/dpg_ecal/comm_ecal/localreco/vbfhgg/HiggsCouplings/Trees_17052022"
 outDir=$1
 if [[ -z $outDir ]]; then
     echo "usage: $0 <outDir>"
