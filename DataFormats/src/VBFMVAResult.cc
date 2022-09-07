@@ -6,10 +6,13 @@ namespace flashgg {
         leadJet                (),
         subleadJet             (),
         subsubleadJet          (),
+        fourthJet              (),
         leadJet_ptr            (),
         subleadJet_ptr         (),
         subsubleadJet_ptr      (),
+        fourthJet_ptr          (),
         hasValidVBFTriJet      (  0),
+        hasValidVBFTetraJet    (  0),
         n_rec_jets             ( -1),
         n_gen_jets             ( -1),
         n_diphotons            ( -1),
@@ -39,7 +42,13 @@ namespace flashgg {
         
         vbfMvaResult_value     ( -9999. ),
         vbfMvaResult_value_bdt ( -9999. ),
-        vbfMvaResult_value_bdtg( -9999. )
+        vbfMvaResult_value_bdtg( -9999. ),
+        
+        vbfDnnResult_prob_bkg  ( -9999. ),
+        vbfDnnResult_prob_sm   ( -9999. ),
+        vbfDnnResult_prob_bsm  ( -9999. ),
+        
+        D0minus                ( -9999. )
     {}
     
     VBFMVAResult::VBFMVAResult( edm::Ptr<VBFMVAResult> x )
@@ -54,6 +63,11 @@ namespace flashgg {
         subsubleadJet     = x->subsubleadJet;
         subsubleadJet_ptr = x->subsubleadJet_ptr;
         hasValidVBFTriJet = x->hasValidVBFTriJet;
+
+        // 4th jet additional variables
+        fourthJet         = x->fourthJet;
+        fourthJet_ptr     = x->fourthJet_ptr;
+        hasValidVBFTetraJet = x->hasValidVBFTetraJet;
         
         n_rec_jets       = x->n_rec_jets;
         n_gen_jets       = x->n_gen_jets;
@@ -92,6 +106,12 @@ namespace flashgg {
         vbfMvaResult_value      = x->vbfMvaResult_value;
         vbfMvaResult_value_bdt  = x->vbfMvaResult_value_bdt;
         vbfMvaResult_value_bdtg = x->vbfMvaResult_value_bdtg;
+
+        vbfDnnResult_prob_bkg   = x->vbfDnnResult_prob_bkg;
+        vbfDnnResult_prob_sm    = x->vbfDnnResult_prob_sm;
+        vbfDnnResult_prob_bsm   = x->vbfDnnResult_prob_bsm;
+
+        D0minus                 = x->D0minus;
     }
 }
 // Local Variables:

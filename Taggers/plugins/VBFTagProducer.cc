@@ -38,11 +38,10 @@ namespace flashgg {
 
     private:
         void produce( Event &, const EventSetup & ) override;
-        int  chooseCategory( float );
+        int  chooseCategory( float pbsm, float pbkg, float d0m );
 
         EDGetTokenT<View<DiPhotonCandidate> >      diPhotonToken_;
         EDGetTokenT<View<VBFDiPhoDiJetMVAResult> > vbfDiPhoDiJetMvaResultToken_;
-        EDGetTokenT<View<VBFMVAResult> >           vbfMvaResultToken_;
         EDGetTokenT<View<DiPhotonMVAResult> >      mvaResultToken_;
         EDGetTokenT<View<GluGluHMVAResult> >       gghMvaResultToken_;
         EDGetTokenT<View<VHhadMVAResult> >         VHhadMVAResultToken_;
@@ -64,8 +63,9 @@ namespace flashgg {
 
         float vbfPreselPhoIDMVAMin_;
 
-        vector<double> boundaries;
-
+        vector<double> boundaries_pbsm;
+        vector<double> boundaries_pbkg;
+        vector<double> boundaries_d0m;
     };
 
     VBFTagProducer::VBFTagProducer( const ParameterSet &iConfig ) :
@@ -86,8 +86,13 @@ namespace flashgg {
         vbfPreselSubleadPtMin_( iConfig.getParameter<double>( "VBFPreselSubleadPtMin" ) ),
         vbfPreselPhoIDMVAMin_( iConfig.getParameter<double>( "VBFPreselPhoIDMVAMin") )
     {
-        boundaries = iConfig.getParameter<vector<double > >( "Boundaries" );
-        assert( is_sorted( boundaries.begin(), boundaries.end() ) ); // we are counting on ascending order - update this to give an error message or exception
+        boundaries_pbsm = iConfig.getParameter<vector<double > >( "Boundaries_pbsm" );
+        boundaries_pbkg = iConfig.getParameter<vector<double > >( "Boundaries_pbkg" );
+        boundaries_d0m  = iConfig.getParameter<vector<double > >( "Boundaries_d0m" );
+        // we are counting on ascending order - update this to give an error message or exception
+        assert( is_sorted( boundaries_pbsm.begin(), boundaries_pbsm.end() ) );
+        assert( is_sorted( boundaries_pbkg.begin(), boundaries_pbkg.end() ) );
+        assert( is_sorted( boundaries_d0m.begin(), boundaries_d0m.end() ) );
 
         ParameterSet HTXSps = iConfig.getParameterSet( "HTXSTags" );
         newHTXSToken_ = consumes<HTXS::HiggsClassification>( HTXSps.getParameter<InputTag>("ClassificationObj") );
@@ -96,14 +101,30 @@ namespace flashgg {
         produces<vector<VBFTagTruth> >();
     }
 
-    int VBFTagProducer::chooseCategory( float mvavalue )
-    {
+    int VBFTagProducer::chooseCategory( float pbsm, float pbkg, float d0m ) {
         // should return 0 if mva above all the numbers, 1 if below the first, ..., boundaries.size()-N if below the Nth, ...
-        int n;
-        for( n = 0 ; n < ( int )boundaries.size() ; n++ ) {
-            if( ( double )mvavalue > boundaries[boundaries.size() - n - 1] ) { return n; }
+        if (pbsm<-100 || pbkg<-100 || d0m<-100) return -1;
+
+        int n,m,o;
+        for( n = 0 ; n < (int)boundaries_pbsm.size() ; n++ ) {
+            if( (double)pbsm > boundaries_pbsm[boundaries_pbsm.size() - n - 1] ) break;
         }
-        return -1; // Does not pass, object will not be produced
+        for( m = 0 ; m < (int)boundaries_pbkg.size() ; m++ ) {
+            if( (double)pbkg > boundaries_pbkg[boundaries_pbkg.size() - m - 1] ) break;
+        }
+        for( o = 0 ; o < (int)boundaries_d0m.size() ; o++ ) {
+            if( (double)d0m > boundaries_d0m[boundaries_d0m.size() - o - 1] ) break;
+        }
+
+        int CAT = (int)((boundaries_d0m.size()+1) * (boundaries_pbsm.size()+1) * m +
+                        (boundaries_pbsm.size()+1) * o +
+                        n);
+
+        // std::cout << "pbkg = " << pbkg << "\td0m = " << d0m << "\tpbsm = " << pbsm
+        //           << "m = " << m << "\to = " << o << "\tn = " << n 
+        //           << " CAT = " << CAT << std::endl;
+
+        return CAT;
     }
     
     void VBFTagProducer::produce( Event &evt, const EventSetup & )
@@ -301,7 +322,10 @@ namespace flashgg {
                 continue;
             }
 
-            int catnum = chooseCategory( vbfdipho_mvares->vbfDiPhoDiJetMvaResult );
+            float dnn_pbsm = tag_obj.VBFMVA().dnnprob_bsm_value();
+            float dnn_pbkg = tag_obj.VBFMVA().dnnprob_bkg_value();
+            float d0m = tag_obj.VBFMVA().mela_D0minus_value();
+            int catnum = chooseCategory(dnn_pbsm, dnn_pbkg, d0m);
             tag_obj.setCategoryNumber( catnum );
             unsigned int index_gp_leadjet = std::numeric_limits<unsigned int>::max();
             unsigned int index_gp_subleadjet = std::numeric_limits<unsigned int>::max();

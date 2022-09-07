@@ -45,7 +45,9 @@ dipho_variables=[
     "vtxprob                := diPhotonMVA.vtxprob",
     "pt                     := diPhoton.pt",
     "leadSCeta              := diPhoton.leadingPhoton.superCluster.eta",
-    "subleadSCeta           := diPhoton.subLeadingPhoton.superCluster.eta"
+    "subleadSCeta           := diPhoton.subLeadingPhoton.superCluster.eta",
+    "dipho_lead_genmatch    := ?(diPhoton().leadingPhoton.hasGenMatchType)? diPhoton().leadingPhoton.genMatchType : -999",
+    "dipho_sublead_genmatch := ?(diPhoton().subLeadingPhoton.hasGenMatchType)? diPhoton().subLeadingPhoton.genMatchType : -999"
     ]
 
 dijet_variables=[
@@ -54,8 +56,8 @@ dijet_variables=[
     "dijet_subleadEta       :=  VBFMVA.dijet_subleadEta ",
     "dijet_leady            :=  VBFMVA.dijet_leady      ",
     "dijet_subleady         :=  VBFMVA.dijet_subleady   ",
-    "dijet_LeadJPt          :=  VBFMVA.dijet_LeadJPt    ",
-    "dijet_SubJPt           :=  VBFMVA.dijet_SubJPt     ",
+    "dijet_leadPt           :=  VBFMVA.dijet_LeadJPt    ",
+    "dijet_subleadPt        :=  VBFMVA.dijet_SubJPt     ",
     "dijet_Zep              :=  VBFMVA.dijet_Zep        ",
     "dijet_Mjj              :=  VBFMVA.dijet_Mjj        ",
     "dipho_PToM_vbfmva      :=  VBFMVA.dipho_PToM       ",
@@ -79,9 +81,11 @@ dijet_variables=[
     "jet1_pt             := leadingJet.pt",
     "jet2_pt             := subLeadingJet.pt",
     "jet3_pt             := subSubLeadingJet.pt",
+    "jet4_pt             := fourthJet.pt",
     "jet1_eta            := leadingJet.eta",
     "jet2_eta            := subLeadingJet.eta",
     "jet3_eta            := subSubLeadingJet.eta",
+    "jet4_eta            := fourthJet.eta",
     "Mjj := sqrt((leadingJet.energy+subLeadingJet.energy)^2-(leadingJet.px+subLeadingJet.px)^2-(leadingJet.py+subLeadingJet.py)^2-(leadingJet.pz+subLeadingJet.pz)^2)",
     "jet1_rawPt          := leading_rawPt",
     "jet2_rawPt          := subLeading_rawPt",
@@ -98,7 +102,18 @@ dijet_variables=[
     "jet2_HFHadronMultiplicity := subleading_HFHadronMultiplicity",
     "jet2_HFEMMultiplicity := subleading_HFEMMultiplicity",
     "dijet_nj := VBFMVA.n_rec_jets",
-    "dipho_dijet_ptHjj := ptHjj"
+    "dipho_dijet_ptHjj := ptHjj",
+    # Quark-Gluon-Likelihood
+    "jet1_qgtag := leading_QGL()",
+    "jet2_qgtag := subLeading_QGL()",
+    "jet3_qgtag := subSubLeading_QGL()",
+    "jet4_qgtag := fourth_QGL()",
+    # BTag
+    "jet1_btag := leading_BTag()",
+    "jet2_btag := subLeading_BTag()",
+    "jet3_btag := subSubLeading_BTag()",
+    "jet4_btag := fourth_BTag()",
+
 ]
 
 truth_variables=[

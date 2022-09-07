@@ -1,0 +1,46 @@
+{
+    "cmdLine"  : "metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2016_RR-17Jul2018_v1.json campaign=Era2016_RR-17Jul2018_v2 useAAA=True lumiMask=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt",
+    "processes": {
+	"ggh"   : [
+            "/GluGluHToGG_M120_13TeV_amcatnloFXFX_pythia8",
+            "/GluGluHToGG_M125_13TeV_amcatnloFXFX_pythia8",
+            "/GluGluHToGG_M130_13TeV_amcatnloFXFX_pythia8",
+            "/GluGluHToGG_M-120_13TeV_powheg_pythia8",
+            "/GluGluHToGG_M-125_13TeV_powheg_pythia8",
+            "/GluGluHToGG_M-130_13TeV_powheg_pythia8"
+        ],
+	"vbfh"   : [
+            "/VBFHToGG_M-120_13TeV_powheg_pythia8",
+            "/VBFHToGG_M-125_13TeV_powheg_pythia8",
+            "/VBFHToGG_M-130_13TeV_powheg_pythia8",
+            "/VBFHToGG_M120_13TeV_amcatnlo_pythia8",
+            "/VBFHToGG_M125_13TeV_amcatnlo_pythia8_v2",
+            "/VBFHToGG_M130_13TeV_amcatnlo_pythia8"
+        ],
+        "vbfhALT" : [
+            "/VBFHiggs0PHToGG_M-125_13TeV-JHUGenV6_pythia8",
+            "/VBFHiggs0PMToGG_M-125_13TeV-JHUGenV6_pythia8"
+        ],
+        "wzh" : [
+            "/VHToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8",
+            "/VHToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8",
+            "/VHToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8"
+        ],
+        "zh" : [
+            "/ZH_HToGG_ZToAll_M125_13TeV_powheg_pythia8"
+        ],
+        "wh" : [
+            "/WminusH_HToGG_WToAll_M120_13TeV_powheg_pythia8",
+            "/WminusH_HToGG_WToAll_M125_13TeV_powheg_pythia8",
+            "/WminusH_HToGG_WToAll_M130_13TeV_powheg_pythia8",
+            "/WplusH_HToGG_WToAll_M120_13TeV_powheg_pythia8",
+            "/WplusH_HToGG_WToAll_M125_13TeV_powheg_pythia8",
+            "/WplusH_HToGG_WToAll_M130_13TeV_powheg_pythia8"
+        ],
+        "tth" : [
+            "/ttHJetToGG_M120_13TeV_amcatnloFXFX_madspin_pythia8_v2",
+            "/ttHJetToGG_M125_13TeV_amcatnloFXFX_madspin_pythia8_v2",
+            "/ttHJetToGG_M130_13TeV_amcatnloFXFX_madspin_pythia8_v2"
+        ]
+    }
+}

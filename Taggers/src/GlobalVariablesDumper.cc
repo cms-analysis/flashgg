@@ -42,9 +42,11 @@ namespace flashgg {
             }
         }
         if (cfg.exists( "dumpLHEInfo" ) ) {
-            std::cout << "Parameter dumpLHEInfo exists..." << std::endl;
-            lheTableTag_  = cfg.getParameter<InputTag>( "lheTable");
-            lhePartTableTag_  = cfg.getParameter<InputTag>( "lhePartTable");
+            lheTableTag_  = cfg.getParameter<InputTag>("lheTable");
+            lhePartTableTag_  = cfg.getParameter<InputTag>("lhePartTable");
+        }
+        if (cfg.exists( "dumpMelaWeightsInfo" )) {
+            melaTablesTag_ = cfg.getParameter<std::vector<InputTag> >("melaTables");
         }
         _init(cfg);
     }
@@ -84,14 +86,21 @@ namespace flashgg {
                 extraVectorFloatTokens_.push_back( cc.consumes<std::vector<float>>(extrafloatPSet.getParameter<InputTag>("src")) );
             }
         }
-        if (cfg.exists( "dumpLHEInfo" ) ) {
+        m_tables.clear();
+        if (cfg.exists( "dumpLHEInfo" ) && cfg.getParameter<bool>( "dumpLHEInfo" )) {
             lheTableTag_  = cfg.getParameter<InputTag>( "lheTable");
             lheTableToken_ = cc.consumes<nanoaod::FlatTable>( lheTableTag_ );
             lhePartTableTag_  = cfg.getParameter<InputTag>( "lhePartTable");
             lhePartTableToken_ = cc.consumes<nanoaod::FlatTable>( lhePartTableTag_ );
-            m_tables.clear();
             m_tables.emplace_back("nanoaod::FlatTable", lheTableToken_);
             m_tables.emplace_back("nanoaod::FlatTable", lhePartTableToken_);
+        }
+        if (cfg.exists( "dumpMelaWeightsInfo" ) && cfg.getParameter<bool>( "dumpMelaWeightsInfo" )) {
+            melaTablesTag_ = cfg.getParameter<std::vector<InputTag> >("melaTables");
+            for (unsigned i = 0; i<melaTablesTag_.size(); ++i) {
+                melaTablesTokens_.emplace_back(cc.consumes<nanoaod::FlatTable>( melaTablesTag_[i] ));
+                m_tables.emplace_back("nanoaod::FlatTable", melaTablesTokens_[i]);
+            }
         }
         _init(cfg);
     }
@@ -277,7 +286,7 @@ namespace flashgg {
             }
         }
 
-        if(dumpLHEInfo_) {
+        if(dumpLHEInfo_ || dumpMelaWeightsInfo_) {
             for (auto& t : m_tables)
                 t.fill(*fullEvent, *m_tree, false);
         }

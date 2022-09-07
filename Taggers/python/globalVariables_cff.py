@@ -13,5 +13,7 @@ globalVariables = cms.PSet(
     dumpLHEInfo=cms.bool(False),
     lheTable=cms.InputTag("lheInfoTable:LHE"),
     lhePartTable=cms.InputTag("lheInfoTable:LHEPart"),
+    dumpMelaWeightsInfo=cms.bool(False),
+    melaTables=cms.VInputTag(),
     )
 

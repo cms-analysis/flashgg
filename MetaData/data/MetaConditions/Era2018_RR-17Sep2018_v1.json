@@ -327,7 +327,10 @@
 
     "L1Prefiring" :
     {
-        "isRelevant" : false
+        "isECALRelevant" : false,
+        "applyToCentral" : false,
+        "MuonFileName"   : "flashgg/Taggers/data/L1MuonPrefiringParametriations.root",
+        "dataeraMuon"    : "20172018"
     },
 
     "THQLeptonicTag":

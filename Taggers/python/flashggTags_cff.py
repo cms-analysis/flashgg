@@ -78,7 +78,8 @@ flashggTTHHadronicTag = cms.EDProducer("FlashggTTHHadronicTagProducer",
                                        subleadPhoPtThreshold = cms.double(20),
                                        subleadPhoUseVariableThreshold =  cms.bool(True),
                                        MVAThreshold = cms.double(-1.0),
-                                       PhoMVAThreshold = cms.double(-0.7),
+#                                       PhoMVAThreshold = cms.double(-0.7), ### EDM loose g+jets
+                                       PhoMVAThreshold = cms.double(-1.0), ### EDM loose g+jets
                                        inputTagJets= UnpackedJetCollectionVInputTag, 
                                        jetPtThreshold = cms.double(25.),
                                        jetEtaThreshold = cms.double(2.4),
@@ -137,7 +138,9 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
                                GenParticleTag=cms.InputTag( "flashggPrunedGenParticles" ),
                                HTXSTags = HTXSInputTags,
                                GenJetTag = cms.InputTag("slimmedGenJets"),
-                               #Boundaries=cms.vdouble(0.21,0.6,0.81)
+                               Boundaries_pbsm=cms.vdouble(0.97),
+                               Boundaries_pbkg=cms.vdouble(0.05),
+                               Boundaries_d0m=cms.vdouble(0.6),
                                #  for the moment we have two categories VBF-0 and VBF-1: to be changed when the diphoton MVA is ready 
                                #Boundaries=cms.vdouble(0.5819, 0.9449)
                                #Boundaries=cms.vdouble(0.62, 0.94),
@@ -149,13 +152,13 @@ flashggVBFTag = cms.EDProducer("FlashggVBFTagProducer",
 #                               Boundaries=cms.vdouble(0.215,  0.532,  0.865),
 #                               Boundaries=cms.vdouble(0.66633615,  0.89334188,  0.95919197),
 #                               Boundaries=cms.vdouble(0.55889473,  0.9087378 ,  0.97044208),
-                               Boundaries = cms.vdouble( 0.553, 0.902, 0.957 ),
+                               #Boundaries = cms.vdouble( 0.553, 0.902, 0.957 ),
                                SetArbitraryNonGoldMC = cms.bool(False),
                                DropNonGoldData = cms.bool(False),
                                RequireVBFPreselection = cms.bool(True),
                                VBFPreselLeadPtMin = cms.double(40.),
                                VBFPreselSubleadPtMin = cms.double(30.),
-                               VBFPreselPhoIDMVAMin = cms.double(-0.2),
+                               VBFPreselPhoIDMVAMin = cms.double(0.5),
                                GetQCDWeights = cms.bool(False)
                                )
 

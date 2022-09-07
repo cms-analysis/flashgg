@@ -407,9 +407,9 @@ melaTable = cms.EDProducer("MELAGenMatrixElementTableProducer",
    sqrts = cms.double(13.0),
    mH = cms.double(125.0),
    #candVVmode = cms.string("undecayed"),
-   #decayVVmode = cms.int32(-1),
+   decayVVmode = cms.int32(0),
    #melaSetup = cms.string("ZH_NLO"),
-   mode = cms.string("Decay_gammagamma"),
+   mode = cms.string("VBF_NLO"),
    normalize = cms.bool(True),
    matrixElements = cms.vstring(),
    #   "Name:SM Couplings:ghz1=1,0;ghw1=1,0",
@@ -422,11 +422,40 @@ melaTable = cms.EDProducer("MELAGenMatrixElementTableProducer",
    #   "Name:ghw2b Couplings:ghz1=1,0;ghw1=1,0;ghw2=-0.01,0", 
 )
 
+### AC fa_i(s) ###
+JHU_points = ["Name:SM Couplings:ghz1=1,0;ghw1=1,0",
+              "Name:SM2 Couplings:ghz1=2,0;ghw1=2,0",
+              "Name:ghz2 Couplings:ghz1=1,0;ghw1=1,0;ghz2=1,0",
+              "Name:ghz2_up Couplings:ghz1=1,0;ghw1=1,0;ghz2=0.1,0",
+              "Name:ghz2_dn Couplings:ghz1=1,0;ghw1=1,0;ghz2=-0.1,0",
+              "Name:ghw2 Couplings:ghz1=1,0;ghw1=1,0;ghw2=1,0",
+              "Name:ghw2_up Couplings:ghz1=1,0;ghw1=1,0;ghw2=0.1,0",
+              "Name:ghw2_dn Couplings:ghz1=1,0;ghw1=1,0;ghw2=-0.1,0",
+              "Name:ghz4 Couplings:ghz1=1,0;ghw1=1,0;ghz4=1,0",
+              "Name:ghz4_up Couplings:ghz1=1,0;ghw1=1,0;ghz4=0.1,0",
+              "Name:ghz4_dn Couplings:ghz1=1,0;ghw1=1,0;ghz4=-0.1,0",
+              "Name:ghw4 Couplings:ghz1=1,0;ghw1=1,0;ghw4=1,0",
+              "Name:ghw4_up Couplings:ghz1=1,0;ghw1=1,0;ghw4=0.1,0",
+              "Name:ghw4_dn Couplings:ghz1=1,0;ghw1=1,0;ghw4=-0.1,0",
+              "Name:ghzgs2 Couplings:ghz1=1,0;ghw1=1,0;ghzgs2=1,0",
+              "Name:ghzgs2_up Couplings:ghz1=1,0;ghw1=1,0;ghzgs2=0.1,0",
+              "Name:ghzgs2_dn Couplings:ghz1=1,0;ghw1=1,0;ghzgs2=-0.1,0",
+]
+
+# =================================================================================================
+# ================================== ANOMALOUS COUPLINGS POINTS ===================================
+# =================================================================================================
+
+process.melaGenMatrixElementACTableJHU = melaTable.clone(name = "MEWeight_prodJHUGen", matrixElements = JHU_points)
+process.tablesAC = cms.Sequence(process.melaGenMatrixElementACTableJHU)
+
+bases = "any"
+if bases in ("any", "AC JHU"):
+    print "Anomalous couplings\n", "\n".join(JHU_points)
+
 from MelaAnalytics.GenericMEComputer.couplingUtils import *
 
 test = 'test'
-
-bases = "any"
 if   "SMEFT"    in test: bases = "Warsaw"
 elif "HELatNLO" in test: bases = "HELatNLO"
 elif "HEL"      in test: bases = "HEL"
@@ -705,8 +734,9 @@ process.tablesWarsaw = cms.Sequence(
 # ==================================================================================
 # ================================== COMMON ========================================
 # ==================================================================================
-
-if bases == "Warsaw":
+if bases == "ac":
+    process.tables = cms.Sequence( process.tablesAC )
+elif bases == "Warsaw":
     process.tables = cms.Sequence( process.tablesWarsaw )
 elif bases == "Higgs":
     process.tables = cms.Sequence( process.tablesHiggs )
@@ -715,7 +745,7 @@ elif bases == "HEL":
 elif bases == "HELatNLO":
     process.tables = cms.Sequence( process.tablesHELatNLO )
 elif bases == "any":
-    process.tables = cms.Sequence( process.tablesWarsaw + process.tablesHiggs + process.tablesHELatNLO )
+    process.tables = cms.Sequence( process.tablesWarsaw + process.tablesHiggs + process.tablesHELatNLO + process.tablesAC )
 else:
     raise RuntimeError("Unsupported bases %r" % bases)
 
@@ -746,6 +776,19 @@ if customize.processId != "Data":
     melaTables=True
     if melaTables:
         process.lheInfosSeq += process.tables
+        process.vbfTagDumper.globalVariables.dumpMelaWeightsInfo = True
+        process.vbfTagDumper.globalVariables.melaTables = cms.VInputTag('melaGenMatrixElementHiggsTable',
+                                                                        #'melaGenMatrixElementHELFlipTable',
+                                                                        #'melaGenMatrixElementHELFlipEffTable',
+                                                                        #'melaGenMatrixElementHELNoGTable',
+                                                                        'melaGenMatrixElementHELatNLONoGFixTable',
+                                                                        'melaGenMatrixElementHELatNLOFlipZGFixTable',
+                                                                        'melaGenMatrixElementHELatNLOFlipZGEffFixTable',
+                                                                        'melaGenMatrixElementWarFlipTable',
+                                                                        'melaGenMatrixElementWarFlipEffTable',
+                                                                        'melaGenMatrixElementWarNoGTable',
+                                                                        'melaGenMatrixElementACTableJHU',
+                                                                    )
 
 
 process.p = cms.Path(process.dataRequirements

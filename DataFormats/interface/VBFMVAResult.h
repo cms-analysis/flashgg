@@ -22,15 +22,18 @@ namespace flashgg {
         reco::Candidate::LorentzVector leadJet;
         reco::Candidate::LorentzVector subleadJet;
         reco::Candidate::LorentzVector subsubleadJet;
+        reco::Candidate::LorentzVector fourthJet;
         
         edm::Ptr<flashgg::Jet> leadJet_ptr;
         edm::Ptr<flashgg::Jet> subleadJet_ptr;
-        // 3rd jet
+        // 3rd and 4th jet
         edm::Ptr<flashgg::Jet> subsubleadJet_ptr; 
+        edm::Ptr<flashgg::Jet> fourthJet_ptr; 
         // 4-vec of the 3 jets
         
         
         bool hasValidVBFTriJet;
+        bool hasValidVBFTetraJet;
         
         // di-photon info 
         // flashgg::DiPhotonCandidate diphoton;
@@ -76,10 +79,12 @@ namespace flashgg {
         float transformedMvaValue(float result) const {return 1. / ( 1. + exp( 0.5*log( 2./(result+1.) - 1 ) ) );} 
 
         // DNN for VBF anomalous couplings 
-        float dnnprob_VBF_value() const {return vbfDnnResult_prob_VBF;}
-        float dnnprob_ggH_value() const {return vbfDnnResult_prob_ggH;}
         float dnnprob_bkg_value() const {return vbfDnnResult_prob_bkg;}
-        
+        float dnnprob_sm_value() const {return vbfDnnResult_prob_sm;}
+        float dnnprob_bsm_value() const {return vbfDnnResult_prob_bsm;}
+        // MELA (only D0- used for categorization for now)
+        float mela_D0minus_value() const {return D0minus;}
+
         // Output
         float vbfMvaResult_value;
         float vbfMvaResult_value_bdt;
@@ -88,9 +93,10 @@ namespace flashgg {
         float vbfMvaResult_prob_ggH;
         float vbfMvaResult_prob_bkg;
 
-        float vbfDnnResult_prob_VBF;
-        float vbfDnnResult_prob_ggH;
         float vbfDnnResult_prob_bkg;
+        float vbfDnnResult_prob_sm;
+        float vbfDnnResult_prob_bsm;
+        float D0minus;
     };
     
     typedef std::map<edm::Ptr<DiPhotonCandidate>, VBFMVAResult> VBFMVAResultMap;
