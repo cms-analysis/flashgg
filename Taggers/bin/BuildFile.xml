@@ -6,5 +6,6 @@
 <use   name="flashgg/Taggers"/>
 <!-- Flags CXXFLAGS="-ggdb"/ -->
 <environment>
-  <bin   file="hadd_workspaces.cc"></bin>
+  <bin   file="hadd_workspaces.cc"/>
+  <bin   file="combine_workspaces.cc"/>
 </environment>
