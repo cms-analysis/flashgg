@@ -77,14 +77,13 @@ namespace flashgg {
     {
         tag_ = iConfig.getUntrackedParameter<string>( "tag", "initrwgt" );
         doScaleWeights_ = iConfig.getUntrackedParameter<bool>("doScaleWeights", true); 
+        doAlphasWeights_= iConfig.getUntrackedParameter<bool>("doAlphasWeights", true);
         nPdfEigWeights_ = iConfig.getParameter<unsigned int>("nPdfEigWeights");
         mc2hessianCSV_ = iConfig.getUntrackedParameter<string>("mc2hessianCSV");
         //std::vector<std::string> parameterNames = PDFmap_.getParameterNames();
         //for ( std::vector<std::string>::iterator iter = parameterNames.begin();iter != parameterNames.end(); ++iter ){
         //    PDFmapString_[*iter]=PDFmap_.getUntrackedParameter<unsigned int>(*iter);
         //}
-
-        doAlphasWeights_=true;
 
         consumes<LHERunInfoProduct,edm::InRun> (edm::InputTag(runLabel_));
         produces<vector<flashgg::PDFWeightObject> >();
@@ -103,7 +102,7 @@ namespace flashgg {
         typedef vector<LHERunInfoProduct::Header>::const_iterator headers_const_iterator;
         
         iRun.getByLabel( runLabel_, run );
-		LHERunInfoProduct myLHERunInfoProduct = *( run.product() );
+        LHERunInfoProduct myLHERunInfoProduct = *( run.product() );
 
         //--- get info from LHERunInfoProduct
         vector<string> weight_lines;
@@ -182,7 +181,7 @@ namespace flashgg {
 
         for (auto& it : weight_lines) {
 
-            if (it.find("<weight ") != std::string::npos) {
+            if (it.find("<weight MUF") != std::string::npos || it.find("<weight id") != std::string::npos) {
 
                 std::istringstream line(it);
                 boost::property_tree::ptree pt;

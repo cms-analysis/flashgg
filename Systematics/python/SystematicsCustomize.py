@@ -367,6 +367,7 @@ def recalculatePDFWeights(process, options):
                                                     GenTag      = cms.InputTag('generator'),
                                                     tag = cms.untracked.string("initrwgt"),
                                                     doScaleWeights  = cms.untracked.bool(True),
+                                                    doAlphasWeights = cms.untracked.bool(True),
                                                     nPdfEigWeights = cms.uint32(60),
                                                     mc2hessianCSV = cms.untracked.string(options["mc2hessianCSV"].encode("ascii")),
                                                     LHERunLabel = cms.string("externalLHEProducer"),
