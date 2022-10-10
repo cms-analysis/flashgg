@@ -12,7 +12,7 @@ class MuonSF_JSONReader :
             self.Info = j[ sf_name ]
 
         self.binInfo = cms.PSet( 
-            variables = cms.vstring( "eta" , "pt" ),
+            variables = cms.vstring( "abs(eta)" , "pt" ),
             bins = cms.VPSet() 
             )
 
