@@ -34,8 +34,8 @@
 
     "flashggPhotons" :
     {
-        "photonIdMVAweightfile_EB" : "flashgg/MicroAOD/data/HggPhoId_barrel_Moriond2017_wRhoRew.weights.xml",
-        "photonIdMVAweightfile_EE" : "flashgg/MicroAOD/data/HggPhoId_endcap_Moriond2017_wRhoRew.weights.xml",
+        "photonIdMVAweightfile_EB" : "flashgg/MicroAOD/data/PhoID_barrel_UL16_SA_TMVA_BDTG.weights.xml",
+        "photonIdMVAweightfile_EE" : "flashgg/MicroAOD/data/PhoID_endcap_UL16_SA_TMVA_BDTG.weights.xml",
         "effAreasConfigFile" : "RecoEgamma/PhotonIdentification/data/Spring16/effAreaPhotons_cone03_pfPhotons_90percentBased.txt",
         "is2017" : false
     },
@@ -93,7 +93,7 @@
 
     "Ele_reco_SF_FileName" : "flashgg/Systematics/data/2016preVFP_UL_reco-eff.json",
 
-    "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2016_cfi",
+    "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2016_Legacy_preVFP_cfi",
     
 
     "sigmaM_M_decorr" : "flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_2016_Mgg100to180.root",
@@ -109,7 +109,7 @@
     "JetResolutionParametersCollection_version" :
     {
         "data_res" : "JR_Summer20UL16APV_JRV3_DATA_PtResolution_AK4PFchs",
-        "data_sf" : "JR_Summer20UL16APV_JRV3_DATA_AK4PFchs",
+        "data_sf" : "JR_Summer20UL16APV_JRV3_DATA_SF_AK4PFchs",
         "data_db" : "flashgg/Systematics/data/JER/Summer20UL16APV_JRV3_DATA.db",
         "MC_res" : "JR_Summer20UL16APV_JRV3_MC_PtResolution_AK4PFchs",
         "MC_sf" : "JR_Summer20UL16APV_JRV3_MC_SF_AK4PFchs",
@@ -333,12 +333,12 @@
 
     "PhoIdInputCorrections":
     {
-    "corrections_summary" : "flashgg/Taggers/data/PhoIdInputsCorrections/corrections_summary_2016.json",
+    "corrections_summary" : "flashgg/Taggers/data/PhoIdInputsCorrections/corrections_summary_UL16_preVFP.json",
     "SS_variables" : ["f0 := pt",
                           "f1 := superCluster.eta",
                           "f2 := phi",
                           "f3 := global.rho",
-	                      "f4 := superCluster.phiWidth",
+	                  "f4 := superCluster.phiWidth",
                           "f5 := sieip",
                           "f6 := s4",
                           "f7 := full5x5_r9",
