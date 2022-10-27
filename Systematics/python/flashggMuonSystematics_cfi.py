@@ -89,8 +89,8 @@ class MuonSF_JSONReader :
                                 )
                             )
 
-  #                      if not file_name.count("2016") : 
-                        self.binInfo.bins.append( 
+                        if not file_name.count("2016") : 
+                            self.binInfo.bins.append( 
                                 cms.PSet(
                                     lowBounds = cms.vdouble( -1*eta_to , pt_from ) ,
                                     upBounds = cms.vdouble( -1*eta_from , pt_to ) ,
@@ -99,10 +99,10 @@ class MuonSF_JSONReader :
                                 ) 
                             )
     
-#                        if not file_name.count("2016") :
-                        pt_bins[ pt_from ] = [ self.binInfo.bins[-1], self.binInfo.bins[-2] ]
-#                        else :
-#                        pt_bins[ pt_from ] =  self.binInfo.bins[-1]
+                        if not file_name.count("2016") :
+                            pt_bins[ pt_from ] = [ self.binInfo.bins[-1], self.binInfo.bins[-2] ]
+                        else :
+                            pt_bins[ pt_from ] =  self.binInfo.bins[-1]
                     else :
                         print pt_region, "of sf" , sf_name , "from file", file_name , "can not be interpreted correctly"
                 min_pt = sorted( pt_bins.keys() )[0]
@@ -123,8 +123,8 @@ class MuonSF_JSONReader :
                             uncertainties = cms.vdouble( 0.00 , 0.00 )
                             )
                         )
-#                    if not file_name.count("2016") :
-                    self.binInfo.bins.append( 
+                    if not file_name.count("2016") :
+                        self.binInfo.bins.append( 
                             cms.PSet(
                                 lowBounds = cms.vdouble( -1*eta_to , 0.00 ) ,
                                 upBounds = cms.vdouble( -1*eta_from , extendPt ) ,
@@ -140,8 +140,8 @@ class MuonSF_JSONReader :
                             uncertainties = cms.vdouble( 2*minErr , 2*minErr )
                             )
                         )
-#                    if not file_name.count("2016") :
-                    self.binInfo.bins.append( 
+                    if not file_name.count("2016") :
+                        self.binInfo.bins.append( 
                             cms.PSet(
                                 lowBounds = cms.vdouble( -1*eta_to , extendPt ) ,
                                 upBounds = cms.vdouble( -1*eta_from , min_pt ) ,
@@ -158,8 +158,8 @@ class MuonSF_JSONReader :
                             uncertainties = cms.vdouble( 0.00 , 0.00 )
                             )
                         )
-#                    if not file_name.count("2016") :
-                    self.binInfo.bins.append( 
+                    if not file_name.count("2016") :
+                        self.binInfo.bins.append( 
                             cms.PSet(
                                 lowBounds = cms.vdouble( -1*eta_to , 0.00 ) ,
                                 upBounds = cms.vdouble( -1*eta_from , min_pt ) ,
@@ -168,11 +168,11 @@ class MuonSF_JSONReader :
                                 )
                              )
 
-#                if not file_name.count("2016") : 
-                pt_bins[ sorted(pt_bins.keys())[-1] ][0].upBounds[1] = float( 'inf' )
-                pt_bins[ sorted(pt_bins.keys())[-1] ][1].upBounds[1] = float( 'inf' )                
-#                else:
-#                pt_bins[ sorted(pt_bins.keys())[-1] ].upBounds[1] = float( 'inf' )
+                if not file_name.count("2016") : 
+                    pt_bins[ sorted(pt_bins.keys())[-1] ][0].upBounds[1] = float( 'inf' )
+                    pt_bins[ sorted(pt_bins.keys())[-1] ][1].upBounds[1] = float( 'inf' )                
+                else:
+                    pt_bins[ sorted(pt_bins.keys())[-1] ].upBounds[1] = float( 'inf' )
                 
             else:
                 print eta_region, "of sf" , sf_name , "from file", file_name , "can not be interpreted correctly"
@@ -204,8 +204,8 @@ def SetupMuonScaleFactors( process , id_file_name, id_lowpt_file_name, iso_file_
     extendPtValID = 0
     extendPtValISO = minAnaPt
 
-#    if id_file_name.count("2016") :
-#        extendPtValID = minAnaPt 
+    if id_file_name.count("2016") :
+        extendPtValID = minAnaPt 
 
     MUON_ID_ScaleFactors = {}
     for mu_id in ["Tight", "Medium" , "Loose", "HighPt"] :

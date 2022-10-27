@@ -35,9 +35,8 @@ class EleSF_JSONReader :
                             uncertainties = cms.vdouble( sf_error )
                         )
                     )
-#JTao for UL2016 electron ID SFs
-#                    if pt_to == 500.0:
-                    if (file_name.count("eleIDSFs_UL_2016") and pt_to == 200.0) or pt_to == 500.0 :
+
+                    if pt_to == 500.0:
                         #extend the extremes to prevent any crashes
                         self.binInfo.bins.append(
                             cms.PSet(
