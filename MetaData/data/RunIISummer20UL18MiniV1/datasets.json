@@ -1,0 +1,1017 @@
+{
+    "/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/phys_higgs-RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1-de3917f9486085cd39ed3c4972d6bd6c/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 8964, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 8964, 
+                "totEvents": 8964, 
+                "weights": 2605771.0
+            }, 
+            {
+                "bad": false, 
+                "events": 8055, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_99.root", 
+                "nevents": 8055, 
+                "totEvents": 8055, 
+                "weights": 2447424.5
+            }, 
+            {
+                "bad": false, 
+                "events": 23995, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_48.root", 
+                "nevents": 23995, 
+                "totEvents": 23995, 
+                "weights": 7035581.0
+            }, 
+            {
+                "bad": false, 
+                "events": 8178, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_75.root", 
+                "nevents": 8178, 
+                "totEvents": 8178, 
+                "weights": 2411310.25
+            }, 
+            {
+                "bad": false, 
+                "events": 6925, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 6925, 
+                "totEvents": 6925, 
+                "weights": 2050725.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24174, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_50.root", 
+                "nevents": 24174, 
+                "totEvents": 24174, 
+                "weights": 7120588.5
+            }, 
+            {
+                "bad": false, 
+                "events": 2039, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_120.root", 
+                "nevents": 2039, 
+                "totEvents": 2039, 
+                "weights": 618384.375
+            }, 
+            {
+                "bad": false, 
+                "events": 3023, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_96.root", 
+                "nevents": 3023, 
+                "totEvents": 3023, 
+                "weights": 868405.0
+            }, 
+            {
+                "bad": false, 
+                "events": 11977, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_126.root", 
+                "nevents": 11977, 
+                "totEvents": 11977, 
+                "weights": 3564183.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24178, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_54.root", 
+                "nevents": 24178, 
+                "totEvents": 24178, 
+                "weights": 7012801.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24024, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_63.root", 
+                "nevents": 24024, 
+                "totEvents": 24024, 
+                "weights": 6971687.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24172, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_62.root", 
+                "nevents": 24172, 
+                "totEvents": 24172, 
+                "weights": 7116143.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24076, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_94.root", 
+                "nevents": 24076, 
+                "totEvents": 24076, 
+                "weights": 7115032.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24130, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_49.root", 
+                "nevents": 24130, 
+                "totEvents": 24130, 
+                "weights": 7139479.5
+            }, 
+            {
+                "bad": false, 
+                "events": 9114, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 9114, 
+                "totEvents": 9114, 
+                "weights": 2691333.5
+            }, 
+            {
+                "bad": false, 
+                "events": 7104, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_79.root", 
+                "nevents": 7104, 
+                "totEvents": 7104, 
+                "weights": 2191292.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24282, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_56.root", 
+                "nevents": 24282, 
+                "totEvents": 24282, 
+                "weights": 7162815.0
+            }, 
+            {
+                "bad": false, 
+                "events": 13948, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_43.root", 
+                "nevents": 13948, 
+                "totEvents": 13948, 
+                "weights": 4165899.75
+            }, 
+            {
+                "bad": false, 
+                "events": 24054, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_58.root", 
+                "nevents": 24054, 
+                "totEvents": 24054, 
+                "weights": 7083919.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24188, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_59.root", 
+                "nevents": 24188, 
+                "totEvents": 24188, 
+                "weights": 7143923.5
+            }, 
+            {
+                "bad": false, 
+                "events": 23966, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_52.root", 
+                "nevents": 23966, 
+                "totEvents": 23966, 
+                "weights": 7119477.0
+            }, 
+            {
+                "bad": false, 
+                "events": 18008, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_65.root", 
+                "nevents": 18008, 
+                "totEvents": 18008, 
+                "weights": 5332662.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24934, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 24934, 
+                "totEvents": 24934, 
+                "weights": 7388388.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24176, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_53.root", 
+                "nevents": 24176, 
+                "totEvents": 24176, 
+                "weights": 7065028.5
+            }, 
+            {
+                "bad": false, 
+                "events": 12033, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_66.root", 
+                "nevents": 12033, 
+                "totEvents": 12033, 
+                "weights": 3604187.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24345, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_51.root", 
+                "nevents": 24345, 
+                "totEvents": 24345, 
+                "weights": 7000023.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24075, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 24075, 
+                "totEvents": 24075, 
+                "weights": 7058916.0
+            }, 
+            {
+                "bad": false, 
+                "events": 23936, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_57.root", 
+                "nevents": 23936, 
+                "totEvents": 23936, 
+                "weights": 6986132.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24360, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_55.root", 
+                "nevents": 24360, 
+                "totEvents": 24360, 
+                "weights": 7162814.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24065, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_82.root", 
+                "nevents": 24065, 
+                "totEvents": 24065, 
+                "weights": 7007800.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24899, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_90.root", 
+                "nevents": 24899, 
+                "totEvents": 24899, 
+                "weights": 7224485.5
+            }, 
+            {
+                "bad": false, 
+                "events": 17964, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_47.root", 
+                "nevents": 17964, 
+                "totEvents": 17964, 
+                "weights": 5171538.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24003, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 24003, 
+                "totEvents": 24003, 
+                "weights": 7086696.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24127, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_93.root", 
+                "nevents": 24127, 
+                "totEvents": 24127, 
+                "weights": 7133367.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24004, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 24004, 
+                "totEvents": 24004, 
+                "weights": 7073917.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24087, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24087, 
+                "totEvents": 24087, 
+                "weights": 7084473.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24255, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_95.root", 
+                "nevents": 24255, 
+                "totEvents": 24255, 
+                "weights": 7184483.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24122, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_61.root", 
+                "nevents": 24122, 
+                "totEvents": 24122, 
+                "weights": 7050582.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24101, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 24101, 
+                "totEvents": 24101, 
+                "weights": 7061139.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24091, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_117.root", 
+                "nevents": 24091, 
+                "totEvents": 24091, 
+                "weights": 7045582.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24045, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_71.root", 
+                "nevents": 24045, 
+                "totEvents": 24045, 
+                "weights": 7113365.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24133, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_31.root", 
+                "nevents": 24133, 
+                "totEvents": 24133, 
+                "weights": 7052250.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24274, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_33.root", 
+                "nevents": 24274, 
+                "totEvents": 24274, 
+                "weights": 7230597.5
+            }, 
+            {
+                "bad": false, 
+                "events": 23973, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_86.root", 
+                "nevents": 23973, 
+                "totEvents": 23973, 
+                "weights": 7076695.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24949, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 24949, 
+                "totEvents": 24949, 
+                "weights": 7433392.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24068, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_89.root", 
+                "nevents": 24068, 
+                "totEvents": 24068, 
+                "weights": 7241709.5
+            }, 
+            {
+                "bad": false, 
+                "events": 25004, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_46.root", 
+                "nevents": 25004, 
+                "totEvents": 25004, 
+                "weights": 7273933.5
+            }, 
+            {
+                "bad": false, 
+                "events": 23992, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_119.root", 
+                "nevents": 23992, 
+                "totEvents": 23992, 
+                "weights": 7139478.5
+            }, 
+            {
+                "bad": false, 
+                "events": 16981, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_69.root", 
+                "nevents": 16981, 
+                "totEvents": 16981, 
+                "weights": 5028748.5
+            }, 
+            {
+                "bad": false, 
+                "events": 25128, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_83.root", 
+                "nevents": 25128, 
+                "totEvents": 25128, 
+                "weights": 7435059.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24029, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_116.root", 
+                "nevents": 24029, 
+                "totEvents": 24029, 
+                "weights": 7031136.5
+            }, 
+            {
+                "bad": false, 
+                "events": 16135, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_67.root", 
+                "nevents": 16135, 
+                "totEvents": 16135, 
+                "weights": 4766504.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24952, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_72.root", 
+                "nevents": 24952, 
+                "totEvents": 24952, 
+                "weights": 7410612.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24820, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_97.root", 
+                "nevents": 24820, 
+                "totEvents": 24820, 
+                "weights": 7372831.0
+            }, 
+            {
+                "bad": false, 
+                "events": 6924, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_36.root", 
+                "nevents": 6924, 
+                "totEvents": 6924, 
+                "weights": 2052391.75
+            }, 
+            {
+                "bad": false, 
+                "events": 4035, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_78.root", 
+                "nevents": 4035, 
+                "totEvents": 4035, 
+                "weights": 1193987.5
+            }, 
+            {
+                "bad": false, 
+                "events": 5944, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_123.root", 
+                "nevents": 5944, 
+                "totEvents": 5944, 
+                "weights": 1741255.0
+            }, 
+            {
+                "bad": false, 
+                "events": 3975, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_45.root", 
+                "nevents": 3975, 
+                "totEvents": 3975, 
+                "weights": 1188431.5
+            }, 
+            {
+                "bad": false, 
+                "events": 10003, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_64.root", 
+                "nevents": 10003, 
+                "totEvents": 10003, 
+                "weights": 2923019.0
+            }, 
+            {
+                "bad": false, 
+                "events": 8025, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 8025, 
+                "totEvents": 8025, 
+                "weights": 2357416.75
+            }, 
+            {
+                "bad": false, 
+                "events": 7021, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_118.root", 
+                "nevents": 7021, 
+                "totEvents": 7021, 
+                "weights": 2042946.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24207, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_37.root", 
+                "nevents": 24207, 
+                "totEvents": 24207, 
+                "weights": 6941128.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24180, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_77.root", 
+                "nevents": 24180, 
+                "totEvents": 24180, 
+                "weights": 7146145.0
+            }, 
+            {
+                "bad": false, 
+                "events": 23956, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 23956, 
+                "totEvents": 23956, 
+                "weights": 7040582.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24176, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_104.root", 
+                "nevents": 24176, 
+                "totEvents": 24176, 
+                "weights": 7109476.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24100, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_103.root", 
+                "nevents": 24100, 
+                "totEvents": 24100, 
+                "weights": 7208373.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24152, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_38.root", 
+                "nevents": 24152, 
+                "totEvents": 24152, 
+                "weights": 7135033.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24112, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_106.root", 
+                "nevents": 24112, 
+                "totEvents": 24112, 
+                "weights": 7096142.5
+            }, 
+            {
+                "bad": false, 
+                "events": 21970, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 21970, 
+                "totEvents": 21970, 
+                "weights": 6536096.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24076, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24076, 
+                "totEvents": 24076, 
+                "weights": 7001689.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24033, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_60.root", 
+                "nevents": 24033, 
+                "totEvents": 24033, 
+                "weights": 6934461.0
+            }, 
+            {
+                "bad": false, 
+                "events": 23992, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_32.root", 
+                "nevents": 23992, 
+                "totEvents": 23992, 
+                "weights": 7089474.5
+            }, 
+            {
+                "bad": false, 
+                "events": 19100, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_41.root", 
+                "nevents": 19100, 
+                "totEvents": 19100, 
+                "weights": 5663801.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24100, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_76.root", 
+                "nevents": 24100, 
+                "totEvents": 24100, 
+                "weights": 7216151.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24158, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 24158, 
+                "totEvents": 24158, 
+                "weights": 7120588.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24066, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_100.root", 
+                "nevents": 24066, 
+                "totEvents": 24066, 
+                "weights": 7170592.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24079, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_81.root", 
+                "nevents": 24079, 
+                "totEvents": 24079, 
+                "weights": 6981132.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24838, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_74.root", 
+                "nevents": 24838, 
+                "totEvents": 24838, 
+                "weights": 7355052.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24106, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_87.root", 
+                "nevents": 24106, 
+                "totEvents": 24106, 
+                "weights": 6966131.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24133, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_70.root", 
+                "nevents": 24133, 
+                "totEvents": 24133, 
+                "weights": 7056694.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25044, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_92.root", 
+                "nevents": 25044, 
+                "totEvents": 25044, 
+                "weights": 7337273.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25148, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25148, 
+                "totEvents": 25148, 
+                "weights": 7415057.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24976, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_121.root", 
+                "nevents": 24976, 
+                "totEvents": 24976, 
+                "weights": 7266156.5
+            }, 
+            {
+                "bad": false, 
+                "events": 23910, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_30.root", 
+                "nevents": 23910, 
+                "totEvents": 23910, 
+                "weights": 6970577.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24007, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 24007, 
+                "totEvents": 24007, 
+                "weights": 7146701.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24146, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_73.root", 
+                "nevents": 24146, 
+                "totEvents": 24146, 
+                "weights": 7001688.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24092, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_84.root", 
+                "nevents": 24092, 
+                "totEvents": 24092, 
+                "weights": 6962798.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24027, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_88.root", 
+                "nevents": 24027, 
+                "totEvents": 24027, 
+                "weights": 7133368.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24783, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24783, 
+                "totEvents": 24783, 
+                "weights": 7351162.5
+            }, 
+            {
+                "bad": false, 
+                "events": 23987, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 23987, 
+                "totEvents": 23987, 
+                "weights": 7040025.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24093, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24093, 
+                "totEvents": 24093, 
+                "weights": 7062249.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24125, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_101.root", 
+                "nevents": 24125, 
+                "totEvents": 24125, 
+                "weights": 6996689.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24945, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_39.root", 
+                "nevents": 24945, 
+                "totEvents": 24945, 
+                "weights": 7382277.5
+            }, 
+            {
+                "bad": false, 
+                "events": 15130, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_115.root", 
+                "nevents": 15130, 
+                "totEvents": 15130, 
+                "weights": 4509261.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24037, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_109.root", 
+                "nevents": 24037, 
+                "totEvents": 24037, 
+                "weights": 6980021.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24169, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_42.root", 
+                "nevents": 24169, 
+                "totEvents": 24169, 
+                "weights": 7088919.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25169, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_111.root", 
+                "nevents": 25169, 
+                "totEvents": 25169, 
+                "weights": 7398944.5
+            }, 
+            {
+                "bad": false, 
+                "events": 25033, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_98.root", 
+                "nevents": 25033, 
+                "totEvents": 25033, 
+                "weights": 7440059.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24128, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 24128, 
+                "totEvents": 24128, 
+                "weights": 7053916.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24172, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_68.root", 
+                "nevents": 24172, 
+                "totEvents": 24172, 
+                "weights": 7190594.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24930, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_110.root", 
+                "nevents": 24930, 
+                "totEvents": 24930, 
+                "weights": 7332828.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24124, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_113.root", 
+                "nevents": 24124, 
+                "totEvents": 24124, 
+                "weights": 7135033.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24773, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_112.root", 
+                "nevents": 24773, 
+                "totEvents": 24773, 
+                "weights": 7381165.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24134, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_124.root", 
+                "nevents": 24134, 
+                "totEvents": 24134, 
+                "weights": 7108364.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24201, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_102.root", 
+                "nevents": 24201, 
+                "totEvents": 24201, 
+                "weights": 7087808.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24008, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 24008, 
+                "totEvents": 24008, 
+                "weights": 7080585.5
+            }, 
+            {
+                "bad": false, 
+                "events": 25062, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 25062, 
+                "totEvents": 25062, 
+                "weights": 7373943.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25049, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_91.root", 
+                "nevents": 25049, 
+                "totEvents": 25049, 
+                "weights": 7366720.0
+            }, 
+            {
+                "bad": false, 
+                "events": 25022, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_34.root", 
+                "nevents": 25022, 
+                "totEvents": 25022, 
+                "weights": 7342828.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24295, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_85.root", 
+                "nevents": 24295, 
+                "totEvents": 24295, 
+                "weights": 7282268.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24098, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_105.root", 
+                "nevents": 24098, 
+                "totEvents": 24098, 
+                "weights": 7032802.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24931, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_122.root", 
+                "nevents": 24931, 
+                "totEvents": 24931, 
+                "weights": 7363386.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24213, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 24213, 
+                "totEvents": 24213, 
+                "weights": 7117809.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24060, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_125.root", 
+                "nevents": 24060, 
+                "totEvents": 24060, 
+                "weights": 7145034.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24681, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_44.root", 
+                "nevents": 24681, 
+                "totEvents": 24681, 
+                "weights": 7432280.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24336, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_80.root", 
+                "nevents": 24336, 
+                "totEvents": 24336, 
+                "weights": 7139478.5
+            }, 
+            {
+                "bad": false, 
+                "events": 25003, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_35.root", 
+                "nevents": 25003, 
+                "totEvents": 25003, 
+                "weights": 7365608.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24079, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_40.root", 
+                "nevents": 24079, 
+                "totEvents": 24079, 
+                "weights": 7087808.5
+            }, 
+            {
+                "bad": false, 
+                "events": 23992, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_114.root", 
+                "nevents": 23992, 
+                "totEvents": 23992, 
+                "weights": 7009468.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24102, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 24102, 
+                "totEvents": 24102, 
+                "weights": 7109476.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24994, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24994, 
+                "totEvents": 24994, 
+                "weights": 7486173.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24206, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 24206, 
+                "totEvents": 24206, 
+                "weights": 7128366.5
+            }, 
+            {
+                "bad": false, 
+                "events": 17918, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 17918, 
+                "totEvents": 17918, 
+                "weights": 5253767.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24163, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24163, 
+                "totEvents": 24163, 
+                "weights": 7094474.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24054, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_107.root", 
+                "nevents": 24054, 
+                "totEvents": 24054, 
+                "weights": 7175036.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24020, 
+                "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/RunIISummer20UL18MiniV1/legacyRunII/DiPhotonJets_MGG-80toInf_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIISummer20UL18MiniV1-legacyRunII-v0-RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1-v1/220520_133241/0000/myMicroAODOutputFile_108.root", 
+                "nevents": 24020, 
+                "totEvents": 24020, 
+                "weights": 7195038.5
+            }
+        ], 
+        "parent_n_units": null, 
+        "vetted": true
+    }
+}
