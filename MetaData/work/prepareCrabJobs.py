@@ -314,24 +314,20 @@ if options.createCrabConfig:
             ("RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3", "Summer16"),
             ("RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15", "Fall18"),
             ("-UL2018_MiniAODv2-v1","UL18"),
-            ("RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1","UL18"),
-            ("RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1","UL18"),
-            ("RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11","UL16preVFP"),
             ("RunIISummer19UL18MiniAOD-106X_upgrade2018_realistic_v11_L1","Summer19UL18"),
-            ("RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1","Summer20UL17"),
-            ("RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2","Summer20UL17"),
-            ("RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v3","Summer20UL17"),
-            ("RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9_ext1-v1","Summer20UL17"),
             ("-UL2017_MiniAODv2-v1","UL17"),
             ("_dipoleRecoilOff-TuneCUETP8M1_PSweights",""),
             ("_dipoleRecoilOff-TuneCP5_PSweights",""),
             ("_TuneCP5_PSWeights_narrow_13TeV-madgraph-pythia8","_13TeV"),
             ("-UL2017_MiniAODv2-v2","UL17"),
-            ("RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v2","UL16postVFP"),
             ("RunIISummer19UL17MiniAOD-106X_mc2017_realistic_v6-v1","Summer19UL17"),
             ("RunIISummer19UL17MiniAODv2-106X_mc2017_realistic_v9-v1","Summer19UL17v2"),
-            ("RunIISummer19UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1","Summer19UL18v2")
-
+            ("RunIISummer19UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1","Summer19UL18v2"),
+            ("RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP", "Summer20ULPreVFP"),
+            ("RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic", "Summer20ULPostVFP"),
+            ("RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9", "Summer20UL17"),
+            ("RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1", "Summer20UL18"),
+            ("RunIISummer20UL18MiniAOD-106X_upgrade2018_realistic_v11_L1v1", "Summer20UL18")
         ]
 
         for orig, replacement in replacements:

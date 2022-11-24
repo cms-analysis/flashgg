@@ -293,7 +293,7 @@ sigmaEOverEShiftBins = cms.PSet(
                      )
     )
 
-
+# Diphoton vertex ID SF (You-Ying's slides page 5 in https://indico.cern.ch/event/943907/contributions/3993729/attachments/2093949/3519141/Hgg_31082020.pdf)
 RVBins = cms.PSet(
     variables = cms.vstring("pt"),
     bins = cms.VPSet(

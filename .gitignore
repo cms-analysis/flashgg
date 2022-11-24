@@ -1,4 +1,8 @@
 # Editors temp files
+*.err
+*.out
+*.sub
+job*.sh
 *.swp
 *~
 
