@@ -34,7 +34,14 @@
    cd $CMSSW_BASE/src
    scram b -j 4
    #+END_EXAMPLE
-
+   
+   Install new version-9 of HTCondor following under CMSSW_10_6_29 environment: 
+   #+BEGIN_EXAMPLE
+   pip uninstall htcondor
+   cmsenv  [Please do cmsenv after uninstalling the htcondor]
+   pip install --user htcondor [ install  “htcondor" python module again ]
+   #+END_EXAMPLE
+   
 ** Examples to run on RunII legacy test campaign:
    *Note: copying the proxy file to the working node is not yet supported when using HTCondor as bacth system. Therefore the user must set*
    *the =X509_USER_PROXY= environment variable and run with the =--no-copy-proxy= option*
@@ -68,7 +75,8 @@
    *Note that it is very unlikely that sporadic failures results in a job fail three consecutive automatic resubmission, so besides increasing*
    *the number of manual resubmission attempts through the =-m= option it is worth investigating deeper the log files to understand the root cause of*
    *the failure.*
-
+   
+  
    A typical analysis task is summarized below:
    #+BEGIN_EXAMPLE
    voms-proxy-init -voms cms --valid 168:00
