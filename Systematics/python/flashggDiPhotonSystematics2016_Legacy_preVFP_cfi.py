@@ -11,14 +11,14 @@ mvaShiftBins = cms.PSet(
                      )
     )
 
-# from Arnab via Martina 10/03/2017
+# from Prasant : UL16 PreVFP SA Preselection SFs : https://indico.cern.ch/event/1233746/contributions/5313197/attachments/2610373/4509837/Zee_Validation_UL2016_SA_Prasant.pdf 
 preselBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
     bins = cms.VPSet(
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0 ) , upBounds = cms.vdouble( 1.5, 0.85 ) , values = cms.vdouble( 1.0057 ) , uncertainties = cms.vdouble( 0.0010 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ), upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 0.9988 ) , uncertainties = cms.vdouble( 0.0009 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.0 ) , upBounds = cms.vdouble( 6.0, 0.9  ) , values = cms.vdouble( 0.9443 ) , uncertainties = cms.vdouble( 0.0072 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.9 ) , upBounds = cms.vdouble( 6.0, 999. ) , values = cms.vdouble( 0.9947 ) , uncertainties = cms.vdouble( 0.0051 )  ) 
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0 ) , upBounds = cms.vdouble( 1.5, 0.85 ) , values = cms.vdouble( 0.9923 ) , uncertainties = cms.vdouble( 0.0337 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ), upBounds = cms.vdouble( 1.5, 999. ) , values = cms.vdouble( 0.9968 ) , uncertainties = cms.vdouble( 0.0058 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.0 ) , upBounds = cms.vdouble( 6.0, 0.9  ) , values = cms.vdouble( 1.0155 ) , uncertainties = cms.vdouble( 0.0134 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.9 ) , upBounds = cms.vdouble( 6.0, 999. ) , values = cms.vdouble( 1.0045 ) , uncertainties = cms.vdouble( 0.0037 )  ) 
         )
     )
 
@@ -253,14 +253,14 @@ subleadTriggerScaleBins = cms.PSet(
 
 
 
-# from Arnab via Martina 10/03/2016                                                                                                                               
+# from Prasant UL2016 PreVFP loose IDMVA SFS: https://indico.cern.ch/event/1233746/contributions/5313197/attachments/2610373/4509837/Zee_Validation_UL2016_SA_Prasant.pdf                                                                                                                               
 looseMvaBins = cms.PSet(
     variables = cms.vstring("abs(superCluster.eta)","full5x5_r9"),
     bins = cms.VPSet(
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0  ) , upBounds = cms.vdouble( 1.5, 0.85  ) , values = cms.vdouble( 0.9999 ) , uncertainties = cms.vdouble( 0.0001 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ) , upBounds = cms.vdouble( 1.5, 999.0 ) , values = cms.vdouble( 1.0003 ) , uncertainties = cms.vdouble( 0.0000 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.0  ) , upBounds = cms.vdouble( 6.0, 0.9   ) , values = cms.vdouble( 1.0003 ) , uncertainties = cms.vdouble( 0.0000 )  ) ,
-        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.9  ) , upBounds = cms.vdouble( 6.0, 999.0 ) , values = cms.vdouble( 1.0004 ) , uncertainties = cms.vdouble( 0.0000 )  ) 
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.0  ) , upBounds = cms.vdouble( 1.5, 0.85  ) , values = cms.vdouble( 0.9992 ) , uncertainties = cms.vdouble( 0.0025 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 0.0, 0.85 ) , upBounds = cms.vdouble( 1.5, 999.0 ) , values = cms.vdouble( 0.9989 ) , uncertainties = cms.vdouble( 0.0034 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.0  ) , upBounds = cms.vdouble( 6.0, 0.9   ) , values = cms.vdouble( 1.0000 ) , uncertainties = cms.vdouble( 0.0033 )  ) ,
+        cms.PSet( lowBounds = cms.vdouble( 1.5, 0.9  ) , upBounds = cms.vdouble( 6.0, 999.0 ) , values = cms.vdouble( 1.0005 ) , uncertainties = cms.vdouble( 0.0029 )  ) 
         )
     )
 
