@@ -4633,368 +4633,732 @@
         "dset_type": "mc", 
         "files": [
             {
+                "bad": false, 
+                "events": 19998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_73.root", 
-                "nevents": 19998
+                "nevents": 19998, 
+                "totEvents": 19998, 
+                "weights": 3839.3994140625
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_27.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4816.99951171875
             }, 
             {
+                "bad": false, 
+                "events": 24999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_72.root", 
-                "nevents": 24999
+                "nevents": 24999, 
+                "totEvents": 24999, 
+                "weights": 4820.49951171875
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_71.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4844.69970703125
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_69.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4812.10009765625
             }, 
             {
+                "bad": false, 
+                "events": 25000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_8.root", 
-                "nevents": 25000
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4819.099609375
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_25.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4842.89990234375
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_6.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4807.30029296875
             }, 
             {
+                "bad": false, 
+                "events": 24999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_29.root", 
-                "nevents": 24999
+                "nevents": 24999, 
+                "totEvents": 24999, 
+                "weights": 4836.39990234375
             }, 
             {
+                "bad": false, 
+                "events": 2000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_13.root", 
-                "nevents": 2000
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 385.5
             }, 
             {
+                "bad": false, 
+                "events": 6000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_82.root", 
-                "nevents": 6000
+                "nevents": 6000, 
+                "totEvents": 6000, 
+                "weights": 1157.900146484375
             }, 
             {
+                "bad": false, 
+                "events": 4000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_89.root", 
-                "nevents": 4000
+                "nevents": 4000, 
+                "totEvents": 4000, 
+                "weights": 775.5
             }, 
             {
+                "bad": false, 
+                "events": 7998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_83.root", 
-                "nevents": 7998
+                "nevents": 7998, 
+                "totEvents": 7998, 
+                "weights": 1551.4000244140625
             }, 
             {
+                "bad": false, 
+                "events": 8000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_68.root", 
-                "nevents": 8000
+                "nevents": 8000, 
+                "totEvents": 8000, 
+                "weights": 1554.9998779296875
             }, 
             {
+                "bad": false, 
+                "events": 8000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_64.root", 
-                "nevents": 8000
+                "nevents": 8000, 
+                "totEvents": 8000, 
+                "weights": 1530.2999267578125
             }, 
             {
+                "bad": false, 
+                "events": 9999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_3.root", 
-                "nevents": 9999
+                "nevents": 9999, 
+                "totEvents": 9999, 
+                "weights": 1919.2999267578125
             }, 
             {
+                "bad": false, 
+                "events": 4000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_12.root", 
-                "nevents": 4000
+                "nevents": 4000, 
+                "totEvents": 4000, 
+                "weights": 784.5999755859375
             }, 
             {
+                "bad": false, 
+                "events": 9999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_92.root", 
-                "nevents": 9999
+                "nevents": 9999, 
+                "totEvents": 9999, 
+                "weights": 1924.2999267578125
             }, 
             {
+                "bad": false, 
+                "events": 17998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_60.root", 
-                "nevents": 17998
+                "nevents": 17998, 
+                "totEvents": 17998, 
+                "weights": 3465.7998046875
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_16.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4823.79931640625
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_78.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4819.900390625
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_38.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4830.099609375
             }, 
             {
+                "bad": false, 
+                "events": 21999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_62.root", 
-                "nevents": 21999
+                "nevents": 21999, 
+                "totEvents": 21999, 
+                "weights": 4239.8994140625
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_85.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4823.60009765625
             }, 
             {
+                "bad": false, 
+                "events": 24999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_54.root", 
-                "nevents": 24999
+                "nevents": 24999, 
+                "totEvents": 24999, 
+                "weights": 4800.60009765625
             }, 
             {
+                "bad": false, 
+                "events": 25000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_56.root", 
-                "nevents": 25000
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4863.7998046875
             }, 
             {
+                "bad": false, 
+                "events": 24999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_17.root", 
-                "nevents": 24999
+                "nevents": 24999, 
+                "totEvents": 24999, 
+                "weights": 4840.69970703125
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_41.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4813.19970703125
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_31.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4818.7998046875
             }, 
             {
+                "bad": false, 
+                "events": 24996, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_23.root", 
-                "nevents": 24996
+                "nevents": 24996, 
+                "totEvents": 24996, 
+                "weights": 4856.10009765625
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_90.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4825.0
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_65.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4842.59912109375
             }, 
             {
+                "bad": false, 
+                "events": 24995, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_75.root", 
-                "nevents": 24995
+                "nevents": 24995, 
+                "totEvents": 24995, 
+                "weights": 4814.99951171875
             }, 
             {
+                "bad": false, 
+                "events": 25000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_19.root", 
-                "nevents": 25000
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4854.7001953125
             }, 
             {
+                "bad": false, 
+                "events": 24999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_7.root", 
-                "nevents": 24999
+                "nevents": 24999, 
+                "totEvents": 24999, 
+                "weights": 4787.0
             }, 
             {
+                "bad": false, 
+                "events": 24999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_87.root", 
-                "nevents": 24999
+                "nevents": 24999, 
+                "totEvents": 24999, 
+                "weights": 4838.69970703125
             }, 
             {
+                "bad": false, 
+                "events": 24999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_18.root", 
-                "nevents": 24999
+                "nevents": 24999, 
+                "totEvents": 24999, 
+                "weights": 4799.10009765625
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_76.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4813.20068359375
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_36.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4842.49951171875
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_49.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4830.1005859375
             }, 
             {
+                "bad": false, 
+                "events": 25000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_42.root", 
-                "nevents": 25000
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4801.30029296875
             }, 
             {
+                "bad": false, 
+                "events": 24999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_24.root", 
-                "nevents": 24999
+                "nevents": 24999, 
+                "totEvents": 24999, 
+                "weights": 4811.49951171875
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_5.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4814.7998046875
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_48.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4828.69921875
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_15.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4851.69921875
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_46.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4868.60009765625
             }, 
             {
+                "bad": false, 
+                "events": 24999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_86.root", 
-                "nevents": 24999
+                "nevents": 24999, 
+                "totEvents": 24999, 
+                "weights": 4826.3994140625
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_20.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4862.2998046875
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_43.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4819.0
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_40.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4848.89990234375
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_4.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4827.7001953125
             }, 
             {
+                "bad": false, 
+                "events": 24995, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_51.root", 
-                "nevents": 24995
+                "nevents": 24995, 
+                "totEvents": 24995, 
+                "weights": 4873.400390625
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_1.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4811.7001953125
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_10.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4824.5
             }, 
             {
+                "bad": false, 
+                "events": 24999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_9.root", 
-                "nevents": 24999
+                "nevents": 24999, 
+                "totEvents": 24999, 
+                "weights": 4796.099609375
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_50.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4810.19970703125
             }, 
             {
+                "bad": false, 
+                "events": 25000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_14.root", 
-                "nevents": 25000
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4861.19970703125
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_33.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4825.10009765625
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_22.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4821.2001953125
             }, 
             {
+                "bad": false, 
+                "events": 12999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_11.root", 
-                "nevents": 12999
+                "nevents": 12999, 
+                "totEvents": 12999, 
+                "weights": 2528.2998046875
             }, 
             {
+                "bad": false, 
+                "events": 11999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_67.root", 
-                "nevents": 11999
+                "nevents": 11999, 
+                "totEvents": 11999, 
+                "weights": 2290.5
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_77.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4859.900390625
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_21.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4788.900390625
             }, 
             {
+                "bad": false, 
+                "events": 18000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_63.root", 
-                "nevents": 18000
+                "nevents": 18000, 
+                "totEvents": 18000, 
+                "weights": 3463.599853515625
             }, 
             {
+                "bad": false, 
+                "events": 24999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_26.root", 
-                "nevents": 24999
+                "nevents": 24999, 
+                "totEvents": 24999, 
+                "weights": 4840.69970703125
             }, 
             {
+                "bad": false, 
+                "events": 24996, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_35.root", 
-                "nevents": 24996
+                "nevents": 24996, 
+                "totEvents": 24996, 
+                "weights": 4818.60009765625
             }, 
             {
+                "bad": false, 
+                "events": 24996, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_79.root", 
-                "nevents": 24996
+                "nevents": 24996, 
+                "totEvents": 24996, 
+                "weights": 4848.0
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_80.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4839.8994140625
             }, 
             {
+                "bad": false, 
+                "events": 22999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_59.root", 
-                "nevents": 22999
+                "nevents": 22999, 
+                "totEvents": 22999, 
+                "weights": 4416.89990234375
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_74.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4832.10009765625
             }, 
             {
+                "bad": false, 
+                "events": 21997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_88.root", 
-                "nevents": 21997
+                "nevents": 21997, 
+                "totEvents": 21997, 
+                "weights": 4215.7998046875
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_39.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4844.39990234375
             }, 
             {
+                "bad": false, 
+                "events": 2000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_53.root", 
-                "nevents": 2000
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 389.8999938964844
             }, 
             {
+                "bad": false, 
+                "events": 4000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_61.root", 
-                "nevents": 4000
+                "nevents": 4000, 
+                "totEvents": 4000, 
+                "weights": 770.7999877929688
             }, 
             {
+                "bad": false, 
+                "events": 6999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_91.root", 
-                "nevents": 6999
+                "nevents": 6999, 
+                "totEvents": 6999, 
+                "weights": 1356.2999267578125
             }, 
             {
+                "bad": false, 
+                "events": 3999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_52.root", 
-                "nevents": 3999
+                "nevents": 3999, 
+                "totEvents": 3999, 
+                "weights": 775.1000366210938
             }, 
             {
+                "bad": false, 
+                "events": 24996, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_44.root", 
-                "nevents": 24996
+                "nevents": 24996, 
+                "totEvents": 24996, 
+                "weights": 4803.50048828125
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_58.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4849.2001953125
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_66.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4839.39990234375
             }, 
             {
+                "bad": false, 
+                "events": 24996, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_84.root", 
-                "nevents": 24996
+                "nevents": 24996, 
+                "totEvents": 24996, 
+                "weights": 4822.900390625
             }, 
             {
+                "bad": false, 
+                "events": 24996, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_45.root", 
-                "nevents": 24996
+                "nevents": 24996, 
+                "totEvents": 24996, 
+                "weights": 4758.39990234375
             }, 
             {
+                "bad": false, 
+                "events": 25000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_57.root", 
-                "nevents": 25000
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4813.5
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_2.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4833.99951171875
             }, 
             {
+                "bad": false, 
+                "events": 25000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_34.root", 
-                "nevents": 25000
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4779.5
             }, 
             {
+                "bad": false, 
+                "events": 24999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_55.root", 
-                "nevents": 24999
+                "nevents": 24999, 
+                "totEvents": 24999, 
+                "weights": 4793.39990234375
             }, 
             {
+                "bad": false, 
+                "events": 24996, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_47.root", 
-                "nevents": 24996
+                "nevents": 24996, 
+                "totEvents": 24996, 
+                "weights": 4838.80029296875
             }, 
             {
+                "bad": false, 
+                "events": 24999, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_32.root", 
-                "nevents": 24999
+                "nevents": 24999, 
+                "totEvents": 24999, 
+                "weights": 4832.60009765625
             }, 
             {
+                "bad": false, 
+                "events": 24998, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_37.root", 
-                "nevents": 24998
+                "nevents": 24998, 
+                "totEvents": 24998, 
+                "weights": 4805.10009765625
             }, 
             {
+                "bad": false, 
+                "events": 25000, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_81.root", 
-                "nevents": 25000
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4871.7001953125
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_28.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4829.5
             }, 
             {
+                "bad": false, 
+                "events": 24997, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/DiPhotonJetsBox1BJet_MGG-80toInf_13TeV-sherpa/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220705_082041/0000/myMicroAODOutputFile_30.root", 
-                "nevents": 24997
+                "nevents": 24997, 
+                "totEvents": 24997, 
+                "weights": 4821.39990234375
             }
         ], 
         "parent_n_units": null, 
