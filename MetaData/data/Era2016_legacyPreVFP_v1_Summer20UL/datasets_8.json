@@ -1,0 +1,409 @@
+{
+    "/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/phys_higgs-Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2-351e65fbb76689530437ee7479588d01/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 24648, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 24648, 
+                "totEvents": 24648, 
+                "weights": 1447461.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24725, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_36.root", 
+                "nevents": 24725, 
+                "totEvents": 24725, 
+                "weights": 1461254.625
+            }, 
+            {
+                "bad": false, 
+                "events": 24738, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_3.root", 
+                "nevents": 24738, 
+                "totEvents": 24738, 
+                "weights": 1470234.125
+            }, 
+            {
+                "bad": false, 
+                "events": 24804, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_23.root", 
+                "nevents": 24804, 
+                "totEvents": 24804, 
+                "weights": 1479306.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24634, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_14.root", 
+                "nevents": 24634, 
+                "totEvents": 24634, 
+                "weights": 1436908.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24790, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_48.root", 
+                "nevents": 24790, 
+                "totEvents": 24790, 
+                "weights": 1490785.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24742, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_41.root", 
+                "nevents": 24742, 
+                "totEvents": 24742, 
+                "weights": 1479676.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24721, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_46.root", 
+                "nevents": 24721, 
+                "totEvents": 24721, 
+                "weights": 1440518.375
+            }, 
+            {
+                "bad": false, 
+                "events": 24956, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_25.root", 
+                "nevents": 24956, 
+                "totEvents": 24956, 
+                "weights": 1475973.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24651, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_28.root", 
+                "nevents": 24651, 
+                "totEvents": 24651, 
+                "weights": 1448479.375
+            }, 
+            {
+                "bad": false, 
+                "events": 24654, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_37.root", 
+                "nevents": 24654, 
+                "totEvents": 24654, 
+                "weights": 1460791.75
+            }, 
+            {
+                "bad": false, 
+                "events": 19838, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_50.root", 
+                "nevents": 19838, 
+                "totEvents": 19838, 
+                "weights": 1181408.25
+            }, 
+            {
+                "bad": false, 
+                "events": 12965, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_21.root", 
+                "nevents": 12965, 
+                "totEvents": 12965, 
+                "weights": 760852.125
+            }, 
+            {
+                "bad": false, 
+                "events": 3960, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_7.root", 
+                "nevents": 3960, 
+                "totEvents": 3960, 
+                "weights": 231616.015625
+            }, 
+            {
+                "bad": false, 
+                "events": 3846, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 3846, 
+                "totEvents": 3846, 
+                "weights": 230319.984375
+            }, 
+            {
+                "bad": false, 
+                "events": 24603, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_30.root", 
+                "nevents": 24603, 
+                "totEvents": 24603, 
+                "weights": 1462180.375
+            }, 
+            {
+                "bad": false, 
+                "events": 24666, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_33.root", 
+                "nevents": 24666, 
+                "totEvents": 24666, 
+                "weights": 1461717.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24727, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_9.root", 
+                "nevents": 24727, 
+                "totEvents": 24727, 
+                "weights": 1459403.125
+            }, 
+            {
+                "bad": false, 
+                "events": 24845, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_43.root", 
+                "nevents": 24845, 
+                "totEvents": 24845, 
+                "weights": 1472918.375
+            }, 
+            {
+                "bad": false, 
+                "events": 24643, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_26.root", 
+                "nevents": 24643, 
+                "totEvents": 24643, 
+                "weights": 1461624.75
+            }, 
+            {
+                "bad": false, 
+                "events": 24604, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_10.root", 
+                "nevents": 24604, 
+                "totEvents": 24604, 
+                "weights": 1437648.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24680, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_27.root", 
+                "nevents": 24680, 
+                "totEvents": 24680, 
+                "weights": 1472825.875
+            }, 
+            {
+                "bad": false, 
+                "events": 24810, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_35.root", 
+                "nevents": 24810, 
+                "totEvents": 24810, 
+                "weights": 1467642.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24801, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_22.root", 
+                "nevents": 24801, 
+                "totEvents": 24801, 
+                "weights": 1463846.375
+            }, 
+            {
+                "bad": false, 
+                "events": 10866, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_11.root", 
+                "nevents": 10866, 
+                "totEvents": 10866, 
+                "weights": 652079.625
+            }, 
+            {
+                "bad": false, 
+                "events": 24953, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_45.root", 
+                "nevents": 24953, 
+                "totEvents": 24953, 
+                "weights": 1458107.125
+            }, 
+            {
+                "bad": false, 
+                "events": 24825, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 24825, 
+                "totEvents": 24825, 
+                "weights": 1484027.375
+            }, 
+            {
+                "bad": false, 
+                "events": 14002, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_13.root", 
+                "nevents": 14002, 
+                "totEvents": 14002, 
+                "weights": 829448.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24798, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 24798, 
+                "totEvents": 24798, 
+                "weights": 1463013.375
+            }, 
+            {
+                "bad": false, 
+                "events": 18006, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 18006, 
+                "totEvents": 18006, 
+                "weights": 1068470.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24448, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_20.root", 
+                "nevents": 24448, 
+                "totEvents": 24448, 
+                "weights": 1445980.125
+            }, 
+            {
+                "bad": false, 
+                "events": 24812, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_1.root", 
+                "nevents": 24812, 
+                "totEvents": 24812, 
+                "weights": 1468382.75
+            }, 
+            {
+                "bad": false, 
+                "events": 4015, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_12.root", 
+                "nevents": 4015, 
+                "totEvents": 4015, 
+                "weights": 228746.28125
+            }, 
+            {
+                "bad": false, 
+                "events": 24758, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_29.root", 
+                "nevents": 24758, 
+                "totEvents": 24758, 
+                "weights": 1468382.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24723, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_32.root", 
+                "nevents": 24723, 
+                "totEvents": 24723, 
+                "weights": 1461624.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24762, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_38.root", 
+                "nevents": 24762, 
+                "totEvents": 24762, 
+                "weights": 1469863.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24784, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_44.root", 
+                "nevents": 24784, 
+                "totEvents": 24784, 
+                "weights": 1465235.125
+            }, 
+            {
+                "bad": false, 
+                "events": 24916, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_31.root", 
+                "nevents": 24916, 
+                "totEvents": 24916, 
+                "weights": 1477640.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24774, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_47.root", 
+                "nevents": 24774, 
+                "totEvents": 24774, 
+                "weights": 1468197.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24763, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_34.root", 
+                "nevents": 24763, 
+                "totEvents": 24763, 
+                "weights": 1469215.625
+            }, 
+            {
+                "bad": false, 
+                "events": 24839, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_5.root", 
+                "nevents": 24839, 
+                "totEvents": 24839, 
+                "weights": 1471992.75
+            }, 
+            {
+                "bad": false, 
+                "events": 24834, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 24834, 
+                "totEvents": 24834, 
+                "weights": 1464309.125
+            }, 
+            {
+                "bad": false, 
+                "events": 24620, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_40.root", 
+                "nevents": 24620, 
+                "totEvents": 24620, 
+                "weights": 1451534.375
+            }, 
+            {
+                "bad": false, 
+                "events": 24782, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_42.root", 
+                "nevents": 24782, 
+                "totEvents": 24782, 
+                "weights": 1475973.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24677, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_24.root", 
+                "nevents": 24677, 
+                "totEvents": 24677, 
+                "weights": 1457366.5
+            }, 
+            {
+                "bad": false, 
+                "events": 24889, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_15.root", 
+                "nevents": 24889, 
+                "totEvents": 24889, 
+                "weights": 1444406.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24765, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_2.root", 
+                "nevents": 24765, 
+                "totEvents": 24765, 
+                "weights": 1473844.25
+            }, 
+            {
+                "bad": false, 
+                "events": 24768, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_39.root", 
+                "nevents": 24768, 
+                "totEvents": 24768, 
+                "weights": 1449683.0
+            }, 
+            {
+                "bad": false, 
+                "events": 24839, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_49.root", 
+                "nevents": 24839, 
+                "totEvents": 24839, 
+                "weights": 1449220.0
+            }, 
+            {
+                "bad": false, 
+                "events": 965, 
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2016_legacyPreVFP_v1_Summer20UL/legacyRunII/ZGTo2NuG_TuneCP5_13TeV-amcatnloFXFX-pythia8/Era2016_legacyPreVFP_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL16MiniAODAPVv2-106X_mcRun2_asymptotic_preVFP_v11-v2/230405_232156/0000/myMicroAODOutputFile_6.root", 
+                "nevents": 965, 
+                "totEvents": 965, 
+                "weights": 57672.5703125
+            }
+        ], 
+        "parent_n_units": null, 
+        "vetted": true
+    }
+}
