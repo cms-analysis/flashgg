@@ -1353,7 +1353,7 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": true
+        "vetted": false
     }, 
     "/GluGluHToGG_M130_TuneCP5_13TeV-amcatnloFXFX-pythia8/phys_higgs-RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1-ae9886d9135c86f21c9dd1a0479ba3f0/USER": {
         "dset_type": "mc", 
@@ -1664,7 +1664,7 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": true
+        "vetted": false
     }, 
     "/QCD_Pt-30to40_DoubleEMEnriched_MGG-80toInf_TuneCP5_13TeV-pythia8/phys_higgs-RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1-1003005123608611401f83bcf272d236/USER": {
         "dset_type": "mc", 
@@ -3231,7 +3231,7 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": true
+        "vetted": false
     }, 
     "/TGJets_TuneCP5_13TeV-amcatnlo-madspin-pythia8/phys_higgs-RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2-1003005123608611401f83bcf272d236/USER": {
         "dset_type": "mc", 
@@ -4475,10 +4475,50 @@
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 76386.28125
+            }, 
+            {
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/RunIISummer20UL18/legacyRunII/TGJets_TuneCP5_13TeV-amcatnlo-madspin-pythia8/RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/221222_223058/0000/myMicroAODOutputFile_18.root", 
+                "nevents": 25000
+            }, 
+            {
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/RunIISummer20UL18/legacyRunII/TGJets_TuneCP5_13TeV-amcatnlo-madspin-pythia8/RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/221222_223058/0000/myMicroAODOutputFile_4.root", 
+                "nevents": 25000
+            }, 
+            {
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/RunIISummer20UL18/legacyRunII/TGJets_TuneCP5_13TeV-amcatnlo-madspin-pythia8/RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/221222_223058/0000/myMicroAODOutputFile_58.root", 
+                "nevents": 24000
+            }, 
+            {
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/RunIISummer20UL18/legacyRunII/TGJets_TuneCP5_13TeV-amcatnlo-madspin-pythia8/RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/221222_223058/0000/myMicroAODOutputFile_78.root", 
+                "nevents": 25000
+            }, 
+            {
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/RunIISummer20UL18/legacyRunII/TGJets_TuneCP5_13TeV-amcatnlo-madspin-pythia8/RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/221222_223058/0000/myMicroAODOutputFile_8.root", 
+                "nevents": 25000
+            }, 
+            {
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/RunIISummer20UL18/legacyRunII/TGJets_TuneCP5_13TeV-amcatnlo-madspin-pythia8/RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/221222_223058/0000/myMicroAODOutputFile_16.root", 
+                "nevents": 25000
+            }, 
+            {
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/RunIISummer20UL18/legacyRunII/TGJets_TuneCP5_13TeV-amcatnlo-madspin-pythia8/RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/221222_223058/0000/myMicroAODOutputFile_19.root", 
+                "nevents": 6000
+            }, 
+            {
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/RunIISummer20UL18/legacyRunII/TGJets_TuneCP5_13TeV-amcatnlo-madspin-pythia8/RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/221222_223058/0000/myMicroAODOutputFile_17.root", 
+                "nevents": 9000
+            }, 
+            {
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/RunIISummer20UL18/legacyRunII/TGJets_TuneCP5_13TeV-amcatnlo-madspin-pythia8/RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/221222_223058/0000/myMicroAODOutputFile_67.root", 
+                "nevents": 5000
+            }, 
+            {
+                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/RunIISummer20UL18/legacyRunII/TGJets_TuneCP5_13TeV-amcatnlo-madspin-pythia8/RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v2/221222_223058/0000/myMicroAODOutputFile_60.root", 
+                "nevents": 3000
             }
         ], 
         "parent_n_units": null, 
-        "vetted": true
+        "vetted": false
     }, 
     "/VBFHToGG_M125_TuneCP5Up_13TeV-amcatnlo-pythia8/phys_higgs-RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v3-3e72e76fd3dd501be6ddf015c1de5208/USER": {
         "dset_type": "mc", 
@@ -5963,7 +6003,7 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": true
+        "vetted": false
     }, 
     "/VHToGG_M125_TuneCP5Up_13TeV-amcatnloFXFX-madspin-pythia8/phys_higgs-RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL18MiniAODv2-106X_upgrade2018_realistic_v16_L1v1-v1-55cfc58f8778b65886b5f1796cffaf22/USER": {
         "dset_type": "mc", 
@@ -6314,7 +6354,7 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": true
+        "vetted": false
     }, 
     "/ZH_HToGG_ZToAll_M120_TuneCP5_13TeV-powheg-pythia8/phys_higgs-RunIISummer20UL18-legacyRunII-v0-RunIISummer20UL16MiniAODv2-106X_mcRun2_asymptotic_v17-v1-55cfc58f8778b65886b5f1796cffaf22/USER": {
         "dset_type": "mc", 
@@ -6529,6 +6569,6 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": true
+        "vetted": false
     }
 }
