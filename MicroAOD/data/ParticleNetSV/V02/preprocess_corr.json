@@ -1,0 +1,254 @@
+{
+  "output_names": [
+    "label_b",
+    "label_bb",
+    "label_c",
+    "label_cc",
+    "label_unmat"
+  ],
+  "input_names": [
+    "pf_points",
+    "pf_features",
+    "pf_mask"
+  ],
+  "pf_points": {
+    "var_names": [
+      "pfcand_etarel",
+      "pfcand_phirel"
+    ],
+    "var_infos": {
+      "pfcand_etarel": {
+        "median": 0,
+        "norm_factor": 1,
+        "replace_inf_value": 0,
+        "lower_bound": -1e+32,
+        "upper_bound": 1e+32,
+        "pad": 0
+      },
+      "pfcand_phirel": {
+        "median": 0,
+        "norm_factor": 1,
+        "replace_inf_value": 0,
+        "lower_bound": -1e+32,
+        "upper_bound": 1e+32,
+        "pad": 0
+      }
+    },
+    "min_length": 16,
+    "max_length": 50
+  },
+  "pf_features": {
+    "var_names": [
+      "pfcand_pt_log_nopuppi",
+      "pfcand_e_log_nopuppi",
+      "pfcand_etarel",
+      "pfcand_phirel",
+      "pfcand_abseta",
+      "pfcand_charge",
+      "pfcand_VTX_ass",
+      "pfcand_lostInnerHits",
+      "pfcand_normchi2",
+      "pfcand_quality",
+      "pfcand_dz",
+      "pfcand_dzsig",
+      "pfcand_dxy",
+      "pfcand_dxysig",
+      "pfcand_btagEtaRel",
+      "pfcand_btagPtRatio",
+      "pfcand_btagPParRatio",
+      "pfcand_btagSip3dVal",
+      "pfcand_btagSip3dSig",
+      "pfcand_btagJetDistVal",
+      "pfcand_puppiw"
+    ],
+    "var_infos": {
+      "pfcand_pt_log_nopuppi": {
+        "median": 0.8,
+        "norm_factor": 0.7,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_e_log_nopuppi": {
+        "median": 1.2,
+        "norm_factor": 0.6,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_etarel": {
+        "median": 0,
+        "norm_factor": 1,
+        "replace_inf_value": 0,
+        "lower_bound": -1e+32,
+        "upper_bound": 1e+32,
+        "pad": 0
+      },
+      "pfcand_phirel": {
+        "median": 0,
+        "norm_factor": 1,
+        "replace_inf_value": 0,
+        "lower_bound": -1e+32,
+        "upper_bound": 1e+32,
+        "pad": 0
+      },
+      "pfcand_abseta": {
+        "median": 0.8,
+        "norm_factor": 1.2,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_charge": {
+        "median": 0,
+        "norm_factor": 1,
+        "replace_inf_value": 0,
+        "lower_bound": -1e+32,
+        "upper_bound": 1e+32,
+        "pad": 0
+      },
+      "pfcand_VTX_ass": {
+        "median": 4,
+        "norm_factor": 0.3,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_lostInnerHits": {
+        "median": 0,
+        "norm_factor": 1,
+        "replace_inf_value": 0,
+        "lower_bound": -1e+32,
+        "upper_bound": 1e+32,
+        "pad": 0
+      },
+      "pfcand_normchi2": {
+        "median": 5,
+        "norm_factor": 0.2,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_quality": {
+        "median": 0,
+        "norm_factor": 0.2,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_dz": {
+        "median": 0,
+        "norm_factor": 150,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_dzsig": {
+        "median": 0,
+        "norm_factor": 0.7,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_dxy": {
+        "median": 0,
+        "norm_factor": 270,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_dxysig": {
+        "median": 1.1,
+        "norm_factor": 1,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_btagEtaRel": {
+        "median": 2.1,
+        "norm_factor": 0.5,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_btagPtRatio": {
+        "median": 0,
+        "norm_factor": 1,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_btagPParRatio": {
+        "median": 0,
+        "norm_factor": 1,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_btagSip3dVal": {
+        "median": 0,
+        "norm_factor": 90,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_btagSip3dSig": {
+        "median": 0,
+        "norm_factor": 0.5,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_btagJetDistVal": {
+        "median": 0,
+        "norm_factor": 50,
+        "replace_inf_value": 0,
+        "lower_bound": -5,
+        "upper_bound": 5,
+        "pad": 0
+      },
+      "pfcand_puppiw": {
+        "median": 0,
+        "norm_factor": 1,
+        "replace_inf_value": 0,
+        "lower_bound": -1e+32,
+        "upper_bound": 1e+32,
+        "pad": 0
+      }
+    },
+    "min_length": 16,
+    "max_length": 50
+  },
+  "pf_mask": {
+    "var_names": [
+      "pfcand_mask"
+    ],
+    "var_infos": {
+      "pfcand_mask": {
+        "median": 0,
+        "norm_factor": 1,
+        "replace_inf_value": 0,
+        "lower_bound": -1e+32,
+        "upper_bound": 1e+32,
+        "pad": 0
+      }
+    },
+    "min_length": 16,
+    "max_length": 50
+  }
+}
