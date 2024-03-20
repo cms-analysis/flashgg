@@ -1,0 +1,128 @@
+{
+    "cmdLine"  : "metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2016_legacyPostVFP_v1.json campaign=Era2016_legacyPostVFP_v1_Summer20UL useAAA=True lumiMask=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt puTarget=2.789e-06,1.969e-05,6.75e-05,7.732e-05,0.0001006,0.0001261,0.000143,0.0002099,0.0003984,0.0008259,0.002414,0.005797,0.01087,0.01696,0.02361,0.0304,0.03657,0.04143,0.04496,0.04756,0.04968,0.05155,0.05293,0.05351,0.05321,0.05224,0.05074,0.04876,0.04625,0.04322,0.0397,0.0358,0.03167,0.02744,0.02327,0.01928,0.01559,0.01227,0.009377,0.006939,0.004959,0.003413,0.002259,0.001435,0.0008742,0.0005108,0.0002864,0.0001542,8.001e-05,4.012e-05,1.956e-05,9.352e-06,4.439e-06,2.126e-06,1.049e-06,5.43e-07,2.988e-07,1.748e-07,1.076e-07,6.863e-08,4.469e-08,2.937e-08,1.933e-08,1.268e-08,8.265e-09,5.343e-09,3.422e-09,2.172e-09,1.365e-09,8.493e-10,5.235e-10,3.197e-10,1.934e-10,1.16e-10,6.896e-11,4.065e-11,2.376e-11,1.378e-11,7.93e-12,4.528e-12,2.566e-12,1.443e-12,8.056e-13,4.464e-13,2.456e-13,1.341e-13,7.268e-14,3.91e-14,2.087e-14,1.106e-14,5.816e-15,3.034e-15,1.571e-15,8.065e-16,4.108e-16,2.076e-16,1.04e-16,5.167e-17,2.546e-17",
+    "processes": {
+        "ggh_120"   : [
+            "/GluGluHToGG_M120_TuneCP5_13TeV-amcatnloFXFX-pythia8"
+        ],
+	"ggh_125"   : [
+            "/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8"
+        ],
+	"ggh_130"   : [
+            "/GluGluHToGG_M130_TuneCP5_13TeV-amcatnloFXFX-pythia8"
+        ],
+        "ggh_pow_125"   : [
+            "/GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8"
+        ],
+	"vbf_120"   : [
+            "/VBFHToGG_M120_TuneCP5_13TeV-amcatnlo-pythia8"
+        ],
+	"vbf_125"   : [
+            "/VBFHToGG_M125_TuneCP5_13TeV-amcatnlo-pythia8"
+        ],
+	"vbf_130"   : [
+            "/VBFHToGG_M130_TuneCP5_13TeV-amcatnlo-pythia8"
+        ],
+        "vbf_ALT_L1_125" : [
+            "/VBFHiggs0L1ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_L1f05_125" : [
+            "/VBFHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_L1Zg_125" : [
+            "/VBFHiggs0L1ZgToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_L1Zgf05_125" : [
+            "/VBFHiggs0L1Zgf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_0M_125" : [
+            "/VBFHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_0Mf05_125" : [        
+            "/VBFHiggs0Mf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_0PH_125" : [
+            "/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_0PHf05_125" : [        
+            "/VBFHiggs0PHf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_0PM_125" : [
+            "/VBFHiggs0PMToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_120" : [
+            "/ZH_HToGG_ZToAll_M120_TuneCP5_13TeV-powheg-pythia8"
+        ],
+        "zh_125" : [
+            "/ZH_HToGG_ZToAll_M125_TuneCP5_13TeV-powheg-pythia8"
+        ],
+        "zh_130" : [
+            "/ZH_HToGG_ZToAll_M130_TuneCP5_13TeV-powheg-pythia8"
+        ],
+        "zh_ALT_L1_125" : [
+            "/ZHiggs0L1ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_L1f05_125" : [        
+            "/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_L1Zg_125" : [
+            "/ZHiggs0L1ZgToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_L1Zgf05_125" : [
+            "/ZHiggs0L1Zgf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_0M_125" : [        
+            "/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_0Mf05_125" : [        
+            "/ZHiggs0Mf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_0PH_125" : [
+            "/ZHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_0PHf05_125" : [
+            "/ZHiggs0PHf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_0PM_125" : [
+            "/ZHiggs0PMToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "wh_120" : [
+            "/WminusH_HToGG_WToAll_M120_TuneCP5_13TeV-powheg-pythia8",
+            "/WplusH_HToGG_WToAll_M120_TuneCP5_13TeV-powheg-pythia8"
+        ],
+        "wh_125" : [
+            "/WminusH_HToGG_WToAll_M125_TuneCP5_13TeV-powheg-pythia8",
+            "/WplusH_HToGG_WToAll_M125_TuneCP5_13TeV-powheg-pythia8"
+        ],
+        "wh_130" : [
+            "/WminusH_HToGG_WToAll_M130_TuneCP5_13TeV-powheg-pythia8",
+            "/WplusH_HToGG_WToAll_M130_TuneCP5_13TeV-powheg-pythia8"
+        ],
+        "wh_ALT_L1f05_125" : [
+            "/WHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "wh_ALT_0PH_125" : [
+            "/WHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "wh_ALT_0PHf05_125" : [
+            "/WHiggs0PHf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "wh_ALT_0PM_125" : [
+            "/WHiggs0PMToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "tth_120" : [
+            "/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8"
+        ],
+        "tth_125" : [
+            "/ttHJetToGG_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8"
+        ],
+        "tth_ALT_0M_125" : [
+            "/ttHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "tth_ALT_0Mf05_125" : [
+            "/ttHiggs0Mf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "tth_ALT_0PM_125" : [
+            "/ttHiggs0PMToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ]
+    }
+}

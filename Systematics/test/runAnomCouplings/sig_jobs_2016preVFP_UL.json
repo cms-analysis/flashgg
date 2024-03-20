@@ -1,0 +1,137 @@
+{
+    "cmdLine"  : "metaConditions=$CMSSW_BASE/src/flashgg/MetaData/data/MetaConditions/Era2016_legacyPreVFP_v1.json campaign=Era2016_legacyPreVFP_v1_Summer20UL useAAA=True lumiMask=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/Legacy_2016/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt puTarget=4.548e-06,1.601e-05,5.089e-05,0.0001143,0.0002035,0.0003172,0.0004688,0.0006826,0.0009665,0.001345,0.001884,0.002648,0.003691,0.00505,0.006756,0.00884,0.01132,0.01416,0.01729,0.02053,0.02367,0.02651,0.02888,0.03076,0.03222,0.03338,0.03438,0.0353,0.03619,0.03705,0.03787,0.03859,0.03918,0.03956,0.03969,0.0395,0.03893,0.03792,0.03643,0.03445,0.03201,0.02919,0.02608,0.02281,0.01953,0.01636,0.0134,0.01075,0.008451,0.006517,0.004938,0.003683,0.00271,0.001971,0.00142,0.001015,0.0007202,0.000508,0.0003561,0.000248,0.0001714,0.0001175,7.979e-05,5.36e-05,3.56e-05,2.337e-05,1.515e-05,9.699e-06,6.136e-06,3.836e-06,2.371e-06,1.45e-06,8.777e-07,5.259e-07,3.121e-07,1.834e-07,1.067e-07,6.145e-08,3.501e-08,1.973e-08,1.099e-08,6.041e-09,3.278e-09,1.755e-09,9.256e-10,4.811e-10,2.462e-10,1.24e-10,6.147e-11,2.996e-11,1.436e-11,6.767e-12,3.134e-12,1.426e-12,6.376e-13,2.801e-13,1.209e-13,5.13e-14,2.142e-14",
+    "processes": {
+	"ggh_120"   : [
+            "/GluGluHToGG_M120_TuneCP5_13TeV-amcatnloFXFX-pythia8"
+        ],
+	"ggh_125"   : [
+            "/GluGluHToGG_M125_TuneCP5_13TeV-amcatnloFXFX-pythia8"
+        ],
+	"ggh_130"   : [
+            "/GluGluHToGG_M130_TuneCP5_13TeV-amcatnloFXFX-pythia8"
+        ],
+        "ggh_pow_120"   : [
+                "/GluGluHToGG_M-120_TuneCP5_13TeV-powheg-pythia8"
+        ],
+        "ggh_pow_125"   : [
+                "/GluGluHToGG_M-125_TuneCP5_13TeV-powheg-pythia8",
+        ],
+        "ggh_pow_130"   : [
+                "/GluGluHToGG_M-130_TuneCP5_13TeV-powheg-pythia8",
+        ],
+	"vbf_120"   : [
+            "/VBFHToGG_M120_TuneCP5_13TeV-amcatnlo-pythia8"
+        ],
+	"vbf_125"   : [
+            "/VBFHToGG_M125_TuneCP5_13TeV-amcatnlo-pythia8"
+        ],
+	"vbf_130"   : [
+            "/VBFHToGG_M130_TuneCP5_13TeV-amcatnlo-pythia8"
+        ],
+        "vbf_ALT_L1_125" : [
+            "/VBFHiggs0L1ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_L1f05_125" : [
+            "/VBFHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_L1Zg_125" : [
+            "/VBFHiggs0L1ZgToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_L1Zgf05_125" : [
+            "/VBFHiggs0L1Zgf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_0M_125" : [
+            "/VBFHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_0Mf05_125" : [        
+            "/VBFHiggs0Mf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_0PH_125" : [
+            "/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_0PHf05_125" : [        
+            "/VBFHiggs0PHf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "vbf_ALT_0PM_125" : [
+            "/VBFHiggs0PMToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_120" : [
+            "/ZH_HToGG_ZToAll_M120_TuneCP5_13TeV-powheg-pythia8"
+        ],
+        "zh_125" : [
+            "/ZH_HToGG_ZToAll_M125_TuneCP5_13TeV-powheg-pythia8"
+        ],
+        "zh_130" : [
+            "/ZH_HToGG_ZToAll_M130_TuneCP5_13TeV-powheg-pythia8"
+        ],
+        "zh_ALT_L1_125" : [
+            "/ZHiggs0L1ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_L1f05_125" : [        
+            "/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_L1Zg_125" : [
+            "/ZHiggs0L1ZgToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_L1Zgf05_125" : [
+            "/ZHiggs0L1Zgf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_0M_125" : [        
+            "/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_0Mf05_125" : [        
+            "/ZHiggs0Mf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_0PH_125" : [
+            "/ZHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_0PHf05_125" : [
+            "/ZHiggs0PHf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "zh_ALT_0PM_125" : [
+            "/ZHiggs0PMToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "wh_120" : [
+            "/WminusH_HToGG_WToAll_M120_TuneCP5_13TeV-powheg-pythia8",
+            "/WplusH_HToGG_WToAll_M120_TuneCP5_13TeV-powheg-pythia8"
+        ],
+        "wh_125" : [
+            "/WminusH_HToGG_WToAll_M125_TuneCP5_13TeV-powheg-pythia8",
+            "/WplusH_HToGG_WToAll_M125_TuneCP5_13TeV-powheg-pythia8"
+        ],
+        "wh_130" : [
+            "/WminusH_HToGG_WToAll_M130_TuneCP5_13TeV-powheg-pythia8",
+            "/WplusH_HToGG_WToAll_M130_TuneCP5_13TeV-powheg-pythia8"
+        ],
+        "wh_ALT_L1_125" : [
+            "/WHiggs0L1ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "wh_ALT_L1f05_125" : [
+            "/WHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "wh_ALT_0PH_125" : [
+            "/WHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "wh_ALT_0PHf05_125" : [
+            "/WHiggs0PHf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "wh_ALT_0PM_125" : [
+            "/WHiggs0PMToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "tth_120" : [
+            "/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8"
+        ],
+        "tth_125" : [
+            "/ttHJetToGG_M125_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8"
+        ],
+        "tth_ALT_0M_125" : [
+            "/ttHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "tth_ALT_0Mf05_125" : [
+            "/ttHiggs0Mf05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ],
+        "tth_ALT_0PM_125" : [
+            "/ttHiggs0PMToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8"
+        ]
+    }
+}
