@@ -17,6 +17,7 @@
 <use   name="RecoBTag/FeatureTools"/>
 <use   name="PhysicsTools/ONNXRuntime"/>
 <use   name="roottmva"/>
+<use   name="json"/>
 <!-- <use   name="HiggsAnalysis/GBRLikelihoodEGTools"/> -->
 <flags   EDM_PLUGIN="1"/>
 </library>
