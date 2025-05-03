@@ -1,0 +1,761 @@
+{
+    "/GluGluHToGG_int_M125_13TeV-sherpa/phys_higgs-crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00-467e9e21904518f354c32e2b169db7c8/USER": {
+        "dset_type": "mc", 
+        "files": [
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_77.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 560.0878295898438
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_3.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 877.910888671875
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_55.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1475.683837890625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_54.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1402.61572265625
+            }, 
+            {
+                "bad": false, 
+                "events": 14000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_86.root", 
+                "nevents": 14000, 
+                "totEvents": 14000, 
+                "weights": 1499.5904541015625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_51.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": -256.38604736328125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_50.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 109.76332092285156
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_53.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 634.9813232421875
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_9.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1647.3525390625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_12.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 905.6456909179688
+            }, 
+            {
+                "bad": false, 
+                "events": 21000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_84.root", 
+                "nevents": 21000, 
+                "totEvents": 21000, 
+                "weights": 2263.968994140625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_76.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1015.4667358398438
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_25.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 645.2489624023438
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_10.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 343.9100646972656
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_5.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1563.96923828125
+            }, 
+            {
+                "bad": false, 
+                "events": 23000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_8.root", 
+                "nevents": 23000, 
+                "totEvents": 23000, 
+                "weights": -195.46368408203125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_21.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 708.8156127929688
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_29.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1074.9049072265625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_71.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1203.9906005859375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_57.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 69.21049499511719
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_75.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 768.62353515625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_90.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1329.884765625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_74.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 2138.372314453125
+            }, 
+            {
+                "bad": false, 
+                "events": 14000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_6.root", 
+                "nevents": 14000, 
+                "totEvents": 14000, 
+                "weights": 1521.374755859375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_59.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 98.02997589111328
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_17.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 193.479736328125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_78.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 638.520263671875
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_23.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 551.2091674804688
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_13.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 952.6055908203125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_16.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": -1105.3714599609375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_28.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 926.743896484375
+            }, 
+            {
+                "bad": false, 
+                "events": 24000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_82.root", 
+                "nevents": 24000, 
+                "totEvents": 24000, 
+                "weights": 1165.1986083984375
+            }, 
+            {
+                "bad": false, 
+                "events": 6000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_38.root", 
+                "nevents": 6000, 
+                "totEvents": 6000, 
+                "weights": 719.6859130859375
+            }, 
+            {
+                "bad": false, 
+                "events": 3000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_47.root", 
+                "nevents": 3000, 
+                "totEvents": 3000, 
+                "weights": -451.867919921875
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_45.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": -191.5662384033203
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_35.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 316.002685546875
+            }, 
+            {
+                "bad": false, 
+                "events": 2000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_79.root", 
+                "nevents": 2000, 
+                "totEvents": 2000, 
+                "weights": 429.0816650390625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_26.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": -928.2874145507812
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_72.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 808.3681640625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_87.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1442.0372314453125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_61.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 221.7677001953125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_44.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1422.2021484375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_18.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 988.0543823242188
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_7.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1095.1451416015625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_63.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 2364.84521484375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_48.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 338.353515625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_70.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 959.8680419921875
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_20.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1627.2021484375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_34.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1215.542724609375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_73.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 2304.58056640625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_68.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 217.933349609375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_49.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 373.7165222167969
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_66.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": -459.7974853515625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_64.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": -242.5921630859375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_69.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 103.41456604003906
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_56.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": -119.57051086425781
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_62.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 335.6950378417969
+            }, 
+            {
+                "bad": false, 
+                "events": 24999, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_31.root", 
+                "nevents": 24999, 
+                "totEvents": 24999, 
+                "weights": -247.1883087158203
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_60.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1353.238037109375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_1.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 199.55686950683594
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_19.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 908.4469604492188
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_27.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1581.5823974609375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_22.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": -341.83685302734375
+            }, 
+            {
+                "bad": false, 
+                "events": 6000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_39.root", 
+                "nevents": 6000, 
+                "totEvents": 6000, 
+                "weights": -667.5977783203125
+            }, 
+            {
+                "bad": false, 
+                "events": 6000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_43.root", 
+                "nevents": 6000, 
+                "totEvents": 6000, 
+                "weights": 417.93017578125
+            }, 
+            {
+                "bad": false, 
+                "events": 12000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_93.root", 
+                "nevents": 12000, 
+                "totEvents": 12000, 
+                "weights": 1212.5966796875
+            }, 
+            {
+                "bad": false, 
+                "events": 10000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_37.root", 
+                "nevents": 10000, 
+                "totEvents": 10000, 
+                "weights": 487.69189453125
+            }, 
+            {
+                "bad": false, 
+                "events": 6000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_94.root", 
+                "nevents": 6000, 
+                "totEvents": 6000, 
+                "weights": -227.90443420410156
+            }, 
+            {
+                "bad": false, 
+                "events": 6000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_33.root", 
+                "nevents": 6000, 
+                "totEvents": 6000, 
+                "weights": 508.0979919433594
+            }, 
+            {
+                "bad": false, 
+                "events": 9000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_40.root", 
+                "nevents": 9000, 
+                "totEvents": 9000, 
+                "weights": 933.0535278320312
+            }, 
+            {
+                "bad": false, 
+                "events": 8000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_2.root", 
+                "nevents": 8000, 
+                "totEvents": 8000, 
+                "weights": 457.9290466308594
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_24.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 2523.025390625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_85.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1828.65869140625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_92.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1737.239013671875
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_30.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 833.735595703125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_91.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": -375.4214172363281
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_89.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 361.8456726074219
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_88.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1307.88330078125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_52.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 347.59039306640625
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_65.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1182.670654296875
+            }, 
+            {
+                "bad": false, 
+                "events": 24000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_80.root", 
+                "nevents": 24000, 
+                "totEvents": 24000, 
+                "weights": 188.83091735839844
+            }, 
+            {
+                "bad": false, 
+                "events": 24000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_42.root", 
+                "nevents": 24000, 
+                "totEvents": 24000, 
+                "weights": 345.43743896484375
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_15.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": -35.912086486816406
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_67.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": -93.48677062988281
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_32.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": -1036.720703125
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_11.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 1080.5894775390625
+            }, 
+            {
+                "bad": false, 
+                "events": 6000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_81.root", 
+                "nevents": 6000, 
+                "totEvents": 6000, 
+                "weights": 173.004638671875
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_36.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 542.3055419921875
+            }, 
+            {
+                "bad": false, 
+                "events": 14000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_4.root", 
+                "nevents": 14000, 
+                "totEvents": 14000, 
+                "weights": 1372.97021484375
+            }, 
+            {
+                "bad": false, 
+                "events": 6000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_46.root", 
+                "nevents": 6000, 
+                "totEvents": 6000, 
+                "weights": 319.9106140136719
+            }, 
+            {
+                "bad": false, 
+                "events": 9000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_41.root", 
+                "nevents": 9000, 
+                "totEvents": 9000, 
+                "weights": -37.4073600769043
+            }, 
+            {
+                "bad": false, 
+                "events": 9000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_83.root", 
+                "nevents": 9000, 
+                "totEvents": 9000, 
+                "weights": -91.48457336425781
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_58.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 167.9207000732422
+            }, 
+            {
+                "bad": false, 
+                "events": 25000, 
+                "name": "/store/group/phys_higgs/cmshgg/HGG_Int/amkrishn/microAOD_UL2017_MC/HGG_int_M125_RunIISummer20UL17/v0/GluGluHToGG_int_M125_13TeV-sherpa/crab_v0_GluGluHToGG_int_M125_13TeV-sherpa_RunIISummer20UL17MiniAOD-106X_mc2017_realistic_v6-v2_00/220411_122242/0000/MicroAOD_HGG_Int_M125_UL2017_14.root", 
+                "nevents": 25000, 
+                "totEvents": 25000, 
+                "weights": 4.1884613037109375
+            }
+        ], 
+        "parent_n_units": null, 
+        "vetted": true
+    }
+}

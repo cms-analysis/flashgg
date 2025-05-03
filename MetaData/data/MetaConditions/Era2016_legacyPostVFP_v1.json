@@ -93,7 +93,7 @@
 
     "Ele_reco_SF_FileName" : "flashgg/Systematics/data/2016postVFP_UL_reco-eff.json",
 
-    "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2016_Legacy_postVFP_cfi",
+    "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2016_Legacy_postVFP_cfi_boundR9_0p96",
     
 
     "sigmaM_M_decorr" : "flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_2016_Mgg100to180.root",

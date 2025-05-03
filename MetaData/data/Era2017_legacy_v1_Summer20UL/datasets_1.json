@@ -1724,7 +1724,7 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": false
+        "vetted": true
     }, 
     "/QCD_Pt-40ToInf_DoubleEMEnriched_MGG-80ToInf_TuneCP5_13TeV-pythia8/phys_higgs-Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2-73d94ea6a324ae993f2729a14057b675/USER": {
         "dset_type": "mc", 
@@ -5290,7 +5290,7 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": false
+        "vetted": true
     }, 
     "/VBFHToGG_M65_TuneCP5_13TeV-amcatnlo-pythia8/phys_higgs-Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2-b57456a118a639e045227184101d9dcf/USER": {
         "dset_type": "mc", 
@@ -5545,7 +5545,7 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": false
+        "vetted": true
     }, 
     "/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/phys_higgs-Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2-ca64037e1aeaaf0d4d2b197cdb41e4bc/USER": {
         "dset_type": "mc", 
@@ -5553,7 +5553,7 @@
             {
                 "bad": false, 
                 "events": 14000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_5.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_5.root", 
                 "nevents": 14000, 
                 "totEvents": 14000, 
                 "weights": 14000.0
@@ -5561,7 +5561,7 @@
             {
                 "bad": false, 
                 "events": 11000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_13.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_13.root", 
                 "nevents": 11000, 
                 "totEvents": 11000, 
                 "weights": 11000.0
@@ -5569,7 +5569,7 @@
             {
                 "bad": false, 
                 "events": 15000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_6.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_6.root", 
                 "nevents": 15000, 
                 "totEvents": 15000, 
                 "weights": 15000.0
@@ -5577,7 +5577,7 @@
             {
                 "bad": false, 
                 "events": 10000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_26.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_26.root", 
                 "nevents": 10000, 
                 "totEvents": 10000, 
                 "weights": 10000.0
@@ -5585,7 +5585,7 @@
             {
                 "bad": false, 
                 "events": 12000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_15.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_15.root", 
                 "nevents": 12000, 
                 "totEvents": 12000, 
                 "weights": 12000.0
@@ -5593,7 +5593,7 @@
             {
                 "bad": false, 
                 "events": 9000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_44.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_44.root", 
                 "nevents": 9000, 
                 "totEvents": 9000, 
                 "weights": 9000.0
@@ -5601,7 +5601,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_24.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_24.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5609,7 +5609,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_33.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_33.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5617,7 +5617,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_12.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_12.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5625,7 +5625,7 @@
             {
                 "bad": false, 
                 "events": 22000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_34.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_34.root", 
                 "nevents": 22000, 
                 "totEvents": 22000, 
                 "weights": 22000.0
@@ -5633,7 +5633,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_7.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_7.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5641,7 +5641,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_3.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_3.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5649,7 +5649,7 @@
             {
                 "bad": false, 
                 "events": 12000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_17.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_17.root", 
                 "nevents": 12000, 
                 "totEvents": 12000, 
                 "weights": 12000.0
@@ -5657,7 +5657,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_9.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_9.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5665,7 +5665,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_25.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_25.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5673,7 +5673,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_39.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_39.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5681,7 +5681,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_1.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_1.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5689,7 +5689,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_42.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_42.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5697,7 +5697,7 @@
             {
                 "bad": false, 
                 "events": 18000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_20.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_20.root", 
                 "nevents": 18000, 
                 "totEvents": 18000, 
                 "weights": 18000.0
@@ -5705,7 +5705,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_4.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_4.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5713,7 +5713,7 @@
             {
                 "bad": false, 
                 "events": 11000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_11.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_11.root", 
                 "nevents": 11000, 
                 "totEvents": 11000, 
                 "weights": 11000.0
@@ -5721,7 +5721,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_37.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_37.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5729,7 +5729,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_40.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_40.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5737,7 +5737,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_30.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_30.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5745,7 +5745,7 @@
             {
                 "bad": false, 
                 "events": 13000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_31.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_31.root", 
                 "nevents": 13000, 
                 "totEvents": 13000, 
                 "weights": 13000.0
@@ -5753,7 +5753,7 @@
             {
                 "bad": false, 
                 "events": 18000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_18.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_18.root", 
                 "nevents": 18000, 
                 "totEvents": 18000, 
                 "weights": 18000.0
@@ -5761,7 +5761,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_29.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_29.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5769,7 +5769,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_2.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_2.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5777,7 +5777,7 @@
             {
                 "bad": false, 
                 "events": 17000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_43.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_43.root", 
                 "nevents": 17000, 
                 "totEvents": 17000, 
                 "weights": 17000.0
@@ -5785,7 +5785,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_32.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_32.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5793,7 +5793,7 @@
             {
                 "bad": false, 
                 "events": 24000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_21.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_21.root", 
                 "nevents": 24000, 
                 "totEvents": 24000, 
                 "weights": 24000.0
@@ -5801,7 +5801,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_27.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_27.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5809,7 +5809,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_10.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_10.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5817,7 +5817,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_8.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_8.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -5825,7 +5825,7 @@
             {
                 "bad": false, 
                 "events": 6000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_14.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_14.root", 
                 "nevents": 6000, 
                 "totEvents": 6000, 
                 "weights": 6000.0
@@ -5833,7 +5833,7 @@
             {
                 "bad": false, 
                 "events": 6000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_19.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_19.root", 
                 "nevents": 6000, 
                 "totEvents": 6000, 
                 "weights": 6000.0
@@ -5841,7 +5841,7 @@
             {
                 "bad": false, 
                 "events": 6000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_23.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_23.root", 
                 "nevents": 6000, 
                 "totEvents": 6000, 
                 "weights": 6000.0
@@ -5849,7 +5849,7 @@
             {
                 "bad": false, 
                 "events": 6000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_22.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_22.root", 
                 "nevents": 6000, 
                 "totEvents": 6000, 
                 "weights": 6000.0
@@ -5857,7 +5857,7 @@
             {
                 "bad": false, 
                 "events": 3000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_36.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_36.root", 
                 "nevents": 3000, 
                 "totEvents": 3000, 
                 "weights": 3000.0
@@ -5865,7 +5865,7 @@
             {
                 "bad": false, 
                 "events": 6000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_35.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_35.root", 
                 "nevents": 6000, 
                 "totEvents": 6000, 
                 "weights": 6000.0
@@ -5873,7 +5873,7 @@
             {
                 "bad": false, 
                 "events": 6000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_16.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_16.root", 
                 "nevents": 6000, 
                 "totEvents": 6000, 
                 "weights": 6000.0
@@ -5881,7 +5881,7 @@
             {
                 "bad": false, 
                 "events": 2000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_38.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_38.root", 
                 "nevents": 2000, 
                 "totEvents": 2000, 
                 "weights": 2000.0
@@ -5889,7 +5889,7 @@
             {
                 "bad": false, 
                 "events": 2000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_28.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_28.root", 
                 "nevents": 2000, 
                 "totEvents": 2000, 
                 "weights": 2000.0
@@ -5897,14 +5897,14 @@
             {
                 "bad": false, 
                 "events": 1000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_41.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/VBFHiggs0PHToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_155850/0000/myMicroAODOutputFile_41.root", 
                 "nevents": 1000, 
                 "totEvents": 1000, 
                 "weights": 1000.0
             }
         ], 
         "parent_n_units": null, 
-        "vetted": false
+        "vetted": true
     }, 
     "/VHToGG_M123_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/phys_higgs-Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1-87ea3b90faed5199cfde26b1d7e045df/USER": {
         "dset_type": "mc", 
@@ -6119,7 +6119,7 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": false
+        "vetted": true
     }, 
     "/VHToGG_M126_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/phys_higgs-Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2-87ea3b90faed5199cfde26b1d7e045df/USER": {
         "dset_type": "mc", 
@@ -6278,7 +6278,7 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": false
+        "vetted": true
     }, 
     "/WminusH_HToGG_WToAll_M120_TuneCP5_13TeV-powheg-pythia8/phys_higgs-Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v1-87ea3b90faed5199cfde26b1d7e045df/USER": {
         "dset_type": "mc", 
@@ -6509,7 +6509,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_16.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_16.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6517,7 +6517,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_5.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_5.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6525,7 +6525,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_13.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_13.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6533,7 +6533,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_9.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_9.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6541,7 +6541,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_19.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_19.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6549,7 +6549,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_6.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_6.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6557,7 +6557,7 @@
             {
                 "bad": false, 
                 "events": 15000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_29.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_29.root", 
                 "nevents": 15000, 
                 "totEvents": 15000, 
                 "weights": 15000.0
@@ -6565,7 +6565,7 @@
             {
                 "bad": false, 
                 "events": 9000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_25.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_25.root", 
                 "nevents": 9000, 
                 "totEvents": 9000, 
                 "weights": 9000.0
@@ -6573,7 +6573,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_15.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_15.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6581,7 +6581,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_12.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_12.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6589,7 +6589,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_18.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_18.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6597,7 +6597,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_7.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_7.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6605,7 +6605,7 @@
             {
                 "bad": false, 
                 "events": 23000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_27.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_27.root", 
                 "nevents": 23000, 
                 "totEvents": 23000, 
                 "weights": 23000.0
@@ -6613,7 +6613,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_8.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_8.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6621,7 +6621,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_22.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_22.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6629,7 +6629,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_10.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_10.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6637,7 +6637,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_40.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_40.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6645,7 +6645,7 @@
             {
                 "bad": false, 
                 "events": 15000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_38.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_38.root", 
                 "nevents": 15000, 
                 "totEvents": 15000, 
                 "weights": 15000.0
@@ -6653,7 +6653,7 @@
             {
                 "bad": false, 
                 "events": 15000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_3.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_3.root", 
                 "nevents": 15000, 
                 "totEvents": 15000, 
                 "weights": 15000.0
@@ -6661,7 +6661,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_20.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_20.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6669,7 +6669,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_17.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_17.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6677,7 +6677,7 @@
             {
                 "bad": false, 
                 "events": 18000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_36.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_36.root", 
                 "nevents": 18000, 
                 "totEvents": 18000, 
                 "weights": 18000.0
@@ -6685,7 +6685,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_21.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_21.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6693,7 +6693,7 @@
             {
                 "bad": false, 
                 "events": 12000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_33.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_33.root", 
                 "nevents": 12000, 
                 "totEvents": 12000, 
                 "weights": 12000.0
@@ -6701,7 +6701,7 @@
             {
                 "bad": false, 
                 "events": 15000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_2.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_2.root", 
                 "nevents": 15000, 
                 "totEvents": 15000, 
                 "weights": 15000.0
@@ -6709,7 +6709,7 @@
             {
                 "bad": false, 
                 "events": 9000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_31.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_31.root", 
                 "nevents": 9000, 
                 "totEvents": 9000, 
                 "weights": 9000.0
@@ -6717,7 +6717,7 @@
             {
                 "bad": false, 
                 "events": 9000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_42.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_42.root", 
                 "nevents": 9000, 
                 "totEvents": 9000, 
                 "weights": 9000.0
@@ -6725,7 +6725,7 @@
             {
                 "bad": false, 
                 "events": 12000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_35.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_35.root", 
                 "nevents": 12000, 
                 "totEvents": 12000, 
                 "weights": 12000.0
@@ -6733,7 +6733,7 @@
             {
                 "bad": false, 
                 "events": 15000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_23.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_23.root", 
                 "nevents": 15000, 
                 "totEvents": 15000, 
                 "weights": 15000.0
@@ -6741,7 +6741,7 @@
             {
                 "bad": false, 
                 "events": 3000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_32.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_32.root", 
                 "nevents": 3000, 
                 "totEvents": 3000, 
                 "weights": 3000.0
@@ -6749,7 +6749,7 @@
             {
                 "bad": false, 
                 "events": 9000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_24.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_24.root", 
                 "nevents": 9000, 
                 "totEvents": 9000, 
                 "weights": 9000.0
@@ -6757,7 +6757,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_11.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_11.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6765,7 +6765,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_41.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_41.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6773,7 +6773,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_39.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_39.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6781,7 +6781,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_14.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_14.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6789,7 +6789,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_26.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_26.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6797,7 +6797,7 @@
             {
                 "bad": false, 
                 "events": 3000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_4.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_4.root", 
                 "nevents": 3000, 
                 "totEvents": 3000, 
                 "weights": 3000.0
@@ -6805,7 +6805,7 @@
             {
                 "bad": false, 
                 "events": 3000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_1.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_1.root", 
                 "nevents": 3000, 
                 "totEvents": 3000, 
                 "weights": 3000.0
@@ -6813,7 +6813,7 @@
             {
                 "bad": false, 
                 "events": 3000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_28.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_28.root", 
                 "nevents": 3000, 
                 "totEvents": 3000, 
                 "weights": 3000.0
@@ -6821,7 +6821,7 @@
             {
                 "bad": false, 
                 "events": 3000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_37.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_37.root", 
                 "nevents": 3000, 
                 "totEvents": 3000, 
                 "weights": 3000.0
@@ -6829,7 +6829,7 @@
             {
                 "bad": false, 
                 "events": 3000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_30.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_30.root", 
                 "nevents": 3000, 
                 "totEvents": 3000, 
                 "weights": 3000.0
@@ -6837,14 +6837,14 @@
             {
                 "bad": false, 
                 "events": 6000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_34.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0L1f05ph0ToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_082618/0000/myMicroAODOutputFile_34.root", 
                 "nevents": 6000, 
                 "totEvents": 6000, 
                 "weights": 6000.0
             }
         ], 
         "parent_n_units": null, 
-        "vetted": false
+        "vetted": true
     }, 
     "/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/phys_higgs-Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2-2d0531b4db33fa17307b0f4af20516e9/USER": {
         "dset_type": "mc", 
@@ -6852,7 +6852,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_6.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_6.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6860,7 +6860,7 @@
             {
                 "bad": false, 
                 "events": 13000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_11.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_11.root", 
                 "nevents": 13000, 
                 "totEvents": 13000, 
                 "weights": 13000.0
@@ -6868,7 +6868,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_5.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_5.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6876,7 +6876,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_16.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_16.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6884,7 +6884,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_30.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_30.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6892,7 +6892,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_32.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_32.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6900,7 +6900,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_9.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_9.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6908,7 +6908,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_1.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_1.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6916,7 +6916,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_26.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_26.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6924,7 +6924,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_19.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_19.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6932,7 +6932,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_24.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_24.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6940,7 +6940,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_17.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_17.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6948,7 +6948,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_18.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_18.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6956,7 +6956,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_15.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_15.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6964,7 +6964,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_21.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_21.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6972,7 +6972,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_33.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_33.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6980,7 +6980,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_22.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_22.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6988,7 +6988,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_28.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_28.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -6996,7 +6996,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_27.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_27.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -7004,7 +7004,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_10.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_10.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -7012,7 +7012,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_34.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_34.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -7020,7 +7020,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_31.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_31.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -7028,7 +7028,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_23.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_23.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -7036,7 +7036,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_3.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_3.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -7044,7 +7044,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_8.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_8.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -7052,7 +7052,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_29.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_29.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -7060,7 +7060,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_4.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_4.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -7068,7 +7068,7 @@
             {
                 "bad": false, 
                 "events": 6000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_14.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_14.root", 
                 "nevents": 6000, 
                 "totEvents": 6000, 
                 "weights": 6000.0
@@ -7076,7 +7076,7 @@
             {
                 "bad": false, 
                 "events": 1000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_35.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_35.root", 
                 "nevents": 1000, 
                 "totEvents": 1000, 
                 "weights": 1000.0
@@ -7084,7 +7084,7 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_7.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_7.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
@@ -7092,7 +7092,7 @@
             {
                 "bad": false, 
                 "events": 11000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_2.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_2.root", 
                 "nevents": 11000, 
                 "totEvents": 11000, 
                 "weights": 11000.0
@@ -7100,7 +7100,7 @@
             {
                 "bad": false, 
                 "events": 6000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_13.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_13.root", 
                 "nevents": 6000, 
                 "totEvents": 6000, 
                 "weights": 6000.0
@@ -7108,7 +7108,7 @@
             {
                 "bad": false, 
                 "events": 6000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_12.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_12.root", 
                 "nevents": 6000, 
                 "totEvents": 6000, 
                 "weights": 6000.0
@@ -7116,7 +7116,7 @@
             {
                 "bad": false, 
                 "events": 7000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_20.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_20.root", 
                 "nevents": 7000, 
                 "totEvents": 7000, 
                 "weights": 7000.0
@@ -7124,14 +7124,14 @@
             {
                 "bad": false, 
                 "events": 25000, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_25.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ZHiggs0MToGG_M125_TuneCP5_13TeV-JHUGenV7011-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220926_083707/0000/myMicroAODOutputFile_25.root", 
                 "nevents": 25000, 
                 "totEvents": 25000, 
                 "weights": 25000.0
             }
         ], 
         "parent_n_units": null, 
-        "vetted": false
+        "vetted": true
     }, 
     "/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/phys_higgs-Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2-0f24d711b1039fdec08a0c31c2d98539/USER": {
         "dset_type": "mc", 
@@ -7139,7 +7139,7 @@
             {
                 "bad": false, 
                 "events": 19334, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_22.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_22.root", 
                 "nevents": 19334, 
                 "totEvents": 19334, 
                 "weights": 20552.95703125
@@ -7147,7 +7147,7 @@
             {
                 "bad": false, 
                 "events": 24835, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_1.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_1.root", 
                 "nevents": 24835, 
                 "totEvents": 24835, 
                 "weights": 26382.486328125
@@ -7155,7 +7155,7 @@
             {
                 "bad": false, 
                 "events": 24918, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_4.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_4.root", 
                 "nevents": 24918, 
                 "totEvents": 24918, 
                 "weights": 26832.849609375
@@ -7163,7 +7163,7 @@
             {
                 "bad": false, 
                 "events": 25052, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_26.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_26.root", 
                 "nevents": 25052, 
                 "totEvents": 25052, 
                 "weights": 27002.916015625
@@ -7171,7 +7171,7 @@
             {
                 "bad": false, 
                 "events": 24944, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_11.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_11.root", 
                 "nevents": 24944, 
                 "totEvents": 24944, 
                 "weights": 26820.25390625
@@ -7179,7 +7179,7 @@
             {
                 "bad": false, 
                 "events": 24965, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_7.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_7.root", 
                 "nevents": 24965, 
                 "totEvents": 24965, 
                 "weights": 27213.923828125
@@ -7187,7 +7187,7 @@
             {
                 "bad": false, 
                 "events": 12939, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_24.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_24.root", 
                 "nevents": 12939, 
                 "totEvents": 12939, 
                 "weights": 13652.630859375
@@ -7195,7 +7195,7 @@
             {
                 "bad": false, 
                 "events": 24743, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_8.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_8.root", 
                 "nevents": 24743, 
                 "totEvents": 24743, 
                 "weights": 26180.923828125
@@ -7203,7 +7203,7 @@
             {
                 "bad": false, 
                 "events": 17170, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_25.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_25.root", 
                 "nevents": 17170, 
                 "totEvents": 17170, 
                 "weights": 18172.01171875
@@ -7211,7 +7211,7 @@
             {
                 "bad": false, 
                 "events": 15177, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_23.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_23.root", 
                 "nevents": 15177, 
                 "totEvents": 15177, 
                 "weights": 15296.61328125
@@ -7219,7 +7219,7 @@
             {
                 "bad": false, 
                 "events": 24836, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_19.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_19.root", 
                 "nevents": 24836, 
                 "totEvents": 24836, 
                 "weights": 26813.953125
@@ -7227,7 +7227,7 @@
             {
                 "bad": false, 
                 "events": 24829, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_27.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_27.root", 
                 "nevents": 24829, 
                 "totEvents": 24829, 
                 "weights": 26275.40625
@@ -7235,7 +7235,7 @@
             {
                 "bad": false, 
                 "events": 24896, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_21.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_21.root", 
                 "nevents": 24896, 
                 "totEvents": 24896, 
                 "weights": 26291.15625
@@ -7243,7 +7243,7 @@
             {
                 "bad": false, 
                 "events": 24887, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_2.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_2.root", 
                 "nevents": 24887, 
                 "totEvents": 24887, 
                 "weights": 26936.78125
@@ -7251,7 +7251,7 @@
             {
                 "bad": false, 
                 "events": 23927, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_18.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_18.root", 
                 "nevents": 23927, 
                 "totEvents": 23927, 
                 "weights": 25443.96484375
@@ -7259,7 +7259,7 @@
             {
                 "bad": false, 
                 "events": 24639, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_13.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_13.root", 
                 "nevents": 24639, 
                 "totEvents": 24639, 
                 "weights": 25683.32421875
@@ -7267,7 +7267,7 @@
             {
                 "bad": false, 
                 "events": 24848, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_6.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_6.root", 
                 "nevents": 24848, 
                 "totEvents": 24848, 
                 "weights": 26190.37109375
@@ -7275,7 +7275,7 @@
             {
                 "bad": false, 
                 "events": 24975, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_14.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_14.root", 
                 "nevents": 24975, 
                 "totEvents": 24975, 
                 "weights": 25840.791015625
@@ -7283,7 +7283,7 @@
             {
                 "bad": false, 
                 "events": 24728, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_20.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_20.root", 
                 "nevents": 24728, 
                 "totEvents": 24728, 
                 "weights": 25529.0
@@ -7291,7 +7291,7 @@
             {
                 "bad": false, 
                 "events": 24890, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_16.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_16.root", 
                 "nevents": 24890, 
                 "totEvents": 24890, 
                 "weights": 26026.603515625
@@ -7299,7 +7299,7 @@
             {
                 "bad": false, 
                 "events": 6541, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_28.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_28.root", 
                 "nevents": 6541, 
                 "totEvents": 6541, 
                 "weights": 7530.205078125
@@ -7307,7 +7307,7 @@
             {
                 "bad": false, 
                 "events": 24879, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_10.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_10.root", 
                 "nevents": 24879, 
                 "totEvents": 24879, 
                 "weights": 26275.408203125
@@ -7315,7 +7315,7 @@
             {
                 "bad": true, 
                 "events": 24738, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_12.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_12.root", 
                 "nevents": 24738, 
                 "totEvents": 24738, 
                 "weights": 25938.421875
@@ -7323,7 +7323,7 @@
             {
                 "bad": false, 
                 "events": 25065, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_5.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_5.root", 
                 "nevents": 25065, 
                 "totEvents": 25065, 
                 "weights": 27018.6640625
@@ -7331,7 +7331,7 @@
             {
                 "bad": true, 
                 "events": 24772, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_15.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_15.root", 
                 "nevents": 24772, 
                 "totEvents": 24772, 
                 "weights": 27160.388671875
@@ -7339,7 +7339,7 @@
             {
                 "bad": false, 
                 "events": 24904, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_17.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_17.root", 
                 "nevents": 24904, 
                 "totEvents": 24904, 
                 "weights": 27053.30859375
@@ -7347,7 +7347,7 @@
             {
                 "bad": false, 
                 "events": 24772, 
-                "name": "/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_9.root", 
+                "name": "/eos/cms/store/group/phys_higgs/T2_IT_Rome/store/group/phys_higgs/cmshgg/emanuele/flashgg/Era2017_legacy_v1_Summer20UL/legacyRunII/ttHJetToGG_M120_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2/220923_153659/0000/myMicroAODOutputFile_9.root", 
                 "nevents": 24772, 
                 "totEvents": 24772, 
                 "weights": 26177.77734375
@@ -7585,7 +7585,7 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": false
+        "vetted": true
     }, 
     "/ttHJetToGG_M124_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/phys_higgs-Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2-c9fef38cafbf42997474836a0940bf17/USER": {
         "dset_type": "mc", 
@@ -7896,7 +7896,7 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": false
+        "vetted": true
     }, 
     "/ttHJetToGG_M126_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/phys_higgs-Era2017_legacy_v1_Summer20UL-legacyRunII-v0-RunIISummer20UL17MiniAODv2-106X_mc2017_realistic_v9-v2-c9fef38cafbf42997474836a0940bf17/USER": {
         "dset_type": "mc", 
@@ -8071,6 +8071,6 @@
             }
         ], 
         "parent_n_units": null, 
-        "vetted": false
+        "vetted": true
     }
 }

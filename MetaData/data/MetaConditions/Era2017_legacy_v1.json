@@ -85,7 +85,7 @@
         }
     },
 
-    "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2017_Legacy_cfi",
+    "flashggDiPhotonSystematics" : "flashggDiPhotonSystematics2017_Legacy_cfi_boundR9_0p96",
 
 
     "sigmaM_M_decorr" : "flashgg/Taggers/data/diphoMVA_sigmaMoMdecorr_split_2017_Mgg100to180.root",
@@ -110,8 +110,8 @@
 	
     "flashggDiPhotonMVA" : 
     {  
-        "weightFile" : "flashgg/Taggers/data/STXSmodels/altDiphoModel_IncUL2017.xml",
-        "version" : "xgb"
+        "weightFile" : "flashgg/Taggers/data/STXSmodels/DiphotonXGboost_UL2017_DDQCD.weights.xml",
+        "version" : "new"
     },
 
     "flashggJetSystematics" : 

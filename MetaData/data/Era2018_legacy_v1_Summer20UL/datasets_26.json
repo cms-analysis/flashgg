@@ -35706,9 +35706,26 @@
                 "weights": 9747
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 15952, 
+                "lumis": {
+                    "317484": [
+                        20, 
+                        69, 
+                        77, 
+                        87, 
+                        89, 
+                        90, 
+                        91, 
+                        92, 
+                        99, 
+                        107
+                    ]
+                }, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2018_legacy_v1_Summer20UL/legacyRunII/EGamma/Era2018_legacy_v1_Summer20UL-legacyRunII-v0-Run2018B-UL2018_MiniAODv2-v1/230503_125430/0001/myMicroAODOutputFile_1495.root", 
-                "nevents": 15952
+                "nevents": 15952, 
+                "totEvents": 15952, 
+                "weights": 15952
             }, 
             {
                 "bad": false, 
@@ -47726,9 +47743,26 @@
                 "weights": 6990
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 13638, 
+                "lumis": {
+                    "317640": [
+                        714, 
+                        736, 
+                        715, 
+                        724, 
+                        723, 
+                        725, 
+                        726, 
+                        738, 
+                        791, 
+                        800
+                    ]
+                }, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2018_legacy_v1_Summer20UL/legacyRunII/EGamma/Era2018_legacy_v1_Summer20UL-legacyRunII-v0-Run2018B-UL2018_MiniAODv2-v1/230503_125430/0000/myMicroAODOutputFile_47.root", 
-                "nevents": 13638
+                "nevents": 13638, 
+                "totEvents": 13638, 
+                "weights": 13638
             }, 
             {
                 "bad": false, 
@@ -50313,9 +50347,28 @@
                 "weights": 11872
             }, 
             {
-                "bad": true, 
+                "bad": false, 
+                "events": 12879, 
+                "lumis": {
+                    "317292": [
+                        231, 
+                        251, 
+                        236
+                    ], 
+                    "317661": [
+                        995, 
+                        724, 
+                        777, 
+                        786, 
+                        799, 
+                        813, 
+                        818
+                    ]
+                }, 
                 "name": "/store/group/phys_higgs/cmshgg/rasharma/flashgg/Era2018_legacy_v1_Summer20UL/legacyRunII/EGamma/Era2018_legacy_v1_Summer20UL-legacyRunII-v0-Run2018B-UL2018_MiniAODv2-v1/230503_125430/0000/myMicroAODOutputFile_867.root", 
-                "nevents": 12879
+                "nevents": 12879, 
+                "totEvents": 12879, 
+                "weights": 12879
             }, 
             {
                 "bad": false, 
